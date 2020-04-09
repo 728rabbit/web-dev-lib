@@ -11,6 +11,9 @@
 
     // show page loading
     <body data-processing="1"></body>
+
+    // macosx mode
+    <body data-macosx="1"></body>
  
 2.  Document ready functions:
     ----------------------------------------------------------------------------
