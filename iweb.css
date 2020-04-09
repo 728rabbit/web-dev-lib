@@ -132,6 +132,16 @@ input[type="reset"] {
     padding-right: 0px;
 }
 
+.iweb > .iweb-viewer {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+}
+
+.iweb-macosx > .iweb-viewer {
+    height: 100%;
+}
+
 .iweb-editor {
     position: relative;
     line-height: 1.5;

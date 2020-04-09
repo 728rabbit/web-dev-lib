@@ -204,6 +204,7 @@ var iweb = {
         });
         $('body').removeAttr('data-processing');
         $('body').removeAttr('data-macosx');
+        $('body > *').not('script,noscript').wrapAll('<div class="iweb-viewer"></div>');
         iweb_object.responsive();
         iweb_object.win_width = parseInt($(window).width());
         if(iweb_object.mode === 'macosx') {
