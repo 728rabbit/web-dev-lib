@@ -180,7 +180,7 @@
     e.g.
     iweb.post({
         url: your_url_here,
-        type: your_retrun_type_here // default = json
+        type: your_retrun_type_here, // default = json
         val: {
             name_1: value_1
             name_2: value_2
