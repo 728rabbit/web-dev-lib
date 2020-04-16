@@ -548,6 +548,7 @@ var iweb = {
                 init();
             }
             $(document).on('click', '.iweb-dialog .async-virtual', function(e) {
+                $(document).off('click', '.iweb-dialog .async-virtual');
                 $(document).off('click', '.iweb-dialog .async-content .btn-close');
                 $('#iweb-dialog').remove();
                 $('body').removeClass('iweb-disable-scroll');
@@ -556,6 +557,7 @@ var iweb = {
                 }
             });
             $(document).on('click', '.iweb-dialog .async-content .btn-close', function() {
+                $(document).off('click', '.iweb-dialog .async-virtual');
                 $(document).off('click', '.iweb-dialog .async-content .btn-close');
                 $('#iweb-dialog').remove();
                 $('body').removeClass('iweb-disable-scroll');
