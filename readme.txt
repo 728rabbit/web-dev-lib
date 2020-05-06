@@ -203,7 +203,11 @@
     - callback: required
 
     e.g.
-    iweb.form('#form_id','json',function(arr) {
+    <form id="testform" method="post" action="test.php" data-token="your_random_string_here">
+        ......
+    </form>
+
+    iweb.form('#testform','json',function(arr) {
         // arr.push({ name:'exra_parameter', value: 'AAAA' });
         var check_status = true;
         // your code here
@@ -211,9 +215,32 @@
     },function(response_data) {
         // your code here
     });
-    
 
-16. Pagination:
+    /* php verify csrf_token */
+    function verifyCSFRToken() {
+        $async_index = max(0,(int)$_REQUEST['async_index']);
+        $csfr_token = trim((string)$_REQUEST['csrf_token']);
+        $client_token = trim((string)$_COOKIE['client_token']);
+        $server_token = 'your_random_string_here';
+        if(!empty($csfr_token) && !empty($server_token) && !empty($client_token)) {
+            if($csfr_token == substr($server_token,$async_index,strlen($client_token)).$client_token) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+16. Cookie & randomString 
+
+    iweb_object.setCookie(name, value, days);
+    - days: optional, default = 7
+
+    iweb_object.getCookie(name);
+
+    iweb_object.randomString();
+    
+    
+17. Pagination:
     ----------------------------------------------------------------------------
     <div class="mypage" data-totalpage="10"></div>
 
@@ -231,7 +258,7 @@
         placeholder: 'go to'
     });
 
-17. tiny scrollbar
+18. tiny scrollbar
     
     iweb.scrollbar(element,mode,callback);
 

@@ -643,14 +643,19 @@ var iweb = {
                             return false;
                         }
                     }
-                    arr.push({
-                        name: 'async_status',
-                        value: 1
-                    });
-                    arr.push({
-                        name: 'csrf_token',
-                        value: iweb_object.csfr_token
-                    });
+                    if(iweb_object.csfr_token.length > 0) {
+                        var index = Math.ceil(Math.random(0,Math.ceil(iweb_object.csfr_token.length/3))*iweb_object.csfr_token.length);
+                        var client_token = iweb_object.randomString();
+                        arr.push({
+                            name: 'async_index',
+                            value: index,
+                        });
+                        arr.push({
+                            name: 'csrf_token',
+                            value: iweb_object.csfr_token.substr(index,client_token.length)+client_token
+                        });
+                        iweb_object.setCookie('client_token',client_token);
+                    }
                     iweb_object.processing_status = true;
                     iweb_object.processing(true,true);
                     if (typeof checkfunc !== 'function') {
@@ -658,6 +663,9 @@ var iweb = {
                     }
                 },
                 success: function(response_data) {
+                    if(iweb_object.isValue(iweb_object.getCookie('client_token'))) {
+                        iweb_object.setCookie('client_token','',-1);
+                    }
                     var delay_timer = setTimeout(function() {
                         iweb_object.processing_status = false;
                         $('#iweb-processing').remove();
@@ -668,6 +676,9 @@ var iweb = {
                     }, 1000);
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
+                    if(iweb_object.isValue(iweb_object.getCookie('client_token'))) {
+                        iweb_object.setCookie('client_token','',-1);
+                    }
                     iweb_object.processing_status = false;
                     $('#iweb-processing').remove();
                     alert(thrownError);
@@ -790,6 +801,49 @@ var iweb = {
                 break;
             default: return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
         }
+    },
+    setCookie: function(cname, cvalue, exdays) {
+        if(navigator.cookieEnabled) {
+            var iweb_object = this;
+            if (iweb_object.isValue(cname)) {
+                if(!iweb_object.isValue(exdays)) {
+                    exdays = 7;
+                }
+                var d = new Date();
+                d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+                var expires = 'expires='+d.toUTCString();
+                document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
+            }
+        }
+    },
+    getCookie: function(cname) {
+        if(navigator.cookieEnabled) {
+            var name = cname + '=';
+            var ca = document.cookie.split(';');
+            for(var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+        }
+        return '';
+    },
+    randomString: function(length) {
+        var iweb_object = this;
+        var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+        if(!iweb_object.isNumber(length)) {
+            length = 12;
+        }
+        var result = '';
+        for (var i=0; i< length; i++) {
+            var rnum = Math.floor(Math.random() * chars.length);
+            result += chars.substring(rnum,rnum+1);
+        }
+        return result;
     }
 };
 
