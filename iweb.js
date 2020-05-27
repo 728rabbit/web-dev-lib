@@ -204,7 +204,12 @@ var iweb = {
         });
         $('body').removeAttr('data-processing');
         $('body').removeAttr('data-macosx');
-        $('body > *').not('script,noscript').wrapAll('<div class="iweb-viewer"></div>');
+        if(iweb_object.detectDevice()) {
+            $('body > *').not('script,noscript').wrapAll('<div class="iweb-viewer iweb-mobile-viewer"></div>');
+        }
+        else {
+            $('body > *').not('script,noscript').wrapAll('<div class="iweb-viewer"></div>');
+        }
         iweb_object.responsive();
         iweb_object.win_width = parseInt($(window).width());
         if(iweb_object.mode === 'macosx') {
@@ -276,16 +281,11 @@ var iweb = {
             }
         });
         $('body').addClass('iweb');
+        if(iweb_object.detectDevice()) {
+            $('body').addClass('iweb-mobile');
+        }
         if(iweb_object.mode === 'macosx') {
             $('body').addClass('iweb-macosx');
-        }
-        else {
-            if(iweb_object.detectDevice()) {
-                $('body').addClass('iweb-mobile-viewer');
-            }
-            else {
-                $('body').addClass('iweb-viewer');
-            }
         }
     },
     processing: function(status,option) {
@@ -434,7 +434,7 @@ var iweb = {
         alert_html += '</div>';
         alert_html += '</div>';
         alert_html += '</div>';
-        $('body').prepend(alert_html).each(function() {
+        $('.iweb > .iweb-viewer').prepend(alert_html).each(function() {
             if(!$('body').hasClass('iweb-macosx')) {
                 $('body').addClass('iweb-disable-scroll');
             }
@@ -484,7 +484,7 @@ var iweb = {
         confirm_html += '</div>';
         confirm_html += '</div>';
         confirm_html += '</div>';
-        $('body').prepend(confirm_html).each(function() {
+        $('.iweb > .iweb-viewer').prepend(confirm_html).each(function() {
             if(!$('body').hasClass('iweb-macosx')) {
                 $('body').addClass('iweb-disable-scroll');
             }
@@ -537,7 +537,7 @@ var iweb = {
         dialog_html += '</div>';
         dialog_html += '</div>';
     
-        $('body').prepend(dialog_html).each(function() {
+        $('.iweb > .iweb-viewer').prepend(dialog_html).each(function() {
             if(!$('body').hasClass('iweb-macosx')) {
                 $('body').addClass('iweb-disable-scroll');
             }
