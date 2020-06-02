@@ -159,59 +159,7 @@ var iweb = {
         if(iweb_object.isValue($('html').attr('lang')) && iweb_object.isValue(iweb_object.language[$('html').attr('lang').toString().toLowerCase()])) {
             iweb_object.default_language = $('html').attr('lang').toString().toLowerCase();
         }
-        $('body').find('.iweb-editor').fitVids();
-        $('body').find('select').each(function(select_index){
-            if(!$(this).parent().hasClass('iweb-selector')) {
-                $(this).wrap('<div class="iweb-selector"><div class="choice"></div></div>');
-                $(this).parents('.iweb-selector').find('.choice').prepend('<div class="arrow"></div>');
-                if(iweb_object.isValue($(this).data('virtual'))) {
-                    $(this).addClass('shidden');
-                    $(this).removeAttr('data-virtual');
-                    var virtualHtml = '';
-                    var virtualSelect = iweb_object.language[iweb_object.default_language]['select'];
-                    virtualHtml += '<ul class="virtual-option-list" data-index="iss'+select_index+'">';
-                    $.each($(this).children(),function() {
-                        if(parseInt($(this).children().length) > 0) {
-                            virtualHtml += '<li class="virtual-parent-node"><span>'+$(this).attr('label')+'</span>';
-                            virtualHtml += '<ul class="virtual-option-child-list">';
-                            $.each($(this).children(),function() {
-                                if($(this).is(':selected')) {
-                                    virtualSelect = $(this).text();
-                                    virtualHtml += '<li class="virtual-node virtual-node-selected" data-value="'+$(this).val()+'"><span>'+$(this).text()+'</span></li>';
-                                }
-                                else {
-                                    virtualHtml += '<li class="virtual-node" data-value="'+$(this).val()+'"><span>'+$(this).text()+'</span></li>';
-                                }
-                            });
-                            virtualHtml += '</ul>';
-                            virtualHtml += '</li>';
-                         }
-                         else {
-                            if($(this).is(':selected')) {
-                                virtualSelect = $(this).text();
-                                virtualHtml += '<li class="virtual-node virtual-node-selected" data-value="'+$(this).val()+'"><span>'+$(this).text()+'</span></li>';
-                            }
-                            else {
-                                virtualHtml += '<li class="virtual-node" data-value="'+$(this).val()+'"><span>'+$(this).text()+'</span></li>';
-                            }
-                        }
-                    });
-                    virtualHtml += '</ul>';
-                    virtualHtml = '<div class="virtual-choice"><div><span>'+virtualSelect+'</span></div><div>'+virtualHtml+'</div></div>';
-                    $(this).parents('.iweb-selector').append(virtualHtml);
-                }
-            }
-        });
-        $('body').removeAttr('data-processing');
-        $('body').removeAttr('data-macosx');
-        if(iweb_object.detectDevice()) {
-            $('body > *').not('script,noscript').wrapAll('<div class="iweb-viewer iweb-mobile-viewer"></div>');
-        }
-        else {
-            $('body > *').not('script,noscript').wrapAll('<div class="iweb-viewer"></div>');
-        }
-        iweb_object.responsive();
-        iweb_object.win_width = parseInt($(window).width());
+        $('body > *').not('script,noscript').wrapAll('<div class="iweb-viewer"></div>');
         if(iweb_object.mode === 'macosx') {
             iweb_object.scrollbar('body > .iweb-viewer','macosx',function(scroll_y) {
                 if (iweb_object.init_status) {
@@ -225,19 +173,11 @@ var iweb = {
                 }
             });
         }
-        if (typeof iweb_layout === 'function') {
-            iweb_layout(iweb_object.win_width);
-        }
-        if (typeof iweb_ilayout === 'function') {
-            iweb_ilayout(iweb_object.win_width);
-        }
-        if (typeof iweb_func === 'function') {
-            iweb_func();
-        }
-        if (typeof iweb_ifunc === 'function') {
-            iweb_ifunc();
-        }
-        $(document).on('change','.iweb-selector > .choice > select',function() {
+        $('body').find('.iweb-editor').fitVids();
+        iweb_object.selector($('body').find('select'));
+        iweb_object.responsive();
+        iweb_object.win_width = parseInt($('.iweb-viewer').width());
+        $(document).on('change','.iweb-selector > .real-choice > select',function() {
             var selectoption = $(this).val();
             $(this).parents('.iweb-selector').find('.virtual-choice li.virtual-node').each(function() {
                 if($(this).data('value').toString() === selectoption.toString()) {
@@ -266,7 +206,7 @@ var iweb = {
         $(document).on('click','.virtual-choice li.virtual-node',function() {
             $(this).parents('.iweb-selector').find('.virtual-choice > div > ul').hide();
             $(this).parents('.iweb-selector').find('.virtual-choice > div > span').html($(this).text());
-            $(this).parents('.iweb-selector').find('.choice > select').val($(this).data('value')).trigger('change');
+            $(this).parents('.iweb-selector').find('.real-choice > select').val($(this).data('value')).trigger('change');
         });
         $(document).on('click','body',function(e) {
             if(parseInt($(e.target).parents('.iweb-selector').length) === 0) {
@@ -280,6 +220,51 @@ var iweb = {
                 return false;
             }
         });
+        $(document).on('click','.font-switch',function(e) {
+            e.preventDefault();
+            $('.font-switch').removeClass('current');
+            $('html').removeClass('small-font');
+            $('html').removeClass('large-font');
+            if(iweb_object.isMatch($(this).data('size'),'small') || iweb_object.isMatch($(this).data('size'),'large')) {
+                $('html').addClass($(this).data('size')+'-font');
+            }
+            iweb.setCookie('iweb_font_sizse',$(this).data('size'),14);
+            $('.font-switch').each(function() {
+                if(iweb_object.isMatch($(this).data('size'),iweb.getCookie('iweb_font_sizse'))) {
+                    $(this).addClass('current');
+                }
+                else {
+                    $(this).removeClass('current');
+                }
+            });
+        });
+        if(iweb_object.isValue(iweb.getCookie('iweb_font_sizse'))) {
+            if(iweb_object.isMatch(iweb.getCookie('iweb_font_sizse'),'small') || iweb_object.isMatch(iweb.getCookie('iweb_font_sizse'),'large')) {
+                $('html').addClass(iweb.getCookie('iweb_font_sizse')+'-font');
+            }
+            $('.font-switch').each(function() {
+                if(iweb_object.isMatch($(this).data('size'),iweb.getCookie('iweb_font_sizse'))) {
+                    $(this).addClass('current');
+                }
+                else {
+                    $(this).removeClass('current');
+                }
+            });
+        }
+        if (typeof iweb_layout === 'function') {
+            iweb_layout(iweb_object.win_width);
+        }
+        if (typeof iweb_ilayout === 'function') {
+            iweb_ilayout(iweb_object.win_width);
+        }
+        if (typeof iweb_func === 'function') {
+            iweb_func();
+        }
+        if (typeof iweb_ifunc === 'function') {
+            iweb_ifunc();
+        }
+        $('body').removeAttr('data-processing');
+        $('body').removeAttr('data-macosx');
         $('body').addClass('iweb');
         if(iweb_object.detectDevice()) {
             $('body').addClass('iweb-mobile');
@@ -318,7 +303,7 @@ var iweb = {
     },
     resizing: function() {
         var iweb_object = this;
-        if (iweb_object.init_status && iweb_object.win_width !== parseInt($(window).width())) {
+        if (iweb_object.init_status && iweb_object.win_width !== parseInt($('.iweb-viewer').width())) {
             iweb_object.win_width = parseInt($(window).width());
             return true;
         }
@@ -392,6 +377,54 @@ var iweb = {
                     }
                 }
             });
+        }
+    },
+    selector: function(select_object,callback) {
+        var iweb_object = this;
+        select_object.each(function(select_index){
+            if(!$(this).parent().parent().hasClass('iweb-selector')) {
+                $(this).wrap('<div class="iweb-selector"><div class="real-choice"></div></div>');
+                $(this).parents('.iweb-selector').find('.real-choice').prepend('<div class="arrow"></div>');
+                if(iweb_object.isMatch($(this).data('virtual'),1) || iweb_object.isMatch($(this).data('virtual'),true)) {
+                    $(this).addClass('shidden');
+                    $(this).removeAttr('data-virtual');
+                    var virtualHtml = '';
+                    var virtualSelect = iweb_object.language[iweb_object.default_language]['select'];
+                    virtualHtml += '<ul class="virtual-option-list" data-index="iss'+select_index+'">';
+                    $.each($(this).children(),function() {
+                        if(parseInt($(this).children().length) > 0) {
+                            virtualHtml += '<li class="virtual-parent-node"><span>'+$(this).attr('label')+'</span>';
+                            virtualHtml += '<ul class="virtual-option-child-list">';
+                            $.each($(this).children(),function() {
+                                if($(this).is(':selected')) {
+                                    virtualSelect = $(this).text();
+                                    virtualHtml += '<li class="virtual-node virtual-node-selected" data-value="'+$(this).val()+'"><span>'+$(this).text()+'</span></li>';
+                                }
+                                else {
+                                    virtualHtml += '<li class="virtual-node" data-value="'+$(this).val()+'"><span>'+$(this).text()+'</span></li>';
+                                }
+                            });
+                            virtualHtml += '</ul>';
+                            virtualHtml += '</li>';
+                         }
+                         else {
+                            if($(this).is(':selected')) {
+                                virtualSelect = $(this).text();
+                                virtualHtml += '<li class="virtual-node virtual-node-selected" data-value="'+$(this).val()+'"><span>'+$(this).text()+'</span></li>';
+                            }
+                            else {
+                                virtualHtml += '<li class="virtual-node" data-value="'+$(this).val()+'"><span>'+$(this).text()+'</span></li>';
+                            }
+                        }
+                    });
+                    virtualHtml += '</ul>';
+                    virtualHtml = '<div class="virtual-choice"><div><span>'+virtualSelect+'</span></div><div class="virtual-option">'+virtualHtml+'</div></div>';
+                    $(this).parents('.iweb-selector').append(virtualHtml);
+                }
+            }
+        });
+        if (typeof callback === 'function') {
+            callback();
         }
     },
     pagination: function(element,options) {

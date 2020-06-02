@@ -27,12 +27,21 @@
 }
 
 html {
+    font-size: 1em;
     width: 100%;
     height: 100%;
 }
 
+html.small-font {
+    font-size: 0.875em;
+}
+
+html.large-font {
+    font-size: 1.25em;
+}
+
 body {
-    font-size: 14px;
+    font-size: 1rem;
     color: #222;
     width: 100%;
     height: 100%;
@@ -64,6 +73,8 @@ button {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    font-size: 1rem;
+    padding: 6px 12px;
     border: 0px;
     border-radius: 0px;
     cursor: pointer;
@@ -97,7 +108,9 @@ textarea {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    padding: 5px 10px;
+    font-size: 1rem;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
     border-radius: 0px;
 }
 
@@ -107,9 +120,16 @@ input[type="reset"] {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
+    font-size: 1rem;
+    padding: 6px 12px;
     border: 0px;
     border-radius: 0px;
     cursor: pointer;
+}
+
+select {
+    font-size: 1rem;
+    line-height: 1.5;
 }
 
 .iweb {
@@ -177,23 +197,22 @@ input[type="reset"] {
     user-select: none;
 }
 
-.iweb-selector > .choice {
+.iweb-selector > .real-choice {
     position: relative;
     background: transparent;
     display: block;
-    border: 1px solid #ccc;
     overflow: hidden;
 }
 
-.iweb-selector > .choice > select {
+.iweb-selector > .real-choice > select {
     position: relative;
     width: 100%;
-    padding-top: 6px;
-    padding-left: 10px;
-    padding-right: 40px;
-    padding-bottom: 6px;
+    padding-top: 4px;
+    padding-left: 12px;
+    padding-right: 36px;
+    padding-bottom: 4px;
     background: transparent;
-    border: 0;
+    border: 1px solid #ccc;
     border-radius: 0px;
     line-height: 1.5;
     -webkit-appearance: none;
@@ -202,34 +221,34 @@ input[type="reset"] {
     cursor: pointer;
 }
 
-.iweb-selector > .choice > select.shidden {
+.iweb-selector > .real-choice > select.shidden {
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
 }
 
-.iweb-selector > .choice > select::-ms-expand {
+.iweb-selector > .real-choice > select::-ms-expand {
     display: none;
 }
 
-.iweb-selector > .choice > .arrow {
+.iweb-selector > .real-choice > .arrow {
     position: absolute;
     display: inline-block;
     background: transparent;
     content: '';
-    width: 28px;
+    width: 36px;
     height: 100%;
     top: 0px;
     right: 0px;
 }
 
-.iweb-selector > .choice > .arrow:after {
+.iweb-selector > .real-choice > .arrow:after {
     position: absolute;
     content: '';
     display: inline-block;
     width: 0px; 
     height: 0px; 
     top: 50%;
-    right: 9px;
+    right: 13px;
     margin-top: -6px;
     border-color: #000;
     border-style: solid;
@@ -245,6 +264,7 @@ input[type="reset"] {
     top: 0px;
     left: 0px;
     right: 0px;
+    border: 1px solid #ccc;
 }
 
 .iweb-selector > .virtual-choice * {
@@ -259,10 +279,10 @@ input[type="reset"] {
     position: relative;
     background: transparent;
     display: block;
-    padding-top: 6px;
-    padding-left: 10px;
-    padding-right: 40px;
-    padding-bottom: 6px;
+    padding-top: 4px;
+    padding-left: 12px;
+    padding-right: 36px;
+    padding-bottom: 4px;
     line-height: 1.5;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -275,9 +295,9 @@ input[type="reset"] {
     display: none;
     list-style: none;
     top: 100%;
-    left: 0px;
-    right: 0px;
-    max-height: 180px;
+    left: -1px;
+    right: -1px;
+    max-height: 240px;
     border: 1px solid #ccc;
     border-bottom-left-radius: 5px;
     border-bottom-right-radius: 5px;
@@ -293,10 +313,10 @@ input[type="reset"] {
 .iweb-selector > .virtual-choice > div > ul > li > span {
     position: relative;
     display: block;
-    padding-top: 6px;
-    padding-left: 10px;
-    padding-right: 10px;
-    padding-bottom: 6px;
+    padding-top: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 4px;
     line-height: 1.5;
 }
 
@@ -319,10 +339,10 @@ input[type="reset"] {
 .iweb-selector > .virtual-choice > div > ul > li > ul > li > span {
     position: relative;
     display: block;
-    padding-top: 6px;
-    padding-left: 30px;
-    padding-right: 10px;
-    padding-bottom: 6px;
+    padding-top: 4px;
+    padding-left: 25px;
+    padding-right: 12px;
+    padding-bottom: 4px;
     line-height: 1.5;
 }
 
@@ -340,7 +360,7 @@ input[type="reset"] {
     width: 5px;
     height: 1px;
     top: 50%;
-    left: 20px;
+    left: 15px;
     margin-top: -1px;
 }
 
@@ -461,11 +481,6 @@ input[type="reset"] {
     -webkit-overflow-scrolling: touch;
 }
 
-.iweb-viewer .iweb-alert {
-    overflow-x: hidden;
-    overflow-y: scroll;
-}
-
 .iweb-alert > div {
     position: relative;
     max-width: 360px;
@@ -492,7 +507,7 @@ input[type="reset"] {
 .iweb-alert .async-content > div > .message {
     position: relative;
     display: block;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
     line-height: 1.5;
     text-align: center;
@@ -506,10 +521,9 @@ input[type="reset"] {
     position: relative;
     background: transparent;
     display: block;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
     width: 100%;
-    height: 36px;
     border-top: 1px solid #ccc;
 }
 
@@ -517,24 +531,22 @@ input[type="reset"] {
     position: relative;
     background: transparent;
     display: inline-block;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
     border: 0px;
     border-top: 1px solid #ccc;
     border-right: 1px solid #ccc;
     width: 50%;
-    height: 36px;
 }
 
 .iweb-alert .async-content > div > .btn-no {
     position: relative;
     background: transparent;
     display: inline-block;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
     border-top: 1px solid #ccc;
     width: 50%;
-    height: 36px;
 }
 
 .iweb-alert .async-content > div > .btn:hover,
@@ -670,6 +682,7 @@ input[type="reset"] {
 }
 
 .iweb-pagination > ul > li > a {
+    position: relative;
     display: block;
     text-align: center;
     border: 1px solid #ccc;
@@ -689,37 +702,52 @@ input[type="reset"] {
 }
 
 .iweb-pagination > ul > li > a > i {
-    position: relative;
+    position: absolute;
     border-color: #000;
     border-style: solid;
     border-width: 0px 1px 1px 0px;
     display: inline-block;
-    top: 0px;
+    top: 50%;
+    left: 11px;
     padding: 3px;
+    margin-top: -3px;
 }
 
 .iweb-pagination > ul > li > a.first > i {
     -webkit-transform: rotate(135deg);
     transform: rotate(135deg);
-    margin-right: -3px;
 }
 
 .iweb-pagination > ul > li > a.prev > i {
     -webkit-transform: rotate(135deg);
     transform: rotate(135deg);
-    margin-right: -3px;
 }
 
 .iweb-pagination > ul > li > a.next > i {
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
-    margin-left: -3px;
+    left: 8px;
 }
 
 .iweb-pagination > ul > li > a.last > i {
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
-    margin-left: -3px;
+}
+
+.iweb-pagination > ul > li > a.first > i:nth-child(1) {
+    left: 14px;
+}
+
+.iweb-pagination > ul > li > a.first > i:nth-child(2) {
+    left: 9px;
+}
+
+.iweb-pagination > ul > li > a.last > i:nth-child(1) {
+    left: 6px;
+}
+
+.iweb-pagination > ul > li > a.last > i:nth-child(2) {
+    left: 11px;
 }
 
 .iweb-pagination > ul > li > input[type="text"] {
@@ -1088,7 +1116,7 @@ input[type="reset"] {
 }
 
 @media only screen and (max-width: 700px) {
-    .iweb-selector > .choice > select.shidden {
+    .iweb-selector > .real-choice > select.shidden {
         opacity: 1;
         -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     }

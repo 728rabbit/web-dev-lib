@@ -94,7 +94,8 @@
 
     iweb.isExist(element);   // if element not exist, return false
 
-    iweb.isMatch(value1,value2);   // compare tow vaule
+    iweb.isMatch(value1,value2, sensitive);   // compare tow vaule
+    - sensitive: optional
 
 9.  Alert Dialog:
     ----------------------------------------------------------------------------
@@ -218,10 +219,10 @@
 
     /* php verify csrf_token */
     function verifyCSFRToken() {
-        $async_index = max(0,(int)$_REQUEST['async_index']);
-        $csfr_token = trim((string)$_REQUEST['csrf_token']);
-        $client_token = trim((string)$_COOKIE['client_token']);
-        $server_token = 'your_random_string_here';
+        $async_index = ((isset($_REQUEST['async_index']))?max(0,(int)$_REQUEST['async_index']):0);
+        $csfr_token = ((isset($_REQUEST['csrf_token']))?trim((string)strip_tags($_REQUEST['csrf_token'])):'');
+        $client_token = ((isset($_REQUEST['client_token']))?trim((string)strip_tags($_COOKIE['client_token'])):'');
+        $server_token = 'f2b7b9a0d23176b20463be39eb5c4acf';
         if(!empty($csfr_token) && !empty($server_token) && !empty($client_token)) {
             if($csfr_token == substr($server_token,$async_index,strlen($client_token)).$client_token) {
                 return true;
@@ -230,8 +231,9 @@
         return false;
     }
 
-16. Cookie & randomString 
 
+16. Cookie & randomString 
+    ----------------------------------------------------------------------------
     iweb_object.setCookie(name, value, days);
     - days: optional, default = 7
 
@@ -258,8 +260,9 @@
         placeholder: 'go to'
     });
 
+
 18. tiny scrollbar
-    
+    ----------------------------------------------------------------------------
     iweb.scrollbar(element,mode,callback);
 
     e.g.
@@ -274,4 +277,16 @@
 
     iweb.scrollbar('div1','macosx',function({ your common function(s) code here }));
    
+19. selector
+    ----------------------------------------------------------------------------
+    iweb_object.selector($('body').find('select'));
+
+
+20. change font size
+    ----------------------------------------------------------------------------
+    <div class="font">
+        <a class="font-switch small" href="#" data-size="small">Small</a>
+        <a class="font-switch middle current" href="#" data-size="middle">Middle</a>
+        <a class="font-switch large" href="#" data-size="large">Large</a>
+    </div>
     
