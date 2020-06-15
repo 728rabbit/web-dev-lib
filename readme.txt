@@ -221,7 +221,7 @@
     function verifyCSFRToken() {
         $async_index = ((isset($_REQUEST['async_index']))?max(0,(int)$_REQUEST['async_index']):0);
         $csfr_token = ((isset($_REQUEST['csrf_token']))?trim((string)strip_tags($_REQUEST['csrf_token'])):'');
-        $client_token = ((isset($_REQUEST['client_token']))?trim((string)strip_tags($_COOKIE['client_token'])):'');
+        $client_token = ((isset($_COOKIE['client_token']))?trim((string)strip_tags($_COOKIE['client_token'])):'');
         $server_token = 'f2b7b9a0d23176b20463be39eb5c4acf';
         if(!empty($csfr_token) && !empty($server_token) && !empty($client_token)) {
             if($csfr_token == substr($server_token,$async_index,strlen($client_token)).$client_token) {
@@ -279,8 +279,10 @@
    
 19. selector
     ----------------------------------------------------------------------------
-    iweb_object.selector($('body').find('select'));
-
+    iweb_object.selector(select_object,callback);
+    - select_object: optional, default = $('body').find('select');
+    - callback: optional
+    
 
 20. change font size
     ----------------------------------------------------------------------------

@@ -174,7 +174,7 @@ var iweb = {
             });
         }
         $('body').find('.iweb-editor').fitVids();
-        iweb_object.selector($('body').find('select'));
+        iweb_object.selector();
         iweb_object.responsive();
         iweb_object.win_width = parseInt($('.iweb-viewer').width());
         $(document).on('change','.iweb-selector > .real-choice > select',function() {
@@ -381,6 +381,9 @@ var iweb = {
     },
     selector: function(select_object,callback) {
         var iweb_object = this;
+        if(!iweb_object.isValue(select_object)) {
+           select_object = $('body').find('select');
+        }
         select_object.each(function(select_index){
             if(!$(this).parent().parent().hasClass('iweb-selector')) {
                 $(this).wrap('<div class="iweb-selector"><div class="real-choice"></div></div>');
