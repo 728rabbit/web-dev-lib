@@ -267,15 +267,15 @@
 
     e.g.
 
-    iweb.scrollbar('div1');
+    iweb.scrollbar('#div1');
 
     or
 
-    iweb.scrollbar('div1','macosx');
+    iweb.scrollbar('#div1','macosx');
 
     or
 
-    iweb.scrollbar('div1','macosx',function({ your common function(s) code here }));
+    iweb.scrollbar('#div1','macosx',function({ your common function(s) code here }));
    
 19. selector
     ----------------------------------------------------------------------------

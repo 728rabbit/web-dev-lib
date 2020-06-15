@@ -370,7 +370,7 @@ var iweb = {
         var iweb_object = this;
         if (iweb_object.isExist(element)) {
             $(element).iScroll({
-                mode: ((iweb_object.isValue(mode))?mode:'outer'),
+                mode: ((iweb_object.isMatch(mode,'macosx'))?mode:'outer'),
                 onScroll: function(scroll_y, scroll_x){
                     if (typeof callback === 'function') {
                         callback(scroll_y);
