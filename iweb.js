@@ -477,7 +477,9 @@ var iweb = {
             $(document).on('click', '.iweb-alert .async-content > div > .btn-close', function() {
                 $(document).off('click', '.iweb-alert .async-content > div > .btn-close');
                 $('#iweb-alert').remove();
-                $('body').removeClass('iweb-disable-scroll');
+                if (!iweb_object.isExist('#iweb-dialog')) {
+                    $('body').removeClass('iweb-disable-scroll');
+                }
                 if (typeof callback === 'function') {
                     callback();
                 }
@@ -526,16 +528,22 @@ var iweb = {
             }
             $(document).on('click', '.iweb-alert .async-content > div > .btn-yes', function() {
                 $(document).off('click', '.iweb-alert .async-content > div > .btn-yes');
+                $(document).off('click', '.iweb-alert .async-content > div > .btn-no');
                 $('#iweb-alert').remove();
-                $('body').removeClass('iweb-disable-scroll');
+                if (!iweb_object.isExist('#iweb-dialog')) {
+                    $('body').removeClass('iweb-disable-scroll');
+                }
                 if (typeof callback === 'function') {
                     callback(true);
                 }
             });
             $(document).on('click', '.iweb-alert .async-content > div > .btn-no', function() {
+                $(document).off('click', '.iweb-alert .async-content > div > .btn-yes');
                 $(document).off('click', '.iweb-alert .async-content > div > .btn-no');
                 $('#iweb-alert').remove();
-                $('body').removeClass('iweb-disable-scroll');
+                if (!iweb_object.isExist('#iweb-dialog')) {
+                    $('body').removeClass('iweb-disable-scroll');
+                }
                 if (typeof callback === 'function') {
                     callback(false);
                 }
