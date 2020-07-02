@@ -557,9 +557,9 @@ var iweb = {
         var dialog_html = '';
         if (iweb_object.isValue(setting)) {
             if (iweb_object.isValue(setting.class)) {
-                dialog_html += '<div id="iweb-dialog" class="iweb-dialog ' + setting.class + '" style="opacity:0;">';
+                dialog_html += '<div id="iweb-dialog" class="iweb-dialog iweb-dialog-' + setting.class + '">';
             } else {
-                dialog_html += '<div id="iweb-dialog" class="iweb-dialog" style="opacity:0;">';
+                dialog_html += '<div id="iweb-dialog" class="iweb-dialog">';
             }
         } else {
             dialog_html += '<div id="iweb-dialog" class="iweb-dialog">';
