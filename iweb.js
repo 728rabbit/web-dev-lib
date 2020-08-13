@@ -276,19 +276,21 @@ var iweb = {
     processing: function(status,option) {
         var iweb_object = this;
         if(iweb_object.isMatch(status,1) || iweb_object.isMatch(status,true)) {
-            var box_html = '';
-            if (iweb_object.isValue(option)) {
-                box_html = '<div id="iweb-processing" class="iweb-processing iweb-processing-opacity">';
-            } else {
-                box_html = '<div id="iweb-processing" class="iweb-processing">';
+            if (!iweb_object.isExist('#iweb-processing')) {
+                var box_html = '';
+                if (iweb_object.isValue(option)) {
+                    box_html = '<div id="iweb-processing" class="iweb-processing iweb-processing-opacity">';
+                } else {
+                    box_html = '<div id="iweb-processing" class="iweb-processing">';
+                }
+                box_html += '<div class="loading">';
+                box_html += '<svg class="icon" x="0px" y="0px" viewBox="0 0 150 150">';
+                box_html += '<circle class="circle" cx="75" cy="75" r="60"></circle>';
+                box_html += '</svg>';
+                box_html += '</div>';
+                box_html += '</div>';
+                $('body').prepend(box_html);
             }
-            box_html += '<div class="loading">';
-            box_html += '<svg class="icon" x="0px" y="0px" viewBox="0 0 150 150">';
-            box_html += '<circle class="circle" cx="75" cy="75" r="60"></circle>';
-            box_html += '</svg>';
-            box_html += '</div>';
-            box_html += '</div>';
-            $('body').prepend(box_html);
         }
         else {
             var microsecond = 500;
@@ -442,7 +444,7 @@ var iweb = {
     alert: function(message,callback,setting) {
         var iweb_object = this;
         if (iweb_object.isExist('#iweb-alert')) { return; }
-        iweb_object.processing(false);
+        iweb_object.processing(false,0);
         var alert_html = '';
         var alert_class = '';
         var alert_btn_close = iweb_object.language[iweb_object.default_language]['btn_confirm'];
@@ -489,7 +491,7 @@ var iweb = {
     confirm: function(message,callback,setting) {
         var iweb_object = this;
         if (iweb_object.isExist('#iweb-alert')) { return; }
-        iweb_object.processing(false);
+        iweb_object.processing(false,0);
         var confirm_html = '';
         var confirm_class = '';
         var confirm_btn_yes = iweb_object.language[iweb_object.default_language]['btn_yes'];
@@ -553,7 +555,7 @@ var iweb = {
     dialog: function(htmlcode,init,callback,setting) {
         var iweb_object = this;
         if (iweb_object.isExist('#iweb-dialog')) { return; }
-        iweb_object.processing(false);
+        iweb_object.processing(false,0);
         var dialog_html = '';
         if (iweb_object.isValue(setting)) {
             if (iweb_object.isValue(setting.class)) {
@@ -645,18 +647,18 @@ var iweb = {
                 data: post_data,
                 dataType: data_type,
                 success: function(response_data) {
+                    if (typeof callback === 'function') {
+                        callback(response_data);
+                    }
                     var delay_timer = setTimeout(function() {
                         iweb_object.processing_status = false;
-                        $('#iweb-processing').remove();
+                        iweb_object.processing(false,0);
                         clearTimeout(delay_timer);
-                        if (typeof callback === 'function') {
-                            callback(response_data);
-                        }
                     }, 1000);
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
                     iweb_object.processing_status = false;
-                    $('#iweb-processing').remove();
+                    iweb_object.processing(false,0);
                     alert(thrownError);
                     return false;
                 }
@@ -710,13 +712,13 @@ var iweb = {
                     if(iweb_object.isValue(iweb_object.getCookie('client_token'))) {
                         iweb_object.setCookie('client_token','',-1);
                     }
+                    if (typeof callback === 'function') {
+                        callback(response_data);
+                    }
                     var delay_timer = setTimeout(function() {
                         iweb_object.processing_status = false;
-                        $('#iweb-processing').remove();
+                        iweb_object.processing(false,0);
                         clearTimeout(delay_timer);
-                        if (typeof callback === 'function') {
-                            callback(response_data);
-                        }
                     }, 1000);
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
@@ -724,7 +726,7 @@ var iweb = {
                         iweb_object.setCookie('client_token','',-1);
                     }
                     iweb_object.processing_status = false;
-                    $('#iweb-processing').remove();
+                    iweb_object.processing(false,0);
                     alert(thrownError);
                     return false;
                 }
@@ -766,7 +768,7 @@ var iweb = {
         if (!iweb_object.isValue(value)) {
             return false;
         } else {
-            var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+            var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,})$/;
             return reg.test(value);
         }
     },

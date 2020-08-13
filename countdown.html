@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            .iweb-countdown {
+                position: relative;
+            }
+
+            .iweb-countdown > div {
+                position: relative;
+                display: inline-block;
+                border: 2px solid #ccc;
+            }
+
+            .iweb-countdown > div:before,
+            .iweb-countdown > div:after {
+                position: relative;
+                display: block;
+                clear: both;
+                content: '';
+                width: 100%;
+            }
+
+            .iweb-countdown * {
+                font-size: 18px;
+                font-weight: bold;
+            }
+
+            .iweb-countdown > div > div {
+                float: left;
+                padding: 5px;
+                vertical-align: middle;
+            }
+        </style>
+        <script>
+            setInterval(function() {
+                $('.iweb-countdown').each(function() {
+                    var distance = parseInt($(this).data('value'))-1;
+                    if(distance >= 0) {
+                        $(this).data('value',distance);
+                        var days = Math.floor(distance/(60*60*24));
+                        var hours = Math.floor((distance%(60*60*24))/(60*60));
+                        var minutes = Math.floor((distance%(60*60))/60);
+                        var seconds = Math.floor(distance%60);
+
+                        if(days < 10) { days = '0' + days.toString(); }
+                        if(hours < 10) { hours = '0' + hours.toString(); }
+                        if(minutes < 10) { minutes = '0' + minutes.toString(); }
+                        if(seconds < 10) { seconds = '0' + seconds.toString(); }
+
+                        $(this).find('.day > span').html(days.toString());
+                        $(this).find('.hour > span').html(hours.toString());
+                        $(this).find('.minute > span').html(minutes.toString());
+                        $(this).find('.second > span').html(seconds.toString());
+                    }
+                });
+            },1000);
+        </script>
+    </head>
+    <body>
+        <div class="iweb-countdown" data-value="600">
+            <div>
+                <div class="day"><span>00</span>&nbsp;天</div>
+                <div class="hour"><span>00</span>&nbsp;時</div>
+                <div class="minute"><span>00</span>&nbsp;分</div>
+                <div class="second"><span>00</span>&nbsp;秒</div>
+            </div>
+        </div>
+    </body>
+</html>

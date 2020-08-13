@@ -74,7 +74,7 @@ button {
     -moz-appearance: none;
     appearance: none;
     font-size: 1rem;
-    padding: 6px 12px;
+    padding: 2px;
     border: 0px;
     border-radius: 0px;
     cursor: pointer;
@@ -395,7 +395,7 @@ select {
 }
 
 .iweb-processing-opacity{
-    background: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.7);
 }
 
 .iweb-processing > .loading {
@@ -475,7 +475,6 @@ select {
     left: 0px;
     right: 0px;
     bottom: 0px;
-    padding: 15px;
     overflow: hidden;
     z-index: 800;
     -webkit-overflow-scrolling: touch;
@@ -483,25 +482,39 @@ select {
 
 .iweb-alert > div {
     position: relative;
-    max-width: 360px;
+    width: 100%;
     height: 100%;
+    padding: 15px;
     margin: auto;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+
+.iweb-alert > div:before {
+    position: relative;
+    display: inline-block;
+    content: '';
+    width: 0px;
+    height: 82%;
+    vertical-align: middle;
 }
     
 .iweb-alert .async-content {
-    position: absolute;
-    background: #fff;
-    top: 25%;
-    left: 0px;
+    position: relative;
+    display: inline-block;
     width: 100%;
-    border-top: 4px solid #0c5283;
-    border-radius: 4px;
-    overflow: hidden;
+    vertical-align: middle;
 }
 
 .iweb-alert .async-content > div {
     position: relative;
+    display: block;
+    background: #fff;
+    max-width: 360px;
+    height: auto;
+    margin: auto;
+    border-radius: 4px;
+    overflow: hidden;
 }
 
 .iweb-alert .async-content > div > .message {
@@ -524,6 +537,7 @@ select {
     font-size: 1rem;
     font-weight: bold;
     width: 100%;
+    padding: 8px;
     border-top: 1px solid #ccc;
 }
 
@@ -531,22 +545,24 @@ select {
     position: relative;
     background: transparent;
     display: inline-block;
+    width: 50%;
     font-size: 1rem;
     font-weight: bold;
     border: 0px;
     border-top: 1px solid #ccc;
     border-right: 1px solid #ccc;
-    width: 50%;
+    padding: 8px;
 }
 
 .iweb-alert .async-content > div > .btn-no {
     position: relative;
     background: transparent;
     display: inline-block;
+    width: 50%;
     font-size: 1rem;
     font-weight: bold;
     border-top: 1px solid #ccc;
-    width: 50%;
+    padding: 8px;
 }
 
 .iweb-alert .async-content > div > .btn:hover,
@@ -639,7 +655,6 @@ select {
     left: 50%;
     margin-left: -20px;
     border-radius: 50%;
-    box-shadow: 0px 0px 10px #fff;
     line-height: 40px;
     text-align: center;
     z-index: 1;
@@ -649,7 +664,6 @@ select {
     position: relative;
     background: #fff;
     min-height: 120px;
-    box-shadow: 0px 0px 10px #fff;
     border-radius: 4px;
     padding: 15px;
     overflow: hidden;
