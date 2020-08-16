@@ -234,12 +234,12 @@
 
 16. Cookie & randomString 
     ----------------------------------------------------------------------------
-    iweb_object.setCookie(name, value, days);
+    iweb.setCookie(name, value, days);
     - days: optional, default = 7
 
-    iweb_object.getCookie(name);
+    iweb.getCookie(name);
 
-    iweb_object.randomString();
+    iweb.randomString();
     
     
 17. Pagination:
@@ -279,7 +279,7 @@
    
 19. selector
     ----------------------------------------------------------------------------
-    iweb_object.selector(select_object,callback);
+    iweb.selector(select_object,callback);
     - select_object: optional, default = $('body').find('select');
     - callback: optional
     
