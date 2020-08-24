@@ -234,12 +234,12 @@
 
 16. Cookie & randomString 
     ----------------------------------------------------------------------------
-    iweb.setCookie(name, value, days);
+    iweb_object.setCookie(name, value, days);
     - days: optional, default = 7
 
-    iweb.getCookie(name);
+    iweb_object.getCookie(name);
 
-    iweb.randomString();
+    iweb_object.randomString();
     
     
 17. Pagination:
@@ -282,9 +282,53 @@
     iweb.selector(select_object,callback);
     - select_object: optional, default = $('body').find('select');
     - callback: optional
-    
 
-20. change font size
+    e.g.
+    <select data-virtual="1">
+        <optgroup label="Sport">
+            <option value="Swimming">Swimming</option>
+            <option value="Harbour Race">Harbour Race</option>
+            <option value="Masters Swimming">Masters Swimming</option>
+            <option value="Open Water Swimming">Open Water Swimming</option>
+            <option value="Diving">Diving</option>
+            <option value="Water Polo">Water Polo</option>
+            <option value="Artistic Swimming">Artistic Swimming</option>
+            <option value="General">General</option>
+        </optgroup>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+    </select>
+
+    or
+
+    <select data-virtual="0">
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+    </select>
+
+20. checkbox
+    ----------------------------------------------------------------------------
+    iweb.checkbox(checkbox_object,callback);
+    - checkbox_object: optional, default = $('body').find('input[type="checkbox"]');
+    - callback: optional  
+
+    e.g.
+
+    <input type="checkbox" id="vehicle-bike" name="vehicle1" value="Bike" checked>
+    <label for="vehicle-bike"> I have a bike</label>
+
+21. radiobox
+    ----------------------------------------------------------------------------
+    iweb.radiobox(radiobox_object,callback);
+    - radiobox_object: optional, default = $('body').find('input[type="raido"]');
+    - callback: optional  
+
+    e.g.
+
+    <input type="radio" id="male" name="gender" value="male" checked>
+    <label for="male">Male</label>
+
+22. change font size
     ----------------------------------------------------------------------------
     <div class="font">
         <a class="font-switch small" href="#" data-size="small">Small</a>
