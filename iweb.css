@@ -93,7 +93,7 @@ img {
     max-width: 100%;
     height: auto;
     border: 0px;
-    vertical-align: top;
+    vertical-align: middle;
 }
 
 video { 
