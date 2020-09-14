@@ -90,6 +90,7 @@ table {
 }
 
 img {
+    font-size: 0px;
     max-width: 100%;
     height: auto;
     border: 0px;

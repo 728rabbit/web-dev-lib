@@ -14,6 +14,9 @@
 
     // macosx mode
     <body data-macosx="1"></body>
+
+    * FitVids ignore with class "fitvids-non"
+    
  
 2.  Document ready functions:
     ----------------------------------------------------------------------------

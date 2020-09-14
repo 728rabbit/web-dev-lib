@@ -173,7 +173,7 @@ var iweb = {
                 }
             });
         }
-        $('body').find('.iweb-editor').fitVids();
+        $('body').find('.iweb-editor').fitVids({ignore:'.fitvids-non'});
         iweb_object.selector();
         iweb_object.checkbox();
         iweb_object.radiobox();
