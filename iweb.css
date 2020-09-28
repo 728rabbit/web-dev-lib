@@ -156,7 +156,6 @@ select {
 .iweb > .iweb-viewer {
     position: relative;
     width: 100%;
-    overflow: hidden;
 }
 
 .iweb-macosx > .iweb-viewer {
