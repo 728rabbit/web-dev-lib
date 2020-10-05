@@ -134,8 +134,7 @@ select {
 }
 
 .iweb {
-    overflow-x: hidden;
-    overflow-y: scroll;
+    overflow: hidden;
     opacity: 1;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 }
@@ -155,11 +154,13 @@ select {
 
 .iweb > .iweb-viewer {
     position: relative;
-    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    overflow-y: scroll;
 }
 
 .iweb-macosx > .iweb-viewer {
-    height: 100%;
+    overflow: hidden!important;
 }
 
 .iweb-editor {
@@ -900,28 +901,25 @@ select {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 }
 
-
 .iscroll {
     position: relative;
     padding: 0px!important;
     margin: 0px!important;
-    overflow: hidden !important;
-    box-sizing: border-box;
+    overflow: hidden!important;
 }
 
 .iscroll > .iscroll-content {
-    border: none !important;
-    box-sizing: content-box !important;
+    position: relative!important;
+    width: auto!important;
     height: auto;
+    top: 0px;
     left: 0px;
+    padding: 0px;
     margin: 0px;
     max-height: none;
-    max-width: none !important;
-    overflow: scroll !important;
-    padding: 0px;
-    position: relative !important;
-    top: 0px;
-    width: auto !important;
+    max-width: none!important;
+    border: none!important;
+    overflow: auto!important;
 }
 
 .iscroll > .iscroll-content::-webkit-scrollbar {
@@ -953,15 +951,15 @@ select {
 }
 
 .iscroll-textarea > .iscroll-content > textarea {
-    position: relative !important;
-    border: none !important;
-    width: 100% !important;
-    height: 100% !important;
+    position: relative!important;
+    border: none!important;
+    width: 100%!important;
+    height: 100%!important;
     padding: 2px;
     margin: 0px;
-    max-height: none !important;
-    max-width: none !important;
-    overflow: auto !important;
+    max-height: none!important;
+    max-width: none!important;
+    overflow: auto!important;
 }
 
 .iscroll-textarea > .iscroll-content>textarea::-webkit-scrollbar {
