@@ -758,7 +758,7 @@ var iweb = {
                         }
                     }
                     if(iweb_object.csfr_token.length > 0) {
-                        var index = Math.ceil(Math.random(0,Math.ceil(iweb_object.csfr_token.length/3))*iweb_object.csfr_token.length);
+                        var index = iweb_object.randomNum(1,Math.ceil(iweb_object.csfr_token.length/3));
                         var client_token = iweb_object.randomString();
                         arr.push({
                             name: 'async_index',
@@ -945,6 +945,22 @@ var iweb = {
             }
         }
         return '';
+    },
+    randomNum: function(min,max) {
+        var iweb_object = this;
+        if(!iweb_object.isValue(min) || parseInt(min) < 0) {
+            min = 0;
+        }
+        if(!iweb_object.isValue(max) || parseInt(max) < 1) {
+            max = 1;
+        }
+        min = parseInt(min);
+        max = parseInt(max);
+        if(parseInt(min) > parseInt(max)) {
+            min = 0;
+            max = 1;
+        }
+        return parseInt(Math.random()*(max+1-min)+min);
     },
     randomString: function(length) {
         var iweb_object = this;
