@@ -243,8 +243,8 @@
 
     iweb_object.getCookie(name);
 
-    iweb_object.randomString();
-    iweb_object.randomString(2,5);
+    iweb_object.randomNum();
+    iweb_object.randomNum(2,5);
 
     iweb_object.randomString();
     
