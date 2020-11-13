@@ -226,6 +226,7 @@
         $csrf_token = ((isset($_REQUEST['csrf_token']))?trim((string)strip_tags($_REQUEST['csrf_token'])):'');
         $client_token = ((isset($_COOKIE['client_token']))?trim((string)strip_tags($_COOKIE['client_token'])):'');
         $server_token = 'f2b7b9a0d23176b20463be39eb5c4acf';
+        setcookie('client_token', '');
         if(!empty($csrf_token) && !empty($server_token) && !empty($client_token)) {
             if($csrf_token == substr($server_token,$async_index,strlen($client_token)).$client_token) {
                 return true;
