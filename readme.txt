@@ -236,12 +236,14 @@
     }
 
 
-16. Cookie, randomNum & randomString 
+16. Cookie, ,getUrlParameter, randomNum & randomString 
     ----------------------------------------------------------------------------
     iweb_object.setCookie(name, value, days);
     - days: optional, default = 7
 
     iweb_object.getCookie(name);
+
+    iweb.getUrlParameter(name);
 
     iweb_object.randomNum();
     iweb_object.randomNum(2,5);

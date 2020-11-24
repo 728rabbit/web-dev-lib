@@ -134,7 +134,8 @@ select {
 }
 
 .iweb {
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
     opacity: 1;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
 }
@@ -155,12 +156,6 @@ select {
 .iweb > .iweb-viewer {
     position: relative;
     height: 100%;
-    overflow-x: auto;
-    overflow-y: scroll;
-}
-
-.iweb-macosx > .iweb-viewer {
-    overflow: hidden!important;
 }
 
 .iweb-editor {

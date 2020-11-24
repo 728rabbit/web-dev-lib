@@ -147,7 +147,7 @@ var iweb = {
     processing_status: false,
     win_width: 0,
     win_scroll_top: 0,
-    csfr_token: '',
+    csrf_token: '',
     language: [],
     initialize: function(mode) {
         var iweb_object = this;
@@ -743,7 +743,7 @@ var iweb = {
                 data_type = type;
             }
             if (iweb_object.isValue($(target_form_id).data('token'))) {
-                iweb_object.csfr_token = $(target_form_id).data('token');
+                iweb_object.csrf_token = $(target_form_id).data('token');
                 $(target_form_id).removeAttr('data-token');
             }
             $(target_form_id).ajaxForm({
@@ -757,8 +757,8 @@ var iweb = {
                             return false;
                         }
                     }
-                    if(iweb_object.csfr_token.length > 0) {
-                        var index = iweb_object.randomNum(1,Math.ceil(iweb_object.csfr_token.length/3));
+                    if(iweb_object.csrf_token.length > 0) {
+                        var index = iweb_object.randomNum(1,Math.ceil(iweb_object.csrf_token.length/3));
                         var client_token = iweb_object.randomString();
                         arr.push({
                             name: 'async_index',
@@ -766,7 +766,7 @@ var iweb = {
                         });
                         arr.push({
                             name: 'csrf_token',
-                            value: iweb_object.csfr_token.substr(index,client_token.length)+client_token
+                            value: iweb_object.csrf_token.substr(index,client_token.length)+client_token
                         });
                         iweb_object.setCookie('client_token',client_token);
                     }
@@ -945,6 +945,25 @@ var iweb = {
             }
         }
         return '';
+    },
+    getUrlParameter: function(name) {
+        var iweb_object = this;
+        var parameter_value = '';
+        if(iweb_object.isValue(name)) {
+            var urlParameters = window.location.search.substring(1).split('&');
+            for (var i = 0; i < parseInt(urlParameters.length); i++) {
+                var currentParameter = urlParameters[i].split('=');
+                var currentParameter_index = currentParameter[0];
+                var currentParameter_value = currentParameter[1];
+                if (iweb_object.isValue(currentParameter_index) && iweb_object.isValue(currentParameter_value)) {
+                    if (iweb_object.isMatch(currentParameter_index,name)) {
+                        parameter_value = currentParameter_value;
+                        break;
+                    }
+                }
+            }
+        }
+        return parameter_value;
     },
     randomNum: function(min,max) {
         var iweb_object = this;
