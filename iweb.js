@@ -8,8 +8,8 @@
 !function(l,e){"use strict";"function"==typeof define&&define.amd?define(["jquery"],e):"undefined"!=typeof exports?module.exports=e(require("jquery")):e(jQuery)}(0,function(l){"use strict";var e={data:{index:0,name:"iscroll"},firefox:/firefox/i.test(navigator.userAgent),macosx:/mac/i.test(navigator.platform),msedge:/edge\/\d+/i.test(navigator.userAgent),msie:/(msie|trident)/i.test(navigator.userAgent),mobile:/android|webos|iphone|ipad|ipod|blackberry/i.test(navigator.userAgent),overlay:null,scroll:null,scrolls:[],webkit:/webkit/i.test(navigator.userAgent)&&!/edge\/\d+/i.test(navigator.userAgent)};e.scrolls.add=function(l){this.remove(l).push(l)},e.scrolls.remove=function(e){for(;l.inArray(e,this)>=0;)this.splice(l.inArray(e,this),1);return this};var s={mode:"outer",autoScrollSize:!0,autoUpdate:!0,debug:!1,disableBodyScroll:!1,duration:200,ignoreMobile:!1,ignoreOverlay:!1,isRtl:!1,scrollStep:30,showArrows:!1,stepScrolling:!0,scrollx:null,scrolly:null,onDestroy:null,onFallback:null,onInit:null,onScroll:null,onUpdate:null},o=function(o){var i;e.scroll||(e.overlay=!((i=c(!0)).height||i.width),e.scroll=c(),n(),l(window).resize(function(){var l=!1;if(e.scroll&&(e.scroll.height||e.scroll.width)){var s=c();s.height===e.scroll.height&&s.width===e.scroll.width||(e.scroll=s,l=!0)}n(l)})),this.container=o,this.namespace=".iscroll-"+e.data.index++,this.options=l.extend({},s,window.jQueryiscrollOptions||{}),this.scrollTo=null,this.scrollx={},this.scrolly={},o.data(e.data.name,this),e.scrolls.add(this)};o.prototype={destroy:function(){if(this.wrapper){this.container.removeData(e.data.name),e.scrolls.remove(this);var s=this.container.scrollLeft(),o=this.container.scrollTop();this.container.insertBefore(this.wrapper).css({height:"",margin:"","max-height":""}).removeClass("iscroll-content iscroll-scrollx-visible iscroll-visible").off(this.namespace).scrollLeft(s).scrollTop(o),this.scrollx.scroll.removeClass("iscroll-scrollx-visible").find("div").addBack().off(this.namespace),this.scrolly.scroll.removeClass("iscroll-visible").find("div").addBack().off(this.namespace),this.wrapper.remove(),l(document).add("body").off(this.namespace),l.isFunction(this.options.onDestroy)&&this.options.onDestroy.apply(this,[this.container])}},init:function(s){var o=this,i=this.container,r=this.containerWrapper||i,t=this.namespace,n=l.extend(this.options,s||{}),c={x:this.scrollx,y:this.scrolly},d=this.wrapper,h={},u={scrollLeft:i.scrollLeft(),scrollTop:i.scrollTop()};if(e.mobile&&n.ignoreMobile||e.overlay&&n.ignoreOverlay||e.macosx&&!e.webkit)return l.isFunction(n.onFallback)&&n.onFallback.apply(this,[i]),!1;if(d)(h={height:"auto","margin-bottom":-1*e.scroll.height+"px","max-height":""})[n.isRtl?"margin-left":"margin-right"]=-1*e.scroll.width+"px",r.css(h);else{var f=i.attr("class");if(this.wrapper=d=l("<div>").addClass(f).addClass("iscroll").addClass("iscroll-"+n.mode).css("position","absolute"===i.css("position")?"absolute":"relative").insertBefore(i).append(i),n.isRtl&&d.addClass("iscroll-rtl"),i.is("textarea")&&(this.containerWrapper=r=l("<div>").insertBefore(i).append(i),d.addClass("iscroll-textarea")),(h={height:"auto","margin-bottom":-1*e.scroll.height+"px","max-height":""})[n.isRtl?"margin-left":"margin-right"]=-1*e.scroll.width+"px",r.removeClass(f).addClass("iscroll-content").css(h),i.on("scroll"+t,function(s){var r=i.scrollLeft(),t=i.scrollTop();if(n.isRtl)switch(!0){case e.firefox:r=Math.abs(r);case e.msedge||e.msie:r=i[0].scrollWidth-i[0].clientWidth-r}l.isFunction(n.onScroll)&&n.onScroll.call(o,{maxScroll:c.y.maxScrollOffset,scroll:t,size:c.y.size,visible:c.y.visible},{maxScroll:c.x.maxScrollOffset,scroll:r,size:c.x.size,visible:c.x.visible}),c.x.isVisible&&c.x.scroll.bar.css("left",r*c.x.kx+"px"),c.y.isVisible&&c.y.scroll.bar.css("top",t*c.y.kx+"px")}),d.on("scroll"+t,function(){d.scrollTop(0).scrollLeft(0)}),n.disableBodyScroll){var p=function(l){a(l)?c.y.isVisible&&c.y.mousewheel(l):c.x.isVisible&&c.x.mousewheel(l)};d.on("MozMousePixelScroll"+t,p),d.on("mousewheel"+t,p),e.mobile&&d.on("touchstart"+t,function(e){var s=e.originalEvent.touches&&e.originalEvent.touches[0]||e,o=s.pageX,r=s.pageY,n=i.scrollLeft(),c=i.scrollTop();l(document).on("touchmove"+t,function(l){var e=l.originalEvent.targetTouches&&l.originalEvent.targetTouches[0]||l;i.scrollLeft(n+o-e.pageX),i.scrollTop(c+r-e.pageY),l.preventDefault()}),l(document).on("touchend"+t,function(){l(document).off(t)})})}l.isFunction(n.onInit)&&n.onInit.apply(this,[i])}l.each(c,function(s,r){var d=null,h=1,u="x"===s?"scrollLeft":"scrollTop",f=n.scrollStep,p=function(){var l=i[u]();i[u](l+f),1==h&&l+f>=v&&(l=i[u]()),-1==h&&l+f<=v&&(l=i[u]()),i[u]()==l&&d&&d()},v=0;r.scroll||(r.scroll=o._getScroll(n["scroll"+s]).addClass("scroll-"+s),n.showArrows&&r.scroll.addClass("iscroll-element-arrows-visible"),r.mousewheel=function(l){if(!r.isVisible||"x"===s&&a(l))return!0;if("y"===s&&!a(l))return c.x.mousewheel(l),!0;var e=-1*l.originalEvent.wheelDelta||l.originalEvent.detail,t=r.size-r.visible-r.offset;return e||("x"===s&&l.originalEvent.deltaX?e=40*l.originalEvent.deltaX:"y"===s&&l.originalEvent.deltaY&&(e=40*l.originalEvent.deltaY)),(e>0&&v<t||e<0&&v>0)&&((v+=e)<0&&(v=0),v>t&&(v=t),o.scrollTo=o.scrollTo||{},o.scrollTo[u]=v,setTimeout(function(){o.scrollTo&&(i.stop().animate(o.scrollTo,240,"linear",function(){v=i[u]()}),o.scrollTo=null)},1)),l.preventDefault(),!1},r.scroll.on("MozMousePixelScroll"+t,r.mousewheel).on("mousewheel"+t,r.mousewheel).on("mouseenter"+t,function(){v=i[u]()}),r.scroll.find(".iscroll-arrow, .iscroll-element-track").on("mousedown"+t,function(t){if(1!=t.which)return!0;h=1;var c={eventOffset:t["x"===s?"pageX":"pageY"],maxScrollValue:r.size-r.visible-r.offset,iscrollOffset:r.scroll.bar.offset()["x"===s?"left":"top"],iscrollSize:r.scroll.bar["x"===s?"outerWidth":"outerHeight"]()},a=0,m=0;if(l(this).hasClass("iscroll-arrow")){if(h=l(this).hasClass("iscroll-arrow_more")?1:-1,f=n.scrollStep*h,v=h>0?c.maxScrollValue:0,n.isRtl)switch(!0){case e.firefox:v=h>0?0:-1*c.maxScrollValue;break;case e.msie||e.msedge:}}else h=c.eventOffset>c.iscrollOffset+c.iscrollSize?1:c.eventOffset<c.iscrollOffset?-1:0,"x"===s&&n.isRtl&&(e.msie||e.msedge)&&(h*=-1),f=Math.round(.75*r.visible)*h,v=c.eventOffset-c.iscrollOffset-(n.stepScrolling?1==h?c.iscrollSize:0:Math.round(c.iscrollSize/2)),v=i[u]()+v/r.kx;return o.scrollTo=o.scrollTo||{},o.scrollTo[u]=n.stepScrolling?i[u]()+f:v,n.stepScrolling&&(d=function(){v=i[u](),clearInterval(m),clearTimeout(a),a=0,m=0},a=setTimeout(function(){m=setInterval(p,40)},n.duration+100)),setTimeout(function(){o.scrollTo&&(i.animate(o.scrollTo,n.duration),o.scrollTo=null)},1),o._handleMouseDown(d,t)}),r.scroll.bar.on("mousedown"+t,function(c){if(1!=c.which)return!0;var a=c["x"===s?"pageX":"pageY"],d=i[u]();return r.scroll.addClass("iscroll-draggable"),l(document).on("mousemove"+t,function(l){var o=parseInt((l["x"===s?"pageX":"pageY"]-a)/r.kx,10);"x"===s&&n.isRtl&&(e.msie||e.msedge)&&(o*=-1),i[u](d+o)}),o._handleMouseDown(function(){r.scroll.removeClass("iscroll-draggable"),v=i[u]()},c)}))}),l.each(c,function(l,e){var s="iscroll-scroll"+l+"-visible",o="x"==l?c.y:c.x;e.scroll.removeClass(s),o.scroll.removeClass(s),r.removeClass(s)}),l.each(c,function(e,s){l.extend(s,"x"==e?{offset:parseInt(i.css("left"),10)||0,size:i.prop("scrollWidth"),visible:d.width()}:{offset:parseInt(i.css("top"),10)||0,size:i.prop("scrollHeight"),visible:d.height()})}),this._updateScroll("x",this.scrollx),this._updateScroll("y",this.scrolly),l.isFunction(n.onUpdate)&&n.onUpdate.apply(this,[i]),l.each(c,function(l,e){var s="x"===l?"left":"top",o="x"===l?"outerWidth":"outerHeight",r="x"===l?"width":"height",t=parseInt(i.css(s),10)||0,c=e.size,a=e.visible+t,d=e.scroll.size[o]()+(parseInt(e.scroll.size.css(s),10)||0);n.autoScrollSize&&(e.iscrollSize=parseInt(d*a/c,10),e.scroll.bar.css(r,e.iscrollSize+"px")),e.iscrollSize=e.scroll.bar[o](),e.kx=(d-e.iscrollSize)/(c-a)||1,e.maxScrollOffset=c-a}),i.scrollLeft(u.scrollLeft).scrollTop(u.scrollTop).trigger("scroll")},_getScroll:function(e){var s={advanced:['<div class="iscroll-element">','<div class="iscroll-element-corner"></div>','<div class="iscroll-arrow iscroll-arrow-less"></div>','<div class="iscroll-arrow iscroll-arrow-more"></div>','<div class="iscroll-element-outer">','<div class="iscroll-element-size"></div>','<div class="iscroll-element-inner-wrapper">','<div class="iscroll-element-inner iscroll-element-track">','<div class="iscroll-element-inner-bottom"></div>',"</div>","</div>",'<div class="iscroll-bar">','<div class="iscroll-bar-body">','<div class="iscroll-bar-body-inner"></div>',"</div>",'<div class="iscroll-bar-bottom"></div>','<div class="iscroll-bar-center"></div>',"</div>","</div>","</div>"].join(""),simple:['<div class="iscroll-element">','<div class="iscroll-element-outer">','<div class="iscroll-element-size"></div>','<div class="iscroll-element-track"></div>','<div class="iscroll-bar"></div>',"</div>","</div>"].join("")};return s[e]&&(e=s[e]),e||(e=s.simple),e="string"==typeof e?l(e).appendTo(this.wrapper):l(e),l.extend(e,{bar:e.find(".iscroll-bar"),size:e.find(".iscroll-element-size"),track:e.find(".iscroll-element-track")}),e},_handleMouseDown:function(e,s){var o=this.namespace;return l(document).on("blur"+o,function(){l(document).add("body").off(o),e&&e()}),l(document).on("dragstart"+o,function(l){return l.preventDefault(),!1}),l(document).on("mouseup"+o,function(){l(document).add("body").off(o),e&&e()}),l("body").on("selectstart"+o,function(l){return l.preventDefault(),!1}),s&&s.preventDefault(),!1},_updateScroll:function(s,o){var i=this.container,r=this.containerWrapper||i,t="iscroll-scroll"+s+"-visible",n="x"===s?this.scrolly:this.scrollx,c=parseInt(this.container.css("x"===s?"left":"top"),10)||0,a=this.wrapper,d=o.size,h=o.visible+c;o.isVisible=d-h>1,o.isVisible?(o.scroll.addClass(t),n.scroll.addClass(t),r.addClass(t)):(o.scroll.removeClass(t),n.scroll.removeClass(t),r.removeClass(t)),"y"===s&&(i.is("textarea")||d<h?r.css({height:h+e.scroll.height+"px","max-height":"none"}):r.css({"max-height":h+e.scroll.height+"px"})),o.size==i.prop("scrollWidth")&&n.size==i.prop("scrollHeight")&&o.visible==a.width()&&n.visible==a.height()&&o.offset==(parseInt(i.css("left"),10)||0)&&n.offset==(parseInt(i.css("top"),10)||0)||(l.extend(this.scrollx,{offset:parseInt(i.css("left"),10)||0,size:i.prop("scrollWidth"),visible:a.width()}),l.extend(this.scrolly,{offset:parseInt(i.css("top"),10)||0,size:this.container.prop("scrollHeight"),visible:a.height()}),this._updateScroll("x"===s?"y":"x",n))}};var i=o;l.fn.iScroll=function(s,o){return"string"!=typeof s&&(o=s,s="init"),void 0===o&&(o=[]),l.isArray(o)||(o=[o]),this.not("body, .iscroll").each(function(){var r=l(this),t=r.data(e.data.name);(t||"init"===s)&&(t||(t=new i(r)),t[s]&&t[s].apply(t,o))}),this},l.fn.iScroll.options=s;var r,t,n=(r=0,function(l){var s,o,i,t,c,a,d;for(s=0;s<e.scrolls.length;s++)o=(t=e.scrolls[s]).container,i=t.options,c=t.wrapper,a=t.scrollx,d=t.scrolly,(l||i.autoUpdate&&c&&c.is(":visible")&&(o.prop("scrollWidth")!=a.size||o.prop("scrollHeight")!=d.size||c.width()!=a.visible||c.height()!=d.visible))&&(t.init(),i.debug&&window.console&&console.log({scrollHeight:o.prop("scrollHeight")+":"+t.scrolly.size,scrollWidth:o.prop("scrollWidth")+":"+t.scrollx.size,visibleHeight:c.height()+":"+t.scrolly.visible,visibleWidth:c.width()+":"+t.scrollx.visible},!0));clearTimeout(r),r=setTimeout(n,300)});function c(s){if(e.webkit&&!s)return{height:0,width:0};if(!e.data.outer){var o={border:"none","box-sizing":"content-box",height:"200px",margin:"0",padding:"0",width:"200px"};e.data.inner=l("<div>").css(l.extend({},o)),e.data.outer=l("<div>").css(l.extend({left:"-1000px",overflow:"scroll",position:"absolute",top:"-1000px"},o)).append(e.data.inner).appendTo("body")}return e.data.outer.scrollLeft(1e3).scrollTop(1e3),{height:Math.ceil(e.data.outer.offset().top-e.data.inner.offset().top||0),width:Math.ceil(e.data.outer.offset().left-e.data.inner.offset().left||0)}}function a(l){var e=l.originalEvent;return(!e.axis||e.axis!==e.HORIZONTAL_AXIS)&&!e.wheelDeltaX}window.angular&&(t=window.angular).module("jQueryiscroll",[]).provider("jQueryiscroll",function(){var l=s;return{setOptions:function(e){t.extend(l,e)},$get:function(){return{options:t.copy(l)}}}}).directive("jqueryiscroll",["jQueryiscroll","$parse",function(l,e){return{restrict:"AC",link:function(s,o,i){var r=e(i.jqueryiscroll)(s);o.iscroll(r||l.options).on("$destroy",function(){o.iscroll("destroy")})}}}])});
 
 /* Web Application Igniter v1.0 | Requires jQuery v1.11 or later | Copyright 2020 kaiyunchan */
-(function($) {
-    $.fn.iweb_pagination = function(options) {
+(function($){
+    $.fn.iweb_pagination = function(options){
         var settings = $.extend({
             mode: 1,
             size: 5,
@@ -20,13 +20,13 @@
         var currentPage = 1;
         var urlStr = '';
         var urlParameters = window.location.search.substring(1).split('&');
-        for (var i = 0; i < parseInt(urlParameters.length); i++) {
+        for (var i = 0; i < parseInt(urlParameters.length); i++){
             var currentParameter = urlParameters[i].split('=');
             var currentParameter_index = currentParameter[0];
             var currentParameter_value = currentParameter[1];
-            if (currentParameter_index !== '' && (typeof currentParameter_index !== 'undefined') && currentParameter_value !== '' && (typeof currentParameter_value !== 'undefined')) {
-                if ((currentParameter_index.toString().toLowerCase()) !== 'page') {
-                    if (urlStr !== '') {
+            if (currentParameter_index !== '' && (typeof currentParameter_index !== 'undefined') && currentParameter_value !== '' && (typeof currentParameter_value !== 'undefined')){
+                if ((currentParameter_index.toString().toLowerCase()) !== 'page'){
+                    if (urlStr !== ''){
                         urlStr += '&' + currentParameter_index + '=' + currentParameter_value;
                     } else {
                         urlStr += '?' + currentParameter_index + '=' + currentParameter_value;
@@ -36,45 +36,45 @@
                 }
             }
         }
-        if (urlStr !== '') {
+        if (urlStr !== ''){
             urlStr += '&';
         } else {
             urlStr += '?';
         }
         urlStr = ((window.location.href.split('?')[0]).toString()) + urlStr;
 
-        $(document).on('keypress', '.iweb-pagination .jumpto_page', function(e) {
+        $(document).on('keypress', '.iweb-pagination .jumpto_page', function(e){
             var jumpto_page = parseInt($(this).val());
             var maxvalue = parseInt($(this).data('max'));
-            if (jumpto_page > maxvalue) {
+            if (jumpto_page > maxvalue){
                 jumpto_page = maxvalue;
             }
-            if (e.which === 13) {
+            if (e.which === 13){
                 window.location.href = urlStr + 'page=' + jumpto_page;
             }
         });
 
-        this.each(function() {
+        this.each(function(){
             var pageSize = parseInt(settings.size);
             var totalPage = parseInt(settings.total);
-            if ($(this).data('size') !== null && (typeof $(this).data('size') !== 'undefined')) {
+            if ($(this).data('size') !== null && (typeof $(this).data('size') !== 'undefined')){
                 pageSize = parseInt($(this).data('size'));
-                if (pageSize < parseInt(settings.size)) {
+                if (pageSize < parseInt(settings.size)){
                     pageSize = parseInt(settings.size);
                 }
             }
-            if ($(this).data('totalpage') !== null && (typeof $(this).data('totalpage') !== 'undefined')) {
+            if ($(this).data('totalpage') !== null && (typeof $(this).data('totalpage') !== 'undefined')){
                 totalPage = parseInt($(this).data('totalpage'));
                 $(this).removeAttr('data-totalpage');
             }
 
             var firstPage = 1;
             var prevPage = parseInt(currentPage - 1);
-            if (prevPage < 1) {
+            if (prevPage < 1){
                 prevPage = 1;
             }
             var nextPage = parseInt(currentPage + 1);
-            if (nextPage > totalPage) {
+            if (nextPage > totalPage){
                 nextPage = totalPage;
             }
             var lastPage = totalPage;
@@ -82,33 +82,33 @@
             var start_page_num = 1;
             var end_page_num = pageSize;
             var diff_page_num = parseInt(pageSize / 2);
-            if (totalPage <= pageSize) {
+            if (totalPage <= pageSize){
                 start_page_num = 1;
                 end_page_num = totalPage;
             } else {
                 start_page_num = currentPage - diff_page_num;
                 end_page_num = currentPage + diff_page_num;
-                if (start_page_num < 1) {
+                if (start_page_num < 1){
                     start_page_num = firstPage;
                     end_page_num = pageSize;
-                    if (end_page_num > lastPage) {
+                    if (end_page_num > lastPage){
                         end_page_num = lastPage;
                     }
                 } else {
-                    if (end_page_num > lastPage) {
+                    if (end_page_num > lastPage){
                         end_page_num = lastPage;
                         start_page_num = (lastPage - pageSize) + 1;
-                        if (start_page_num < firstPage) {
+                        if (start_page_num < firstPage){
                             start_page_num = firstPage;
                         }
                     }
                 }
             }
 
-            if (totalPage > 1) {
+            if (totalPage > 1){
                 var pagination_html = '<ul>';
-                if (parseInt(settings.mode) === 2) {
-                    if (currentPage > parseInt(pageSize / 2)) {
+                if (parseInt(settings.mode) === 2){
+                    if (currentPage > parseInt(pageSize / 2)){
                         pagination_html += '<li><a class="first" href="' + urlStr + 'page=' + firstPage + '"><span>' + firstPage + '..</span></a></li>';
                     }
                 } else {
@@ -116,8 +116,8 @@
                 }
                 pagination_html += '<li><a class="prev" href="' + urlStr + 'page=' + prevPage + '"><i></i></a></li>';
 
-                for (var i = start_page_num; i <= end_page_num; i++) {
-                    if (i === currentPage) {
+                for (var i = start_page_num; i <= end_page_num; i++){
+                    if (i === currentPage){
                         pagination_html += '<li><a class="num current" href="' + urlStr + 'page=' + i + '"><span>' + i + '</span></a></li>';
                     } else {
                         pagination_html += '<li><a class="num" href="' + urlStr + 'page=' + i + '"><span>' + i + '</span></a></li>';
@@ -125,8 +125,8 @@
                 }
 
                 pagination_html += '<li><a class="next" href="' + urlStr + 'page=' + nextPage + '"><i></i></a></li>';
-                if (parseInt(settings.mode) === 2) {
-                    if (currentPage < totalPage - parseInt(pageSize / 2)) {
+                if (parseInt(settings.mode) === 2){
+                    if (currentPage < totalPage - parseInt(pageSize / 2)){
                         pagination_html += '<li><a class="last" href="' + urlStr + 'page=' + lastPage + '"><span>..' + lastPage + '</span></a></li>';
                     }
                 } else {
@@ -149,25 +149,25 @@ var iweb = {
     win_scroll_top: 0,
     csrf_token: '',
     language: [],
-    initialize: function(mode) {
+    initialize: function(mode){
         var iweb_object = this;
         iweb_object.mode = ((iweb_object.isValue($('body').data('macosx')) && parseInt($('body').data('macosx')) > 0 && !iweb_object.detectDevice())?'macosx':'default');
         iweb_object.processing(parseInt($('body').data('processing'))); 
         iweb_object.language['en'] = {'btn_confirm':'OK','btn_yes':'Yes','btn_no':'No','select':'Please select'};
         iweb_object.language['zh-hant'] = {'btn_confirm':'確定','btn_yes':'是','btn_no':'否','select':'請選擇'};
         iweb_object.language['zh-hans'] = {'btn_confirm':'确定','btn_yes':'是','btn_no':'否','select':'请选择'};
-        if(iweb_object.isValue($('html').attr('lang')) && iweb_object.isValue(iweb_object.language[$('html').attr('lang').toString().toLowerCase()])) {
+        if(iweb_object.isValue($('html').attr('lang')) && iweb_object.isValue(iweb_object.language[$('html').attr('lang').toString().toLowerCase()])){
             iweb_object.default_language = $('html').attr('lang').toString().toLowerCase();
         }
         $('body > *').not('script,noscript').wrapAll('<div class="iweb-viewer"></div>');
-        if(iweb_object.mode === 'macosx') {
-            iweb_object.scrollbar('body > .iweb-viewer','macosx',function(scroll_y) {
-                if (iweb_object.init_status) {
+        if(iweb_object.mode === 'macosx'){
+            iweb_object.scrollbar('body > .iweb-viewer','macosx',function(scroll_y){
+                if (iweb_object.init_status){
                     iweb_object.win_scroll_top = parseInt(scroll_y.scroll);
-                    if (typeof iweb_scroll === 'function') {
+                    if (typeof iweb_scroll === 'function'){
                         iweb_scroll(scroll_y);
                     }
-                    if (typeof iweb_iscroll === 'function') {
+                    if (typeof iweb_iscroll === 'function'){
                         iweb_iscroll(scroll_y);
                     }
                 }
@@ -179,10 +179,10 @@ var iweb = {
         iweb_object.radiobox();
         iweb_object.responsive();
         iweb_object.win_width = parseInt($('.iweb-viewer').width());
-        $(document).on('change','.iweb-selector > .real-choice > select',function() {
+        $(document).on('change','.iweb-selector > .real-choice > select',function(){
             var selectoption = $(this).val();
-            $(this).parents('.iweb-selector').find('.virtual-choice li.virtual-node').each(function() {
-                if($(this).data('value').toString() === selectoption.toString()) {
+            $(this).parents('.iweb-selector').find('.virtual-choice li.virtual-node').each(function(){
+                if($(this).data('value').toString() === selectoption.toString()){
                     $(this).addClass('virtual-node-selected');
                     $(this).parents('.iweb-selector').find('.virtual-choice > div > span').html($(this).text());
                 }
@@ -191,38 +191,38 @@ var iweb = {
                 }
             });
         });
-        $(document).on('click','.iweb-selector > .virtual-choice > div > span',function() {
+        $(document).on('click','.iweb-selector > .virtual-choice > div > span',function(){
             var target_selector = $(this);
-            $('.iweb-selector > .virtual-choice > div > ul').each(function() {
-                if(!iweb_object.isMatch($(this).data('index'),target_selector.parents('.iweb-selector').find('.virtual-choice > div > ul').data('index'))) {
+            $('.iweb-selector > .virtual-choice > div > ul').each(function(){
+                if(!iweb_object.isMatch($(this).data('index'),target_selector.parents('.iweb-selector').find('.virtual-choice > div > ul').data('index'))){
                     $(this).hide();
                 }
             });
-            if(target_selector.parents('.iweb-selector').find('.virtual-choice > div > ul').is(":visible")) {
+            if(target_selector.parents('.iweb-selector').find('.virtual-choice > div > ul').is(":visible")){
                 target_selector.parents('.iweb-selector').find('.virtual-choice > div > ul').hide();
             }
             else {
                 target_selector.parents('.iweb-selector').find('.virtual-choice > div > ul').show();
             }
         });
-        $(document).on('click','.virtual-choice li.virtual-node',function() {
+        $(document).on('click','.virtual-choice li.virtual-node',function(){
             $(this).parents('.iweb-selector').find('.virtual-choice > div > ul').hide();
             $(this).parents('.iweb-selector').find('.virtual-choice > div > span').html($(this).text());
             $(this).parents('.iweb-selector').find('.real-choice > select').val($(this).data('value')).trigger('change');
         });
-        $(document).on('click','.iweb-checkbox > .virtual-option > div > input',function() {
-            if(!$(this).is(":checked")) {
+        $(document).on('click','.iweb-checkbox > .virtual-option > div > input',function(){
+            if(!$(this).is(":checked")){
                 $(this).parent().removeClass('checked');
             }
             else {
                 $(this).parent().addClass('checked');
             }
         });
-        $(document).on('click','.iweb-radiobox > .virtual-option > div > input',function() {
+        $(document).on('click','.iweb-radiobox > .virtual-option > div > input',function(){
             var selected_value = $(this).val();
             var related_object = $('input[type="radio"][name="'+$(this).attr('name')+'"]');
-            $.each(related_object,function() {
-                if(iweb.isMatch($(this).val(),selected_value)) {
+            $.each(related_object,function(){
+                if(iweb.isMatch($(this).val(),selected_value)){
                     $(this).prop('checked', true);
                     $(this).parent().addClass('checked');
                 }
@@ -232,29 +232,29 @@ var iweb = {
                 }
             });
         });
-        $(document).on('click','body',function(e) {
-            if(parseInt($(e.target).parents('.iweb-selector').length) === 0) {
+        $(document).on('click','body',function(e){
+            if(parseInt($(e.target).parents('.iweb-selector').length) === 0){
                 $('.iweb-selector > .virtual-choice > div > ul').hide();
             }
         });
-        $(document).on('keypress','body',function(e) {
+        $(document).on('keypress','body',function(e){
             var keycode = (e.keyCode ? e.keyCode : e.which);
-            if(keycode == 13 && iweb_object.isExist('#iweb-alert')) {
+            if(keycode == 13 && iweb_object.isExist('#iweb-alert')){
                 e.preventDefault();
                 return false;
             }
         });
-        $(document).on('click','.font-switch',function(e) {
+        $(document).on('click','.font-switch',function(e){
             e.preventDefault();
             $('.font-switch').removeClass('current');
             $('html').removeClass('small-font');
             $('html').removeClass('large-font');
-            if(iweb_object.isMatch($(this).data('size'),'small') || iweb_object.isMatch($(this).data('size'),'large')) {
+            if(iweb_object.isMatch($(this).data('size'),'small') || iweb_object.isMatch($(this).data('size'),'large')){
                 $('html').addClass($(this).data('size')+'-font');
             }
             iweb.setCookie('iweb_font_sizse',$(this).data('size'),14);
-            $('.font-switch').each(function() {
-                if(iweb_object.isMatch($(this).data('size'),iweb.getCookie('iweb_font_sizse'))) {
+            $('.font-switch').each(function(){
+                if(iweb_object.isMatch($(this).data('size'),iweb.getCookie('iweb_font_sizse'))){
                     $(this).addClass('current');
                 }
                 else {
@@ -262,12 +262,12 @@ var iweb = {
                 }
             });
         });
-        if(iweb_object.isValue(iweb.getCookie('iweb_font_sizse'))) {
-            if(iweb_object.isMatch(iweb.getCookie('iweb_font_sizse'),'small') || iweb_object.isMatch(iweb.getCookie('iweb_font_sizse'),'large')) {
+        if(iweb_object.isValue(iweb.getCookie('iweb_font_sizse'))){
+            if(iweb_object.isMatch(iweb.getCookie('iweb_font_sizse'),'small') || iweb_object.isMatch(iweb.getCookie('iweb_font_sizse'),'large')){
                 $('html').addClass(iweb.getCookie('iweb_font_sizse')+'-font');
             }
-            $('.font-switch').each(function() {
-                if(iweb_object.isMatch($(this).data('size'),iweb.getCookie('iweb_font_sizse'))) {
+            $('.font-switch').each(function(){
+                if(iweb_object.isMatch($(this).data('size'),iweb.getCookie('iweb_font_sizse'))){
                     $(this).addClass('current');
                 }
                 else {
@@ -275,34 +275,34 @@ var iweb = {
                 }
             });
         }
-        if (typeof iweb_layout === 'function') {
+        if (typeof iweb_layout === 'function'){
             iweb_layout(iweb_object.win_width);
         }
-        if (typeof iweb_ilayout === 'function') {
+        if (typeof iweb_ilayout === 'function'){
             iweb_ilayout(iweb_object.win_width);
         }
-        if (typeof iweb_func === 'function') {
+        if (typeof iweb_func === 'function'){
             iweb_func();
         }
-        if (typeof iweb_ifunc === 'function') {
+        if (typeof iweb_ifunc === 'function'){
             iweb_ifunc();
         }
         $('body').removeAttr('data-processing');
         $('body').removeAttr('data-macosx');
         $('body').addClass('iweb');
-        if(iweb_object.detectDevice()) {
+        if(iweb_object.detectDevice()){
             $('body').addClass('iweb-mobile');
         }
-        if(iweb_object.mode === 'macosx') {
+        if(iweb_object.mode === 'macosx'){
             $('body').addClass('iweb-macosx');
         }
     },
-    processing: function(status,option) {
+    processing: function(status,option){
         var iweb_object = this;
-        if(iweb_object.isMatch(status,1) || iweb_object.isMatch(status,true)) {
-            if (!iweb_object.isExist('#iweb-processing')) {
+        if(iweb_object.isMatch(status,1) || iweb_object.isMatch(status,true)){
+            if (!iweb_object.isExist('#iweb-processing')){
                 var box_html = '';
-                if (iweb_object.isValue(option)) {
+                if (iweb_object.isValue(option)){
                     box_html = '<div id="iweb-processing" class="iweb-processing iweb-processing-opacity">';
                 } else {
                     box_html = '<div id="iweb-processing" class="iweb-processing">';
@@ -318,18 +318,18 @@ var iweb = {
         }
         else {
             var microsecond = 500;
-            if (iweb_object.isNumber(option)) {
+            if (iweb_object.isNumber(option)){
                 microsecond = parseInt(option);
             }
-            var delay_timer = setTimeout(function() {
+            var delay_timer = setTimeout(function(){
                 $('#iweb-processing').remove();
                 clearTimeout(delay_timer);
             }, microsecond);
         }
     },
-    resizing: function() {
+    resizing: function(){
         var iweb_object = this;
-        if (iweb_object.init_status && iweb_object.win_width !== parseInt($('.iweb-viewer').width())) {
+        if (iweb_object.init_status && iweb_object.win_width !== parseInt($('.iweb-viewer').width())){
             iweb_object.win_width = parseInt($(window).width());
             return true;
         }
@@ -337,20 +337,20 @@ var iweb = {
             return false;
         }
     },
-    responsive: function() {
+    responsive: function(){
         var iweb_object = this;
-        if (iweb_object.isExist('.iweb-responsive')) {
-            $('.iweb-responsive').each(function() {
+        if (iweb_object.isExist('.iweb-responsive')){
+            $('.iweb-responsive').each(function(){
                 var current_width = $(this).innerWidth(); 
                 var new_height = 0; 
                 var define_ratio_width = $(this).data('width'); 
                 var define_ratio_height = $(this).data('height'); 
-                if (iweb_object.isValue(define_ratio_width) && iweb_object.isValue(define_ratio_height)) {
-                    if (define_ratio_height > 0 && define_ratio_width > 0) {
+                if (iweb_object.isValue(define_ratio_width) && iweb_object.isValue(define_ratio_height)){
+                    if (define_ratio_height > 0 && define_ratio_width > 0){
                         new_height = parseInt(current_width * define_ratio_height / define_ratio_width);
                     }
                 }
-                if (new_height > 0) {
+                if (new_height > 0){
                     $(this).css('height', new_height + 'px');
                 }
                 else {
@@ -359,75 +359,75 @@ var iweb = {
             });
         }
     },
-    scrollto: function(element,adjustment_value,callback) {
+    scrollto: function(element,adjustment_value,callback){
         var iweb_object = this;
         var element_scroll_top_value = 0;
         var adjustment_value = ((iweb_object.isValue(adjustment_value))?parseInt(adjustment_value):0);
-        if(iweb_object.mode === 'macosx') {
-            if(iweb_object.isExist(element)) {
+        if(iweb_object.mode === 'macosx'){
+            if(iweb_object.isExist(element)){
                 element_scroll_top_value = parseInt($(element).first().offset().top);
                 element_scroll_top_value = iweb_object.win_scroll_top + element_scroll_top_value - adjustment_value;
-                $(element).first().closest('.iscroll-content').animate({ scrollTop: element_scroll_top_value }, 500).promise().then(function() {
-                    if (typeof callback === 'function') {
+                $(element).first().closest('.iscroll-content').animate({ scrollTop: element_scroll_top_value }, 500).promise().then(function(){
+                    if (typeof callback === 'function'){
                         callback();
                     }
                 });
             }
             else {
-                $('.iscroll-content').animate({ scrollTop: element_scroll_top_value }, 500).promise().then(function() {
-                    if (typeof callback === 'function') {
+                $('.iscroll-content').animate({ scrollTop: element_scroll_top_value }, 500).promise().then(function(){
+                    if (typeof callback === 'function'){
                         callback();
                     }
                 });
             }
         }
         else {
-            if(iweb_object.isExist(element)) {
+            if(iweb_object.isExist(element)){
                 element_scroll_top_value = Math.max(0, parseInt($(element).first().offset().top) - adjustment_value);
             }
-            $('html,body').animate({ scrollTop: element_scroll_top_value }, 500).promise().then(function() {
-                if (typeof callback === 'function') {
+            $('html,body').animate({ scrollTop: element_scroll_top_value }, 500).promise().then(function(){
+                if (typeof callback === 'function'){
                     callback();
                 }
             });
         }
     },
-    scrollbar: function(element,mode,callback) {
+    scrollbar: function(element,mode,callback){
         var iweb_object = this;
-        if (iweb_object.isExist(element)) {
+        if (iweb_object.isExist(element)){
             $(element).iScroll({
                 mode: ((iweb_object.isMatch(mode,'macosx'))?mode:'outer'),
                 onScroll: function(scroll_y, scroll_x){
-                    if (typeof callback === 'function') {
+                    if (typeof callback === 'function'){
                         callback(scroll_y);
                     }
                 }
             });
         }
     },
-    selector: function(select_object,callback) {
+    selector: function(select_object,callback){
         var iweb_object = this;
-        if(!iweb_object.isValue(select_object)) {
+        if(!iweb_object.isValue(select_object)){
            select_object = $('body').find('select');
         }
         select_object.each(function(select_index){
-            if(!$(this).parent().parent().hasClass('iweb-selector')) {
+            if(!$(this).parent().parent().hasClass('iweb-selector')){
                 $(this).wrap('<div class="iweb-selector"><div class="real-choice"></div></div>');
                 $(this).parents('.iweb-selector').find('.real-choice').prepend('<div class="arrow"></div>');
-                if(iweb_object.isMatch($(this).data('virtual'),1) || iweb_object.isMatch($(this).data('virtual'),true)) {
+                if(iweb_object.isMatch($(this).data('virtual'),1) || iweb_object.isMatch($(this).data('virtual'),true)){
                     $(this).addClass('shidden');
                     $(this).removeAttr('data-virtual');
                     var virtualHtml = '';
                     var virtualSelect = iweb_object.language[iweb_object.default_language]['select'];
                     virtualHtml += '<ul class="virtual-option-list" data-index="iss'+select_index+'">';
-                    $.each($(this).children(),function() {
-                        if(parseInt($(this).children().length) > 0) {
+                    $.each($(this).children(),function(){
+                        if(parseInt($(this).children().length) > 0){
                             virtualHtml += '<li class="virtual-parent-node"><span>'+$(this).attr('label')+'</span>';
                             virtualHtml += '<ul class="virtual-option-child-list">';
-                            $.each($(this).children(),function() {
-                                if($(this).is(':selected')) {
+                            $.each($(this).children(),function(){
+                                if($(this).is(':selected')){
                                     virtualSelect = $(this).text();
-                                    virtualHtml += '<li class="virtual-node virtual-node-selected" data-value="'+$(this).val()+'"><span>'+$(this).text()+'</span></li>';
+                                    virtualHtml += '<li class="virtual-node virtual-node-selected" data-value="'+$(this).val()+'" data-ori="selected"><span>'+$(this).text()+'</span></li>';
                                 }
                                 else {
                                     virtualHtml += '<li class="virtual-node" data-value="'+$(this).val()+'"><span>'+$(this).text()+'</span></li>';
@@ -437,9 +437,9 @@ var iweb = {
                             virtualHtml += '</li>';
                          }
                          else {
-                            if($(this).is(':selected')) {
+                            if($(this).is(':selected')){
                                 virtualSelect = $(this).text();
-                                virtualHtml += '<li class="virtual-node virtual-node-selected" data-value="'+$(this).val()+'"><span>'+$(this).text()+'</span></li>';
+                                virtualHtml += '<li class="virtual-node virtual-node-selected" data-value="'+$(this).val()+'" data-ori="selected"><span>'+$(this).text()+'</span></li>';
                             }
                             else {
                                 virtualHtml += '<li class="virtual-node" data-value="'+$(this).val()+'"><span>'+$(this).text()+'</span></li>';
@@ -449,82 +449,118 @@ var iweb = {
                     virtualHtml += '</ul>';
                     virtualHtml = '<div class="virtual-choice"><div><span>'+virtualSelect+'</span></div><div class="virtual-option">'+virtualHtml+'</div></div>';
                     $(this).parents('.iweb-selector').append(virtualHtml);
+                    var reset_virtual_choice_object = $(this).parents('.iweb-selector:first').find('.virtual-choice');
+                    $(this).parents('form:first').on('reset', function(){
+                        var virtual_node_object = null;
+                        reset_virtual_choice_object.find('.virtual-node').each(function(node_index){
+                            if(parseInt(node_index) === 0 || iweb_object.isMatch($(this).data('ori'),'selected')){
+                                virtual_node_object = $(this);
+                            }
+                        });
+                        if(iweb_object.isValue(virtual_node_object)) {
+                            virtual_node_object.trigger('click');
+                        }
+                    });
                 }
             }
         });
-        if (typeof callback === 'function') {
+        if (typeof callback === 'function'){
             callback();
         }
     },
-    checkbox: function(checkbox_object,callback) {
+    checkbox: function(checkbox_object,callback){
         var iweb_object = this;
-        if(!iweb_object.isValue(checkbox_object)) {
+        if(!iweb_object.isValue(checkbox_object)){
            checkbox_object = $('body').find('input[type="checkbox"]');
         }
         checkbox_object.each(function(){
-            if(!$(this).parent().hasClass('iweb-checkbox')) {
+            if(!$(this).parent().hasClass('iweb-checkbox')){
                 var find_checkbox_label = $(this).next();
                 var ischecked = $(this).is(":checked");
-                if(parseInt(find_checkbox_label.length) > 0 && iweb_object.isMatch(find_checkbox_label[0].nodeName,'label')) {
+                if(parseInt(find_checkbox_label.length) > 0 && iweb_object.isMatch(find_checkbox_label[0].nodeName,'label')){
                     $(this).wrap('<div class="iweb-checkbox"><div class="virtual-option"><div'+(ischecked?' class="checked"':'')+'></div></div><div class="virtual-msg">'+(find_checkbox_label[0].outerHTML)+'</div></div>');
                     find_checkbox_label.remove();
                 }
                 else {
                     $(this).wrap('<div class="iweb-checkbox"><div class="virtual-option"><div'+(ischecked?' class="checked"':'')+'></div></div><div class="virtual-msg">&nbsp;</div></div>');
                 }
+                if(ischecked){
+                    $(this).attr('data-ori','checked');
+                }
+                var reset_checkbox_object = $(this);
+                $(this).parents('form:first').on('reset', function(){
+                    if(iweb_object.isMatch(reset_checkbox_object.data('ori'),'checked')){
+                        reset_checkbox_object.parent().addClass('checked');
+                    }
+                    else {
+                        reset_checkbox_object.parent().removeClass('checked');
+                    }
+                });
             }
         });
-        if (typeof callback === 'function') {
+        if (typeof callback === 'function'){
             callback();
         }
     },
-    radiobox: function(radiobox_object,callback) {
+    radiobox: function(radiobox_object,callback){
         var iweb_object = this;
-        if(!iweb_object.isValue(radiobox_object)) {
+        if(!iweb_object.isValue(radiobox_object)){
            radiobox_object = $('body').find('input[type="radio"]');
         }
         radiobox_object.each(function(){
-            if(!$(this).parent().hasClass('iweb-radiobox')) {
+            if(!$(this).parent().hasClass('iweb-radiobox')){
                 var find_radiobox_label = $(this).next();
                 var ischecked = $(this).is(":checked");
-                if(parseInt(find_radiobox_label.length) > 0 && iweb_object.isMatch(find_radiobox_label[0].nodeName,'label')) {
+                if(parseInt(find_radiobox_label.length) > 0 && iweb_object.isMatch(find_radiobox_label[0].nodeName,'label')){
                     $(this).wrap('<div class="iweb-radiobox"><div class="virtual-option"><div'+(ischecked?' class="checked"':'')+'></div></div><div class="virtual-msg">'+(find_radiobox_label[0].outerHTML)+'</div></div>');
                     find_radiobox_label.remove();
                 }
                 else {
                     $(this).wrap('<div class="iweb-radiobox"><div class="virtual-option"><div'+(ischecked?' class="checked"':'')+'></div></div><div class="virtual-msg">&nbsp;</div></div>');
                 }
+                if(ischecked){
+                    $(this).attr('data-ori','checked');
+                }
+                var reset_radiobox_object = $(this);
+                $(this).parents('form:first').on('reset', function(){
+                    if(iweb_object.isMatch(reset_radiobox_object.data('ori'),'checked')){
+                        reset_radiobox_object.parent().addClass('checked');
+                    }
+                    else {
+                        reset_radiobox_object.parent().removeClass('checked');
+                    }
+                });
             }
         });
-        if (typeof callback === 'function') {
+        if (typeof callback === 'function'){
             callback();
         }
     },
-    pagination: function(element,options) {
+    pagination: function(element,options){
         var iweb_object = this;
-        if(iweb_object.isValue(options)) {
+        if(iweb_object.isValue(options)){
             $(element).iweb_pagination(options);
         }
         else {
             $(element).iweb_pagination();
         }
     },
-    alert: function(message,callback,setting) {
+    alert: function(message,callback,setting){
         var iweb_object = this;
-        if (iweb_object.isExist('#iweb-alert')) { return; }
+        if (iweb_object.isExist('#iweb-alert')){ return; }
         iweb_object.processing(false,0);
         var alert_html = '';
         var alert_class = '';
         var alert_btn_close = iweb_object.language[iweb_object.default_language]['btn_confirm'];
-        if (iweb_object.isValue(setting)) {
-            if (iweb_object.isValue(setting.class)) {
+        if (iweb_object.isValue(setting)){
+            if (iweb_object.isValue(setting.class)){
                 alert_class = setting.class;
             }
-            if (iweb_object.isValue(setting.btn)) {
+            if (iweb_object.isValue(setting.btn)){
                 alert_btn_close = setting.close;
             }
         }
-        if (iweb_object.isValue(alert_class)) {
+        if (iweb_object.isValue(alert_class)){
             alert_html += '<div id="iweb-alert" class="iweb-alert ' + alert_class + '">';
         } else {
             alert_html += '<div id="iweb-alert" class="iweb-alert">';
@@ -540,42 +576,42 @@ var iweb = {
         alert_html += '</div>';
         alert_html += '</div>';
         alert_html += '</div>';
-        $('.iweb > .iweb-viewer').prepend(alert_html).each(function() {
-            if(!$('body').hasClass('iweb-macosx')) {
+        $('.iweb > .iweb-viewer').prepend(alert_html).each(function(){
+            if(!$('body').hasClass('iweb-macosx')){
                 $('body').addClass('iweb-disable-scroll');
             }
-            $(document).on('click', '.iweb-alert .async-content > div > .btn-close', function() {
+            $(document).on('click', '.iweb-alert .async-content > div > .btn-close', function(){
                 $(document).off('click', '.iweb-alert .async-content > div > .btn-close');
                 $('#iweb-alert').remove();
-                if (!iweb_object.isExist('#iweb-dialog')) {
+                if (!iweb_object.isExist('#iweb-dialog')){
                     $('body').removeClass('iweb-disable-scroll');
                 }
-                if (typeof callback === 'function') {
+                if (typeof callback === 'function'){
                     callback();
                 }
             });
         });
     },
-    confirm: function(message,callback,setting) {
+    confirm: function(message,callback,setting){
         var iweb_object = this;
-        if (iweb_object.isExist('#iweb-alert')) { return; }
+        if (iweb_object.isExist('#iweb-alert')){ return; }
         iweb_object.processing(false,0);
         var confirm_html = '';
         var confirm_class = '';
         var confirm_btn_yes = iweb_object.language[iweb_object.default_language]['btn_yes'];
         var confirm_btn_no = iweb_object.language[iweb_object.default_language]['btn_no'];
-        if (iweb_object.isValue(setting)) {
-            if (iweb_object.isValue(setting.class)) {
+        if (iweb_object.isValue(setting)){
+            if (iweb_object.isValue(setting.class)){
                 confirm_class = setting.class;
             }
-            if (iweb_object.isValue(setting.yes)) {
+            if (iweb_object.isValue(setting.yes)){
                 confirm_btn_yes = setting.yes;
             }
-            if (iweb_object.isValue(setting.no)) {
+            if (iweb_object.isValue(setting.no)){
                 confirm_btn_no = setting.no;
             }
         }
-        if (iweb_object.isValue(confirm_class)) {
+        if (iweb_object.isValue(confirm_class)){
             confirm_html += '<div id="iweb-alert" class="iweb-alert ' + confirm_class + '">';
         } else {
             confirm_html += '<div id="iweb-alert" class="iweb-alert">';
@@ -592,41 +628,41 @@ var iweb = {
         confirm_html += '</div>';
         confirm_html += '</div>';
         confirm_html += '</div>';
-        $('.iweb > .iweb-viewer').prepend(confirm_html).each(function() {
-            if(!$('body').hasClass('iweb-macosx')) {
+        $('.iweb > .iweb-viewer').prepend(confirm_html).each(function(){
+            if(!$('body').hasClass('iweb-macosx')){
                 $('body').addClass('iweb-disable-scroll');
             }
-            $(document).on('click', '.iweb-alert .async-content > div > .btn-yes', function() {
+            $(document).on('click', '.iweb-alert .async-content > div > .btn-yes', function(){
                 $(document).off('click', '.iweb-alert .async-content > div > .btn-yes');
                 $(document).off('click', '.iweb-alert .async-content > div > .btn-no');
                 $('#iweb-alert').remove();
-                if (!iweb_object.isExist('#iweb-dialog')) {
+                if (!iweb_object.isExist('#iweb-dialog')){
                     $('body').removeClass('iweb-disable-scroll');
                 }
-                if (typeof callback === 'function') {
+                if (typeof callback === 'function'){
                     callback(true);
                 }
             });
-            $(document).on('click', '.iweb-alert .async-content > div > .btn-no', function() {
+            $(document).on('click', '.iweb-alert .async-content > div > .btn-no', function(){
                 $(document).off('click', '.iweb-alert .async-content > div > .btn-yes');
                 $(document).off('click', '.iweb-alert .async-content > div > .btn-no');
                 $('#iweb-alert').remove();
-                if (!iweb_object.isExist('#iweb-dialog')) {
+                if (!iweb_object.isExist('#iweb-dialog')){
                     $('body').removeClass('iweb-disable-scroll');
                 }
-                if (typeof callback === 'function') {
+                if (typeof callback === 'function'){
                     callback(false);
                 }
             });
         });
     },
-    dialog: function(htmlcode,init,callback,setting) {
+    dialog: function(htmlcode,init,callback,setting){
         var iweb_object = this;
-        if (iweb_object.isExist('#iweb-dialog')) { return; }
+        if (iweb_object.isExist('#iweb-dialog')){ return; }
         iweb_object.processing(false,0);
         var dialog_html = '';
-        if (iweb_object.isValue(setting)) {
-            if (iweb_object.isValue(setting.class)) {
+        if (iweb_object.isValue(setting)){
+            if (iweb_object.isValue(setting.class)){
                 dialog_html += '<div id="iweb-dialog" class="iweb-dialog iweb-dialog-' + setting.class + '">';
             } else {
                 dialog_html += '<div id="iweb-dialog" class="iweb-dialog">';
@@ -651,62 +687,62 @@ var iweb = {
         dialog_html += '</div>';
         dialog_html += '</div>';
     
-        $('.iweb > .iweb-viewer').prepend(dialog_html).each(function() {
-            if(!$('body').hasClass('iweb-macosx')) {
+        $('.iweb > .iweb-viewer').prepend(dialog_html).each(function(){
+            if(!$('body').hasClass('iweb-macosx')){
                 $('body').addClass('iweb-disable-scroll');
             }
             else {
                 $('#iweb-dialog > .inner').iScroll({ mode: 'macosx'});
             }
-            if (typeof init === 'function') {
+            if (typeof init === 'function'){
                 init();
             }
-            $(document).on('click', '.iweb-dialog .async-virtual', function(e) {
+            $(document).on('click', '.iweb-dialog .async-virtual', function(e){
                 $(document).off('click', '.iweb-dialog .async-virtual');
                 $(document).off('click', '.iweb-dialog .async-content .btn-close');
                 $('#iweb-dialog').remove();
                 $('body').removeClass('iweb-disable-scroll');
-                if (typeof callback === 'function') {
+                if (typeof callback === 'function'){
                     callback();
                 }
             });
-            $(document).on('click', '.iweb-dialog .async-content .btn-close', function() {
+            $(document).on('click', '.iweb-dialog .async-content .btn-close', function(){
                 $(document).off('click', '.iweb-dialog .async-virtual');
                 $(document).off('click', '.iweb-dialog .async-content .btn-close');
                 $('#iweb-dialog').remove();
                 $('body').removeClass('iweb-disable-scroll');
-                if (typeof callback === 'function') {
+                if (typeof callback === 'function'){
                     callback();
                 }
             });
-            var delay_timer = setTimeout(function() {
+            var delay_timer = setTimeout(function(){
                 $('.iweb-dialog .async-loading').remove();
                 $('.iweb-dialog .async-content').animate({'opacity':1});
                 clearTimeout(delay_timer);
             }, 1000);
         });
     },
-    post: function(data,callback) {
+    post: function(data,callback){
         var iweb_object = this;
         var check_status = false;
         var service_url = '';
         var post_data = {};
         var data_type = 'json';
-        if (iweb_object.isValue(data)) {
-            if (iweb_object.isValue(data.url)) {
+        if (iweb_object.isValue(data)){
+            if (iweb_object.isValue(data.url)){
                 service_url = data.url;
                 check_status = true;
             }
-            if (iweb_object.isValue(data.val)) {
+            if (iweb_object.isValue(data.val)){
                 post_data = data.val;
             }
-            if (iweb_object.isValue(data.type)) {
+            if (iweb_object.isValue(data.type)){
                 data_type = data.type;
             }
         }
-        if (check_status && !iweb_object.processing_status) {
+        if (check_status && !iweb_object.processing_status){
             iweb_object.processing_status = true;
-            if (iweb_object.isValue(data.loading)) {
+            if (iweb_object.isValue(data.loading)){
                 iweb_object.processing(true,true);
             }
             $.ajax({
@@ -714,17 +750,17 @@ var iweb = {
                 type: "post",
                 data: post_data,
                 dataType: data_type,
-                success: function(response_data) {
-                    if (typeof callback === 'function') {
+                success: function(response_data){
+                    if (typeof callback === 'function'){
                         callback(response_data);
                     }
-                    var delay_timer = setTimeout(function() {
+                    var delay_timer = setTimeout(function(){
                         iweb_object.processing_status = false;
                         iweb_object.processing(false,0);
                         clearTimeout(delay_timer);
                     }, 1000);
                 },
-                error: function(xhr, ajaxOptions, thrownError) {
+                error: function(xhr, ajaxOptions, thrownError){
                     iweb_object.processing_status = false;
                     iweb_object.processing(false,0);
                     alert(thrownError);
@@ -733,31 +769,31 @@ var iweb = {
             });
         }
     },
-    form: function(target_form_id,type,checkfunc,callback) {
+    form: function(target_form_id,type,checkfunc,callback){
         var iweb_object = this;
         target_form_id = '#' + (target_form_id.toString().replace('#', ''));
-        if (iweb_object.isExist(target_form_id)) {
+        if (iweb_object.isExist(target_form_id)){
             object = this;
             var data_type = 'json';
-            if (iweb_object.isValue(type)) {
+            if (iweb_object.isValue(type)){
                 data_type = type;
             }
-            if (iweb_object.isValue($(target_form_id).data('token'))) {
+            if (iweb_object.isValue($(target_form_id).data('token'))){
                 iweb_object.csrf_token = $(target_form_id).data('token');
                 $(target_form_id).removeAttr('data-token');
             }
             $(target_form_id).ajaxForm({
                 dataType: data_type,
-                beforeSubmit: function(arr, $form, options) {
-                    if (iweb_object.processing_status) {
+                beforeSubmit: function(arr, $form, options){
+                    if (iweb_object.processing_status){
                         return false;
                     }
-                    if (typeof checkfunc === 'function') {
-                        if (!checkfunc(arr)) {
+                    if (typeof checkfunc === 'function'){
+                        if (!checkfunc(arr)){
                             return false;
                         }
                     }
-                    if(iweb_object.csrf_token.length > 0) {
+                    if(iweb_object.csrf_token.length > 0){
                         var index = iweb_object.randomNum(1,Math.ceil(iweb_object.csrf_token.length/3));
                         var client_token = iweb_object.randomString();
                         arr.push({
@@ -772,25 +808,25 @@ var iweb = {
                     }
                     iweb_object.processing_status = true;
                     iweb_object.processing(true,true);
-                    if (typeof checkfunc !== 'function') {
+                    if (typeof checkfunc !== 'function'){
                         return true;
                     }
                 },
-                success: function(response_data) {
-                    if(iweb_object.isValue(iweb_object.getCookie('client_token'))) {
+                success: function(response_data){
+                    if(iweb_object.isValue(iweb_object.getCookie('client_token'))){
                         iweb_object.setCookie('client_token','',-1);
                     }
-                    if (typeof callback === 'function') {
+                    if (typeof callback === 'function'){
                         callback(response_data);
                     }
-                    var delay_timer = setTimeout(function() {
+                    var delay_timer = setTimeout(function(){
                         iweb_object.processing_status = false;
                         iweb_object.processing(false,0);
                         clearTimeout(delay_timer);
                     }, 1000);
                 },
-                error: function(xhr, ajaxOptions, thrownError) {
-                    if(iweb_object.isValue(iweb_object.getCookie('client_token'))) {
+                error: function(xhr, ajaxOptions, thrownError){
+                    if(iweb_object.isValue(iweb_object.getCookie('client_token'))){
                         iweb_object.setCookie('client_token','',-1);
                     }
                     iweb_object.processing_status = false;
@@ -801,18 +837,18 @@ var iweb = {
             });
         }
     },
-    isValue:function(value) {
-        if (value !== null && (typeof value !== 'undefined')) {
-            if (typeof value === 'object' || typeof value === 'array') {
-                if (parseInt(Object.keys(value).length) > 0) {
+    isValue:function(value){
+        if (value !== null && (typeof value !== 'undefined')){
+            if (typeof value === 'object' || typeof value === 'array'){
+                if (parseInt(Object.keys(value).length) > 0){
                     return true;
                 } else {
                     return false;
                 }
-            } else if (typeof value === 'boolean') {
+            } else if (typeof value === 'boolean'){
                 return value;
             } else {
-                if ($.trim(value) !== '') {
+                if ($.trim(value) !== ''){
                     return true;
                 } else {
                     return false
@@ -822,38 +858,38 @@ var iweb = {
             return false;
         }
     },
-    isNumber: function(value) {
+    isNumber: function(value){
         var iweb_object = this;
-        if (!iweb_object.isValue(value)) {
+        if (!iweb_object.isValue(value)){
             return false;
         } else {
             var reg = /^[0-9]+$/;
             return reg.test(value);
         }
     },
-    isEmail: function(value) {
+    isEmail: function(value){
         var iweb_object = this;
-        if (!iweb_object.isValue(value)) {
+        if (!iweb_object.isValue(value)){
             return false;
         } else {
             var reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,})$/;
             return reg.test(value);
         }
     },
-    isPassword: function(value) {
+    isPassword: function(value){
         var iweb_object = this;
-        if (!iweb_object.isValue(value)) {
+        if (!iweb_object.isValue(value)){
             return false;
         } else {
             var reg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
             return reg.test(value);
         }
     },
-    isMatch: function(value1,value2,sensitive) {
+    isMatch: function(value1,value2,sensitive){
         var iweb_object = this;
-        if (iweb_object.isValue(value1) && iweb_object.isValue(value2)) {
-            if(iweb.isValue(sensitive) && (sensitive || parseInt(sensitive) === 1)) {
-                if($.trim(value1).toString() === $.trim(value2).toString()) {
+        if (iweb_object.isValue(value1) && iweb_object.isValue(value2)){
+            if(iweb.isValue(sensitive) && (sensitive || parseInt(sensitive) === 1)){
+                if($.trim(value1).toString() === $.trim(value2).toString()){
                     return true;
                 }
                 else {
@@ -861,7 +897,7 @@ var iweb = {
                 }
             }
             else {
-                if($.trim(value1).toString().toLowerCase() === $.trim(value2).toString().toLowerCase()) {
+                if($.trim(value1).toString().toLowerCase() === $.trim(value2).toString().toLowerCase()){
                     return true;
                 }
                 else {
@@ -872,32 +908,32 @@ var iweb = {
             return false;
         }
     },
-    isExist: function(element) {
+    isExist: function(element){
         var iweb_object = this;
-        if (parseInt($(element).length) > 0) {
+        if (parseInt($(element).length) > 0){
             return true;
         }
         return false;
     },
-    detectDevice: function(index) {
+    detectDevice: function(index){
         var isMobile= {
-            Android: function() {
+            Android: function(){
                 return navigator.userAgent.match(/Android/i);
             },
-            BlackBerry: function() {
+            BlackBerry: function(){
                 return navigator.userAgent.match(/BlackBerry/i);
             },
-            iOS: function() {
+            iOS: function(){
                 return navigator.userAgent.match(/Mac|iPhone|iPad|iPod/i);
             },
-            Opera: function() {
+            Opera: function(){
                 return navigator.userAgent.match(/Opera Mini/i);
             },
-            Windows: function() {
+            Windows: function(){
                 return navigator.userAgent.match(/IEMobile/i);
             }
         };
-        switch (index) {
+        switch (index){
             case 'android':
                 return isMobile.Android();
                 break;
@@ -916,11 +952,11 @@ var iweb = {
             default: return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
         }
     },
-    setCookie: function(cname, cvalue, exdays) {
-        if(navigator.cookieEnabled) {
+    setCookie: function(cname, cvalue, exdays){
+        if(navigator.cookieEnabled){
             var iweb_object = this;
-            if (iweb_object.isValue(cname)) {
-                if(!iweb_object.isValue(exdays)) {
+            if (iweb_object.isValue(cname)){
+                if(!iweb_object.isValue(exdays)){
                     exdays = 7;
                 }
                 var d = new Date();
@@ -930,33 +966,33 @@ var iweb = {
             }
         }
     },
-    getCookie: function(cname) {
-        if(navigator.cookieEnabled) {
+    getCookie: function(cname){
+        if(navigator.cookieEnabled){
             var name = cname + '=';
             var ca = document.cookie.split(';');
-            for(var i = 0; i < ca.length; i++) {
+            for(var i = 0; i < ca.length; i++){
                 var c = ca[i];
-                while (c.charAt(0) == ' ') {
+                while (c.charAt(0) == ' '){
                     c = c.substring(1);
                 }
-                if (c.indexOf(name) == 0) {
+                if (c.indexOf(name) == 0){
                     return c.substring(name.length, c.length);
                 }
             }
         }
         return '';
     },
-    getUrlParameter: function(name) {
+    getUrlParameter: function(name){
         var iweb_object = this;
         var parameter_value = '';
-        if(iweb_object.isValue(name)) {
+        if(iweb_object.isValue(name)){
             var urlParameters = window.location.search.substring(1).split('&');
-            for (var i = 0; i < parseInt(urlParameters.length); i++) {
+            for (var i = 0; i < parseInt(urlParameters.length); i++){
                 var currentParameter = urlParameters[i].split('=');
                 var currentParameter_index = currentParameter[0];
                 var currentParameter_value = currentParameter[1];
-                if (iweb_object.isValue(currentParameter_index) && iweb_object.isValue(currentParameter_value)) {
-                    if (iweb_object.isMatch(currentParameter_index,name)) {
+                if (iweb_object.isValue(currentParameter_index) && iweb_object.isValue(currentParameter_value)){
+                    if (iweb_object.isMatch(currentParameter_index,name)){
                         parameter_value = currentParameter_value;
                         break;
                     }
@@ -965,30 +1001,30 @@ var iweb = {
         }
         return parameter_value;
     },
-    randomNum: function(min,max) {
+    randomNum: function(min,max){
         var iweb_object = this;
-        if(!iweb_object.isValue(min) || parseInt(min) < 0) {
+        if(!iweb_object.isValue(min) || parseInt(min) < 0){
             min = 0;
         }
-        if(!iweb_object.isValue(max) || parseInt(max) < 1) {
+        if(!iweb_object.isValue(max) || parseInt(max) < 1){
             max = 1;
         }
         min = parseInt(min);
         max = parseInt(max);
-        if(parseInt(min) > parseInt(max)) {
+        if(parseInt(min) > parseInt(max)){
             min = 0;
             max = 1;
         }
         return parseInt(Math.random()*(max+1-min)+min);
     },
-    randomString: function(length) {
+    randomString: function(length){
         var iweb_object = this;
         var chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
-        if(!iweb_object.isNumber(length)) {
+        if(!iweb_object.isNumber(length)){
             length = 12;
         }
         var result = '';
-        for (var i=0; i< length; i++) {
+        for (var i=0; i< length; i++){
             var rnum = Math.floor(Math.random() * chars.length);
             result += chars.substring(rnum,rnum+1);
         }
@@ -1000,32 +1036,32 @@ $(document).ready(function(){
     iweb.initialize();
 });
 
-$(window).on('load',function() {
-    if (typeof iweb_layout_done==='function') {
+$(window).on('load',function(){
+    if (typeof iweb_layout_done==='function'){
         iweb_layout_done(iweb.win_width);
     }
-    if (typeof iweb_ilayout_done==='function') {
+    if (typeof iweb_ilayout_done==='function'){
         iweb_ilayout_done(iweb.win_width);
     }
-    if (typeof iweb_func_done==='function') {
+    if (typeof iweb_func_done==='function'){
         iweb_func_done();
     }
-    if (typeof iweb_ifunc_done==='function') {
+    if (typeof iweb_ifunc_done==='function'){
         iweb_ifunc_done();
     }
     iweb.init_status = true;
     iweb.processing(false,1500);
 });
 
-$(window).on('resize',function() {
-    if (iweb.resizing()) {
+$(window).on('resize',function(){
+    if (iweb.resizing()){
         $('.iweb-selector > .virtual-choice > div > ul').hide();
-        var delay_timer = setTimeout(function() {
+        var delay_timer = setTimeout(function(){
             iweb.responsive();
-            if (typeof iweb_layout==='function') {
+            if (typeof iweb_layout==='function'){
                 iweb_layout(iweb.win_width);
             }
-            if (typeof iweb_ilayout==='function') {
+            if (typeof iweb_ilayout==='function'){
                 iweb_ilayout(iweb.win_width);
             }
             clearTimeout(delay_timer);
@@ -1033,13 +1069,13 @@ $(window).on('resize',function() {
     }
 });
 
-$(window).on('scroll',function() {
-    if(iweb.mode !== 'macosx' && iweb.init_status) {
+$(window).on('scroll',function(){
+    if(iweb.mode !== 'macosx' && iweb.init_status){
         iweb.win_scroll_top = parseInt($(window).scrollTop());
-        if (typeof iweb_scroll==='function') {
+        if (typeof iweb_scroll==='function'){
             iweb_scroll(parseInt($(window).scrollTop()));
         }
-        if (typeof iweb_iscroll==='function') {
+        if (typeof iweb_iscroll==='function'){
             iweb_iscroll(parseInt($(window).scrollTop()));
         }
     }

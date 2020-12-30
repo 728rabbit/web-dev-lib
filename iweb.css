@@ -372,6 +372,10 @@ select {
     padding-left: 20px;
 }
 
+.iweb-checkbox * {
+    cursor: pointer;
+}
+
 .iweb-checkbox > .virtual-option {
     position: absolute;
     top: 5px;
@@ -430,6 +434,10 @@ select {
     display: inline-block;
     vertical-align: top;
     padding-left: 20px;
+}
+
+.iweb-radiobox * {
+    cursor: pointer;
 }
 
 .iweb-radiobox > .virtual-option {
