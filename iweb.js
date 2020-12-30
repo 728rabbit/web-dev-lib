@@ -965,6 +965,9 @@ var iweb = {
                 document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
             }
         }
+        else {
+            alert('Cookies Blocked or not supported by your browser.');
+        }
     },
     getCookie: function(cname){
         if(navigator.cookieEnabled){
@@ -979,6 +982,9 @@ var iweb = {
                     return c.substring(name.length, c.length);
                 }
             }
+        }
+        else {
+            alert('Cookies Blocked or not supported by your browser.');
         }
         return '';
     },
