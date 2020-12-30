@@ -798,8 +798,7 @@ var iweb = {
             }
             $(target_form_id).ajaxForm({
                 dataType: data_type,
-                resetForm: true,
-                forceSync: false,
+                forceSync: true,
                 beforeSubmit: function(arr, $form, options){
                     if (iweb_object.processing_status){
                         return false;
