@@ -222,17 +222,19 @@
 
     /* php verify csrf_token */
     function verifyCSRFToken() {
-        $async_index = ((isset($_REQUEST['async_index']))?max(0,(int)$_REQUEST['async_index']):0);
-        $csrf_token = ((isset($_REQUEST['csrf_token']))?trim((string)strip_tags($_REQUEST['csrf_token'])):'');
-        $client_token = ((isset($_COOKIE['client_token']))?trim((string)strip_tags($_COOKIE['client_token'])):'');
-        $server_token = 'f2b7b9a0d23176b20463be39eb5c4acf';
-        setcookie('client_token', '');
-        if(!empty($csrf_token) && !empty($server_token) && !empty($client_token)) {
-            if($csrf_token == substr($server_token,$async_index,strlen($client_token)).$client_token) {
-                return true;
-            }
+        date_default_timezone_set('Asia/Hong_Kong');
+        $key = 'v5F9o68tYIfQB1g0GoI4zheZt65r73Y9';
+        $token = '96ca6fd5cc5283000910785ba2344044';
+        $csrf_token = base64_decode($_REQUEST['csrf_token']);
+        $csrf_token = explode('#dt', $csrf_token);
+        if(is_array($csrf_token) && count($csrf_token) == 2 && 
+            (strtolower(md5(md5($key.'.'.$_SERVER['SERVER_NAME']).'.'.$token)) == strtolower(trim($csrf_token[0]))) && 
+            strtotime(date('Y-m-d H:i:s')) < (strtotime(trim($csrf_token[1]))+60)){
+            return true;
         }
-        return false;
+        else {
+            return false;
+        }
     }
 
 
