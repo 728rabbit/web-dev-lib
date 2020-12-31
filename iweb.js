@@ -153,27 +153,28 @@ var iweb = {
     processing_status: false,
     win_width: 0,
     win_scroll_top: 0,
-    key: 'Ynp46b6HCfIrVdseCy3beliiuCrNJCFt',
+    key: '',
     csrf_token: '',
     language: [],
     initialize: function(key){
         var iweb_object = this;
         iweb_object.mode = ((iweb_object.isValue($('body').data('macosx')) && parseInt($('body').data('macosx')) > 0 && !iweb_object.detectDevice())?'macosx':'default');
-        iweb_object.processing(parseInt($('body').data('processing'))); 
+        iweb_object.processing(parseInt($('body').data('processing')));
         iweb_object.language['en'] = {'btn_confirm':'OK','btn_yes':'Yes','btn_no':'No','select':'Please select'};
         iweb_object.language['zh-hant'] = {'btn_confirm':'確定','btn_yes':'是','btn_no':'否','select':'請選擇'};
         iweb_object.language['zh-hans'] = {'btn_confirm':'确定','btn_yes':'是','btn_no':'否','select':'请选择'};
+        iweb_object.language['ja'] = {'btn_confirm':'確かめる','btn_yes':'はい','btn_no':'いいえ','select':'選んでください'};
         if(iweb_object.isValue($('html').attr('lang')) && iweb_object.isValue(iweb_object.language[$('html').attr('lang').toString().toLowerCase()])){
             iweb_object.default_language = $('html').attr('lang').toString().toLowerCase();
         }
-        if(iweb_object.isValue(key)){ 
-            iweb_object.key = key; 
+        
+        if(iweb_object.isValue($('body').data('ikey'))){
+            iweb_object.key = md5($('body').data('ikey')+'.'+location.hostname);
         }
-        iweb_object.key = md5(iweb_object.key+'.'+location.hostname);
-        iweb_object.csrf_token = $('meta[name="csrf-token"]').attr('content');
-        if(!iweb_object.isValue(iweb_object.csrf_token)){
-            iweb_object.csrf_token = '';
+        if(iweb_object.isValue($('meta[name="csrf-token"]').attr('content'))){ 
+            iweb_object.csrf_token = $('meta[name="csrf-token"]').attr('content');
         }
+        
         $('body > *').not('script,noscript').wrapAll('<div class="iweb-viewer"></div>');
         if(iweb_object.mode === 'macosx'){
             iweb_object.scrollbar('body > .iweb-viewer','macosx',function(scroll_y){
@@ -188,12 +189,14 @@ var iweb = {
                 }
             });
         }
+        
         $('body').find('.iweb-editor').fitVids({ignore:'.fitvids-non'});
         iweb_object.selector();
         iweb_object.checkbox();
         iweb_object.radiobox();
         iweb_object.responsive();
         iweb_object.win_width = parseInt($('.iweb-viewer').width());
+        
         $(document).on('change','.iweb-selector > .real-choice > select',function(){
             var selectoption = $(this).val();
             $(this).parents('.iweb-selector').find('.virtual-choice li.virtual-node').each(function(){
@@ -206,6 +209,7 @@ var iweb = {
                 }
             });
         });
+        
         $(document).on('click','.iweb-selector > .virtual-choice > div > span',function(){
             var target_selector = $(this);
             $('.iweb-selector > .virtual-choice > div > ul').each(function(){
@@ -220,11 +224,13 @@ var iweb = {
                 target_selector.parents('.iweb-selector').find('.virtual-choice > div > ul').show();
             }
         });
+        
         $(document).on('click','.virtual-choice li.virtual-node',function(){
             $(this).parents('.iweb-selector').find('.virtual-choice > div > ul').hide();
             $(this).parents('.iweb-selector').find('.virtual-choice > div > span').html($(this).text());
             $(this).parents('.iweb-selector').find('.real-choice > select').val($(this).data('value')).trigger('change');
         });
+        
         $(document).on('click','.iweb-checkbox > .virtual-option > div > input',function(){
             if(!$(this).is(":checked")){
                 $(this).parent().removeClass('checked');
@@ -233,11 +239,12 @@ var iweb = {
                 $(this).parent().addClass('checked');
             }
         });
+        
         $(document).on('click','.iweb-radiobox > .virtual-option > div > input',function(){
             var selected_value = $(this).val();
             var related_object = $('input[type="radio"][name="'+$(this).attr('name')+'"]');
             $.each(related_object,function(){
-                if(iweb.isMatch($(this).val(),selected_value)){
+                if(iweb_object.isMatch($(this).val(),selected_value)){
                     $(this).prop('checked', true);
                     $(this).parent().addClass('checked');
                 }
@@ -247,11 +254,13 @@ var iweb = {
                 }
             });
         });
+        
         $(document).on('click','body',function(e){
             if(parseInt($(e.target).parents('.iweb-selector').length) === 0){
                 $('.iweb-selector > .virtual-choice > div > ul').hide();
             }
         });
+        
         $(document).on('keypress','body',function(e){
             var keycode = (e.keyCode ? e.keyCode : e.which);
             if(keycode == 13 && iweb_object.isExist('#iweb-alert')){
@@ -259,6 +268,13 @@ var iweb = {
                 return false;
             }
         });
+        
+        $(document).on('click','a',function(e){
+            if(!iweb_object.isValue($(this).attr('href')) || iweb_object.isMatch($(this).attr('href'),'#')) {
+                e.preventDefault();
+            }
+        });
+        
         $(document).on('click','.font-switch',function(e){
             e.preventDefault();
             $('.font-switch').removeClass('current');
@@ -267,9 +283,9 @@ var iweb = {
             if(iweb_object.isMatch($(this).data('size'),'small') || iweb_object.isMatch($(this).data('size'),'large')){
                 $('html').addClass($(this).data('size')+'-font');
             }
-            iweb.setCookie('iweb_font_sizse',$(this).data('size'),14);
+            iweb_object.setCookie('iweb_font_sizse',$(this).data('size'),14);
             $('.font-switch').each(function(){
-                if(iweb_object.isMatch($(this).data('size'),iweb.getCookie('iweb_font_sizse'))){
+                if(iweb_object.isMatch($(this).data('size'),iweb_object.getCookie('iweb_font_sizse'))){
                     $(this).addClass('current');
                 }
                 else {
@@ -277,12 +293,13 @@ var iweb = {
                 }
             });
         });
-        if(iweb_object.isValue(iweb.getCookie('iweb_font_sizse'))){
-            if(iweb_object.isMatch(iweb.getCookie('iweb_font_sizse'),'small') || iweb_object.isMatch(iweb.getCookie('iweb_font_sizse'),'large')){
-                $('html').addClass(iweb.getCookie('iweb_font_sizse')+'-font');
+        
+        if(iweb_object.isValue(iweb_object.getCookie('iweb_font_sizse'))){
+            if(iweb_object.isMatch(iweb_object.getCookie('iweb_font_sizse'),'small') || iweb_object.isMatch(iweb_object.getCookie('iweb_font_sizse'),'large')){
+                $('html').addClass(iweb_object.getCookie('iweb_font_sizse')+'-font');
             }
             $('.font-switch').each(function(){
-                if(iweb_object.isMatch($(this).data('size'),iweb.getCookie('iweb_font_sizse'))){
+                if(iweb_object.isMatch($(this).data('size'),iweb_object.getCookie('iweb_font_sizse'))){
                     $(this).addClass('current');
                 }
                 else {
@@ -290,24 +307,32 @@ var iweb = {
                 }
             });
         }
+        
         if (typeof iweb_layout === 'function'){
             iweb_layout(iweb_object.win_width);
         }
+        
         if (typeof iweb_ilayout === 'function'){
             iweb_ilayout(iweb_object.win_width);
         }
+        
         if (typeof iweb_func === 'function'){
             iweb_func();
         }
+        
         if (typeof iweb_ifunc === 'function'){
             iweb_ifunc();
         }
+        
         $('body').removeAttr('data-processing');
         $('body').removeAttr('data-macosx');
+        $('body').removeAttr('data-ikey');
         $('body').addClass('iweb');
+        
         if(iweb_object.detectDevice()){
             $('body').addClass('iweb-mobile');
         }
+        
         if(iweb_object.mode === 'macosx'){
             $('body').addClass('iweb-macosx');
         }
@@ -890,7 +915,7 @@ var iweb = {
     isMatch: function(value1,value2,sensitive){
         var iweb_object = this;
         if (iweb_object.isValue(value1) && iweb_object.isValue(value2)){
-            if(iweb.isValue(sensitive) && (sensitive || parseInt(sensitive) === 1)){
+            if(iweb_object.isValue(sensitive) && (sensitive || parseInt(sensitive) === 1)){
                 if($.trim(value1).toString() === $.trim(value2).toString()){
                     return true;
                 }

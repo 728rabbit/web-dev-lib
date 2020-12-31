@@ -15,6 +15,12 @@
     // macosx mode
     <body data-macosx="1"></body>
 
+    // set key
+    <body data-ikey="Ynp46b6HCfIrVdseCy3beliiuCrNJCFt"></body>
+
+    // set csrf-token
+    <meta name="csrf-token" content="96ca6fd5cc5283000910785ba2344044"/>
+
     * FitVids ignore with class "fitvids-non"
     
  
