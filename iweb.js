@@ -942,6 +942,23 @@ var iweb = {
         }
         return false;
     },
+    stringLength: function(string, maxlength) {
+        var i, sum;   
+        sum = 0;   
+        for (i = 0; i < string.length; i++) {   
+            if ((string.charCodeAt(i) >= 0) && (string.charCodeAt(i) <= 255)) {
+                sum = sum + 1;   
+            } else {
+                sum = sum + 2;   
+            }   
+        }
+        if(parseInt(maxlength) > 0) {
+            return (sum > parseInt(maxlength));
+        }
+        else {
+            return sum;
+        }
+    },
     detectDevice: function(index){
         var isMobile= {
             Android: function(){

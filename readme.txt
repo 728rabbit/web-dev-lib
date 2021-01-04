@@ -106,6 +106,12 @@
     iweb.isMatch(value1,value2, sensitive);   // compare tow vaule
     - sensitive: optional
 
+    iweb.stringLength(string, maxlength);   // compare tow vaule
+    - maxlength: optional
+    // if maxlength > 0, return true or false, check string whether larger than maxlength
+    // else, return string length
+    // 中文 = 2 bytes, 英文 = 1 byte
+
 9.  Alert Dialog:
     ----------------------------------------------------------------------------
     iweb.alert(message,callback,setting);
