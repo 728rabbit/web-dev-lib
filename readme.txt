@@ -93,7 +93,27 @@
     ----------------------------------------------------------------------------
     iweb.isValue(value);     // if value is empty, null & undefined, return false
     
-    iweb.isNumber(value);  // if value is non-number, return false
+    iweb.isNumber(value, format);  // if value is non-number, return false
+    - format: optional
+
+    e.g
+    iweb.isNumber('9999999')  // return true
+    iweb.isNumber('9999.999')  // return true
+    iweb.isNumber('0999.999') // retrun false
+    iweb.isNumber('9,999.999') // retrun false
+    
+    iweb.isNumber('9999999','currency')  // return true
+    iweb.isNumber('9999.999','currency')  // return true
+    iweb.isNumber('0999.999','currency') // retrun false
+    iweb.isNumber('9,999.999','currency') // retrun true
+
+    iweb.isNumber('9999999','digital')  // return true
+    iweb.isNumber('9999.999','digital')  // return false
+    iweb.isNumber('0999.999','digital') // retrun false
+    iweb.isNumber('9,999.999','digital') // retrun false
+
+
+    iweb.toNumber(value);  // convert value to number, if not number, return null
 
     iweb.isEmail(value);   // if value is invalid email, return false
 
@@ -234,19 +254,7 @@
 
     /* php verify csrf_token */
     function verifyCSRFToken() {
-        date_default_timezone_set('Asia/Hong_Kong');
-        $key = 'v5F9o68tYIfQB1g0GoI4zheZt65r73Y9';
-        $token = '96ca6fd5cc5283000910785ba2344044';
-        $csrf_token = base64_decode($_REQUEST['csrf_token']);
-        $csrf_token = explode('#dt', $csrf_token);
-        if(is_array($csrf_token) && count($csrf_token) == 2 && 
-            (strtolower(md5(md5($key.'.'.$_SERVER['SERVER_NAME']).'.'.$token)) == strtolower(trim($csrf_token[0]))) && 
-            strtotime(date('Y-m-d H:i:s')) < (strtotime(trim($csrf_token[1]))+60)){
-            return true;
-        }
-        else {
-            return false;
-        }
+        
     }
 
 
