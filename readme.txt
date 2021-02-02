@@ -123,7 +123,7 @@
     iweb.isMatch(value1,value2, sensitive);   // compare tow vaule
     - sensitive: optional
 
-    iweb.stringLength(string, maxlength);   // compare tow vaule
+    iweb.stringLength(string, maxlength);
     - maxlength: optional
     // if maxlength > 0, return true or false, check string whether larger than maxlength
     // else, return string length
