@@ -782,8 +782,7 @@ var iweb = {
             }
             if(iweb_object.csrf_token.length > 0){
                 var local_time = iweb_object.getDateTime(null,'time');
-                post_data['X-iToken'] = md5(iweb_object.csrf_token+'#dt'+local_time);
-                post_data['X-iTime'] = local_time;
+                post_data['X-iToken'] = window.btoa(md5(iweb_object.csrf_token+'#dt'+local_time)+'%'+local_time);
             }
             $.ajax({
                 url: service_url,
@@ -834,11 +833,7 @@ var iweb = {
                         var local_time = iweb_object.getDateTime(null,'time');
                         arr.push({
                             name: 'X-iToken',
-                            value: md5(iweb_object.csrf_token+'#dt'+local_time)
-                        });
-                        arr.push({
-                            name: 'X-iTime',
-                            value: local_time
+                            value: window.btoa(md5(iweb_object.csrf_token+'#dt'+local_time)+'%'+local_time)
                         });
                     }
                     iweb_object.processing_status = true;

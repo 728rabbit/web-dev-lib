@@ -15,9 +15,6 @@
     // macosx mode
     <body data-macosx="1"></body>
 
-    // set key
-    <body data-ikey="Ynp46b6HCfIrVdseCy3beliiuCrNJCFt"></body>
-
     // set csrf-token
     <meta name="csrf-token" content="96ca6fd5cc5283000910785ba2344044"/>
 
@@ -254,7 +251,15 @@
 
     /* php verify csrf_token */
     function verifyCSRFToken() {
-        
+        $token = '96ca6fd5cc5283000910785ba2344044';  // your random code here
+        $server_name = (($_SERVER['SERVER_NAME'])?$_SERVER['SERVER_NAME']:'/');
+        $csrf_token = explode('%',base64_decode($_POST['X-iToken']));
+        if(is_array($csrf_token) && !empty($csrf_token[0]) && !empty($csrf_token[1])){
+            if(trim(md5(md5(md5('iweb@'.$_SERVER['SERVER_NAME']).'@'.$token).'#dt'.$csrf_token[1])) == trim($csrf_token[0])) {
+                return true;
+            }
+        }
+        return false;
     }
 
 
