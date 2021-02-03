@@ -343,9 +343,13 @@ var iweb = {
                     box_html = '<div id="iweb-processing" class="iweb-processing">';
                 }
                 box_html += '<div class="loading">';
-                box_html += '<svg class="icon" x="0px" y="0px" viewBox="0 0 150 150">';
-                box_html += '<circle class="circle" cx="75" cy="75" r="60"></circle>';
+                
+                box_html += '<svg class="icon" width="48px" height="48px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">'
+                box_html += '<circle cx="50" cy="50" fill="none" stroke="#dddddd" stroke-width="10" r="36" stroke-dasharray="169.64600329384882 58.548667764616276">'
+                box_html += '<animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>'
+                box_html += '</circle>'
                 box_html += '</svg>';
+                
                 box_html += '</div>';
                 box_html += '</div>';
                 $('body').prepend(box_html);
@@ -706,9 +710,13 @@ var iweb = {
             dialog_html += '<div id="iweb-dialog" class="iweb-dialog">';
         }
         dialog_html += '<div>';
+        
         dialog_html += '<div class="async-loading">';
-        dialog_html += '<svg class="icon" x="0px" y="0px" viewBox="0 0 150 150">';
-        dialog_html += '<circle class="circle" cx="75" cy="75" r="60"></circle>';
+        
+        dialog_html += '<svg class="icon" width="48px" height="48px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">'
+        dialog_html += '<circle cx="50" cy="50" fill="none" stroke="#dddddd" stroke-width="10" r="36" stroke-dasharray="169.64600329384882 58.548667764616276">'
+        dialog_html += '<animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>'
+        dialog_html += '</circle>'
         dialog_html += '</svg>';
         dialog_html += '</div>';
 

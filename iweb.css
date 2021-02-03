@@ -545,62 +545,11 @@ select {
 }
 
 .iweb-processing > .loading > .icon {
-    width: 48px;
-    fill: transparent;
-    -webkit-animation: iweb-loading 3s linear infinite;
-    animation: iweb-loading 3s linear infinite;
+    width: 100%;
 }
 
-.iweb-processing > .loading > .icon > .circle {
-    stroke-dashoffset: 0;
-    stroke-dasharray: 300;
-    stroke-width: 12;
-    stroke-miterlimit: 12;
-    stroke-linecap: round;
+.iweb-processing > .loading > .icon > circle {
     stroke: #0c5283;
-    fill: transparent;
-   	-webkit-animation: iweb-loading-circle 2s linear infinite;
-   	animation: iweb-loading-circle 2s linear infinite;
-}
-
-@-webkit-keyframes iweb-loading {
-    0% { 
-        -webkit-transform: rotate(0); 
-        transform: rotate(0); 
-    }
-    100% { 
-        -webkit-transform: rotate(360deg); 
-        transform: rotate(360deg);
-    }
-}
-
-@keyframes iweb-loading {
-    0% { 
-        -webkit-transform: rotate(0); 
-        transform: rotate(0); 
-    }
-    100% { 
-        -webkit-transform: rotate(360deg); 
-        transform: rotate(360deg);
-    }
-}
-
-@-webkit-keyframes iweb-loading-circle {
-    0% { 
-        stroke-dashoffset: 0 
-    }
-    100% { 
-        stroke-dashoffset: -600;
-    }
-}
-
-@keyframes iweb-loading-circle {
-    0% { 
-        stroke-dashoffset: 0 
-    }
-    100% { 
-        stroke-dashoffset: -600;
-    }
 }
 
 .iweb-alert {
@@ -740,22 +689,11 @@ select {
 }
 
 .iweb-dialog .async-loading > .icon {
-    width: 48px;
-    fill: transparent;
-    -webkit-animation: iweb-loading 3s linear infinite;
-    animation: iweb-loading 3s linear infinite;
+    width: 100%;
 }
 
-.iweb-dialog .async-loading > .icon > .circle {
-    stroke-dashoffset: 0;
-    stroke-dasharray: 300;
-    stroke-width: 12;
-    stroke-miterlimit: 12;
-    stroke-linecap: round;
+.iweb-dialog .async-loading > .icon > circle {
     stroke: #fff;
-    fill: transparent;
-   	-webkit-animation: iweb-loading-circle 2s linear infinite;
-   	animation: iweb-loading-circle 2s linear infinite;
 }
 
 .iweb-dialog .async-virtual {
