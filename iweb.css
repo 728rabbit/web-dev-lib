@@ -2,6 +2,8 @@
     font-family: Arial,Helvetica,'Microsoft JhengHei','微軟正黑體',sans-serif;
     box-sizing: border-box;
     outline: none;
+    padding: 0px;
+    margin: 0px;
     word-wrap: break-word;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
     -webkit-text-size-adjust: 100%;
@@ -9,6 +11,8 @@
 
 *:after,
 *:before {
+    padding: 0px;
+    margin: 0px;
     box-sizing: border-box;
 }
 
