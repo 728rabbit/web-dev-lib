@@ -54,15 +54,8 @@ body {
     width: 100%;
     height: 100%;
     min-width: 320px;
-    margin: 0px;
-    padding: 0px;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-}
-
-p,ul,ol {
-    margin: 0px;
-    padding: 0px;
 }
 
 a {
@@ -103,6 +96,10 @@ img {
     height: auto;
     border: 0px;
     vertical-align: middle;
+}
+
+img.image-grayscale {
+	filter: grayscale(100%);
 }
 
 video { 
@@ -181,6 +178,23 @@ select {
 .iweb-editor ol {
     list-style-position: outside;
     padding-left: 30px;
+}
+
+.iweb-editor img.left {
+    float: right;
+	margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.iweb-editor img.right {
+    float: left;
+	margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.iweb-editor hr {
+	border: 0px;
+	border-top: 1px solid #ccc;
 }
 
 .iweb-editor:before,
