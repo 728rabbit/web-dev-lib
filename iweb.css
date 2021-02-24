@@ -164,6 +164,11 @@ select {
 
 .iweb > .iweb-viewer {
     position: relative;
+    margin: auto;
+    box-shadow: 0px 0px 10px #ddd;
+}
+
+.iweb-macosx > .iweb-viewer {
     height: 100%;
 }
 
