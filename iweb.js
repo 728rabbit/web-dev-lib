@@ -322,15 +322,17 @@ var iweb = {
         $('body').removeAttr('data-processing');
         $('body').removeAttr('data-macosx');
         $('body').removeAttr('data-ikey');
-        $('body').addClass('iweb');
         
-        if(iweb_object.detectDevice()){
-            $('body').addClass('iweb-mobile');
-        }
-        
-        if(iweb_object.mode === 'macosx'){
-            $('body').addClass('iweb-macosx');
-        }
+        var delay_timer = setTimeout(function(){
+            $('body').addClass('iweb');
+            if(iweb_object.detectDevice()){
+                $('body').addClass('iweb-mobile');
+            }
+            if(iweb_object.mode === 'macosx'){
+                $('body').addClass('iweb-macosx');
+            }
+            clearTimeout(delay_timer);
+        }, 500);
     },
     processing: function(status,option){
         var iweb_object = this;
