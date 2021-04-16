@@ -154,8 +154,8 @@ var iweb = {
     language: [],
     initialize: function(key){
         var iweb_object = this;
+        
         iweb_object.mode = ((iweb_object.isValue($('body').data('macosx')) && parseInt($('body').data('macosx')) > 0 && !iweb_object.detectDevice())?'macosx':'default');
-        iweb_object.processing(parseInt($('body').data('processing')));
         iweb_object.language['en'] = {'btn_confirm':'OK','btn_yes':'Yes','btn_no':'No','select':'Please select'};
         iweb_object.language['zh-hant'] = {'btn_confirm':'確定','btn_yes':'是','btn_no':'否','select':'請選擇'};
         iweb_object.language['zh-hans'] = {'btn_confirm':'确定','btn_yes':'是','btn_no':'否','select':'请选择'};
@@ -169,7 +169,13 @@ var iweb = {
             iweb_object.csrf_token = $('meta[name="csrf-token"]').attr('content');
             iweb_object.csrf_token = md5(md5('iweb@'+(iweb_object.isValue(location.hostname)?location.hostname:'/'))+'@'+iweb_object.csrf_token);
         }
-        
+
+        if(!(iweb_object.isMatch($('body').data('processing'),1) || iweb_object.isMatch($('body').data('processing'),true))){
+            $('body').append('<div id="iweb-whitemask" style="position:fixed;background: #fff;top:0px;left:0px;right:0px;bottom:0px;z-index:9999;"></div>');
+        }
+        else {
+            iweb_object.processing(parseInt($('body').data('processing')));
+        }
         $('body > *').not('script,noscript').wrapAll('<div class="iweb-viewer"></div>');
         if(iweb_object.mode === 'macosx'){
             iweb_object.scrollbar('body > .iweb-viewer','macosx',function(scroll_y){
@@ -322,17 +328,20 @@ var iweb = {
         $('body').removeAttr('data-processing');
         $('body').removeAttr('data-macosx');
         $('body').removeAttr('data-ikey');
+
+        $('body').addClass('iweb');
+        if(iweb_object.detectDevice()){
+            $('body').addClass('iweb-mobile');
+        }
+        if(iweb_object.mode === 'macosx'){
+            $('body').addClass('iweb-macosx');
+        }
         
-        var delay_timer = setTimeout(function(){
-            $('body').addClass('iweb');
-            if(iweb_object.detectDevice()){
-                $('body').addClass('iweb-mobile');
-            }
-            if(iweb_object.mode === 'macosx'){
-                $('body').addClass('iweb-macosx');
-            }
-            clearTimeout(delay_timer);
-        }, 500);
+        if(!(iweb_object.isMatch($('body').data('processing'),1) || iweb_object.isMatch($('body').data('processing'),true))){
+            $('#iweb-whitemask').fadeOut(1000,function() {
+                $(this).remove();
+            });
+        }
     },
     processing: function(status,option){
         var iweb_object = this;
@@ -358,7 +367,7 @@ var iweb = {
             }
         }
         else {
-            var microsecond = 500;
+            var microsecond = 1000;
             if (iweb_object.isNumber(option)){
                 microsecond = parseInt(option);
             }
@@ -1202,7 +1211,7 @@ $(window).on('load',function(){
         iweb_ifunc_done();
     }
     iweb.init_status = true;
-    iweb.processing(false,1500);
+    iweb.processing(false);
 });
 
 $(window).on('resize',function(){
