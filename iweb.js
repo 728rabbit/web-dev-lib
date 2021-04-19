@@ -338,9 +338,10 @@ var iweb = {
         }
         
         if(!(iweb_object.isMatch($('body').data('processing'),1) || iweb_object.isMatch($('body').data('processing'),true))){
-            $('#iweb-whitemask').fadeOut(1000,function() {
-                $(this).remove();
-            });
+            var delay_timer = setTimeout(function(){
+                $('#iweb-whitemask').remove();
+                clearTimeout(delay_timer);
+            }, 500);
         }
     },
     processing: function(status,option){
