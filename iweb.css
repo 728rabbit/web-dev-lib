@@ -17,14 +17,7 @@
 }
 
 *:focus {
-    box-shadow: 0px 0px 5px #0099ff;
-}
-
-.disabled-select {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+    box-shadow: 0px 0px 4px #0099ff;
 }
 
 .clearboth {
@@ -32,10 +25,11 @@
     display: block;
     clear: both;
     width: 100%;
+    height: 0px;
+    overflow: hidden;
 }
 
 html {
-    font-size: 1em;
     width: 100%;
     height: 100%;
 }
@@ -50,12 +44,21 @@ html.large-font {
 
 body {
     font-size: 1rem;
-    color: #222;
     width: 100%;
     height: 100%;
     min-width: 360px;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table th,
+table td {
+    padding: 4px;
+    border: 1px solid #ddd;
 }
 
 a {
@@ -65,29 +68,30 @@ a {
     -webkit-touch-callout: none;
 }
 
-a:hover {
-    opacity: 0.9;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+a.font-switch {
+    position: relative;
+    display: inline-block;
+    font-size: 16px;
+    width: 36px;
+    height: 36px;
+    text-align: center;
+    line-height: 36px;
+    border: 1px solid #ddd;
+    margin: 0px 4px;
+    border-radius: 4px;
+    vertical-align: top;
 }
 
-button {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    font-size: 1rem;
-    padding: 2px;
-    border: 0px;
-    border-radius: 0px;
-    cursor: pointer;
+a.font-switch.small {
+    font-size: 14px;
 }
 
-button:hover {
-    opacity: 0.9;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=90)";
+a.font-switch.large {
+    font-size: 20px;
 }
 
-table {
-    border-collapse: collapse;
+a.font-switch.current {
+    background: #a0dca0;
 }
 
 img {
@@ -99,9 +103,10 @@ img {
 }
 
 img.image-grayscale {
-	filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feColorMatrix type="matrix" color-interpolation-filters="sRGB" values="0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0" /></filter></svg>#filter');
+	filter: url('data:image/svg+xml;charset=utf-8,<svg><filter id="filter"><feColorMatrix type="matrix" color-interpolation-filters="sRGB" values="0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0" /></filter></svg>#filter');
 	-webkit-filter: grayscale(100%);
-	        filter: grayscale(100%);
+	filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feColorMatrix type="matrix" color-interpolation-filters="sRGB" values="0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0" /></filter></svg>#filter');
+	filter: grayscale(100%);
 }
 
 video { 
@@ -118,30 +123,23 @@ textarea {
     appearance: none;
     font-size: 1rem;
     padding: 6px 12px;
-    border: 1px solid #ccc;
-    border-radius: 0px;
-}
-
-textarea {
+    border: 1px solid #ddd;
+    border-radius: 4px;
     resize: none;
 }
 
 input[type="button"],
 input[type="submit"],
-input[type="reset"] {
+input[type="reset"],
+button {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     font-size: 1rem;
-    padding: 6px 12px;
+    padding: 2px;
     border: 0px;
-    border-radius: 0px;
+    border-radius: 4px;
     cursor: pointer;
-}
-
-select {
-    font-size: 1rem;
-    line-height: 1.5;
 }
 
 .iweb {
@@ -174,380 +172,6 @@ select {
     height: 100%;
 }
 
-.iweb-editor {
-    position: relative;
-    line-height: 1.5;
-    overflow: auto;
-    -webkit-overflow-scrolling: touch;
-}
-
-.iweb-editor ul,
-.iweb-editor ol {
-    list-style-position: outside;
-    padding-left: 30px;
-}
-
-.iweb-editor img.left {
-    float: right;
-	margin-left: 20px;
-    margin-bottom: 20px;
-}
-
-.iweb-editor img.right {
-    float: left;
-	margin-right: 20px;
-    margin-bottom: 20px;
-}
-
-.iweb-editor hr {
-	border: 0px;
-	border-top: 1px solid #ccc;
-}
-
-.iweb-editor:before,
-.iweb-editor:after {
-    position: relative;
-    display: block;
-    clear: both;
-    content: '';
-    width: 100%;
-}
-
-.iweb-selector {
-    position: relative;
-    display: inline-block;
-    vertical-align: top;
-}
-
-.iweb-selector * {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.iweb-selector > .real-choice {
-    position: relative;
-    background: transparent;
-    display: block;
-    overflow: hidden;
-}
-
-.iweb-selector > .real-choice > select {
-    position: relative;
-    width: 100%;
-    padding-top: 4px;
-    padding-left: 12px;
-    padding-right: 36px;
-    padding-bottom: 4px;
-    background: transparent;
-    border: 1px solid #ccc;
-    border-radius: 0px;
-    line-height: 1.5;
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    cursor: pointer;
-}
-
-.iweb-selector > .real-choice > select.shidden {
-    opacity: 0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-}
-
-.iweb-selector > .real-choice > select::-ms-expand {
-    display: none;
-}
-
-.iweb-selector > .real-choice > .arrow {
-    position: absolute;
-    display: inline-block;
-    background: transparent;
-    content: '';
-    width: 36px;
-    height: 100%;
-    top: 0px;
-    right: 0px;
-}
-
-.iweb-selector > .real-choice > .arrow:after {
-    position: absolute;
-    content: '';
-    display: inline-block;
-    width: 0px; 
-    height: 0px; 
-    top: 50%;
-    right: 13px;
-    margin-top: -6px;
-    border-color: #000;
-    border-style: solid;
-    border-width: 0px 2px 2px 0px;
-    padding: 3px;
-    -webkit-transform: rotate(45deg);
-            transform: rotate(45deg);
-    cursor: pointer;
-}
-
-.iweb-selector > .virtual-choice {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    border: 1px solid #ccc;
-}
-
-.iweb-selector > .virtual-choice * {
-    cursor: pointer;
-}
-
-.iweb-selector > .virtual-choice > div {
-    position: relative;
-}
-
-.iweb-selector > .virtual-choice > div > span {
-    position: relative;
-    background: transparent;
-    display: block;
-    padding-top: 4px;
-    padding-left: 12px;
-    padding-right: 36px;
-    padding-bottom: 4px;
-    line-height: 1.5;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    overflow: hidden;
-}
-
-.iweb-selector > .virtual-choice > div > ul {
-    position: absolute;
-    background: #fff;
-    display: none;
-    list-style: none;
-    top: 100%;
-    left: -1px;
-    right: -1px;
-    max-height: 240px;
-    border: 1px solid #ccc;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    overflow: auto;
-    z-index: 1;
-}
-
-.iweb-selector > .virtual-choice > div > ul > li {
-    position: relative;
-    display: block;
-}
-
-.iweb-selector > .virtual-choice > div > ul > li > span {
-    position: relative;
-    display: block;
-    padding-top: 4px;
-    padding-left: 12px;
-    padding-right: 12px;
-    padding-bottom: 4px;
-    line-height: 1.5;
-}
-
-.iweb-selector > .virtual-choice > div > ul > li.virtual-node-selected > span,
-.iweb-selector > .virtual-choice > div > ul > li > span:hover {
-    background: #0c5283;
-    color: #fff;
-}
-
-.iweb-selector > .virtual-choice > div > ul > li > ul {
-    position: relative;
-    list-style: none;
-}
-
-.iweb-selector > .virtual-choice > div > ul > li > ul > li {
-    position: relative;
-    display: block;
-}
-
-.iweb-selector > .virtual-choice > div > ul > li > ul > li > span {
-    position: relative;
-    display: block;
-    padding-top: 4px;
-    padding-left: 25px;
-    padding-right: 12px;
-    padding-bottom: 4px;
-    line-height: 1.5;
-}
-
-.iweb-selector > .virtual-choice > div > ul > li > ul > li.virtual-node-selected > span,
-.iweb-selector > .virtual-choice > div > ul > li > ul > li > span:hover {
-    background: #0c5283;
-    color: #fff;
-}
-
-.iweb-selector > .virtual-choice > div > ul > li > ul > li > span:before {
-    position: absolute;
-    display: block;
-    background: #000;
-    content: '';
-    width: 5px;
-    height: 1px;
-    top: 50%;
-    left: 15px;
-    margin-top: -1px;
-}
-
-.iweb-selector > .virtual-choice > div > ul > li > ul > li.virtual-node-selected > span:before,
-.iweb-selector > .virtual-choice > div > ul > li > ul > li > span:hover:before {
-    background: #fff;
-}
-
-.iweb-checkbox {
-    position: relative;
-    display: inline-block;
-    vertical-align: top;
-    padding-left: 20px;
-}
-
-.iweb-checkbox * {
-    cursor: pointer;
-}
-
-.iweb-checkbox > .virtual-option {
-    position: absolute;
-    top: 5px;
-    left: 0px;
-    width: 20px;
-    height: 20px;
-    overflow: hidden;
-}
-
-.iweb-checkbox > .virtual-option > div {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.iweb-checkbox > .virtual-option > div:before {
-    position: absolute;
-    content: '';
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    border: 2px solid #ccc;
-    border-radius: 2px;
-}
-
-.iweb-checkbox > .virtual-option > div.checked:after {
-    font-family: Arial,Helvetica,sans-serif;
-    position: absolute;
-    content: '✔';
-    color: #4CAF50;
-    font-size: 20px;
-    top: -4px;
-    left: 2px;
-}
-
-.iweb-checkbox > .virtual-option > div > input {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    cursor: pointer;
-    z-index: 1;
-}
-
-.iweb-checkbox > .virtual-msg {
-    position: relative;
-    padding: 4px 8px;
-    line-height: 1.5;
-}
-
-.iweb-radiobox {
-    position: relative;
-    display: inline-block;
-    vertical-align: top;
-    padding-left: 20px;
-}
-
-.iweb-radiobox * {
-    cursor: pointer;
-}
-
-.iweb-radiobox > .virtual-option {
-    position: absolute;
-    top: 5px;
-    left: 0px;
-    width: 20px;
-    height: 20px;
-    overflow: hidden;
-}
-
-.iweb-radiobox > .virtual-option > div {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.iweb-radiobox > .virtual-option > div:before {
-    position: absolute;
-    content: '';
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    border: 2px solid #ccc;
-    border-radius: 50%;
-}
-
-.iweb-radiobox > .virtual-option > div.checked:after {
-    font-family: Arial,Helvetica,sans-serif;
-    position: absolute;
-    background: #4CAF50;
-    content: '';
-    width: 60%;
-    height: 60%;
-    top: 20%;
-    left: 20%;
-    border-radius: 50%;
-    overflow: hidden;
-}
-
-.iweb-radiobox > .virtual-option > div > input {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
-    cursor: pointer;
-    z-index: 1;
-}
-
-.iweb-radiobox > .virtual-msg {
-    position: relative;
-    padding: 4px 8px;
-    line-height: 1.5;
-}
-
-.iweb-responsive {
-    position: relative;
-    max-width: 100%;
-    overflow: hidden;
-}
-
-.iweb-responsive > .video-frame {
-    position: absolute;
-    top: 0px;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
-    z-index: 1;
-}
-
 .iweb-processing {
     position: fixed;
     background: #fff;
@@ -578,7 +202,349 @@ select {
 }
 
 .iweb-processing > .loading > .icon > circle {
-    stroke: #0c5283;
+    stroke: #a0dca0;
+}
+
+.iweb-editor {
+    position: relative;
+    font-size: 1rem;
+    line-height: 1.5;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.iweb-editor ul,
+.iweb-editor ol {
+    list-style-position: outside;
+    padding-left: 30px;
+}
+
+.iweb-editor img.left {
+    float: right;
+	margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.iweb-editor img.right {
+    float: left;
+	margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+.iweb-editor hr {
+	border: 0px;
+	border-top: 1px solid #ddd;
+}
+
+.iweb-editor:before,
+.iweb-editor:after {
+    position: relative;
+    display: block;
+    clear: both;
+    content: '';
+    width: 100%;
+}
+
+.iweb-selector {
+    position: relative;
+    display: inline-block;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    vertical-align: top;
+}
+
+.iweb-selector:before {
+    position: absolute;
+    content: '';
+    display: inline-block;
+    width: 0px; 
+    height: 0px; 
+    top: 50%;
+    right: 13px;
+    margin-top: -6px;
+    border-color: #222;
+    border-style: solid;
+    border-width: 0px 2px 2px 0px;
+    padding: 3px;
+    -webkit-transform: rotate(45deg);
+    transform: rotate(45deg);
+    cursor: pointer;
+}
+
+.iweb-selector * {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+}
+
+.iweb-selector > div.real {
+    position: relative;
+    background: transparent;
+    display: block;
+    overflow: hidden;
+}
+
+.iweb-selector > div.real.hidden {
+    height: 0px!important;
+}
+
+.iweb-selector > div.real > select {
+    position: relative;
+    display: block;
+    background: transparent;
+    font-size: 1rem;
+    padding-top: 4px;
+    padding-left: 12px;
+    padding-right: 36px;
+    padding-bottom: 4px;
+    border: 0px;
+    border-radius: 0px;
+    line-height: 1.5;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    cursor: pointer;
+}
+
+.iweb-selector > div.real > select::-ms-expand {
+    display: none;
+}
+
+.iweb-selector > div.virtual {
+    position: relative;
+}
+
+.iweb-selector > div.virtual > div {
+    position: relative;
+}
+
+.iweb-selector > div.virtual > div.result > a {
+    position: relative;
+    background: transparent;
+    display: block;
+    font-size: 1rem;
+    padding-top: 4px;
+    padding-left: 12px;
+    padding-right: 36px;
+    padding-bottom: 4px;
+    line-height: 1.5;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.iweb-selector > div.virtual > div.options > ul {
+    position: absolute;
+    background: #fff;
+    display: none;
+    list-style: none;
+    top: 100%;
+    left: -1px;
+    right: -1px;
+    max-height: 240px;
+    border: 1px solid #ddd;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+    overflow: auto;
+    z-index: 1;
+    -webkit-overflow-scrolling: touch;
+}
+
+.iweb-selector > div.virtual > div.options ul > li {
+    position: relative;
+    display: block;
+}
+
+.iweb-selector > div.virtual > div.options ul > li > a {
+    position: relative;
+    display: block;
+    padding-top: 4px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 4px;
+    line-height: 1.5;
+}
+
+.iweb-selector > div.virtual > div.options ul > li.node-selected > a,
+.iweb-selector > div.virtual > div.options ul > li > a:hover {
+    background: #a0dca0;
+    color: #fff;
+}
+
+.iweb-selector > div.virtual > div.options > ul > li > ul {
+    position: relative;
+    display: block;
+}
+
+.iweb-selector > div.virtual > div.options > ul > li > ul > li > a {
+    padding-left: 24px;
+}
+
+.iweb-checkbox {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 20px;
+}
+
+.iweb-checkbox * {
+    cursor: pointer;
+}
+
+.iweb-checkbox > div.options {
+    position: absolute;
+    top: 5px;
+    left: 0px;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+}
+
+.iweb-checkbox > div.options > div {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.iweb-checkbox > div.options > div:before {
+    position: absolute;
+    content: '';
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+}
+
+.iweb-checkbox > div.options > div.checked:after {
+    font-family: Arial,Helvetica,sans-serif;
+    position: absolute;
+    content: '✔';
+    color: #a0dca0;
+    font-size: 20px;
+    top: -4px;
+    left: 2px;
+}
+
+.iweb-checkbox > div.options > div > input {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    cursor: pointer;
+    z-index: 1;
+}
+
+.iweb-checkbox > div.virtual-msg {
+    position: relative;
+    line-height: 30px;
+}
+
+.iweb-checkbox > div.virtual-msg > label {
+    padding-left: 10px;
+}
+
+.iweb-checkbox > div.virtual-msg > label > a {
+    text-decoration: underline;
+}
+
+
+.iweb-radiobox {
+    position: relative;
+    display: inline-block;
+    vertical-align: top;
+    padding-left: 20px;
+}
+
+.iweb-radiobox * {
+    cursor: pointer;
+}
+
+.iweb-radiobox > div.options {
+    position: absolute;
+    top: 5px;
+    left: 0px;
+    width: 20px;
+    height: 20px;
+    overflow: hidden;
+}
+
+.iweb-radiobox > div.options > div {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.iweb-radiobox > div.options > div:before {
+    position: absolute;
+    content: '';
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+}
+
+.iweb-radiobox > div.options > div.checked:after {
+    font-family: Arial,Helvetica,sans-serif;
+    position: absolute;
+    background: #a0dca0;
+    content: '';
+    width: 60%;
+    height: 60%;
+    top: 20%;
+    left: 20%;
+    border-radius: 50%;
+    overflow: hidden;
+}
+
+.iweb-radiobox > div.options > div > input {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    cursor: pointer;
+    z-index: 1;
+}
+
+.iweb-radiobox > div.virtual-msg {
+    position: relative;
+    line-height: 30px;
+}
+
+.iweb-radiobox > div.virtual-msg > label {
+    padding-left: 10px;
+}
+
+.iweb-radiobox > div.virtual-msg > label > a {
+    text-decoration: underline;
+}
+
+.iweb-responsive {
+    position: relative;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+.iweb-responsive > .video-frame {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    z-index: 1;
 }
 
 .iweb-alert {
@@ -597,7 +563,7 @@ select {
     position: relative;
     width: 100%;
     height: 100%;
-    padding: 15px;
+    padding: 15px!important;
     margin: auto;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -610,6 +576,10 @@ select {
     width: 0px;
     height: 82%;
     vertical-align: middle;
+}
+
+.iweb-alert div.iscroll-macosx:before {
+    height: 32%;
 }
     
 .iweb-alert .async-content {
@@ -651,7 +621,7 @@ select {
     font-weight: bold;
     width: 100%;
     padding: 8px;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #ddd;
 }
 
 .iweb-alert .async-content > div > .btn-yes {
@@ -662,8 +632,8 @@ select {
     font-size: 1rem;
     font-weight: bold;
     border: 0px;
-    border-top: 1px solid #ccc;
-    border-right: 1px solid #ccc;
+    border-top: 1px solid #ddd;
+    border-right: 1px solid #ddd;
     padding: 8px;
 }
 
@@ -674,7 +644,7 @@ select {
     width: 50%;
     font-size: 1rem;
     font-weight: bold;
-    border-top: 1px solid #ccc;
+    border-top: 1px solid #ddd;
     padding: 8px;
 }
 
@@ -700,7 +670,7 @@ select {
     position: relative;
     width: 100%;
     height: 100%;
-    padding: 15px;
+    padding: 15px!important;
     margin: auto;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -801,25 +771,26 @@ select {
     position: relative;
     display: block;
     text-align: center;
-    border: 1px solid #ccc;
-    padding: 4px;
-    color: #000;
+    border: 1px solid #ddd;
+    padding: 2px;
+    color: #222;
     min-width: 28px;
     height: 28px;
+    border-radius: 4px;
 }
 
 .iweb-pagination > ul > li > a.current {
-    background: #ccc;
+    background: #ddd;
     color: #fff;
 }
 
 .iweb-pagination > ul > li > a > span {
-    line-height: 20px;
+    line-height: 22px;
 }
 
 .iweb-pagination > ul > li > a > i {
     position: absolute;
-    border-color: #000;
+    border-color: #222;
     border-style: solid;
     border-width: 0px 1px 1px 0px;
     display: inline-block;
@@ -869,7 +840,7 @@ select {
 .iweb-pagination > ul > li > input[type="text"] {
     width: 46px;
     height: 28px;
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     padding: 3px 6px;
     text-align: center;
 }
@@ -905,6 +876,11 @@ select {
     width: 0px;
 }
 
+.iscroll-outer > .iscroll-content,
+.iscroll-inner > .iscroll-content{
+    padding-right: 10px;
+}
+
 .iscroll-element {
     display: none;
 }
@@ -920,7 +896,7 @@ select {
 }
 
 .iscroll-textarea {
-    border: 1px solid #cccccc;
+    border: 1px solid #dddccc;
     border-top-color: #999999;
 }
 
@@ -986,27 +962,20 @@ select {
     border-radius: 6px;
 }
 
-.iscroll-inner > .iscroll-element .iscroll-element-track,
-.iscroll-inner > .iscroll-element .iscroll-bar {
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=40)";
-    filter: alpha(opacity=40);
-    opacity: 0.4;
-}
-
 .iscroll-inner > .iscroll-element .iscroll-element-track {
-    background-color: #e0e0e0;
+    background-color: #ddd;
 }
 
 .iscroll-inner > .iscroll-element .iscroll-bar {
-    background-color: #c2c2c2;
+    background-color: #a0dca0;
 }
 
 .iscroll-inner > .iscroll-element:hover .iscroll-bar {
-    background-color: #919191;
+    background-color: #a0dca0;
 }
 
 .iscroll-inner > .iscroll-element.iscroll-draggable .iscroll-bar {
-    background-color: #919191;
+    background-color: #a0dca0;
 }
 
 .iscroll-inner > .iscroll-element.scroll-x.iscroll-visible .iscroll-element-track {
@@ -1016,7 +985,6 @@ select {
 .iscroll-inner > .iscroll-element.scroll-y.iscroll-scrollx-visible .iscroll-element-track {
     top: -6px;
 }
-
 
 .iscroll-inner > .iscroll-element.scroll-x.iscroll-visible .iscroll-element-size {
     left: -6px;
@@ -1067,7 +1035,7 @@ select {
 }
 
 .iscroll-outer > .iscroll-element.scroll-y .iscroll-element-outer {
-    left: 2px;
+    left: -2px;
     width: 6px;
 }
 
@@ -1076,7 +1044,7 @@ select {
 }
 
 .iscroll-outer > .iscroll-element .iscroll-element-track {
-    background-color: #eeeeee;
+    background-color: #ddd;
 }
 
 .iscroll-outer > .iscroll-element .iscroll-element-outer,
@@ -1086,17 +1054,16 @@ select {
 }
 
 .iscroll-outer > .iscroll-element .iscroll-bar {
-    background-color: #d9d9d9;
+    background-color: #a0dca0;
 }
 
 .iscroll-outer > .iscroll-element .iscroll-bar:hover {
-    background-color: #c2c2c2;
+    background-color: #a0dca0;
 }
 
 .iscroll-outer > .iscroll-element.iscroll-draggable .iscroll-bar {
-    background-color: #919191;
+    background-color: #ddd;
 }
-
 
 .iscroll-outer > .iscroll-content.iscroll-visible {
     left: -6px;
@@ -1155,25 +1122,22 @@ select {
 }
 
 .iscroll-macosx > .iscroll-element .iscroll-bar {
-    background-color: #6C6E71;
+    background-color: #a0dca0;
     display: block;
-
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     filter: alpha(opacity=0);
     opacity: 0;
     border-radius: 7px;
-
     -webkit-transition: opacity 0.2s linear;
     transition: opacity 0.2s linear;
 }
 
 .iscroll-macosx:hover > .iscroll-element .iscroll-bar,
 .iscroll-macosx > .iscroll-element.iscroll-draggable .iscroll-bar {
-    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
-    filter: alpha(opacity=70);
-    opacity: 0.7;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+    filter: alpha(opacity=100);
+    opacity: 1;
 }
-
 
 .iscroll-macosx > .iscroll-element.scroll-x {
     bottom: 0px;
@@ -1228,13 +1192,12 @@ select {
     top: -11px;
 }
 
-@media only screen and (max-width: 700px) {
-    .iweb-selector > .real-choice > select.shidden {
-        opacity: 1;
-        -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
+@media only screen and (max-width: 600px) {
+    .iweb-selector > div.real.hidden {
+        height: auto!important;
     }
     
-    .iweb-selector > .virtual-choice {
+    .iweb-selector > div.virtual {
         display: none;
     }
 }

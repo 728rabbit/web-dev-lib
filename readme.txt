@@ -303,15 +303,23 @@
 
     e.g.
 
-    iweb.scrollbar('#div1');
+    #div1 {
+        height: 300px;
+    }
+
+    #div1 > div {
+        height: 100%;
+    }
+
+    iweb.scrollbar('#div1 > div');
 
     or
 
-    iweb.scrollbar('#div1','macosx');
+    iweb.scrollbar('#div1 > div','macosx');
 
     or
 
-    iweb.scrollbar('#div1','macosx',function({ your common function(s) code here }));
+    iweb.scrollbar('#div1 > div','macosx',function({ your common function(s) code here }));
    
 19. selector
     ----------------------------------------------------------------------------
@@ -364,11 +372,14 @@
     <input type="radio" id="male" name="gender" value="male" checked>
     <label for="male">Male</label>
 
-22. change font size
+22. change font size: 14px, 16px, 20px
     ----------------------------------------------------------------------------
     <div class="font">
-        <a class="font-switch small" href="#" data-size="small">Small</a>
+        <a class="font-switch small" href="#" data-size="small">Small</a>  
         <a class="font-switch middle current" href="#" data-size="middle">Middle</a>
         <a class="font-switch large" href="#" data-size="large">Large</a>
     </div>
+
+
+/* base color: #e3f2e1 */
     
