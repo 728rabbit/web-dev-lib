@@ -244,7 +244,6 @@ var iweb = {
 
         $('body').removeAttr('data-processing');
         $('body').removeAttr('data-macosx');
-        $('body').removeAttr('data-ikey');
         $('body').addClass('iweb');
         if(iweb_object.detectDevice()){
             $('body').addClass('iweb-mobile');
