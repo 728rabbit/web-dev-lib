@@ -485,7 +485,6 @@ var iweb = {
                     
                     var reset_virtual_object = $(this).parents('.iweb-selector:first').find('div.virtual');
                     $(this).parents('form:first').on('reset',function(){
-                        console.log('reset');
                         reset_virtual_object.find('li.node').each(function(node_index){
                             if(parseInt(node_index) === 0 || iweb_object.isMatch($(this).data('ori'),'selected')){
                                 reset_virtual_object = $(this);
