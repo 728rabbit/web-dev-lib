@@ -86,6 +86,13 @@
     // force refresh, you can call this function: iweb.responsive();
 
 
+    * extra embed responsive video in object
+    e.g.
+    <div class="iweb-editor"><iframe></iframe></div>
+
+    // force refresh, you can call this function: iweb.iframe(element);
+    - element: optional, default value is "iweb-editor"
+
 8.  Validation:
     ----------------------------------------------------------------------------
     iweb.isValue(value);     // if value is empty, null & undefined, return false
