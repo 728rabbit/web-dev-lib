@@ -902,11 +902,6 @@ button {
     width: 0px;
 }
 
-.iscroll-outer > .iscroll-content,
-.iscroll-inner > .iscroll-content{
-    padding-right: 6px;
-}
-
 .iscroll-element {
     display: none;
 }
