@@ -904,7 +904,7 @@ button {
 
 .iscroll-outer > .iscroll-content,
 .iscroll-inner > .iscroll-content{
-    padding-right: 10px;
+    padding-right: 6px;
 }
 
 .iscroll-element {
@@ -985,7 +985,7 @@ button {
 .iscroll-inner > .iscroll-element .iscroll-element-outer,
 .iscroll-inner > .iscroll-element .iscroll-element-track,
 .iscroll-inner > .iscroll-element .iscroll-bar {
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 .iscroll-inner > .iscroll-element .iscroll-element-track {
@@ -1022,10 +1022,11 @@ button {
 
 .iscroll-outer > .iscroll-element,
 .iscroll-outer > .iscroll-element div {
+    position: absolute;
     border: none;
     margin: 0;
     padding: 0;
-    position: absolute;
+    border-radius: 4px;
     z-index: 200;
 }
 
@@ -1061,7 +1062,7 @@ button {
 }
 
 .iscroll-outer > .iscroll-element.scroll-y .iscroll-element-outer {
-    left: -2px;
+    left: 0px;
     width: 6px;
 }
 
@@ -1076,7 +1077,7 @@ button {
 .iscroll-outer > .iscroll-element .iscroll-element-outer,
 .iscroll-outer > .iscroll-element .iscroll-element-track,
 .iscroll-outer > .iscroll-element .iscroll-bar {
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 .iscroll-outer > .iscroll-element .iscroll-bar {
@@ -1150,7 +1151,7 @@ button {
 .iscroll-macosx > .iscroll-element .iscroll-bar {
     background-color: #96b97d;
     display: block;
-    border-radius: 7px;
+    border-radius: 4px;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     -webkit-transition: opacity 0.2s linear;
