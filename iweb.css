@@ -603,6 +603,7 @@ button {
     height: auto;
     margin: auto;
     border-radius: 4px;
+    border-top: 4px solid #96b97d;
     overflow: hidden;
 }
 
