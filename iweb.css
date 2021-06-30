@@ -706,8 +706,12 @@ button {
     position: fixed;
     top: 0px;
     left: 0px;
-    right: 0px;
+    right: 17px;
     bottom: 0px;
+}
+
+.iweb-mobile .iweb-dialog .async-virtual {
+    right: 0px;
 }
 
 .iweb-dialog .async-content {
