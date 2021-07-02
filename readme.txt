@@ -105,19 +105,23 @@
     iweb.isNumber('9999.999')  // return true
     iweb.isNumber('0999.999') // retrun false
     iweb.isNumber('9,999.999') // retrun false
+    iweb.isNumber('-9999999')  // return true
     
-    iweb.isNumber('9999999','currency')  // return true
-    iweb.isNumber('9999.999','currency')  // return true
-    iweb.isNumber('0999.999','currency') // retrun false
-    iweb.isNumber('9,999.999','currency') // retrun true
-
-    iweb.isNumber('9999999','digital')  // return true
-    iweb.isNumber('9999.999','digital')  // return false
-    iweb.isNumber('0999.999','digital') // retrun false
-    iweb.isNumber('9,999.999','digital') // retrun false
+    // only 0-9
+    iweb.isNumber('9999999',true)  // return true
+    iweb.isNumber('9999.999',true)  // return false
+    iweb.isNumber('0999.999',true) // retrun false
+    iweb.isNumber('9,999.999',true) // retrun false
+    iweb.isNumber('-9999999',true) // retrun false
 
 
-    iweb.toNumber(value);  // convert value to number, if not number, return null
+    iweb.toNumber(value, currency_mode, decimal);  // convert value to number, if not number, return 0
+    - currency: optional, true or false
+    - decimal: optional, integer
+    e.g. 
+    iweb.toNumber(-987654321) => -987654321;
+    iweb.toNumber(-987654321,false,2) => -987654321.00;
+    iweb.toNumber(-987654321,true,2) => -987,654,321.00;
 
     iweb.isEmail(value);   // if value is invalid email, return false
 

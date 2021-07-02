@@ -941,30 +941,43 @@ var iweb = {
             return false;
         }
     },
-    isNumber: function(value, format){
+    isNumber: function(value, digital_mode){
         var iweb_object = this;
         if (!iweb_object.isValue(value)){
             return false;
         } else {
             var reg = /(^((-)?[1-9]{1}\d{0,2}|0\.|0$))(((\d)+)?)(((\.)(\d+))?)$/;
-            if(iweb_object.isMatch(format,'currency')) {
-                reg = /(^((-)?[1-9]{1}\d{0,2}|0\.|0$))(((\d|,\d{3})+)?)(((\.)(\d+))?)$/
-            }
-            else if(iweb_object.isMatch(format,'digital')) {
+            if(iweb_object.isMatch(digital_mode,true)) {
                 reg = /^[0-9]+$/;
             }
             return reg.test(value);
         }
     },
-    toNumber: function(value, format) {
+    toNumber: function(value, currency_mode, decimal) {
         var iweb_object = this;
-        if (!iweb_object.isValue(format)){
-            format = 'currency';
+        value = value.toString().replace( /[^\d|\-|\.]/g, '');
+        if(iweb.isNumber(value)) {
+            if(iweb.isNumber(decimal) && parseInt(decimal) > 0) {
+                var power10 = (10 ** decimal);
+                value = value * power10;
+                value = (Math.round(value) /power10).toString();
+                var dpp = value.indexOf('.');
+                if (dpp < 0) {
+                    dpp = value.length;
+                    value += '.';
+                }
+                while (value.length <= dpp + decimal) {
+                    value += '0';
+                }
+            }
+            if(iweb_object.isMatch(currency_mode,true)) {
+                return value.toString().replace(/(\d)(?=(\d{3})+\b)/g, '$1,');
+            }
+            else {
+                return value;
+            }
         }
-        if(iweb_object.isNumber(value,format)) {
-            return value.toString().replace(',', '');
-        }
-        return null;
+        return 0;
     },
     isEmail: function(value){
         var iweb_object = this;
