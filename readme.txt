@@ -73,9 +73,9 @@
 
 6.  Show & hide processing:
     ----------------------------------------------------------------------------
-    iweb.processing(status,opacity);
+    iweb.processing(status,option);
     - status: true or false
-    - opacity: optional, true or false
+    - option: integer
 
 
 7.  Responsive Aera:
@@ -97,8 +97,8 @@
     ----------------------------------------------------------------------------
     iweb.isValue(value);     // if value is empty, null & undefined, return false
     
-    iweb.isNumber(value, format);  // if value is non-number, return false
-    - format: optional
+    iweb.isNumber(value, digital_mode);  // if value is non-number, return false
+    - digital_mode: true or false
 
     e.g
     iweb.isNumber('9999999')  // return true

@@ -167,11 +167,8 @@ var iweb = {
             iweb_object.csrf_token = md5(md5('iweb@'+(iweb_object.isValue(location.hostname)?location.hostname:'/'))+'@'+iweb_object.csrf_token);
         }
 
-        if(!(iweb_object.isMatch($('body').data('processing'),1) || iweb_object.isMatch($('body').data('processing'),true))){
-            $('body').append('<div id="iweb-whitemask" style="position:fixed;background: #fff;top:0px;left:0px;right:0px;bottom:0px;z-index:9999;"></div>');
-        }
-        else {
-            iweb_object.processing(parseInt($('body').data('processing')));
+        if(iweb_object.isMatch($('body').data('processing'),1) || iweb_object.isMatch($('body').data('processing'),true)){
+            iweb_object.processing(true);
         }
         
         $('body > *').not('script,noscript').wrapAll('<div class="iweb-viewer"></div>');
@@ -196,12 +193,12 @@ var iweb = {
             });
         }
         
-        if(iweb_object.isValue(iweb_object.getCookie('iweb_font_sizse'))){
-            if(iweb_object.isMatch(iweb_object.getCookie('iweb_font_sizse'),'small') || iweb_object.isMatch(iweb_object.getCookie('iweb_font_sizse'),'large')){
-                $('html').addClass(iweb_object.getCookie('iweb_font_sizse')+'-font');
+        if(iweb_object.isValue(iweb_object.getCookie('iweb_font_size'))){
+            if(iweb_object.isMatch(iweb_object.getCookie('iweb_font_size'),'small') || iweb_object.isMatch(iweb_object.getCookie('iweb_font_size'),'large')){
+                $('html').addClass(iweb_object.getCookie('iweb_font_size')+'-font');
             }
-            $('.font-switch').each(function(){
-                if(iweb_object.isMatch($(this).data('size'),iweb_object.getCookie('iweb_font_sizse'))){
+            $('a.font-switch').each(function(){
+                if(iweb_object.isMatch($(this).data('size'),iweb_object.getCookie('iweb_font_size'))){
                     $(this).addClass('current');
                 }
                 else {
@@ -219,22 +216,22 @@ var iweb = {
         });
         
         $(document).on('click','a',function(e){
-            if(!iweb_object.isValue($(this).attr('href')) || iweb_object.isMatch($(this).attr('href'),'#')) {
+            if(!iweb_object.isValue($(this).attr('href')) || iweb_object.isMatch($(this).attr('href'),'#')){
                 e.preventDefault();
             }
         });
         
-        $(document).on('click','.font-switch',function(e){
+        $(document).on('click','a.font-switch',function(e){
             e.preventDefault();
-            $('.font-switch').removeClass('current');
+            $('a.font-switch').removeClass('current');
             $('html').removeClass('small-font');
             $('html').removeClass('large-font');
             if(iweb_object.isMatch($(this).data('size'),'small') || iweb_object.isMatch($(this).data('size'),'large')){
                 $('html').addClass($(this).data('size')+'-font');
             }
-            iweb_object.setCookie('iweb_font_sizse',$(this).data('size'),14);
-            $('.font-switch').each(function(){
-                if(iweb_object.isMatch($(this).data('size'),iweb_object.getCookie('iweb_font_sizse'))){
+            iweb_object.setCookie('iweb_font_size',$(this).data('size'),14);
+            $('a.font-switch').each(function(){
+                if(iweb_object.isMatch($(this).data('size'),iweb_object.getCookie('iweb_font_size'))){
                     $(this).addClass('current');
                 }
                 else {
@@ -242,6 +239,69 @@ var iweb = {
                 }
             });
         });
+        
+        if($('form').length > 0) {
+            $(document).on('reset','form',function(e){
+                $('body').append('<div id="iweb-blank-mask" style="position:fixed;top:0px;left:0px;right:0px;bottom:0px;z-index:9999;"></div>');
+                var form_object = $(this);
+                var delay_timer = setTimeout(function(){
+                    form_object.find('.iweb-selector').each(function() {
+                        var selected_option = [];
+                        var selected_option_label = '';
+                        $.each($(this).find('select').children(),function(){
+                            if(parseInt($(this).children().length) > 0){
+                                $.each($(this).children(),function(){
+                                    if($(this).is(':selected')){
+                                        selected_option.push($(this).val().toString());
+                                    }
+                                });
+                            }
+                            else {
+                                if($(this).is(':selected')){
+                                    selected_option.push($(this).val().toString());
+                                }
+                            }
+                        });
+                        $(this).find('div.virtual > div.options ul > li > a').each(function(){
+                            if(iweb_object.isValue($(this).data('value'))){
+                                if(!iweb.isMatch(parseInt($.inArray($(this).data('value').toString(),selected_option)),-1)){
+                                    $(this).parent().addClass('node-selected');
+                                    if(iweb.isValue(selected_option_label)){
+                                        selected_option_label += ', ';
+                                    }
+                                    selected_option_label += $(this).text();
+                                }
+                                else {
+                                    $(this).parent().removeClass('node-selected');
+                                }
+                            }
+                        });
+                        $(this).find('div.virtual > div.result > a').html(selected_option_label);
+                    });
+                    
+                    form_object.find('.iweb-checkbox').each(function() {
+                        if($(this).find('input[type="checkbox"]').is(':checked')){
+                            $(this).find('input[type="checkbox"]').parent().addClass('checked');
+                        }
+                        else {
+                            $(this).find('input[type="checkbox"]').parent().removeClass('checked');
+                        }
+                    });
+                    
+                    form_object.find('.iweb-radiobox').each(function() {
+                        if($(this).find('input[type="radio"]').is(':checked')){
+                            $(this).find('input[type="radio"]').parent().addClass('checked');
+                        }
+                        else {
+                            $(this).find('input[type="radio"]').parent().removeClass('checked');
+                        }
+                    });
+                    
+                    $('#iweb-blank-mask').remove();
+                    clearTimeout(delay_timer);
+                }, 250);
+            });
+        }
 
         $('body').removeAttr('data-processing');
         $('body').removeAttr('data-macosx');
@@ -266,21 +326,15 @@ var iweb = {
         if (typeof iweb_ifunc === 'function'){
             iweb_ifunc();
         }
-
-        if(!(iweb_object.isMatch($('body').data('processing'),1) || iweb_object.isMatch($('body').data('processing'),true))){
-            var delay_timer = setTimeout(function(){
-                $('#iweb-whitemask').remove();
-                clearTimeout(delay_timer);
-            }, 500);
-        }
     },
     processing: function(status,option){
         var iweb_object = this;
         if(iweb_object.isMatch(status,1) || iweb_object.isMatch(status,true)){
             if (!iweb_object.isExist('#iweb-processing')){
                 var box_html = '';
-                if (iweb_object.isValue(option)){
-                    box_html = '<div id="iweb-processing" class="iweb-processing iweb-processing-opacity">';
+                if (iweb_object.isNumber(option,true)){
+                    option = (Math.round(parseInt(option)/100*100)/100);
+                    box_html = '<div id="iweb-processing" class="iweb-processing" style="background:rgba(255,255,255,'+option+')">';
                 } else {
                     box_html = '<div id="iweb-processing" class="iweb-processing">';
                 }
@@ -298,8 +352,8 @@ var iweb = {
             }
         }
         else {
-            var microsecond = 1000;
-            if (iweb_object.isNumber(option)){
+            var microsecond = 500;
+            if (iweb_object.isNumber(option,true)){
                 microsecond = parseInt(option);
             }
             var delay_timer = setTimeout(function(){
@@ -386,19 +440,20 @@ var iweb = {
             });
         }
     },
-    iframe:function(element) {
+    iframe:function(element){
         var iweb_object = this;
-        if(!iweb_object.isValue(element)) {
+        if(!iweb_object.isValue(element)){
             element = 'iweb-editor';
         }
         element = element.toString().replace('.','');
-        $.each(['iframe','video','object','embed'],function(key,value) {
-            $('body').find('.'+element).find(value).each(function() {
+        $.each(['iframe','video','object','embed'],function(key,value){
+            $('body').find('.'+element).find(value).each(function(){
                 if(!$(this).parent().hasClass('iweb-responsive')){
                     $(this).addClass('vframe').wrapAll('<div class="iweb-responsive" data-width="'+$(this).width()+'" data-height="'+$(this).height()+'"></div>');
                 }
             });
         });
+        iweb_object.responsive();
     },
     selector: function(select_object,callback){
         var iweb_object = this;
@@ -406,52 +461,101 @@ var iweb = {
         if (!iweb_object.isExist('.iweb-selector')){
             $(document).on('click','body',function(e){
                 if(parseInt($(e.target).closest('.iweb-selector').length) === 0){
-                    $('.iweb-selector > div.virtual > div.options > ul').hide();
+                    $('.iweb-selector').removeClass('show');
                 }
             });
             
             $(document).on('focus','.iweb-selector > div.real > select',function(e){
-                $('.iweb-selector > div.virtual > div.options > ul').hide();
+                $('.iweb-selector').removeClass('show');
             });
             
-            $(document).on('blur','.iweb-selector > div.virtual > div.options ul > li > a:last',function() {
-                $('.iweb-selector > div.virtual > div.options > ul').hide();
+            $(document).on('blur','.iweb-selector > div.virtual > div.options ul > li > a:last',function(){
+                $('.iweb-selector').removeClass('show');
             });
 
             $(document).on('change','.iweb-selector > div.real > select',function(){
-                var selected_option = $(this).val();
+                var selected_option = [];
+                var selected_option_label = '';
+                $.each($(this).closest('.iweb-selector').find('select').children(),function(){
+                    if(parseInt($(this).children().length) > 0){
+                        $.each($(this).children(),function(){
+                            if($(this).is(':selected')){
+                                selected_option.push($(this).val().toString());
+                            }
+                        });
+                    }
+                    else {
+                        if($(this).is(':selected')){
+                            selected_option.push($(this).val().toString());
+                        }
+                    }
+                });
                 $(this).closest('.iweb-selector').find('div.virtual > div.options ul > li > a').each(function(){
-                    if(iweb_object.isValue($(this).data('value'))) {
-                        if($(this).data('value').toString() === selected_option.toString()){
+                    if(iweb_object.isValue($(this).data('value'))){
+                        if(!iweb.isMatch(parseInt($.inArray($(this).data('value').toString(),selected_option)),-1)){
                             $(this).parent().addClass('node-selected');
-                            $(this).closest('.iweb-selector').find('div.virtual > div.result > a').html($(this).text());
+                            if(iweb.isValue(selected_option_label)){
+                                selected_option_label += ', ';
+                            }
+                            selected_option_label += $(this).text();
                         }
                         else {
                             $(this).parent().removeClass('node-selected');
                         }
                     }
                 });
+                $(this).closest('.iweb-selector').find('div.virtual > div.result > a').html(selected_option_label);
             });
             
             $(document).on('click','.iweb-selector > div.virtual > div.result > a',function(){
                 var target_selector = $(this);
                 if($(this).closest('.iweb-selector').find('div.virtual > div.options > ul').is(":visible")){
-                    $(this).closest('.iweb-selector').find('div.virtual > div.options > ul').hide();
+                    $(this).closest('.iweb-selector').removeClass('show');
                 }
                 else {
-                    $(this).closest('.iweb-selector').find('div.virtual > div.options > ul').show();
+                    $(this).closest('.iweb-selector').addClass('show');
                 }
                 $('.iweb-selector > div.virtual > div.options > ul').each(function(){
                     if(!iweb_object.isMatch($(this).data('index'),target_selector.closest('.iweb-selector').find('div.virtual > div.options > ul').data('index'))){
-                        $(this).hide();
+                        $(this).closest('.iweb-selector').removeClass('show');
                     }
                 });
             });
             
             $(document).on('click','.iweb-selector > div.virtual > div.options ul > li > a',function(){
-                if(iweb_object.isValue($(this).data('value'))) {
-                    $(this).closest('.iweb-selector').find('div.virtual > div.options > ul').hide();
-                    $(this).closest('.iweb-selector').find('div.real > select').val($(this).data('value')).trigger('change');
+                if(iweb_object.isValue($(this).data('value'))){
+                    if($(this).closest('.iweb-selector').hasClass('iweb-selector-multiple')){
+                        var selected_option = [];
+                        $.each($(this).closest('.iweb-selector').find('select').children(),function(){
+                            if(parseInt($(this).children().length) > 0){
+                                console.log($(this));
+                                $.each($(this).children(),function(){
+                                    if($(this).is(':selected')){
+                                        selected_option.push($(this).val().toString());
+                                    }
+                                });
+                            }
+                            else {
+                                if($(this).is(':selected')){
+                                    selected_option.push($(this).val().toString());
+                                }
+                            }
+                        });
+                        if(iweb.isMatch(parseInt($.inArray($(this).data('value').toString(),selected_option)),-1)){
+                            selected_option.push($(this).data('value'));
+                        }
+                        else {
+                            var remove_value = $(this).data('value').toString();
+                            selected_option = $.grep(selected_option, function(value){
+                                return value != remove_value;
+                            });
+                        }
+                        $(this).closest('.iweb-selector').find('div.real > select').val(selected_option).trigger('change');
+                    }
+                    else {
+                        $(this).closest('.iweb-selector').removeClass('show');
+                        $(this).closest('.iweb-selector').find('div.real > select').val($(this).data('value')).trigger('change');
+                    }
                 }
             });
         }
@@ -463,8 +567,10 @@ var iweb = {
         select_object.each(function(select_index){
             if(!$(this).parent().parent().hasClass('iweb-selector')){
                 if(iweb_object.isMatch($(this).data('virtual'),1) || iweb_object.isMatch($(this).data('virtual'),true)){
-                    $(this).wrap('<div class="iweb-selector"><div class="real hidden"></div></div>');
+                    var isMultiple = $(this).prop('multiple');
+                    $(this).wrap('<div class="iweb-selector'+(isMultiple?' iweb-selector-multiple':'')+'"><div class="real hidden"></div></div>');
                     $(this).removeAttr('data-virtual');
+                    var isMultiple = $(this).prop('multiple');
                     var virtualHtml = '';
                     var virtualSelect = iweb_object.language[iweb_object.default_language]['select'];
                     virtualHtml += '<ul data-index="iss'+select_index+'">';
@@ -497,18 +603,6 @@ var iweb = {
                     virtualHtml += '</ul>';
                     virtualHtml = '<div class="virtual"><div class="result"><a href="#">'+virtualSelect+'</a></div><div class="options">'+virtualHtml+'</div></div>';
                     $(this).closest('.iweb-selector').append(virtualHtml);
-                    
-                    var reset_virtual_object = $(this).closest('.iweb-selector:first').find('div.virtual');
-                    $(this).closest('form:first').on('reset',function(){
-                        reset_virtual_object.find('li.node').each(function(node_index){
-                            if(parseInt(node_index) === 0 || iweb_object.isMatch($(this).data('ori'),'selected')){
-                                reset_virtual_object = $(this);
-                            }
-                        });
-                        if(iweb_object.isValue(reset_virtual_object.find('a'))){
-                            reset_virtual_object.find('a').trigger('click');
-                        }
-                    });
                 }
                 else {
                     $(this).wrap('<div class="iweb-selector"><div class="real"></div></div>');
@@ -525,11 +619,25 @@ var iweb = {
         
         if (!iweb_object.isExist('.iweb-checkbox')){
             $(document).on('click','.iweb-checkbox > .options > div > input[type="checkbox"]',function(){
-                if(!$(this).is(":checked")){
+                if(!$(this).is(':checked')){
                     $(this).parent().removeClass('checked');
                 }
                 else {
                     $(this).parent().addClass('checked');
+                }
+            });
+            
+            $(document).on('click','.iweb-checkbox > div.options > div > a',function(){
+                var checkbox_object = $(this).closest('.options').find('input[type="checkbox"]');
+                if(iweb.isValue(checkbox_object)) {
+                    if(!checkbox_object.is(':checked')){
+                        checkbox_object.prop('checked', true);
+                        $(this).parent().addClass('checked');
+                    }
+                    else {
+                        checkbox_object.prop('checked', false);
+                        $(this).parent().removeClass('checked');
+                    }
                 }
             });
         }
@@ -537,10 +645,11 @@ var iweb = {
         if(!iweb_object.isValue(checkbox_object)){
            checkbox_object = $('body').find('input[type="checkbox"]');
         }
+        
         checkbox_object.each(function(){
             if(!$(this).parent().hasClass('iweb-checkbox')){
                 var find_checkbox_label = $(this).next();
-                var ischecked = $(this).is(":checked");
+                var ischecked = $(this).is(':checked');
                 if(parseInt(find_checkbox_label.length) > 0 && iweb_object.isMatch(find_checkbox_label[0].nodeName,'label')){
                     $(this).wrap('<div class="iweb-checkbox"><div class="options"><div'+(ischecked?' class="checked"':'')+'></div></div><div class="virtual-msg">'+(find_checkbox_label[0].outerHTML)+'</div></div>');
                     find_checkbox_label.remove();
@@ -548,19 +657,10 @@ var iweb = {
                 else {
                     $(this).wrap('<div class="iweb-checkbox"><div class="options"><div'+(ischecked?' class="checked"':'')+'></div></div><div class="virtual-msg">&nbsp;</div></div>');
                 }
+                $('<a href="#">&nbsp;</a>').insertAfter($(this));
                 if(ischecked){
                     $(this).attr('data-ori','checked');
                 }
-                
-                var reset_checkbox_object = $(this);
-                $(this).closest('form:first').on('reset', function(){
-                    if(iweb_object.isMatch(reset_checkbox_object.data('ori'),'checked')){
-                        reset_checkbox_object.parent().addClass('checked');
-                    }
-                    else {
-                        reset_checkbox_object.parent().removeClass('checked');
-                    }
-                });
             }
         });
         if (typeof callback === 'function'){
@@ -585,15 +685,20 @@ var iweb = {
                     }
                 });
             });
+            
+            $(document).on('click','.iweb-radiobox > div.options > div > a',function(){
+                $(this).closest('.options').find('input[type="radio"]').trigger('click');
+            });
         }
         
         if(!iweb_object.isValue(radiobox_object)){
            radiobox_object = $('body').find('input[type="radio"]');
         }
+        
         radiobox_object.each(function(){
             if(!$(this).parent().hasClass('iweb-radiobox')){
                 var find_radiobox_label = $(this).next();
-                var ischecked = $(this).is(":checked");
+                var ischecked = $(this).is(':checked');
                 if(parseInt(find_radiobox_label.length) > 0 && iweb_object.isMatch(find_radiobox_label[0].nodeName,'label')){
                     $(this).wrap('<div class="iweb-radiobox"><div class="options"><div'+(ischecked?' class="checked"':'')+'></div></div><div class="virtual-msg">'+(find_radiobox_label[0].outerHTML)+'</div></div>');
                     find_radiobox_label.remove();
@@ -604,16 +709,7 @@ var iweb = {
                 if(ischecked){
                     $(this).attr('data-ori','checked');
                 }
-                
-                var reset_radiobox_object = $(this);
-                $(this).closest('form:first').on('reset', function(){
-                    if(iweb_object.isMatch(reset_radiobox_object.data('ori'),'checked')){
-                        reset_radiobox_object.parent().addClass('checked');
-                    }
-                    else {
-                        reset_radiobox_object.parent().removeClass('checked');
-                    }
-                });
+                $('<a href="#">&nbsp;</a>').insertAfter($(this));
             }
         });
         if (typeof callback === 'function'){
@@ -632,7 +728,7 @@ var iweb = {
     alert: function(message,callback,setting){
         var iweb_object = this;
         if (iweb_object.isExist('#iweb-alert')){ return; }
-        iweb_object.processing(false,0);
+        iweb_object.processing(false);
         var alert_html = '';
         var alert_class = '';
         var alert_btn_close = iweb_object.language[iweb_object.default_language]['btn_confirm'];
@@ -682,7 +778,7 @@ var iweb = {
     confirm: function(message,callback,setting){
         var iweb_object = this;
         if (iweb_object.isExist('#iweb-alert')){ return; }
-        iweb_object.processing(false,0);
+        iweb_object.processing(false);
         var confirm_html = '';
         var confirm_class = '';
         var confirm_btn_yes = iweb_object.language[iweb_object.default_language]['btn_yes'];
@@ -749,7 +845,7 @@ var iweb = {
     dialog: function(htmlcode,init,callback,setting){
         var iweb_object = this;
         if (iweb_object.isExist('#iweb-dialog')){ return; }
-        iweb_object.processing(false,0);
+        iweb_object.processing(false);
         var dialog_html = '';
         if (iweb_object.isValue(setting)){
             if (iweb_object.isValue(setting.class)){
@@ -813,7 +909,7 @@ var iweb = {
                 $('.iweb-dialog .async-loading').remove();
                 $('.iweb-dialog .async-content').animate({'opacity':1});
                 clearTimeout(delay_timer);
-            }, 1000);
+            }, 250);
         });
     },
     post: function(data,callback){
@@ -837,7 +933,7 @@ var iweb = {
         if (check_status && !iweb_object.processing_status){
             iweb_object.processing_status = true;
             if (iweb_object.isValue(data.loading)){
-                iweb_object.processing(true,true);
+                iweb_object.processing(true,70);
             }
             if(iweb_object.csrf_token.length > 0){
                 var local_time = iweb_object.getDateTime(null,'time');
@@ -854,13 +950,13 @@ var iweb = {
                     }
                     var delay_timer = setTimeout(function(){
                         iweb_object.processing_status = false;
-                        iweb_object.processing(false,0);
+                        iweb_object.processing(false);
                         clearTimeout(delay_timer);
-                    }, 1000);
+                    }, 250);
                 },
                 error: function(xhr, ajaxOptions, thrownError){
                     iweb_object.processing_status = false;
-                    iweb_object.processing(false,0);
+                    iweb_object.processing(false);
                     alert(thrownError);
                     return false;
                 }
@@ -896,7 +992,7 @@ var iweb = {
                         });
                     }
                     iweb_object.processing_status = true;
-                    iweb_object.processing(true,true);
+                    iweb_object.processing(true,70);
                     if (typeof checkfunc !== 'function'){
                         return true;
                     }
@@ -907,13 +1003,13 @@ var iweb = {
                     }
                     var delay_timer = setTimeout(function(){
                         iweb_object.processing_status = false;
-                        iweb_object.processing(false,0);
+                        iweb_object.processing(false);
                         clearTimeout(delay_timer);
-                    }, 1000);
+                    }, 250);
                 },
                 error: function(xhr, ajaxOptions, thrownError){
                     iweb_object.processing_status = false;
-                    iweb_object.processing(false,0);
+                    iweb_object.processing(false);
                     alert(thrownError);
                     return false;
                 }
@@ -947,30 +1043,30 @@ var iweb = {
             return false;
         } else {
             var reg = /(^((-)?[1-9]{1}\d{0,2}|0\.|0$))(((\d)+)?)(((\.)(\d+))?)$/;
-            if(iweb_object.isMatch(digital_mode,true)) {
+            if(iweb_object.isMatch(digital_mode,true)){
                 reg = /^[0-9]+$/;
             }
             return reg.test(value);
         }
     },
-    toNumber: function(value, currency_mode, decimal) {
+    toNumber: function(value, currency_mode, decimal){
         var iweb_object = this;
         value = value.toString().replace( /[^\d|\-|\.]/g, '');
-        if(iweb.isNumber(value)) {
-            if(iweb.isNumber(decimal) && parseInt(decimal) > 0) {
+        if(iweb.isNumber(value)){
+            if(iweb.isNumber(decimal) && parseInt(decimal) > 0){
                 var power10 = (10 ** decimal);
                 value = value * power10;
                 value = (Math.round(value) /power10).toString();
                 var dpp = value.indexOf('.');
-                if (dpp < 0) {
+                if (dpp < 0){
                     dpp = value.length;
                     value += '.';
                 }
-                while (value.length <= dpp + decimal) {
+                while (value.length <= dpp + decimal){
                     value += '0';
                 }
             }
-            if(iweb_object.isMatch(currency_mode,true)) {
+            if(iweb_object.isMatch(currency_mode,true)){
                 return value.toString().replace(/(\d)(?=(\d{3})+\b)/g, '$1,');
             }
             else {
@@ -1027,17 +1123,17 @@ var iweb = {
         }
         return false;
     },
-    stringLength: function(string, maxlength) {
+    stringLength: function(string, maxlength){
         var i, sum;   
         sum = 0;   
-        for (i = 0; i < string.length; i++) {   
-            if ((string.charCodeAt(i) >= 0) && (string.charCodeAt(i) <= 255)) {
+        for (i = 0; i < string.length; i++){   
+            if ((string.charCodeAt(i) >= 0) && (string.charCodeAt(i) <= 255)){
                 sum = sum + 1;   
             } else {
                 sum = sum + 2;   
             }   
         }
-        if(parseInt(maxlength) > 0) {
+        if(parseInt(maxlength) > 0){
             return (sum > parseInt(maxlength));
         }
         else {
@@ -1171,7 +1267,7 @@ var iweb = {
         if(iweb_object.isValue(string)){
             now = new Date(string);
         }
-        if(iweb_object.isMatch(format,'time')) {
+        if(iweb_object.isMatch(format,'time')){
             return now.getTime();
         }
         else {
@@ -1196,11 +1292,11 @@ var iweb = {
             if(second.toString().length == 1){
                  second = '0'+second;
             }
-            if(!iweb_object.isValue(format)) {
+            if(!iweb_object.isValue(format)){
                 format = 'yy-mm-dd h:i:s'
             }
             var dateTime = year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second;
-            switch(format) {
+            switch(format){
                 case 'dd-mm-yy h:i:s':
                     dateTime = day+'-'+month+'-'+year+' '+hour+':'+minute+':'+second;
                     break;
@@ -1263,13 +1359,16 @@ $(window).on('load',function(){
     if (typeof iweb_ifunc_done==='function'){
         iweb_ifunc_done();
     }
-    iweb.init_status = true;
-    iweb.processing(false);
+    var delay_timer = setTimeout(function(){
+        iweb.init_status = true;
+        iweb.processing(false);
+        clearTimeout(delay_timer);
+    }, 250);
 });
 
 $(window).on('resize',function(){
     if (iweb.resizing()){
-        $('.iweb-selector > div.virtual > div.options > ul').hide();
+        $('.iweb-selector').removeClass('show');
         var delay_timer = setTimeout(function(){
             iweb.responsive();
             if (typeof iweb_layout==='function'){
