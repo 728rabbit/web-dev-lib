@@ -1054,7 +1054,7 @@ var iweb = {
         value = value.toString().replace( /[^\d|\-|\.]/g, '');
         if(iweb.isNumber(value)){
             if(iweb.isNumber(decimal) && parseInt(decimal) > 0){
-                var power10 = (10 ** decimal);
+                var power10 = Math.pow(10, decimal);
                 value = value * power10;
                 value = (Math.round(value) /power10).toString();
                 var dpp = value.indexOf('.');
