@@ -281,6 +281,7 @@
 
     iweb_object.getCookie(name);
 
+    iweb.getUrl();
     iweb.getUrlParameter(name);
 
     iweb_object.randomNum();

@@ -141,14 +141,15 @@ function md5cycle(f,h){var i=f[0],n=f[1],r=f[2],g=f[3];n=ii(n=ii(n=ii(n=ii(n=hh(
 }(jQuery));
 
 var iweb = {
-    mode: 'default',
     default_language: 'en',
-    init_status: false,
-    processing_status: false,
+    language: [],
+    mode: 'default',
+    api_url: '',
     win_width: 0,
     win_scroll_top: 0,
     csrf_token: '',
-    language: [],
+    processing_status: false,
+    init_status: false,
     initialize: function(key){
         var iweb_object = this;
         
@@ -628,17 +629,7 @@ var iweb = {
             });
             
             $(document).on('click','.iweb-checkbox > div.options > div > a',function(){
-                var checkbox_object = $(this).closest('.options').find('input[type="checkbox"]');
-                if(iweb.isValue(checkbox_object)) {
-                    if(!checkbox_object.is(':checked')){
-                        checkbox_object.prop('checked', true);
-                        $(this).parent().addClass('checked');
-                    }
-                    else {
-                        checkbox_object.prop('checked', false);
-                        $(this).parent().removeClass('checked');
-                    }
-                }
+                $(this).closest('.options').find('input[type="checkbox"]').trigger('click');
             });
         }
 
@@ -915,19 +906,9 @@ var iweb = {
     post: function(data,callback){
         var iweb_object = this;
         var check_status = false;
-        var service_url = '';
-        var post_data = {};
-        var data_type = 'json';
         if (iweb_object.isValue(data)){
             if (iweb_object.isValue(data.url)){
-                service_url = data.url;
                 check_status = true;
-            }
-            if (iweb_object.isValue(data.val)){
-                post_data = data.val;
-            }
-            if (iweb_object.isValue(data.type)){
-                data_type = data.type;
             }
         }
         if (check_status && !iweb_object.processing_status){
@@ -937,22 +918,25 @@ var iweb = {
             }
             if(iweb_object.csrf_token.length > 0){
                 var local_time = iweb_object.getDateTime(null,'time');
-                post_data['X-iToken'] = window.btoa(md5(iweb_object.csrf_token+'#dt'+local_time)+'%'+local_time);
+                if(iweb_object.isValue(data.val)) {
+                    data['val']['X-iToken'] = window.btoa(md5(iweb_object.csrf_token+'#dt'+local_time)+'%'+local_time);
+                }
+                else {
+                    data['val'] = {};
+                    data['val']['X-iToken'] = window.btoa(md5(iweb_object.csrf_token+'#dt'+local_time)+'%'+local_time);
+                }
             }
             $.ajax({
-                url: service_url,
+                url: data.url,
                 type: "post",
-                data: post_data,
-                dataType: data_type,
+                data: ((iweb_object.isValue(data.val))?data.val:{}),
+                dataType: ((iweb_object.isValue(data.type))?data.type:'json'),
                 success: function(response_data){
+                    iweb_object.processing_status = false;
+                    iweb_object.processing(false);
                     if (typeof callback === 'function'){
                         callback(response_data);
                     }
-                    var delay_timer = setTimeout(function(){
-                        iweb_object.processing_status = false;
-                        iweb_object.processing(false);
-                        clearTimeout(delay_timer);
-                    }, 250);
                 },
                 error: function(xhr, ajaxOptions, thrownError){
                     iweb_object.processing_status = false;
@@ -967,13 +951,15 @@ var iweb = {
         var iweb_object = this;
         target_form_id = '#' + (target_form_id.toString().replace('#', ''));
         if (iweb_object.isExist(target_form_id)){
-            object = this;
-            var data_type = 'json';
-            if (iweb_object.isValue(type)){
-                data_type = type;
+            if(!iweb_object.isValue($(target_form_id).attr('method'))) {
+                $(target_form_id).attr('method','post');
             }
+            if(!iweb_object.isValue($(target_form_id).attr('action')) && iweb_object.isValue(iweb_object.api_url)) {
+                $(target_form_id).attr('action',iweb_object.api_url);
+            }
+            $(target_form_id).attr('autocomplete','off');
             $(target_form_id).ajaxForm({
-                dataType: data_type,
+                dataType: ((iweb_object.isValue(type))?type:'json'),
                 forceSync: true,
                 beforeSubmit: function(arr, $form, options){
                     if (iweb_object.processing_status){
@@ -998,14 +984,11 @@ var iweb = {
                     }
                 },
                 success: function(response_data){
+                    iweb_object.processing_status = false;
+                    iweb_object.processing(false);
                     if (typeof callback === 'function'){
                         callback(response_data);
                     }
-                    var delay_timer = setTimeout(function(){
-                        iweb_object.processing_status = false;
-                        iweb_object.processing(false);
-                        clearTimeout(delay_timer);
-                    }, 250);
                 },
                 error: function(xhr, ajaxOptions, thrownError){
                     iweb_object.processing_status = false;
@@ -1212,6 +1195,9 @@ var iweb = {
             alert('Cookies Blocked or not supported by your browser.');
         }
         return '';
+    },
+    getUrl: function(){
+        return (window.location.href.split('?')[0]).toString();
     },
     getUrlParameter: function(name){
         var iweb_object = this;
