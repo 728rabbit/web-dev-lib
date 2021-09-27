@@ -620,6 +620,7 @@ var iweb = {
         
         if (!iweb_object.isExist('.iweb-checkbox')){
             $(document).on('click','.iweb-checkbox > .options > div > input[type="checkbox"]',function(){
+                $(this).parent().removeClass('error');
                 if(!$(this).is(':checked')){
                     $(this).parent().removeClass('checked');
                 }
@@ -638,7 +639,7 @@ var iweb = {
         }
         
         checkbox_object.each(function(){
-            if(!$(this).parent().hasClass('iweb-checkbox')){
+            if(!$(this).parent().parent().parent().hasClass('iweb-checkbox')){
                 var find_checkbox_label = $(this).next();
                 var ischecked = $(this).is(':checked');
                 if(parseInt(find_checkbox_label.length) > 0 && iweb_object.isMatch(find_checkbox_label[0].nodeName,'label')){
@@ -666,6 +667,7 @@ var iweb = {
                 var selected_value = $(this).val();
                 var related_object = $('input[type="radio"][name="'+$(this).attr('name')+'"]');
                 $.each(related_object,function(){
+                    $(this).parent().removeClass('error');
                     if(iweb_object.isMatch($(this).val(),selected_value)){
                         $(this).prop('checked', true);
                         $(this).parent().addClass('checked');
@@ -687,7 +689,7 @@ var iweb = {
         }
         
         radiobox_object.each(function(){
-            if(!$(this).parent().hasClass('iweb-radiobox')){
+            if(!$(this).parent().parent().parent().hasClass('iweb-radiobox')){
                 var find_radiobox_label = $(this).next();
                 var ischecked = $(this).is(':checked');
                 if(parseInt(find_radiobox_label.length) > 0 && iweb_object.isMatch(find_radiobox_label[0].nodeName,'label')){

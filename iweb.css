@@ -490,6 +490,10 @@ body.iweb-macosx > .iweb-viewer {
 	border-radius: 4px;
 }
 
+.iweb-checkbox > div.options > div.error:before {
+    border-color: #ffaaaa!important;
+}
+
 .iweb-checkbox > div.options > div.checked:after {
 	font-family: Arial,Helvetica,sans-serif;
 	position: absolute;
@@ -574,6 +578,10 @@ body.iweb-macosx > .iweb-viewer {
 	height: 100%;
 	border: 2px solid #ddd;
 	border-radius: 50%;
+}
+
+.iweb-radiobox > div.options > div.error:before {
+    border-color: #ffaaaa!important;
 }
 
 .iweb-radiobox > div.options > div.checked:after {
