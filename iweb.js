@@ -353,7 +353,7 @@ var iweb = {
             }
         }
         else {
-            var microsecond = 500;
+            var microsecond = 0;
             if (iweb_object.isNumber(option,true)){
                 microsecond = parseInt(option);
             }
