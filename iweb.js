@@ -940,10 +940,20 @@ var iweb = {
                         callback(response_data);
                     }
                 },
-                error: function(xhr, ajaxOptions, thrownError){
+                error: function(xhr, status, thrownError){
                     iweb_object.processing_status = false;
                     iweb_object.processing(false);
-                    alert(thrownError);
+                    var alert_error_message = thrownError;
+                    if(iweb_object.isMatch(xhr.status,0)) {
+                        alert_error_message = 'Unstable network, please chcek your network connection.';
+                    }
+                    else if(iweb_object.isMatch(xhr.status,404)) {
+                        alert_error_message = 'The requested page not found.';
+                    }
+                    else if(iweb_object.isMatch(xhr.status,500)) {
+                        alert_error_message = 'Internal Server Error.';
+                    }
+                    alert(alert_error_message);
                     return false;
                 }
             });
@@ -992,10 +1002,20 @@ var iweb = {
                         callback(response_data);
                     }
                 },
-                error: function(xhr, ajaxOptions, thrownError){
+                error: function(xhr, status, thrownError){
                     iweb_object.processing_status = false;
                     iweb_object.processing(false);
-                    alert(thrownError);
+                    var alert_error_message = thrownError;
+                    if(iweb_object.isMatch(xhr.status,0)) {
+                        alert_error_message = 'Unstable network, please chcek your network connection.';
+                    }
+                    else if(iweb_object.isMatch(xhr.status,404)) {
+                        alert_error_message = 'The requested page not found.';
+                    }
+                    else if(iweb_object.isMatch(xhr.status,500)) {
+                        alert_error_message = 'Internal Server Error.';
+                    }
+                    alert(alert_error_message);
                     return false;
                 }
             });
