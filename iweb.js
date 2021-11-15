@@ -915,7 +915,7 @@ var iweb = {
         }
         if (check_status && !iweb_object.processing_status){
             iweb_object.processing_status = true;
-            if (iweb_object.isValue(data.loading)){
+            if (iweb_object.isMatch(data.loading,true) || iweb_object.isMatch(data.loading,1) || iweb_object.isMatch(data.loading,2)){
                 iweb_object.processing(true,70);
             }
             if(iweb_object.csrf_token.length > 0){
@@ -935,7 +935,11 @@ var iweb = {
                 dataType: ((iweb_object.isValue(data.type))?data.type:'json'),
                 success: function(response_data){
                     iweb_object.processing_status = false;
-                    iweb_object.processing(false);
+                    if (iweb_object.isMatch(data.loading,true) || iweb_object.isMatch(data.loading,1) || iweb_object.isMatch(data.loading,2)){
+                        if (!iweb_object.isMatch(data.loading,2)){
+                            iweb_object.processing(false);
+                        }
+                    }
                     if (typeof callback === 'function'){
                         callback(response_data);
                     }
@@ -990,14 +994,20 @@ var iweb = {
                         });
                     }
                     iweb_object.processing_status = true;
-                    iweb_object.processing(true,70);
+                    if((!iweb_object.isValue($(target_form_id).data('loading'))) || iweb_object.isMatch($(target_form_id).data('loading'),true) || iweb_object.isMatch($(target_form_id).data('loading'),1) || iweb_object.isMatch($(target_form_id).data('loading'),2)) {
+                        iweb_object.processing(true,70);
+                    }
                     if (typeof checkfunc !== 'function'){
                         return true;
                     }
                 },
                 success: function(response_data){
                     iweb_object.processing_status = false;
-                    iweb_object.processing(false);
+                    if((!iweb_object.isValue($(target_form_id).data('loading'))) || iweb_object.isMatch($(target_form_id).data('loading'),true) || iweb_object.isMatch($(target_form_id).data('loading'),1) || iweb_object.isMatch($(target_form_id).data('loading'),2)) {
+                        if(!iweb_object.isMatch($(target_form_id).data('loading'),2)) {
+                            iweb_object.processing(false);
+                        }
+                    }
                     if (typeof callback === 'function'){
                         callback(response_data);
                     }

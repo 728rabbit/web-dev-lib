@@ -232,7 +232,7 @@
             name_1: value_1
             name_2: value_2
         },
-        loading: false
+        loading: optional, default = false (true or 1: show loading & auto close, 2: show loading & not auto close, false or 0:, not show loading)
     },function(response_data) {
         // your code here
     });
@@ -247,9 +247,14 @@
     - callback: required
 
     e.g.
-    <form id="testform" method="post" action="test.php" data-token="your_random_string_here">
+    <form id="testform" method="post" action="test.php" data-loading="0">
         ......
     </form>
+
+    data-loading: default = true
+
+    (true or 1: show loading & auto close, 2: show loading & not auto close, false or 0:, not show loading)
+
 
     iweb.form('#testform','json',function(arr) {
         // arr.push({ name:'exra_parameter', value: 'AAAA' });
