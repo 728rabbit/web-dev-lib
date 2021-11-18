@@ -265,9 +265,9 @@ var iweb = {
                         });
                         $(this).find('div.virtual > div.options ul > li > a').each(function(){
                             if(iweb_object.isValue($(this).data('value'))){
-                                if(!iweb.isMatch(parseInt($.inArray($(this).data('value').toString(),selected_option)),-1)){
+                                if(!iweb_object.isMatch(parseInt($.inArray($(this).data('value').toString(),selected_option)),-1)){
                                     $(this).parent().addClass('node-selected');
-                                    if(iweb.isValue(selected_option_label)){
+                                    if(iweb_object.isValue(selected_option_label)){
                                         selected_option_label += ', ';
                                     }
                                     selected_option_label += $(this).text();
@@ -277,6 +277,9 @@ var iweb = {
                                 }
                             }
                         });
+                        if(!iweb_object.isValue(selected_option_label)){
+                            selected_option_label = iweb_object.language[iweb_object.default_language]['select']
+                        }
                         $(this).find('div.virtual > div.result > a').html(selected_option_label);
                     });
                     
@@ -493,9 +496,9 @@ var iweb = {
                 });
                 $(this).closest('.iweb-selector').find('div.virtual > div.options ul > li > a').each(function(){
                     if(iweb_object.isValue($(this).data('value'))){
-                        if(!iweb.isMatch(parseInt($.inArray($(this).data('value').toString(),selected_option)),-1)){
+                        if(!iweb_object.isMatch(parseInt($.inArray($(this).data('value').toString(),selected_option)),-1)){
                             $(this).parent().addClass('node-selected');
-                            if(iweb.isValue(selected_option_label)){
+                            if(iweb_object.isValue(selected_option_label)){
                                 selected_option_label += ', ';
                             }
                             selected_option_label += $(this).text();
@@ -505,6 +508,9 @@ var iweb = {
                         }
                     }
                 });
+                if(!iweb_object.isValue(selected_option_label)){
+                    selected_option_label = iweb_object.language[iweb_object.default_language]['select']
+                }
                 $(this).closest('.iweb-selector').find('div.virtual > div.result > a').html(selected_option_label);
             });
             
@@ -542,7 +548,7 @@ var iweb = {
                                 }
                             }
                         });
-                        if(iweb.isMatch(parseInt($.inArray($(this).data('value').toString(),selected_option)),-1)){
+                        if(iweb_object.isMatch(parseInt($.inArray($(this).data('value').toString(),selected_option)),-1)){
                             selected_option.push($(this).data('value'));
                         }
                         else {
@@ -610,7 +616,6 @@ var iweb = {
                 }
             }
         });
-
         if (typeof callback === 'function'){
             callback();
         }
@@ -1067,8 +1072,8 @@ var iweb = {
     toNumber: function(value, currency_mode, decimal){
         var iweb_object = this;
         value = value.toString().replace( /[^\d|\-|\.]/g, '');
-        if(iweb.isNumber(value)){
-            if(iweb.isNumber(decimal) && parseInt(decimal) > 0){
+        if(iweb_object.isNumber(value)){
+            if(iweb_object.isNumber(decimal) && parseInt(decimal) > 0){
                 var power10 = Math.pow(10, decimal);
                 value = value * power10;
                 value = (Math.round(value) /power10).toString();
