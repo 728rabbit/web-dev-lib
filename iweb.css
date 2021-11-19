@@ -291,11 +291,11 @@ body.iweb-macosx > .iweb-viewer {
 	position: relative;
 	background: transparent;
 	display: block;
-	overflow: hidden;
 }
 
 .iweb-selector > div.real.hidden {
 	height: 0px!important;
+    overflow: hidden;
 }
 
 .iweb-selector > div.real > select {
