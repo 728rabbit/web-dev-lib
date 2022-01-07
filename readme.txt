@@ -281,18 +281,18 @@
 
 16. Cookie, ,getUrlParameter, randomNum & randomString 
     ----------------------------------------------------------------------------
-    iweb_object.setCookie(name, value, days);
+    iweb.setCookie(name, value, days);
     - days: optional, default = 7
 
-    iweb_object.getCookie(name);
+    iweb.getCookie(name);
 
     iweb.getUrl();
     iweb.getUrlParameter(name);
 
-    iweb_object.randomNum();
-    iweb_object.randomNum(2,5);
+    iweb.randomNum();
+    iweb.randomNum(2,5);
 
-    iweb_object.randomString();
+    iweb.randomString();
     
     
 17. Pagination:
