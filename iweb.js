@@ -935,7 +935,7 @@ var iweb = {
             }
             $.ajax({
                 url: data.url,
-                type: "post",
+                type: 'post',
                 data: ((iweb_object.isValue(data.val))?data.val:{}),
                 dataType: ((iweb_object.isValue(data.type))?data.type:'json'),
                 success: function(response_data){
@@ -966,6 +966,12 @@ var iweb = {
                     return false;
                 }
             });
+        }
+        else {
+            var delay_timer = setTimeout(function(){
+                iweb_object.post(data,callback);
+                clearTimeout(delay_timer);
+            }, 1000);
         }
     },
     form: function(target_form_id,type,checkfunc,callback){
