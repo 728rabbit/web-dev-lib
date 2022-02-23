@@ -345,7 +345,7 @@
     - callback: optional
 
     e.g.
-    <select data-virtual="1">
+    <select data-virtual="1" data-filter="1">
         <optgroup label="Sport">
             <option value="Swimming">Swimming</option>
             <option value="Harbour Race">Harbour Race</option>

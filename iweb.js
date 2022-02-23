@@ -263,6 +263,7 @@ var iweb = {
                                 }
                             }
                         });
+                        $(this).find('div.virtual > div.options ul > li.node').removeClass('hide');
                         $(this).find('div.virtual > div.options ul > li > a').each(function(){
                             if(iweb_object.isValue($(this).data('value'))){
                                 if(!iweb_object.isMatch(parseInt($.inArray($(this).data('value').toString(),selected_option)),-1)){
@@ -565,6 +566,24 @@ var iweb = {
                     }
                 }
             });
+            
+            $(document).on('keyup','.iweb-selector > div.virtual > div.options ul > li.filter > input',function(){
+                var fkw = $(this).val();
+                if(iweb_object.isValue(fkw)){
+                    $(this).closest('.iweb-selector').find('div.virtual > div.options ul > li.node > a').each(function(key,value) {
+                        if (($(this).html().toUpperCase()).indexOf(fkw.toUpperCase()) > -1) {
+                            $(this).parent().removeClass('hide');
+                            $(this).closest('li.node-parent').removeClass('hide');
+                        }
+                        else {
+                            $(this).parent().addClass('hide');
+                        }
+                    });
+                }
+                else {
+                    $(this).closest('.iweb-selector').find('div.virtual > div.options ul > li.node').removeClass('hide');
+                }
+            });
         }
 
         if(!iweb_object.isValue(select_object)){
@@ -581,6 +600,11 @@ var iweb = {
                     var virtualHtml = '';
                     var virtualSelect = iweb_object.language[iweb_object.default_language]['select'];
                     virtualHtml += '<ul data-index="iss'+select_index+'">';
+                    if(iweb_object.isMatch($(this).data('filter'),1) || iweb_object.isMatch($(this).data('filter'),true)){
+                        virtualHtml += '<li class="filter">';
+                        virtualHtml += '<input type="text" name="fkw_'+select_index+'"/>';
+                        virtualHtml += '</li>';
+                    }
                     $.each($(this).children(),function(){
                         if(parseInt($(this).children().length) > 0){
                             virtualHtml += '<li class="node node-parent"><a href="#">'+$(this).attr('label')+'</a>';

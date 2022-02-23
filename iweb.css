@@ -1,5 +1,5 @@
 * {
-	font-family: Arial,Helvetica,'Microsoft JhengHei','微軟正黑體',sans-serif;
+	font-family: Arial, 'Microsoft JhengHei', 微軟正黑體, 'Heiti TC', 'PMingLiU', 新細明體;
 	box-sizing: border-box;
 	outline: none;
 	padding: 0px;
@@ -369,6 +369,21 @@ body.iweb-macosx > .iweb-viewer {
 .iweb-selector > div.virtual > div.options ul > li {
 	position: relative;
 	display: block;
+}
+
+.iweb-selector > div.virtual > div.options ul > li.hide {
+    display: none;
+}
+
+.iweb-selector > div.virtual > div.options ul > li.filter {
+    padding-top: 20px;
+    padding-left: 12px;
+    padding-right: 12px;
+    padding-bottom: 20px;
+}
+
+.iweb-selector > div.virtual > div.options ul > li.filter > input {
+    width: 100%;
 }
 
 .iweb-selector > div.virtual > div.options ul > li > a {
