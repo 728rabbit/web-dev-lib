@@ -602,7 +602,12 @@ var iweb = {
                     virtualHtml += '<ul data-index="iss'+select_index+'">';
                     if(iweb_object.isMatch($(this).data('filter'),1) || iweb_object.isMatch($(this).data('filter'),true)){
                         virtualHtml += '<li class="filter">';
-                        virtualHtml += '<input type="text" name="fkw_'+select_index+'"/>';
+                        if(iweb_object.isValue($(this).data('placeholder'))) {
+                            virtualHtml += '<input type="text" id="fkw_'+select_index+'" placeholder="'+$.trim($(this).data('placeholder'))+'"/>';
+                        }
+                        else {
+                            virtualHtml += '<input type="text" id="fkw_'+select_index+'"/>';
+                        }
                         virtualHtml += '</li>';
                     }
                     $.each($(this).children(),function(){
