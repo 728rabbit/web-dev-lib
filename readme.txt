@@ -345,6 +345,40 @@
     - callback: optional
 
     e.g.
+    <select data-virtual="1">
+        <optgroup label="Sport">
+            <option value="Swimming">Swimming</option>
+            <option value="Harbour Race">Harbour Race</option>
+            <option value="Masters Swimming">Masters Swimming</option>
+            <option value="Open Water Swimming">Open Water Swimming</option>
+            <option value="Diving">Diving</option>
+            <option value="Water Polo">Water Polo</option>
+            <option value="Artistic Swimming">Artistic Swimming</option>
+            <option value="General">General</option>
+        </optgroup>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+    </select>
+
+    a. "multiple" mode:
+
+    <select data-virtual="1" multiple>
+        <optgroup label="Sport">
+            <option value="Swimming">Swimming</option>
+            <option value="Harbour Race">Harbour Race</option>
+            <option value="Masters Swimming">Masters Swimming</option>
+            <option value="Open Water Swimming">Open Water Swimming</option>
+            <option value="Diving">Diving</option>
+            <option value="Water Polo">Water Polo</option>
+            <option value="Artistic Swimming">Artistic Swimming</option>
+            <option value="General">General</option>
+        </optgroup>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+    </select>
+
+    b. "filter" mode:
+
     <select data-virtual="1" data-filter="1" data-placeholder="please enter keywords">
         <optgroup label="Sport">
             <option value="Swimming">Swimming</option>
@@ -360,12 +394,30 @@
         <option value="audi">Audi</option>
     </select>
 
+    c. "multiple" & "filter" mode:
+
+    <select data-virtual="1" data-filter="1" data-placeholder="please enter keywords" multiple>
+        <optgroup label="Sport">
+            <option value="Swimming">Swimming</option>
+            <option value="Harbour Race">Harbour Race</option>
+            <option value="Masters Swimming">Masters Swimming</option>
+            <option value="Open Water Swimming">Open Water Swimming</option>
+            <option value="Diving">Diving</option>
+            <option value="Water Polo">Water Polo</option>
+            <option value="Artistic Swimming">Artistic Swimming</option>
+            <option value="General">General</option>
+        </optgroup>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+    </select>
+    
     or
 
     <select data-virtual="0">
         <option value="mercedes">Mercedes</option>
         <option value="audi">Audi</option>
     </select>
+
 
 20. checkbox
     ----------------------------------------------------------------------------
