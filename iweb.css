@@ -1,6 +1,5 @@
 * {
-    font-family: Arial, "Microsoft JhengHei", 微軟正黑體, "Heiti TC", "PMingLiU",
-        新細明體;
+    font-family: Arial, "Microsoft JhengHei", 微軟正黑體, "Heiti TC", "PMingLiU", 新細明體;
     box-sizing: border-box;
     outline: none;
     padding: 0px;
@@ -91,7 +90,7 @@ a.font-switch.large {
 }
 
 a.font-switch.current {
-    background: #96b97d;
+    background: #89c764;
 }
 
 img {
@@ -122,10 +121,17 @@ textarea {
     appearance: none;
     font-size: 1rem;
     max-width: 100%;
-    padding: 6px 12px;
+    padding: 8px 12px;
     border: 1px solid #ddd;
     border-radius: 4px;
     resize: none;
+}
+
+input[type="text"].error,
+input[type="number"].error,
+input[type="password"].error,
+textarea.error {
+    border-color: #ffaaaa !important;
 }
 
 input[type="button"],
@@ -137,7 +143,7 @@ button {
     appearance: none;
     font-size: 1rem;
     max-width: 100%;
-    padding: 10px;
+    padding: 8px 12px;
     border: 0px;
     border-radius: 4px;
     cursor: pointer;
@@ -202,7 +208,7 @@ body.iweb-macosx > .iweb-viewer {
 }
 
 .iweb-processing > .loading > .icon > circle {
-    stroke: #96b97d;
+    stroke: #89c764;
 }
 
 .iweb-editor {
@@ -429,7 +435,7 @@ body.iweb-macosx > .iweb-viewer {
 
 .iweb-selector > div.virtual > div.options ul > li.node-selected > a,
 .iweb-selector > div.virtual > div.options ul > li > a:hover {
-    background: #96b97d;
+    background: #89c764;
     color: #fff;
 }
 
@@ -437,7 +443,7 @@ body.iweb-macosx > .iweb-viewer {
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
     content: "✔";
-    color: #96b97d;
+    color: #89c764;
     font-size: 18px;
     font-weight: bold;
     top: 50%;
@@ -511,11 +517,12 @@ body.iweb-macosx > .iweb-viewer {
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
     content: "✔";
-    color: #96b97d;
+    color: #89c764;
     font-size: 18px;
     font-weight: bold;
-    top: -2px;
+    top: 0px;
     left: 2px;
+    line-height: normal!important;
 }
 
 .iweb-checkbox > div.options > div > input {
@@ -600,7 +607,7 @@ body.iweb-macosx > .iweb-viewer {
 .iweb-radiobox > div.options > div.checked:after {
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
-    background: #96b97d;
+    background: #89c764;
     content: "";
     width: 60%;
     height: 60%;
@@ -711,7 +718,7 @@ body.iweb-macosx > .iweb-viewer {
     height: auto;
     margin: auto;
     border-radius: 4px;
-    border-top: 4px solid #96b97d;
+    border-top: 4px solid #89c764;
     overflow: hidden;
 }
 
@@ -750,6 +757,7 @@ body.iweb-macosx > .iweb-viewer {
     border-top: 1px solid #ddd;
     border-right: 1px solid #ddd;
     padding: 8px;
+    border-radius: 0px;
 }
 
 .iweb-alert .async-content > div > .btn-no {
@@ -761,6 +769,7 @@ body.iweb-macosx > .iweb-viewer {
     font-weight: bold;
     border-top: 1px solid #ddd;
     padding: 8px;
+    border-radius: 0px;
 }
 
 .iweb-alert .async-content > div > .btn:hover,
@@ -899,7 +908,7 @@ body.iweb-macosx > .iweb-viewer {
 }
 
 .iweb-pagination > ul > li > a.current {
-    background: #96b97d;
+    background: #89c764;
     color: #fff;
 }
 
@@ -1081,15 +1090,15 @@ body.iweb-macosx > .iweb-viewer {
 }
 
 .iscroll-inner > .iscroll-element .iscroll-bar {
-    background-color: #96b97d;
+    background-color: #89c764;
 }
 
 .iscroll-inner > .iscroll-element:hover .iscroll-bar {
-    background-color: #96b97d;
+    background-color: #89c764;
 }
 
 .iscroll-inner > .iscroll-element.iscroll-draggable .iscroll-bar {
-    background-color: #96b97d;
+    background-color: #89c764;
 }
 
 .iscroll-inner > .iscroll-element.scroll-x.iscroll-visible
@@ -1173,15 +1182,15 @@ body.iweb-macosx > .iweb-viewer {
 }
 
 .iscroll-outer > .iscroll-element .iscroll-bar {
-    background-color: #96b97d;
+    background-color: #89c764;
 }
 
 .iscroll-outer > .iscroll-element .iscroll-bar:hover {
-    background-color: #96b97d;
+    background-color: #89c764;
 }
 
 .iscroll-outer > .iscroll-element.iscroll-draggable .iscroll-bar {
-    background-color: #96b97d;
+    background-color: #89c764;
 }
 
 .iscroll-outer > .iscroll-content.iscroll-visible {
@@ -1217,8 +1226,7 @@ body.iweb-macosx > .iweb-viewer {
     left: -14px;
 }
 
-.iscroll-outer > .iscroll-element.scroll-y.iscroll-scrollx-visible
-    .iscroll-element-size {
+.iscroll-outer > .iscroll-element.scroll-y.iscroll-scrollx-visible .iscroll-element-size {
     top: -14px;
 }
 
@@ -1245,7 +1253,7 @@ body.iweb-macosx > .iweb-viewer {
 }
 
 .iscroll-macosx > .iscroll-element .iscroll-bar {
-    background-color: #96b97d;
+    background-color: #89c764;
     display: block;
     border-radius: 0px;
     opacity: 0;
@@ -1306,12 +1314,10 @@ body.iweb-macosx > .iweb-viewer {
     top: -4px;
 }
 
-.iscroll-macosx > .iscroll-element.scroll-x.iscroll-visible
-    .iscroll-element-size {
+.iscroll-macosx > .iscroll-element.scroll-x.iscroll-visible .iscroll-element-size {
     left: -11px;
 }
 
-.iscroll-macosx > .iscroll-element.scroll-y.iscroll-scrollx-visible
-    .iscroll-element-size {
+.iscroll-macosx > .iscroll-element.scroll-y.iscroll-scrollx-visible .iscroll-element-size {
     top: -11px;
 }
