@@ -225,7 +225,11 @@
 
 14. Ajax post:
     ----------------------------------------------------------------------------
-    iweb.post(data,callback);
+    iweb.post(data,success_callback,complete_callback,percentage_callback);
+    - data: required
+    - success_callback: required,
+    - complete_callback: optional
+    - percentage_callback: optional
 
     e.g.
     iweb.post({
@@ -243,11 +247,12 @@
 
 15. Ajax Form:
     ----------------------------------------------------------------------------
-    iweb.form(target_form_id,type,checkfunc,callback);
+    iweb.form(target_form_id,type,checkfunc,success_callback,percentage_callback){
     - target_form_id: required
-    - type optional
-    - checkfunc optional
-    - callback: required
+    - type: optional
+    - checkfunc: optional
+    - success_callback: required,
+    - percentage_callback: optional
 
     e.g.
     <form id="testform" method="post" action="test.php" data-loading="0">
