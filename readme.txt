@@ -1,6 +1,3 @@
-**** you can preview "output.png"
-
-
 1.  load & init library
     ----------------------------------------------------------------------------
     <link href="css/iweb.min.css" rel="stylesheet" type="text/css"/>
@@ -20,8 +17,6 @@
 
     // set csrf-token
     <meta name="csrf-token" content="96ca6fd5cc5283000910785ba2344044"/>
-
-    * FitVids ignore with class "fitvids-non"
     
  
 2.  Document ready functions:
@@ -225,17 +220,13 @@
 
 14. Ajax post:
     ----------------------------------------------------------------------------
-    iweb.post(data,success_callback,complete_callback,percentage_callback);
-    - data: required
-    - success_callback: required,
-    - complete_callback: optional
-    - percentage_callback: optional
+    iweb.post(post_data,success_callback,complete_callback,percentage_callback){
 
     e.g.
     iweb.post({
         url: your_url_here,
         type: your_retrun_type_here, // default = json
-        val: {
+        value: {
             name_1: value_1
             name_2: value_2
         },
@@ -247,12 +238,7 @@
 
 15. Ajax Form:
     ----------------------------------------------------------------------------
-    iweb.form(target_form_id,type,checkfunc,success_callback,percentage_callback){
-    - target_form_id: required
-    - type: optional
-    - checkfunc: optional
-    - success_callback: required,
-    - percentage_callback: optional
+    iweb.form(target_form_id,type,checkfunc,success_callback,percentage_callback);
 
     e.g.
     <form id="testform" method="post" action="test.php" data-loading="0">

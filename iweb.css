@@ -45,8 +45,9 @@ html.large-font {
 
 body {
     font-size: 1rem;
+    color: #2b2b2b;
     width: 100%;
-    min-width: 360px;
+    min-width: 370px;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
 }
@@ -61,7 +62,7 @@ table td {
 }
 
 a {
-    color: #222;
+    color: #2b2b2b;
     cursor: pointer;
     text-decoration: none;
     -webkit-touch-callout: none;
@@ -75,7 +76,7 @@ a.font-switch {
     height: 36px;
     text-align: center;
     line-height: 36px;
-    border: 1px solid #ddd;
+    border: 1px solid #e6e6e6;
     margin: 0px 4px;
     border-radius: 4px;
     vertical-align: top;
@@ -90,7 +91,7 @@ a.font-switch.large {
 }
 
 a.font-switch.current {
-    background: #89c764;
+    background: #66cdaa;
 }
 
 img {
@@ -122,7 +123,7 @@ textarea {
     font-size: 1rem;
     max-width: 100%;
     padding: 8px 12px;
-    border: 1px solid #ddd;
+    border: 1px solid #e6e6e6;
     border-radius: 4px;
     resize: none;
 }
@@ -131,12 +132,9 @@ input[type="text"].error,
 input[type="number"].error,
 input[type="password"].error,
 textarea.error {
-    border-color: #ffaaaa !important;
+    border-color: lightpink !important;
 }
 
-input[type="button"],
-input[type="submit"],
-input[type="reset"],
 button {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -147,6 +145,11 @@ button {
     border: 0px;
     border-radius: 4px;
     cursor: pointer;
+}
+
+button:hover {
+    font-weight: bold;
+    box-shadow: 0px 0px 10px #0099ff;
 }
 
 body.iweb {
@@ -175,7 +178,7 @@ body.iweb > .iweb-viewer {
     position: relative;
     margin: auto;
     overflow: hidden;
-    box-shadow: 0px -10px 10px #ddd;
+    box-shadow: 0px -10px 10px #e6e6e6;
 }
 
 body.iweb-macosx > .iweb-viewer {
@@ -208,13 +211,12 @@ body.iweb-macosx > .iweb-viewer {
 }
 
 .iweb-processing > .loading > .icon > circle {
-    stroke: #89c764;
+    stroke: #66cdaa;
 }
 
 .iweb-editor {
     position: relative;
     font-size: 1rem;
-    line-height: 1.8;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
 }
@@ -239,7 +241,7 @@ body.iweb-macosx > .iweb-viewer {
 
 .iweb-editor hr {
     border: 0px;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #e6e6e6;
 }
 
 .iweb-editor:before,
@@ -255,7 +257,7 @@ body.iweb-macosx > .iweb-viewer {
     position: relative;
     display: block;
     max-width: 100%;
-    border: 1px solid #ddd;
+    border: 1px solid #e6e6e6;
     border-radius: 4px;
     vertical-align: top;
 }
@@ -269,7 +271,7 @@ body.iweb-macosx > .iweb-viewer {
     top: 50%;
     right: 13px;
     margin-top: -6px;
-    border-color: #222;
+    border-color: #2b2b2b;
     border-style: solid;
     border-width: 0px 2px 2px 0px;
     padding: 3px;
@@ -310,14 +312,13 @@ body.iweb-macosx > .iweb-viewer {
     display: block;
     background: transparent;
     font-size: 1rem;
-    padding-top: 4px;
+    padding-top: 9px;
     padding-left: 12px;
     padding-right: 36px;
-    padding-bottom: 4px;
+    padding-bottom: 9px;
     border: 0px;
     border-radius: 0px;
     width: 100%;
-    line-height: 1.8;
     text-overflow: ellipsis;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -341,12 +342,10 @@ body.iweb-macosx > .iweb-viewer {
     position: relative;
     background: transparent;
     display: block;
-    font-size: 1rem;
-    padding-top: 4px;
-    padding-left: 10px;
+    padding-top: 8px;
+    padding-left: 12px;
     padding-right: 36px;
-    padding-bottom: 4px;
-    line-height: 1.8;
+    padding-bottom: 8px;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
@@ -361,7 +360,7 @@ body.iweb-macosx > .iweb-viewer {
     left: -1px;
     right: -1px;
     max-height: 240px;
-    border: 1px solid #ddd;
+    border: 1px solid #e6e6e6;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
     overflow: auto;
@@ -393,11 +392,10 @@ body.iweb-macosx > .iweb-viewer {
 .iweb-selector > div.virtual > div.options ul > li > a {
     position: relative;
     display: block;
-    padding-top: 4px;
+    padding-top: 10px;
     padding-left: 12px;
     padding-right: 12px;
-    padding-bottom: 4px;
-    line-height: 1.8;
+    padding-bottom: 10px;
 }
 
 .iweb-selector-multiple > div.virtual > div.options ul > li > a {
@@ -414,11 +412,11 @@ body.iweb-macosx > .iweb-viewer {
     content: "";
     top: 50%;
     left: 10px;
-    width: 20px;
-    height: 20px;
-    border: 2px solid #ddd;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #e6e6e6;
     border-radius: 4px;
-    margin-top: -11px;
+    margin-top: -9px;
 }
 
 .iweb-selector-multiple > div.virtual > div.options ul > li > ul > li > a:before {
@@ -429,28 +427,27 @@ body.iweb-macosx > .iweb-viewer {
     width: 15px;
     height: 0px;
     left: 12px;
-    border: 1px solid #ddd;
+    border: 1px solid #e6e6e6;
     margin-top: -1px;
 }
 
-.iweb-selector > div.virtual > div.options ul > li.node-selected > a,
 .iweb-selector > div.virtual > div.options ul > li > a:hover {
-    background: #89c764;
+    background: #66cdaa;
     color: #fff;
 }
 
 .iweb-selector-multiple > div.virtual > div.options ul > li.node-selected > a:after {
-    font-family: Arial, Helvetica, sans-serif;
     position: absolute;
+    font-family: Arial, Helvetica, sans-serif;
     content: "✔";
-    color: #89c764;
-    font-size: 18px;
+    color: #66cdaa;
+    font-size: 16px;
     font-weight: bold;
+    height: 18px;
     top: 50%;
     left: 12px;
-    width: 20px;
-    height: 20px;
-    margin-top: -16px;
+    margin-top: -11px;
+    line-height: normal!important;
 }
 
 .iweb-selector-multiple > div.virtual > div.options ul > li > ul > li.node-selected > a:after {
@@ -473,8 +470,7 @@ body.iweb-macosx > .iweb-viewer {
 .iweb-checkbox {
     position: relative;
     display: inline-block;
-    vertical-align: top;
-    padding-left: 20px;
+    vertical-align: middle;
 }
 
 .iweb-checkbox * {
@@ -482,12 +478,11 @@ body.iweb-macosx > .iweb-viewer {
 }
 
 .iweb-checkbox > div.options {
-    position: absolute;
-    top: 3px;
-    left: 0px;
-    width: 24px;
-    height: 24px;
-    padding: 2px;
+    position: relative;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
     overflow: hidden;
 }
 
@@ -501,36 +496,38 @@ body.iweb-macosx > .iweb-viewer {
     position: absolute;
     background: #fff;
     content: "";
-    top: 0px;
-    left: 0px;
     width: 100%;
     height: 100%;
-    border: 2px solid #ddd;
+    top: 0px;
+    left: 0px;
+    border: 2px solid #e6e6e6;
     border-radius: 4px;
 }
 
 .iweb-checkbox > div.options > div.error:before {
-    border-color: #ffaaaa !important;
+    border-color: lightpink !important;
 }
 
 .iweb-checkbox > div.options > div.checked:after {
-    font-family: Arial, Helvetica, sans-serif;
     position: absolute;
+    font-family: Arial, Helvetica, sans-serif;
     content: "✔";
-    color: #89c764;
-    font-size: 18px;
+    color: #66cdaa;
+    font-size: 16px;
     font-weight: bold;
-    top: 0px;
+    height: 18px;
+    top: 50%;
     left: 2px;
+    margin-top: -11px;
     line-height: normal!important;
 }
 
 .iweb-checkbox > div.options > div > input {
     position: absolute;
-    top: 0px;
-    left: 0px;
     width: 100%;
     height: 100%;
+    top: 0px;
+    left: 0px;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     cursor: pointer;
@@ -549,7 +546,8 @@ body.iweb-macosx > .iweb-viewer {
 
 .iweb-checkbox > div.virtual-msg {
     position: relative;
-    line-height: 30px;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .iweb-checkbox > div.virtual-msg > label {
@@ -564,8 +562,7 @@ body.iweb-macosx > .iweb-viewer {
 .iweb-radiobox {
     position: relative;
     display: inline-block;
-    vertical-align: top;
-    padding-left: 20px;
+    vertical-align: middle;
 }
 
 .iweb-radiobox * {
@@ -573,12 +570,11 @@ body.iweb-macosx > .iweb-viewer {
 }
 
 .iweb-radiobox > div.options {
-    position: absolute;
-    top: 2px;
-    left: 0px;
-    width: 24px;
-    height: 24px;
-    padding: 2px;
+    position: relative;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
     overflow: hidden;
 }
 
@@ -592,37 +588,37 @@ body.iweb-macosx > .iweb-viewer {
     position: absolute;
     background: #fff;
     content: "";
-    top: 0px;
-    left: 0px;
     width: 100%;
     height: 100%;
-    border: 2px solid #ddd;
+    top: 0px;
+    left: 0px;
+    border: 2px solid #e6e6e6;
     border-radius: 50%;
 }
 
 .iweb-radiobox > div.options > div.error:before {
-    border-color: #ffaaaa !important;
+    border-color: lightpink !important;
 }
 
 .iweb-radiobox > div.options > div.checked:after {
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
-    background: #89c764;
+    background: #66cdaa;
     content: "";
-    width: 60%;
-    height: 60%;
-    top: 20%;
-    left: 20%;
+    width: 10px;
+    height: 10px;
+    top: 4px;
+    left: 4px;
     border-radius: 50%;
-    overflow: hidden;
+    line-height: normal!important;
 }
 
 .iweb-radiobox > div.options > div > input {
     position: absolute;
-    top: 0px;
-    left: 0px;
     width: 100%;
     height: 100%;
+    top: 0px;
+    left: 0px;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     cursor: pointer;
@@ -642,7 +638,8 @@ body.iweb-macosx > .iweb-viewer {
 
 .iweb-radiobox > div.virtual-msg {
     position: relative;
-    line-height: 30px;
+    display: inline-block;
+    vertical-align: middle;
 }
 
 .iweb-radiobox > div.virtual-msg > label {
@@ -718,7 +715,7 @@ body.iweb-macosx > .iweb-viewer {
     height: auto;
     margin: auto;
     border-radius: 4px;
-    border-top: 4px solid #89c764;
+    border-top: 4px solid #66cdaa;
     overflow: hidden;
 }
 
@@ -727,7 +724,6 @@ body.iweb-macosx > .iweb-viewer {
     display: block;
     font-size: 1rem;
     font-weight: bold;
-    line-height: 1.8;
     text-align: center;
     padding-top: 36px;
     padding-left: 15px;
@@ -743,7 +739,7 @@ body.iweb-macosx > .iweb-viewer {
     font-weight: bold;
     width: 100%;
     padding: 8px;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #e6e6e6;
 }
 
 .iweb-alert .async-content > div > .btn-yes {
@@ -754,8 +750,8 @@ body.iweb-macosx > .iweb-viewer {
     font-size: 1rem;
     font-weight: bold;
     border: 0px;
-    border-top: 1px solid #ddd;
-    border-right: 1px solid #ddd;
+    border-top: 1px solid #e6e6e6;
+    border-right: 1px solid #e6e6e6;
     padding: 8px;
     border-radius: 0px;
 }
@@ -767,7 +763,7 @@ body.iweb-macosx > .iweb-viewer {
     width: 50%;
     font-size: 1rem;
     font-weight: bold;
-    border-top: 1px solid #ddd;
+    border-top: 1px solid #e6e6e6;
     padding: 8px;
     border-radius: 0px;
 }
@@ -899,16 +895,16 @@ body.iweb-macosx > .iweb-viewer {
     position: relative;
     display: block;
     text-align: center;
-    border: 1px solid #ddd;
+    border: 1px solid #e6e6e6;
     padding: 2px;
-    color: #222;
+    color: #2b2b2b;
     min-width: 28px;
     height: 28px;
     border-radius: 4px;
 }
 
 .iweb-pagination > ul > li > a.current {
-    background: #89c764;
+    background: #66cdaa;
     color: #fff;
 }
 
@@ -918,7 +914,7 @@ body.iweb-macosx > .iweb-viewer {
 
 .iweb-pagination > ul > li > a > i {
     position: absolute;
-    border-color: #222;
+    border-color: #2b2b2b;
     border-style: solid;
     border-width: 0px 1px 1px 0px;
     display: inline-block;
@@ -968,7 +964,7 @@ body.iweb-macosx > .iweb-viewer {
 .iweb-pagination > ul > li > input[type="text"] {
     width: 46px;
     height: 28px;
-    border: 1px solid #ddd;
+    border: 1px solid #e6e6e6;
     padding: 3px 6px;
     text-align: center;
 }
@@ -1019,7 +1015,7 @@ body.iweb-macosx > .iweb-viewer {
 }
 
 .iscroll-textarea {
-    border: 1px solid #dddccc;
+    border: 1px solid #e6e6e6ccc;
     border-top-color: #999999;
 }
 
@@ -1086,19 +1082,19 @@ body.iweb-macosx > .iweb-viewer {
 }
 
 .iscroll-inner > .iscroll-element .iscroll-element-track {
-    background-color: #ddd;
+    background-color: #e6e6e6;
 }
 
 .iscroll-inner > .iscroll-element .iscroll-bar {
-    background-color: #89c764;
+    background-color: #66cdaa;
 }
 
 .iscroll-inner > .iscroll-element:hover .iscroll-bar {
-    background-color: #89c764;
+    background-color: #66cdaa;
 }
 
 .iscroll-inner > .iscroll-element.iscroll-draggable .iscroll-bar {
-    background-color: #89c764;
+    background-color: #66cdaa;
 }
 
 .iscroll-inner > .iscroll-element.scroll-x.iscroll-visible
@@ -1172,7 +1168,7 @@ body.iweb-macosx > .iweb-viewer {
 }
 
 .iscroll-outer > .iscroll-element .iscroll-element-track {
-    background-color: #ddd;
+    background-color: #e6e6e6;
 }
 
 .iscroll-outer > .iscroll-element .iscroll-element-outer,
@@ -1182,15 +1178,15 @@ body.iweb-macosx > .iweb-viewer {
 }
 
 .iscroll-outer > .iscroll-element .iscroll-bar {
-    background-color: #89c764;
+    background-color: #66cdaa;
 }
 
 .iscroll-outer > .iscroll-element .iscroll-bar:hover {
-    background-color: #89c764;
+    background-color: #66cdaa;
 }
 
 .iscroll-outer > .iscroll-element.iscroll-draggable .iscroll-bar {
-    background-color: #89c764;
+    background-color: #66cdaa;
 }
 
 .iscroll-outer > .iscroll-content.iscroll-visible {
@@ -1253,7 +1249,7 @@ body.iweb-macosx > .iweb-viewer {
 }
 
 .iscroll-macosx > .iscroll-element .iscroll-bar {
-    background-color: #89c764;
+    background-color: #66cdaa;
     display: block;
     border-radius: 0px;
     opacity: 0;
