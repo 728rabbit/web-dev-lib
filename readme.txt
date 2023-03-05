@@ -1,8 +1,9 @@
 1.  load & init library
     ----------------------------------------------------------------------------
-    <link href="css/iweb.min.css" rel="stylesheet" type="text/css"/>
-    <script src="js/jquery.min.js" type="text/javascript"></script>
-    <script src="js/iweb.min.js" type="text/javascript"></script>
+    <link href="icon/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="iweb.min.css" rel="stylesheet" type="text/css"/>
+    <script src="jquery.min.js" type="text/javascript"></script>
+    <script src="iweb.min.js" type="text/javascript"></script>
 
     // set language
     <html lang="en">
@@ -443,6 +444,16 @@
         <a class="font-switch large" href="#" data-size="large">Large</a>
     </div>
 
+23. uploader: function(files_id,options,callback) {
+    
+    options = { 
+        url: '',
+        value: null,
+        allowed_types: '',   // optional: jpg|png|pdf
+        max_filesize: 5,
+        type_error_message: 'File type is not allowed.',
+        max_error_message: 'Maximum allowed file size 5M.'
+    }
 
 /* base color: #e3f2e1 */
     
