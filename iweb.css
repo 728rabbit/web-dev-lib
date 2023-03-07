@@ -20,15 +20,6 @@
     box-shadow: 0px 0px 4px #0099ff;
 }
 
-.clearboth {
-    position: relative;
-    display: block;
-    clear: both;
-    width: 100%;
-    height: 0px;
-    overflow: hidden;
-}
-
 html {
     font-size: 1em;
     width: 100%;
@@ -46,8 +37,8 @@ html.large-font {
 body {
     font-size: 1rem;
     color: #2b2b2b;
-    width: 100%;
     min-width: 370px;
+    width: 100%;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
 }
@@ -94,7 +85,8 @@ a.font-switch.current {
     background: #66cdaa;
 }
 
-img {
+img,
+video {
     font-size: 0px;
     max-width: 100%;
     max-height: 100%;
@@ -108,11 +100,6 @@ img.image-grayscale {
     filter: url('data:image/svg+xml;charset=utf-8,<svg xmlns="http://www.w3.org/2000/svg"><filter id="filter"><feColorMatrix type="matrix" color-interpolation-filters="sRGB" values="0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0.2126 0.7152 0.0722 0 0 0 0 0 1 0" /></filter></svg>#filter');
     -webkit-filter: grayscale(100%);
     filter: grayscale(100%);
-}
-
-video {
-    max-width: 100%;
-    height: auto;
 }
 
 input[type="text"],
@@ -137,6 +124,10 @@ textarea.error {
     border-color: lightpink !important;
 }
 
+select {
+    font-size: 1rem;
+}
+
 button {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -154,7 +145,17 @@ button:hover {
     box-shadow: 0px 0px 10px #0099ff;
 }
 
+div.clearboth {
+    position: relative;
+    display: block;
+    clear: both;
+    width: 100%;
+    height: 0px;
+    overflow: hidden;
+}
+
 body.iweb {
+    width: 100%;
     height: auto;
     overflow-x: hidden;
     overflow-y: scroll;
@@ -176,18 +177,21 @@ body.iweb-mobile.iweb-disable-scroll {
     padding-right: 0px;
 }
 
-body.iweb > .iweb-viewer {
+body.iweb > div.iweb-viewer {
     position: relative;
-    margin: auto;
+    width: 100%;
+    height: auto;
+    padding: 0px;
+    margin: 0px;
     overflow: hidden;
     box-shadow: 0px -10px 10px #e6e6e6;
 }
 
-body.iweb-macosx > .iweb-viewer {
+body.iweb-macosx > div.iweb-viewer {
     height: 100%;
 }
 
-.iweb-processing {
+div.iweb-processing {
     position: fixed;
     background: #fff;
     top: 0px;
@@ -197,7 +201,7 @@ body.iweb-macosx > .iweb-viewer {
     z-index: 999;
 }
 
-.iweb-processing > .loading {
+div.iweb-processing > div.loading {
     position: absolute;
     display: block;
     width: 48px;
@@ -208,54 +212,54 @@ body.iweb-macosx > .iweb-viewer {
     margin-left: -24px;
 }
 
-.iweb-processing > .loading > .icon {
+div.iweb-processing > div.loading > svg {
     width: 100%;
 }
 
-.iweb-processing > .loading > .icon > circle {
+div.iweb-processing > div.loading > svg > circle {
     stroke: #66cdaa;
 }
 
-.iweb-editor {
+div.iweb-editor {
     position: relative;
     font-size: 1rem;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
 }
 
-.iweb-editor ul,
-.iweb-editor ol {
+div.iweb-editor ul,
+div.iweb-editor ol {
     list-style-position: outside;
     padding-left: 30px;
 }
 
-.iweb-editor img.left {
+div.iweb-editor img.left {
     float: right;
     margin-left: 20px;
     margin-bottom: 20px;
 }
 
-.iweb-editor img.right {
+div.iweb-editor img.right {
     float: left;
     margin-right: 20px;
     margin-bottom: 20px;
 }
 
-.iweb-editor hr {
+div.iweb-editor hr {
     border: 0px;
     border-top: 1px solid #e6e6e6;
 }
 
-.iweb-editor:before,
-.iweb-editor:after {
+div.iweb-editor:before,
+div.iweb-editor:after {
     position: relative;
     display: block;
+    content: '';
     clear: both;
-    content: "";
     width: 100%;
 }
 
-.iweb-selector {
+div.iweb-selector {
     position: relative;
     display: block;
     max-width: 100%;
@@ -264,19 +268,19 @@ body.iweb-macosx > .iweb-viewer {
     vertical-align: top;
 }
 
-.iweb-selector:before {
+div.iweb-selector:before {
     position: absolute;
-    content: "";
     display: inline-block;
+    content: '';
     width: 0px;
     height: 0px;
     top: 50%;
     right: 13px;
+    padding: 3px;
     margin-top: -6px;
     border-color: #2b2b2b;
     border-style: solid;
     border-width: 0px 2px 2px 0px;
-    padding: 3px;
     -webkit-transform: rotate(45deg);
     transform: rotate(45deg);
     -webkit-transition-duration: 0.5s;
@@ -284,13 +288,13 @@ body.iweb-macosx > .iweb-viewer {
     cursor: pointer;
 }
 
-.iweb-selector.show:before {
+div.iweb-selector.show:before {
     margin-top: -2px;
     -webkit-transform: rotate(-135deg);
     transform: rotate(-135deg);
 }
 
-.iweb-selector * {
+div.iweb-selector * {
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
@@ -298,29 +302,28 @@ body.iweb-macosx > .iweb-viewer {
     cursor: pointer;
 }
 
-.iweb-selector > div.real {
+div.iweb-selector > div.real {
     position: relative;
     background: transparent;
     display: block;
 }
 
-.iweb-selector > div.real.hidden {
+div.iweb-selector > div.real.hidden {
     height: 0px !important;
     overflow: hidden;
 }
 
-.iweb-selector > div.real > select {
+div.iweb-selector > div.real > select {
     position: relative;
-    display: block;
     background: transparent;
-    font-size: 1rem;
-    padding-top: 9px;
+    display: block;
+    width: 100%;
+    padding-top: 8px;
     padding-left: 12px;
     padding-right: 36px;
-    padding-bottom: 9px;
+    padding-bottom: 8px;
     border: 0px;
     border-radius: 0px;
-    width: 100%;
     text-overflow: ellipsis;
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -328,19 +331,19 @@ body.iweb-macosx > .iweb-viewer {
     cursor: pointer;
 }
 
-.iweb-selector > div.real > select::-ms-expand {
+div.iweb-selector > div.real > select::-ms-expand {
     display: none;
 }
 
-.iweb-selector > div.virtual {
+div.iweb-selector > div.virtual {
     position: relative;
 }
 
-.iweb-selector > div.virtual > div {
+div.iweb-selector > div.virtual > div.result {
     position: relative;
 }
 
-.iweb-selector > div.virtual > div.result > a {
+div.iweb-selector > div.virtual > div.result > a {
     position: relative;
     background: transparent;
     display: block;
@@ -353,7 +356,7 @@ body.iweb-macosx > .iweb-viewer {
     overflow: hidden;
 }
 
-.iweb-selector > div.virtual > div.options > ul {
+div.iweb-selector > div.virtual > div.options > ul {
     position: absolute;
     background: #fff;
     display: none;
@@ -370,28 +373,28 @@ body.iweb-macosx > .iweb-viewer {
     -webkit-overflow-scrolling: touch;
 }
 
-.iweb-selector.show > div.virtual > div.options > ul {
+div.iweb-selector.show > div.virtual > div.options > ul {
     display: block;
 }
 
-.iweb-selector > div.virtual > div.options ul > li {
+div.iweb-selector > div.virtual > div.options ul > li {
     position: relative;
     display: block;
 }
 
-.iweb-selector > div.virtual > div.options ul > li.hide {
+div.iweb-selector > div.virtual > div.options ul > li.hide {
     display: none;
 }
 
-.iweb-selector > div.virtual > div.options ul > li.filter {
+div.iweb-selector > div.virtual > div.options ul > li.filter {
     padding: 12px;
 }
 
-.iweb-selector > div.virtual > div.options ul > li.filter > input {
+div.iweb-selector > div.virtual > div.options ul > li.filter > input {
     width: 100%;
 }
 
-.iweb-selector > div.virtual > div.options ul > li > a {
+div.iweb-selector > div.virtual > div.options ul > li > a {
     position: relative;
     display: block;
     padding-top: 10px;
@@ -400,15 +403,15 @@ body.iweb-macosx > .iweb-viewer {
     padding-bottom: 10px;
 }
 
-.iweb-selector-multiple > div.virtual > div.options ul > li > a {
+div.iweb-selector-multiple > div.virtual > div.options ul > li > a {
     padding-left: 40px;
 }
 
-.iweb-selector-multiple > div.virtual > div.options ul > li.node-parent > a {
+div.iweb-selector-multiple > div.virtual > div.options ul > li.node-parent > a {
     padding-left: 40px;
 }
 
-.iweb-selector-multiple > div.virtual > div.options ul > li > a:before {
+div.iweb-selector-multiple > div.virtual > div.options ul > li > a:before {
     position: absolute;
     background: #fff;
     content: "";
@@ -421,11 +424,11 @@ body.iweb-macosx > .iweb-viewer {
     margin-top: -9px;
 }
 
-.iweb-selector-multiple > div.virtual > div.options ul > li > ul > li > a:before {
+div.iweb-selector-multiple > div.virtual > div.options ul > li > ul > li > a:before {
     left: 40px;
 }
 
-.iweb-selector-multiple > div.virtual > div.options ul > li.node-parent > a:before {
+div.iweb-selector-multiple > div.virtual > div.options ul > li.node-parent > a:before {
     width: 15px;
     height: 0px;
     left: 12px;
@@ -433,14 +436,14 @@ body.iweb-macosx > .iweb-viewer {
     margin-top: -1px;
 }
 
-.iweb-selector > div.virtual > div.options ul > li > a:hover {
+div.iweb-selector > div.virtual > div.options ul > li > a:hover {
     background: #66cdaa;
     color: #fff;
 }
 
-.iweb-selector-multiple > div.virtual > div.options ul > li.node-selected > a:after {
-    position: absolute;
+div.iweb-selector-multiple > div.virtual > div.options ul > li.node-selected > a:after {
     font-family: Arial, Helvetica, sans-serif;
+    position: absolute;
     content: "✔";
     color: #66cdaa;
     font-size: 16px;
@@ -452,34 +455,34 @@ body.iweb-macosx > .iweb-viewer {
     line-height: normal!important;
 }
 
-.iweb-selector-multiple > div.virtual > div.options ul > li > ul > li.node-selected > a:after {
+div.iweb-selector-multiple > div.virtual > div.options ul > li > ul > li.node-selected > a:after {
     left: 42px;
 }
 
-.iweb-selector > div.virtual > div.options > ul > li > ul {
+div.iweb-selector > div.virtual > div.options > ul > li > ul {
     position: relative;
     display: block;
 }
 
-.iweb-selector > div.virtual > div.options > ul > li > ul > li > a {
+div.iweb-selector > div.virtual > div.options > ul > li > ul > li > a {
     padding-left: 30px;
 }
 
-.iweb-selector-multiple > div.virtual > div.options > ul > li > ul > li > a {
+div.iweb-selector-multiple > div.virtual > div.options > ul > li > ul > li > a {
     padding-left: 70px;
 }
 
-.iweb-checkbox {
+div.iweb-checkbox {
     position: relative;
     display: inline-block;
     vertical-align: middle;
 }
 
-.iweb-checkbox * {
+div.iweb-checkbox * {
     cursor: pointer;
 }
 
-.iweb-checkbox > div.options {
+div.iweb-checkbox > div.options {
     position: relative;
     display: inline-block;
     width: 18px;
@@ -488,13 +491,13 @@ body.iweb-macosx > .iweb-viewer {
     overflow: hidden;
 }
 
-.iweb-checkbox > div.options > div {
+div.iweb-checkbox > div.options > div {
     position: relative;
     width: 100%;
     height: 100%;
 }
 
-.iweb-checkbox > div.options > div:before {
+div.iweb-checkbox > div.options > div:before {
     position: absolute;
     background: #fff;
     content: "";
@@ -506,11 +509,11 @@ body.iweb-macosx > .iweb-viewer {
     border-radius: 4px;
 }
 
-.iweb-checkbox > div.options > div.error:before {
+div.iweb-checkbox > div.options > div.error:before {
     border-color: lightpink !important;
 }
 
-.iweb-checkbox > div.options > div.checked:after {
+div.iweb-checkbox > div.options > div.checked:after {
     position: absolute;
     font-family: Arial, Helvetica, sans-serif;
     content: "✔";
@@ -524,7 +527,7 @@ body.iweb-macosx > .iweb-viewer {
     line-height: normal!important;
 }
 
-.iweb-checkbox > div.options > div > input {
+div.iweb-checkbox > div.options > div > input {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -536,7 +539,7 @@ body.iweb-macosx > .iweb-viewer {
     z-index: 1;
 }
 
-.iweb-checkbox > div.options > div > a {
+div.iweb-checkbox > div.options > div > a {
     position: absolute;
     display: block;
     top: 2px;
@@ -546,32 +549,32 @@ body.iweb-macosx > .iweb-viewer {
     z-index: 2;
 }
 
-.iweb-checkbox > div.virtual-msg {
+div.iweb-checkbox > div.virtual-msg {
     position: relative;
     display: inline-block;
     vertical-align: middle;
 }
 
-.iweb-checkbox > div.virtual-msg > label {
+div.iweb-checkbox > div.virtual-msg > label {
     display: block;
     padding-left: 10px;
 }
 
-.iweb-checkbox > div.virtual-msg > label > a {
+div.iweb-checkbox > div.virtual-msg > label > a {
     text-decoration: underline;
 }
 
-.iweb-radiobox {
+div.iweb-radiobox {
     position: relative;
     display: inline-block;
     vertical-align: middle;
 }
 
-.iweb-radiobox * {
+div.iweb-radiobox * {
     cursor: pointer;
 }
 
-.iweb-radiobox > div.options {
+div.iweb-radiobox > div.options {
     position: relative;
     display: inline-block;
     width: 18px;
@@ -580,13 +583,13 @@ body.iweb-macosx > .iweb-viewer {
     overflow: hidden;
 }
 
-.iweb-radiobox > div.options > div {
+div.iweb-radiobox > div.options > div {
     position: relative;
     width: 100%;
     height: 100%;
 }
 
-.iweb-radiobox > div.options > div:before {
+div.iweb-radiobox > div.options > div:before {
     position: absolute;
     background: #fff;
     content: "";
@@ -598,11 +601,11 @@ body.iweb-macosx > .iweb-viewer {
     border-radius: 50%;
 }
 
-.iweb-radiobox > div.options > div.error:before {
+div.iweb-radiobox > div.options > div.error:before {
     border-color: lightpink !important;
 }
 
-.iweb-radiobox > div.options > div.checked:after {
+div.iweb-radiobox > div.options > div.checked:after {
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
     background: #66cdaa;
@@ -615,7 +618,7 @@ body.iweb-macosx > .iweb-viewer {
     line-height: normal!important;
 }
 
-.iweb-radiobox > div.options > div > input {
+div.iweb-radiobox > div.options > div > input {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -627,7 +630,7 @@ body.iweb-macosx > .iweb-viewer {
     z-index: 1;
 }
 
-.iweb-radiobox > div.options > div > a {
+div.iweb-radiobox > div.options > div > a {
     position: absolute;
     display: block;
     top: 2px;
@@ -638,28 +641,28 @@ body.iweb-macosx > .iweb-viewer {
     z-index: 2;
 }
 
-.iweb-radiobox > div.virtual-msg {
+div.iweb-radiobox > div.virtual-msg {
     position: relative;
     display: inline-block;
     vertical-align: middle;
 }
 
-.iweb-radiobox > div.virtual-msg > label {
+div.iweb-radiobox > div.virtual-msg > label {
     display: block;
     padding-left: 10px;
 }
 
-.iweb-radiobox > div.virtual-msg > label > a {
+div.iweb-radiobox > div.virtual-msg > label > a {
     text-decoration: underline;
 }
 
-.iweb-responsive {
+div.iweb-responsive {
     position: relative;
     max-width: 100%;
     overflow: hidden;
 }
 
-.iweb-responsive > .vframe {
+div.iweb-responsive > .vframe {
     position: absolute;
     top: 0px;
     left: 0px;
@@ -667,7 +670,7 @@ body.iweb-macosx > .iweb-viewer {
     height: 100%;
 }
 
-.iweb-alert {
+div.iweb-alert-dialog {
     position: fixed;
     background: rgba(0, 0, 0, 0.7);
     top: 0px;
@@ -679,7 +682,7 @@ body.iweb-macosx > .iweb-viewer {
     -webkit-overflow-scrolling: touch;
 }
 
-.iweb-alert > div {
+div.iweb-alert-dialog > div {
     position: relative;
     width: 100%;
     height: 100%;
@@ -689,94 +692,82 @@ body.iweb-macosx > .iweb-viewer {
     overflow-y: scroll;
 }
 
-.iweb-alert > div:before {
+div.iweb-alert-dialog > div:before {
     position: relative;
     display: inline-block;
-    content: "";
+    content: '';
     width: 0px;
-    height: 82%;
+    height: 70%;
     vertical-align: middle;
 }
 
-.iweb-alert div.iscroll-macosx:before {
+div.iweb-alert-dialog > div.iscroll-macosx:before {
     height: 32%;
 }
 
-.iweb-alert .async-content {
+div.iweb-alert-dialog > div > div.dialog-content {
     position: relative;
     display: inline-block;
     width: 100%;
     vertical-align: middle;
 }
 
-.iweb-alert .async-content > div {
+div.iweb-alert-dialog > div > div.dialog-content > div {
     position: relative;
-    display: block;
     background: #fff;
+    display: block;
     max-width: 360px;
-    height: auto;
     margin: auto;
     border-radius: 4px;
     border-top: 4px solid #66cdaa;
     overflow: hidden;
 }
 
-.iweb-alert .async-content > div > .message {
+div.iweb-alert-dialog > div > div.dialog-content > div > div.message {
     position: relative;
     display: block;
-    font-size: 1rem;
     font-weight: bold;
     text-align: center;
-    padding-top: 36px;
-    padding-left: 15px;
-    padding-right: 15px;
-    padding-bottom: 36px;
+    padding: 40px 20px;
 }
 
-.iweb-alert .async-content > div > .btn-close {
+div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-close {
     position: relative;
     background: transparent;
     display: block;
-    font-size: 1rem;
     font-weight: bold;
     width: 100%;
-    padding: 8px;
     border-top: 1px solid #e6e6e6;
 }
 
-.iweb-alert .async-content > div > .btn-yes {
+div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-yes {
     position: relative;
     background: transparent;
     display: inline-block;
-    width: 50%;
-    font-size: 1rem;
     font-weight: bold;
-    border: 0px;
+    width: 50%;
     border-top: 1px solid #e6e6e6;
     border-right: 1px solid #e6e6e6;
-    padding: 8px;
     border-radius: 0px;
 }
 
-.iweb-alert .async-content > div > .btn-no {
+div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-no {
     position: relative;
     background: transparent;
     display: inline-block;
-    width: 50%;
-    font-size: 1rem;
     font-weight: bold;
+    width: 50%;
     border-top: 1px solid #e6e6e6;
-    padding: 8px;
     border-radius: 0px;
 }
 
-.iweb-alert .async-content > div > .btn:hover,
-.iweb-alert .async-content > div > .btn:active {
+div.iweb-alert-dialog > div > div.dialog-content > div > button.btn:hover,
+div.iweb-alert-dialog > div > div.dialog-content > div > button.btn:active {
     opacity: 0.8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 }
 
-.iweb-dialog {
+div.iweb-info-dialog {
     position: fixed;
     background: rgba(0, 0, 0, 0.7);
     top: 0px;
@@ -788,7 +779,7 @@ body.iweb-macosx > .iweb-viewer {
     -webkit-overflow-scrolling: touch;
 }
 
-.iweb-dialog > div {
+div.iweb-info-dialog > div {
     position: relative;
     width: 100%;
     height: 100%;
@@ -798,7 +789,7 @@ body.iweb-macosx > .iweb-viewer {
     overflow-y: scroll;
 }
 
-.iweb-dialog .async-loading {
+div.iweb-info-dialog > div > div.dialog-loading {
     position: absolute;
     display: block;
     width: 48px;
@@ -809,15 +800,15 @@ body.iweb-macosx > .iweb-viewer {
     margin-left: -24px;
 }
 
-.iweb-dialog .async-loading > .icon {
+div.iweb-info-dialog > div > div.dialog-loading  > svg {
     width: 100%;
 }
 
-.iweb-dialog .async-loading > .icon > circle {
+div.iweb-info-dialog > div > div.dialog-loading  > svg > circle {
     stroke: #fff;
 }
 
-.iweb-dialog .async-virtual {
+div.iweb-info-dialog > div > div.dialog-mask {
     position: fixed;
     top: 0px;
     left: 0px;
@@ -825,11 +816,11 @@ body.iweb-macosx > .iweb-viewer {
     bottom: 0px;
 }
 
-.iweb-mobile .iweb-dialog .async-virtual {
+body.iweb-mobile > div.iweb-viewer > div.iweb-info-dialog > div > div.dialog-mask {
     right: 0px;
 }
 
-.iweb-dialog .async-content {
+div.iweb-info-dialog > div > div.dialog-content {
     position: relative;
     max-width: 980px;
     margin-top: 60px;
@@ -841,16 +832,15 @@ body.iweb-macosx > .iweb-viewer {
     z-index: 1;
 }
 
-.iweb-dialog .async-content > .btn-close {
+div.iweb-info-dialog > div > div.dialog-content > a.btn-close {
     position: absolute;
     background: #fff;
-    font-family: Arial, Baskerville, monospace;
-    font-size: 32px;
     display: inline-block;
     width: 40px;
     height: 40px;
     top: -60px;
     left: 50%;
+    padding: 10px;
     margin-left: -20px;
     border-radius: 50%;
     line-height: 40px;
@@ -858,7 +848,39 @@ body.iweb-macosx > .iweb-viewer {
     z-index: 1;
 }
 
-.iweb-dialog .async-content > div {
+div.iweb-info-dialog > div > div.dialog-content > a.btn-close > div {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+div.iweb-info-dialog > div > div.dialog-content > a.btn-close > div:before {
+    position: absolute;
+    background: #2b2b2b;
+    content: '';
+    width: 100%;
+    height: 2px;
+    top: 50%;
+    left: 0px;
+    margin-top: -1px;
+    -webkit-transform: rotate(45deg);
+            transform: rotate(45deg);
+}
+
+div.iweb-info-dialog > div > div.dialog-content > a.btn-close > div:after {
+    position: absolute;
+    background: #2b2b2b;
+    content: '';
+    width: 100%;
+    height: 2px;
+    top: 50%;
+    left: 0px;
+    margin-top: -1px;
+    -webkit-transform: rotate(135deg);
+            transform: rotate(135deg);
+}
+
+div.iweb-info-dialog > div > div.dialog-content > div {
     position: relative;
     background: #fff;
     min-height: 120px;
@@ -867,40 +889,41 @@ body.iweb-macosx > .iweb-viewer {
     overflow: hidden;
 }
 
-.iweb-dialog .async-content > div:before,
-.iweb-dialog .async-content > div:after {
+div.iweb-info-dialog > div > div.dialog-content > div:before,
+div.iweb-info-dialog > div > div.dialog-content > div:after {
     position: relative;
     display: block;
+    content: '';
     clear: both;
-    content: "";
     width: 100%;
 }
 
-.iweb-dialog-iuploader .async-virtual {
+
+div.iweb-info-dialog.uploader > div > div.dialog-mask {
     display: none;
 }
 
-.iweb-dialog-iuploader .async-content {
+div.iweb-info-dialog.uploader > div > div.dialog-content {
     max-width: 520px;
 }
 
 
-.iweb-dialog-iuploader .async-content > .btn-close {
+div.iweb-info-dialog.uploader > div > div.dialog-content > a.btn-close {
     display: none;
 }
 
-.iweb-dialog-iuploader .async-content > div {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div {
     padding: 10px;
 }
 
-.iweb-dialog-iuploader .async-content div.action {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action {
     text-align: right;
     padding-bottom: 10px;
     margin-bottom: 10px;
     border-bottom: 1px solid #e6e6e6;
 }
 
-.iweb-dialog-iuploader .async-content div.action > button {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button {
     display: inline-block;
     background: #66cdaa;
     color: #fff;
@@ -911,23 +934,22 @@ body.iweb-macosx > .iweb-viewer {
     vertical-align: middle;
 }
 
-.iweb-dialog-iuploader .async-content div.action > button.close {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.close {
     background: #ef4130;
 }
 
-.iweb-dialog-iuploader .async-content div.action > button > i {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button > i {
     display: inline-block;
     color: #fff;
-    vertical-align: middle;
 }
 
-.iweb-dialog-iuploader .async-content div.list {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list {
     position: relative;
     height: 360px;
     overflow: auto;
 }
 
-.iweb-dialog-iuploader .async-content div.list > div.item {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item {
     position: relative;
     display: block;
     padding: 8px;
@@ -937,11 +959,11 @@ body.iweb-macosx > .iweb-viewer {
     box-shadow: 0px 0px 8px rgba(43, 43, 43, 0.15);
 }
 
-.iweb-dialog-iuploader .async-content div.list > div.item:nth-child(1) {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item:nth-child(1) {
     margin-top: 0px;
 }
 
-.iweb-dialog-iuploader .async-content div.list > div.item > button.start {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.start {
     position: absolute;
     background: transparent;
     width: 28px;
@@ -951,11 +973,11 @@ body.iweb-macosx > .iweb-viewer {
     right: 28px;
 }
 
-.iweb-dialog-iuploader .async-content div.list > div.item > button.start > i {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.start > i {
     color: #66cdaa;
 }
 
-.iweb-dialog-iuploader .async-content div.list > div.item > button.remove {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.remove {
     position: absolute;
     background: transparent;
     width: 28px;
@@ -965,11 +987,11 @@ body.iweb-macosx > .iweb-viewer {
     right: 0px;
 }
 
-.iweb-dialog-iuploader .async-content div.list > div.item > button.remove > i {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.remove > i {
     color: #ef4130;
 }
 
-.iweb-dialog-iuploader .async-content div.list > div.item > div.photo {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.photo {
     display: inline-block;
     background: #f6f6f6;
     width: 70px;
@@ -980,7 +1002,7 @@ body.iweb-macosx > .iweb-viewer {
     text-align: center;
 }
 
-.iweb-dialog-iuploader .async-content div.list > div.item > div.photo:before {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.photo:before {
     display: inline-block;
     content: '';
     width: 0px;
@@ -988,12 +1010,12 @@ body.iweb-macosx > .iweb-viewer {
     vertical-align: middle;
 }
 
-.iweb-dialog-iuploader .async-content div.list > div.item > div.photo > img {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.photo > img {
     display: inline-block;
     vertical-align: middle;
 }
 
-.iweb-dialog-iuploader .async-content div.list > div.item > div.photo > i {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.photo > i {
     display: inline-block;
     font-size: 50px;
     width: 100%;
@@ -1003,7 +1025,7 @@ body.iweb-macosx > .iweb-viewer {
     vertical-align: middle;
 }
 
-.iweb-dialog-iuploader .async-content div.list > div.item > div.info {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.info {
     display: inline-block;
     width: calc(100% - 70px);
     padding: 10px 0px 10px 10px;
@@ -1013,7 +1035,7 @@ body.iweb-macosx > .iweb-viewer {
     vertical-align: middle;
 }
 
-.iweb-dialog-iuploader .async-content div.list > div.item > div.info > div.progress-bar {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.info > div.progress-bar {
     position: relative;
     display: block;
     width: 100%;
@@ -1024,7 +1046,7 @@ body.iweb-macosx > .iweb-viewer {
     overflow: hidden;
 }
 
-.iweb-dialog-iuploader .async-content div.list > div.item > div.info > div.progress-bar > div.percent {
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.info > div.progress-bar > div.percent {
     position: absolute;
     background: #66cdaa;
     top: 0px;
@@ -1033,26 +1055,24 @@ body.iweb-macosx > .iweb-viewer {
     height: 8px;
 }
 
-
-
-.iweb-pagination {
+div.iweb-pagination {
     position: relative;
     display: inline-block;
 }
 
-.iweb-pagination > ul {
+div.iweb-pagination > ul {
     list-style: none;
     white-space: nowrap;
 }
 
-.iweb-pagination > ul > li {
+div.iweb-pagination > ul > li {
     display: inline-block;
     vertical-align: middle;
     margin-left: 2px;
     margin-right: 2px;
 }
 
-.iweb-pagination > ul > li > a {
+div.iweb-pagination > ul > li > a {
     position: relative;
     display: block;
     text-align: center;
@@ -1064,16 +1084,16 @@ body.iweb-macosx > .iweb-viewer {
     border-radius: 4px;
 }
 
-.iweb-pagination > ul > li > a.current {
+div.iweb-pagination > ul > li > a.current {
     background: #66cdaa;
     color: #fff;
 }
 
-.iweb-pagination > ul > li > a > span {
+div.iweb-pagination > ul > li > a > span {
     line-height: 22px;
 }
 
-.iweb-pagination > ul > li > a > i {
+div.iweb-pagination > ul > li > a > i {
     position: absolute;
     border-color: #2b2b2b;
     border-style: solid;
@@ -1085,44 +1105,44 @@ body.iweb-macosx > .iweb-viewer {
     margin-top: -3px;
 }
 
-.iweb-pagination > ul > li > a.first > i {
+div.iweb-pagination > ul > li > a.first > i {
     -webkit-transform: rotate(135deg);
     transform: rotate(135deg);
 }
 
-.iweb-pagination > ul > li > a.prev > i {
+div.iweb-pagination > ul > li > a.prev > i {
     -webkit-transform: rotate(135deg);
     transform: rotate(135deg);
 }
 
-.iweb-pagination > ul > li > a.next > i {
+div.iweb-pagination > ul > li > a.next > i {
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
     left: 8px;
 }
 
-.iweb-pagination > ul > li > a.last > i {
+div.iweb-pagination > ul > li > a.last > i {
     -webkit-transform: rotate(-45deg);
     transform: rotate(-45deg);
 }
 
-.iweb-pagination > ul > li > a.first > i:nth-child(1) {
+div.iweb-pagination > ul > li > a.first > i:nth-child(1) {
     left: 14px;
 }
 
-.iweb-pagination > ul > li > a.first > i:nth-child(2) {
+div.iweb-pagination > ul > li > a.first > i:nth-child(2) {
     left: 9px;
 }
 
-.iweb-pagination > ul > li > a.last > i:nth-child(1) {
+div.iweb-pagination > ul > li > a.last > i:nth-child(1) {
     left: 6px;
 }
 
-.iweb-pagination > ul > li > a.last > i:nth-child(2) {
+div.iweb-pagination > ul > li > a.last > i:nth-child(2) {
     left: 11px;
 }
 
-.iweb-pagination > ul > li > input[type="text"] {
+div.iweb-pagination > ul > li > input[type="text"] {
     width: 46px;
     height: 28px;
     border: 1px solid #e6e6e6;
@@ -1130,7 +1150,7 @@ body.iweb-macosx > .iweb-viewer {
     text-align: center;
 }
 
-.iweb-pagination > ul > li > a:hover {
+div.iweb-pagination > ul > li > a:hover {
     opacity: 0.8;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 }

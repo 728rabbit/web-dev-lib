@@ -141,7 +141,7 @@
 
 9.  Alert Dialog:
     ----------------------------------------------------------------------------
-    iweb.alert(message,callback,setting);
+    iweb.alert(message,callback,class_name);
     - message: required
     - callback: optional
     - setting: optional
@@ -157,7 +157,7 @@
     
     iweb.alert('Hello World',function() {
         // close event here
-    },{class:your_class_name});
+    },your_class_name);
 
 
 10. Confirm Dialog:
@@ -221,7 +221,7 @@
 
 14. Ajax post:
     ----------------------------------------------------------------------------
-    iweb.post(post_data,success_callback,complete_callback,percentage_callback){
+    iweb.post(post_data,callback){
 
     e.g.
     iweb.post({
@@ -239,7 +239,7 @@
 
 15. Ajax Form:
     ----------------------------------------------------------------------------
-    iweb.form(target_form_id,type,checkfunc,success_callback,percentage_callback);
+    iweb.form(target_form_id,type,checkfunc,callback);
 
     e.g.
     <form id="testform" method="post" action="test.php" data-loading="0">
@@ -449,6 +449,7 @@
     options = { 
         url: '',
         value: null,
+        dataType: 'json',
         allowed_types: '',   // optional: jpg|png|pdf
         max_filesize: 5,
         type_error_message: 'File type is not allowed.',
