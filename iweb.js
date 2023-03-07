@@ -743,8 +743,8 @@ var iweb = {
         
         var iweb_object = this;
         var setting = {
-            'customizeClass': '',
-            'btnClose': iweb_object.language[iweb_object.default_language]['btn_confirm']
+            customizeClass: '',
+            btnClose: iweb_object.language[iweb_object.default_language]['btn_confirm']
         };
         if(iweb_object.isValue(options)) {
             setting = $.extend(setting,options);
@@ -784,9 +784,9 @@ var iweb = {
         
         var iweb_object = this;
         var setting = {
-            'customizeClass': '',
-            'btnYes': iweb_object.language[iweb_object.default_language]['btn_yes'],
-            'btnNo': iweb_object.language[iweb_object.default_language]['btn_no']
+            customizeClass: '',
+            btnYes: iweb_object.language[iweb_object.default_language]['btn_yes'],
+            btnNo: iweb_object.language[iweb_object.default_language]['btn_no']
         };
         if(iweb_object.isValue(options)) {
             setting = $.extend(setting,options);
@@ -900,10 +900,10 @@ var iweb = {
         var local_time = iweb_object.getDateTime(null,'time');
         if(iweb_object.isValue(post_data)){
             var post_data = $.extend({
-                'url': '',
-                'values': {},
-                'dataType': 'json',
-                'showProcessing': true
+                url: '',
+                values: {},
+                dataType: 'json',
+                showProcessing: true
             },post_data);
             
             post_data['values']['X-iToken'] = window.btoa(md5(iweb_object.csrf_token+'#dt'+local_time)+'%'+local_time);

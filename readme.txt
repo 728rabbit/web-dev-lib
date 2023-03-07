@@ -141,10 +141,10 @@
 
 9.  Alert Dialog:
     ----------------------------------------------------------------------------
-    iweb.alert(message,callback,class_name);
+    iweb.alert(message,callback,options);
     - message: required
     - callback: optional
-    - setting: optional
+    - options: optional
 
     e.g.
     iweb.alert('Hello World');
@@ -153,19 +153,25 @@
         // close event here
     });
 
-    iweb.alert('Hello World',null,{class:your_class_name});
+    iweb.alert('Hello World',null,{
+        customizeClass: '',
+        btnClose: 'Close'
+    });
     
     iweb.alert('Hello World',function() {
         // close event here
-    },your_class_name);
+    },{
+        customizeClass: '',
+        btnClose: 'Close'
+    });
 
 
 10. Confirm Dialog:
     ----------------------------------------------------------------------------
-    iweb.confirm(message,callback,setting);
+    iweb.confirm(message,callback,options);
     - message: required
     - callback: required
-    - setting: optional
+    - options: optional
 
     e.g. 
 
@@ -175,16 +181,20 @@
 
     iweb.confirm('Are your sure delete this item?',function(result) {
         // close event here
-    },{class:your_class_name,yes:your_label_value_1,no:your_label_value_2});
+    },{
+        customizeClass: '',
+        btnYes: 'Yes',
+        btnNo: 'No'
+    });
 
 
 11. Popup Dialog:
     ----------------------------------------------------------------------------
-    iweb.dialog(htmlcode,init,callback,setting);
+    iweb.dialog(htmlcode,init,callback,customizeClass);
     - htmlcode: required
     - init: optional
     - callback: optional
-    - setting: optional
+    - customizeClass: optional
 
     e.g. 
     iweb.dialog('<div>Hello World</div>');
@@ -195,7 +205,7 @@
         // init event here
     },function() {
         // close event here
-    },{class:your_class_name});
+    },your_class_name);
 
 
 12. Scroll to specific element:
@@ -227,11 +237,11 @@
     iweb.post({
         url: your_url_here,
         type: your_retrun_type_here, // default = json
-        value: {
+        values: {
             name_1: value_1
             name_2: value_2
         },
-        loading: optional, default = false (true or 1: show loading & auto close, 2: show loading & not auto close, false or 0:, not show loading)
+        showProcessing: optional, default = true (true or 1: show loading & auto close, 2: show loading & not auto close, false or 0:, not show loading)
     },function(response_data) {
         // your code here
     });
@@ -242,11 +252,11 @@
     iweb.form(target_form_id,type,checkfunc,callback);
 
     e.g.
-    <form id="testform" method="post" action="test.php" data-loading="0">
+    <form id="testform" method="post" action="test.php" data-showProcessing="0">
         ......
     </form>
 
-    data-loading: default = true
+    data-showProcessing: default = true
 
     (true or 1: show loading & auto close, 2: show loading & not auto close, false or 0:, not show loading)
 
@@ -274,7 +284,7 @@
     }
 
 
-16. Cookie, ,getUrlParameter, randomNum & randomString 
+16. Cookie, getUrlParameter, randomNum & randomString 
     ----------------------------------------------------------------------------
     iweb.setCookie(name, value, days);
     - days: optional, default = 7
