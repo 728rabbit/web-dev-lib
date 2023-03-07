@@ -13,9 +13,6 @@
     // show page loading
     <body data-processing="1"></body>
 
-    // macosx mode
-    <body data-macosx="1"></body>
-
     // set csrf-token
     <meta name="csrf-token" content="96ca6fd5cc5283000910785ba2344044"/>
     
