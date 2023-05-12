@@ -908,8 +908,7 @@ var iweb = {
             
             post_data['values']['X-iToken'] = window.btoa(md5(iweb_object.csrf_token+'#dt'+local_time)+'%'+local_time);
             
-            if(iweb_object.isValue(post_data.url) && !iweb_object.processing_status) {
-                iweb_object.processing_status = true;
+            if(iweb_object.isValue(post_data.url)) {
                 if(iweb_object.isMatch(post_data.showProcessing,true) || iweb_object.isMatch(post_data.showProcessing,1) || iweb_object.isMatch(post_data.showProcessing,2)){
                     iweb_object.processing(true,70);
                 }
@@ -925,7 +924,6 @@ var iweb = {
                         }
                     },
                     error: function(xhr, status, thrownError){
-                        iweb_object.processing_status = false;
                         iweb_object.processing(false);
                         var alert_error_message = thrownError;
                         if(iweb_object.isMatch(xhr.status,0)) {
@@ -941,7 +939,6 @@ var iweb = {
                         return false;
                     },
                     complete: function(){
-                        iweb_object.processing_status = false;
                         if(iweb_object.isMatch(post_data.showProcessing,true) || iweb_object.isMatch(post_data.showProcessing,1) || iweb_object.isMatch(post_data.showProcessing,2)){
                             if(!iweb_object.isMatch(post_data.showProcessing,2)){
                                 iweb_object.processing(false);
@@ -1328,7 +1325,12 @@ var iweb = {
     },
     isJsonString:function(str) {
         try {
-            JSON.parse(str);
+            if(typeof str === 'object') {
+                JSON.parse(JSON.stringify(str));
+            }
+            else {
+                return false;
+            }
         } catch (e) {
             return false;
         }
