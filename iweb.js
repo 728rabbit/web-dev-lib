@@ -142,8 +142,6 @@ function md5cycle(f,h){var i=f[0],n=f[1],r=f[2],g=f[3];n=ii(n=ii(n=ii(n=ii(n=hh(
 }(jQuery));
 
 var iweb = {
-    api_url: '',
-    mode: 'default',
     default_language: 'en',
     language: [],
     csrf_token: '',
@@ -238,6 +236,7 @@ var iweb = {
                 $('body').append('<div class="iweb-blank-mask" style="position:fixed;top:0px;left:0px;right:0px;bottom:0px;z-index:9999;"></div>');
                 var form_object = $(this);
                 var delay_timer = setTimeout(function(){
+                    clearTimeout(delay_timer);
                     form_object.find('div.iweb-selector').each(function() {
                         var selected_option = [];
                         var selected_option_label = '';
@@ -271,7 +270,7 @@ var iweb = {
                             }
                         });
                         if(!iweb_object.isValue(selected_option_label)){
-                            selected_option_label = iweb_object.language[iweb_object.default_language]['select']
+                            selected_option_label = ((iweb_object.isValue($(this).data('default')))?$(this).data('default'):iweb_object.language[iweb_object.default_language]['select']);
                         }
                         $(this).find('div.virtual > div.result > a').html(selected_option_label);
                     });
@@ -295,7 +294,6 @@ var iweb = {
                     });
                     
                     $('div.iweb-blank-mask').remove();
-                    clearTimeout(delay_timer);
                 }, 250);
             });
         }
@@ -351,8 +349,8 @@ var iweb = {
                 microsecond = parseInt(value);
             }
             var delay_timer = setTimeout(function(){
-                $('div.iweb-processing').remove();
                 clearTimeout(delay_timer);
+                $('div.iweb-processing').remove();
             }, microsecond);
         }
     },
@@ -484,7 +482,7 @@ var iweb = {
                     }
                 });
                 if(!iweb_object.isValue(selected_option_label)){
-                    selected_option_label = iweb_object.language[iweb_object.default_language]['select']
+                    selected_option_label = ((iweb_object.isValue($(this).data('default')))?$(this).data('default'):iweb_object.language[iweb_object.default_language]['select']);
                 }
                 $(this).closest('div.iweb-selector').find('div.virtual > div.result > a').html(selected_option_label);
             });
@@ -505,39 +503,36 @@ var iweb = {
             });
             
             $(document).on('click','div.iweb-selector > div.virtual > div.options ul > li > a',function(){
-                if(iweb_object.isValue($(this).data('value'))){
-                    if($(this).closest('div.iweb-selector').hasClass('iweb-selector-multiple')){
-                        var selected_option = [];
-                        $.each($(this).closest('div.iweb-selector').find('select').children(),function(){
-                            if(parseInt($(this).children().length) > 0){
-                                console.log($(this));
-                                $.each($(this).children(),function(){
-                                    if($(this).is(':selected')){
-                                        selected_option.push($(this).val().toString());
-                                    }
-                                });
-                            }
-                            else {
+                if($(this).closest('div.iweb-selector').hasClass('iweb-selector-multiple')){
+                    var selected_option = [];
+                    $.each($(this).closest('div.iweb-selector').find('select').children(),function(){
+                        if(parseInt($(this).children().length) > 0){
+                            $.each($(this).children(),function(){
                                 if($(this).is(':selected')){
                                     selected_option.push($(this).val().toString());
                                 }
-                            }
-                        });
-                        if(iweb_object.isMatch(parseInt($.inArray($(this).data('value').toString(),selected_option)),-1)){
-                            selected_option.push($(this).data('value'));
-                        }
-                        else {
-                            var remove_value = $(this).data('value').toString();
-                            selected_option = $.grep(selected_option, function(value){
-                                return value != remove_value;
                             });
                         }
-                        $(this).closest('div.iweb-selector').find('div.real > select').val(selected_option).trigger('change');
+                        else {
+                            if($(this).is(':selected')){
+                                selected_option.push($(this).val().toString());
+                            }
+                        }
+                    });
+                    if(iweb_object.isMatch(parseInt($.inArray($(this).data('value').toString(),selected_option)),-1)){
+                        selected_option.push($(this).data('value'));
                     }
                     else {
-                        $(this).closest('div.iweb-selector').removeClass('show');
-                        $(this).closest('div.iweb-selector').find('div.real > select').val($(this).data('value')).trigger('change');
+                        var remove_value = $(this).data('value').toString();
+                        selected_option = $.grep(selected_option, function(value){
+                            return value != remove_value;
+                        });
                     }
+                    $(this).closest('div.iweb-selector').find('div.real > select').val(selected_option).trigger('change');
+                }
+                else {
+                    $(this).closest('div.iweb-selector').removeClass('show');
+                    $(this).closest('div.iweb-selector').find('div.real > select').val($(this).data('value')).trigger('change');
                 }
             });
             
@@ -567,7 +562,19 @@ var iweb = {
         select_object.each(function(select_index){
             if(!$(this).parent().parent().hasClass('iweb-selector')){
                 var isMultiple = $(this).prop('multiple');
-                if(iweb_object.isMatch($(this).data('virtual'),1) || iweb_object.isMatch($(this).data('virtual'),true) || isMultiple){
+                if(iweb_object.isMatch($(this).data('virtual'),1) || iweb_object.isMatch($(this).data('virtual'),true) || iweb_object.isValue(isMultiple)){
+                    
+                    if(!iweb_object.isValue(isMultiple)) {
+                        var has_default_selected = false
+                        $.each($(this).find('option'), function() {
+                            if(iweb_object.isValue($(this).attr('selected'))) {
+                                has_default_selected = true;
+                                return;
+                            }
+                        });
+                        $(this).prepend('<option value=""'+((!has_default_selected)?' selected':'')+'>'+((iweb_object.isValue($(this).data('default')))?$(this).data('default'):iweb_object.language[iweb_object.default_language]['select'])+'</option>');
+                    }
+
                     $(this).wrap('<div class="iweb-selector'+(isMultiple?' iweb-selector-multiple':'')+'"><div class="real hidden"></div></div>');
                     $(this).removeAttr('data-virtual');
                     var virtualHtml = '';
@@ -618,7 +625,7 @@ var iweb = {
                     });
                     
                     if(!iweb_object.isValue(virtualSelect)) {
-                        virtualSelect = iweb_object.language[iweb_object.default_language]['select'];
+                        virtualSelect = ((iweb_object.isValue($(this).data('default')))?$(this).data('default'):iweb_object.language[iweb_object.default_language]['select']);
                     }
                     
                     virtualHtml += '</ul>';
@@ -767,10 +774,11 @@ var iweb = {
         $('div.iweb-viewer').prepend(alert_html).each(function(){
             $('body').addClass('iweb-disable-scroll');
             
+            $(document).off('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-close');
+            
             $(document).on('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-close', function(){
-                $(document).off('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-close');
                 $('div.iweb-alert-dialog').remove();
-                if(parseInt($('div.iweb-alert-dialog').length) == 0){
+                if(parseInt($('div.iweb-alert-dialog').length) == 0 && parseInt($('div.iweb-info-dialog').length) == 0){
                     $('body').removeClass('iweb-disable-scroll');
                 }
                 if(typeof callback == 'function'){
@@ -810,11 +818,12 @@ var iweb = {
         $('div.iweb-viewer').prepend(confirm_html).each(function(){
             $('body').addClass('iweb-disable-scroll');
             
+            $(document).off('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-yes');
+            $(document).off('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-no');
+
             $(document).on('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-yes', function(){
-                $(document).off('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-yes');
-                $(document).off('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-no');
                 $('div.iweb-alert-dialog').remove();
-                if(parseInt($('div.iweb-alert-dialog').length) == 0){
+                if(parseInt($('div.iweb-alert-dialog').length) == 0 && parseInt($('div.iweb-info-dialog').length) == 0){
                     $('body').removeClass('iweb-disable-scroll');
                 }
                 if(typeof callback == 'function'){
@@ -823,10 +832,8 @@ var iweb = {
             });
             
             $(document).on('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-no', function(){
-                $(document).off('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-yes');
-                $(document).off('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-no');
                 $('div.iweb-alert-dialog').remove();
-                if(parseInt($('div.iweb-alert-dialog').length) == 0){
+                if(parseInt($('div.iweb-alert-dialog').length) == 0 && parseInt($('div.iweb-info-dialog').length) == 0){
                     $('body').removeClass('iweb-disable-scroll');
                 }
                 if(typeof callback == 'function'){
@@ -864,15 +871,12 @@ var iweb = {
         dialog_html += '</div>';
     
         $('div.iweb-viewer').prepend(dialog_html).each(function(){
-            if(typeof init_func == 'function'){
-                init_func();
-            }
-            
             $('body').addClass('iweb-disable-scroll');
             
+            $(document).off('click', 'div.iweb-info-dialog > div > div.dialog-mask');
+            $(document).off('click', 'div.iweb-info-dialog > div > div.dialog-content > a.btn-close ');
+            
             $(document).on('click', 'div.iweb-info-dialog > div > div.dialog-mask', function(e){
-                $(document).off('click', 'div.iweb-info-dialog > div > div.dialog-mask');
-                $(document).off('click', 'div.iweb-info-dialog > div > div.dialog-content > a.btn-close ');
                 $('div.iweb-info-dialog').remove();
                 $('body').removeClass('iweb-disable-scroll');
                 if(typeof callback == 'function'){
@@ -880,18 +884,20 @@ var iweb = {
                 }
             });
             $(document).on('click', 'div.iweb-info-dialog > div > div.dialog-content > a.btn-close ', function(){
-                $(document).off('click', 'div.iweb-info-dialog > div > div.dialog-mask');
-                $(document).off('click', 'div.iweb-info-dialog > div > div.dialog-content > a.btn-close ');
                 $('div.iweb-info-dialog').remove();
                 $('body').removeClass('iweb-disable-scroll');
                 if(typeof callback == 'function'){
                     callback();
                 }
             });
+            
             var delay_timer = setTimeout(function(){
+                clearTimeout(delay_timer);
                 $('div.iweb-info-dialog > div > div.dialog-loading').remove();
                 $('div.iweb-info-dialog > div > div.dialog-content').animate({'opacity':1});
-                clearTimeout(delay_timer);
+                if(typeof init_func == 'function'){
+                    init_func();
+                }
             }, 250);
         });
     },
@@ -906,7 +912,7 @@ var iweb = {
                 showProcessing: true
             },post_data);
             
-            post_data['values']['X-iToken'] = window.btoa(md5(iweb_object.csrf_token+'#dt'+local_time)+'%'+local_time);
+            post_data['values']['itoken'] = window.btoa(md5(iweb_object.csrf_token+'#dt'+local_time)+'%'+local_time);
             
             if(iweb_object.isValue(post_data.url)) {
                 if(iweb_object.isMatch(post_data.showProcessing,true) || iweb_object.isMatch(post_data.showProcessing,1) || iweb_object.isMatch(post_data.showProcessing,2)){
@@ -957,9 +963,6 @@ var iweb = {
             if(!iweb_object.isValue($(form_id).attr('method'))) {
                 $(form_id).attr('method','post');
             }
-            if(!iweb_object.isValue($(form_id).attr('action')) && iweb_object.isValue(iweb_object.api_url)) {
-                $(form_id).attr('action',iweb_object.api_url);
-            }
             
             var showProcessing = true;
             if(iweb_object.isValue($(form_id).data('showProcessing'))) {
@@ -989,7 +992,7 @@ var iweb = {
                     if(iweb_object.csrf_token.length > 0){
                         var local_time = iweb_object.getDateTime(null,'time');
                         arr.push({
-                            name: 'X-iToken',
+                            name: 'itoken',
                             value: window.btoa(md5(iweb_object.csrf_token+'#dt'+local_time)+'%'+local_time)
                         });
                     }
@@ -1029,83 +1032,90 @@ var iweb = {
             });
         }
     },
-    uploader: function(files_id,options,callback) {
+    uploader: function(options,callback) {
         var iweb_object = this;
         
-        iweb_object.uploader_files = document.getElementById((files_id.toString().replace('#', ''))).files;
-        iweb_object.uploader_files_skip = [-1];
-        iweb_object.uploader_options = {
-            url: '',
-            values: {},
-            dataType: 'json',
-            allowed_types: '',
-            max_filesize: 5,
-            type_error_message: iweb_object.language[iweb_object.default_language]['type_error'],
-            max_error_message: iweb_object.language[iweb_object.default_language]['max_error'],
-            btnStartAll: '<i class="fa fa-upload"></i>',
-            btnClose: '<i class="fa fa-close"></i>',
-            btnStart: '<i class="fa fa-upload"></i>',
-            btnRemove: '<i class="fa fa-trash"></i>'
-        };
+        var files_input = document.createElement('input');
+        files_input.type = 'file';
+        files_input.multiple = true;
+        files_input.onchange = function(){
+            iweb_object.uploader_files = files_input.files;
+            iweb_object.uploader_files_skip = [-1];
+            iweb_object.uploader_options = {
+                url: '',
+                values: {},
+                dataType: 'json',
+                allowed_types: '',
+                max_filesize: 5,
+                type_error_message: iweb_object.language[iweb_object.default_language]['type_error'],
+                max_error_message: iweb_object.language[iweb_object.default_language]['max_error'],
+                btnStartAll: '<i class="fa fa-upload"></i>',
+                btnClose: '<i class="fa fa-close"></i>',
+                btnStart: '<i class="fa fa-upload"></i>',
+                btnRemove: '<i class="fa fa-trash"></i>'
+            };
 
-        if(iweb_object.isValue(options)) {
-            iweb_object.uploader_options = $.extend(iweb_object.uploader_options, options);
-        }
-        
-        if(iweb_object.isValue(iweb_object.uploader_options.allowed_types)) {
-            iweb_object.uploader_options.allowed_types = iweb_object.uploader_options.allowed_types.split('|');
-        }
-        iweb_object.uploader_options.max_error_message = iweb_object.uploader_options.max_error_message.replace('{num}',iweb_object.uploader_options.max_filesize);
-        
-        if(iweb_object.isValue(iweb_object.uploader_options.url) && parseInt(iweb_object.uploader_files.length) > 0) {
-            var uploader = '<div class="action">';
-                uploader += '<button class="start-all" type="button" title="Start All">';
-                    uploader += '<i class="fa fa-upload"></i>',
-                uploader += '</button>'
+            if(iweb_object.isValue(options)) {
+                iweb_object.uploader_options = $.extend(iweb_object.uploader_options, options);
+            }
 
-                uploader += '<button class="close" type="button" title="Close">';
-                    uploader += '<i class="fa fa-close"></i>',
-                uploader += '</button>'
-            uploader += '</div>';
-            uploader += '<div class="list"></div>';
+            if(iweb_object.isValue(iweb_object.uploader_options.allowed_types)) {
+                iweb_object.uploader_options.allowed_types = iweb_object.uploader_options.allowed_types.split('|');
+            }
+            iweb_object.uploader_options.max_error_message = iweb_object.uploader_options.max_error_message.replace('{num}',iweb_object.uploader_options.max_filesize);
 
-            iweb_object.dialog(uploader,function() {
-                iweb_object.uploaderPreview(iweb_object.uploader_files);
+            if(iweb_object.isValue(iweb_object.uploader_options.url) && parseInt(iweb_object.uploader_files.length) > 0) {
+                var uploader = '<div class="action">';
+                    uploader += '<button class="start-all" type="button" title="Start All">';
+                        uploader += '<i class="fa fa-upload"></i>',
+                    uploader += '</button>'
 
-                $(document).off('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.start-all');
-                $(document).on('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.start-all',function() {
-                    $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item').each(function() {
-                        iweb_object.uploaderStart($(this).data('index'));
+                    uploader += '<button class="close" type="button" title="Close">';
+                        uploader += '<i class="fa fa-close"></i>',
+                    uploader += '</button>'
+                uploader += '</div>';
+                uploader += '<div class="list"></div>';
+
+                iweb_object.dialog(uploader,function() {
+                    iweb_object.uploaderPreview(iweb_object.uploader_files);
+
+                    $(document).off('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.start-all');
+                    $(document).on('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.start-all',function() {
+                        $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item').each(function() {
+                            iweb_object.uploaderStart($(this).data('index'));
+                        });
                     });
-                });
 
-                $(document).off('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.close');
-                $(document).on('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.close',function() {
-                    $('div.iweb-info-dialog > div > div.dialog-content > a.btn-close').trigger('click');
-                });
-
-                $(document).off('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.start');
-                $(document).on('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.start',function() {
-                    iweb_object.uploaderStart($(this).closest('div.item').data('index'));
-                });
-
-                $(document).off('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.remove');
-                $(document).on('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.remove',function() {
-                    iweb_object.uploader_files_skip.push($(this).closest('div.item').data('index'));
-                    $(this).closest('div.item').remove();
-                    if($('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item').length == 0) {
+                    $(document).off('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.close');
+                    $(document).on('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.close',function() {
                         $('div.iweb-info-dialog > div > div.dialog-content > a.btn-close').trigger('click');
+                    });
+
+                    $(document).off('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.start');
+                    $(document).on('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.start',function() {
+                        iweb_object.uploaderStart($(this).closest('div.item').data('index'));
+                    });
+
+                    $(document).off('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.remove');
+                    $(document).on('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.remove',function() {
+                        iweb_object.uploader_files_skip.push($(this).closest('div.item').data('index'));
+                        $(this).closest('div.item').remove();
+                        if($('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item').length == 0) {
+                            $('div.iweb-info-dialog > div > div.dialog-content > a.btn-close').trigger('click');
+                        }
+                    });
+                },function() {
+                    if(typeof callback == 'function'){
+                        callback();
                     }
-                });
-            },function() {
-                if(typeof callback == 'function'){
-                    callback();
-                }
-            }, 'uploader');
-        }
+                }, 'uploader');
+            }
+        };
+        files_input.click();
     },
     uploaderPreview: function(selectingFiles, key) {
         var iweb_object = this;
+        
         const regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
         if(!iweb_object.isValue(key)) { key = 0; }
         if(parseInt(key) < selectingFiles.length) {
@@ -1125,11 +1135,11 @@ var iweb = {
                             uploader += '<div class="title">'+(file.name)+'</div>';
                             uploader += '<div class="size">'+iweb_object.formatBytes(file.size, 0)+'</div>';
                             if(iweb_object.isValue(iweb_object.uploader_options.allowed_types) && $.inArray(extension.toLowerCase(),iweb_object.uploader_options.allowed_types) < 0) {
-                                uploader += '<div class="tips"><small style="color:red;">'+iweb_object.uploader_options.type_error_message+'</small></div>';
+                                uploader += '<div class="tips"><small>'+iweb_object.uploader_options.type_error_message+'</small></div>';
                                 checking = false;
                             }
                             else if(file.size > iweb_object.uploader_options.max_filesize*1024*1024) {
-                                uploader += '<div class="tips"><small style="color:red;">'+iweb_object.uploader_options.max_error_message+'</small></div>';
+                                uploader += '<div class="tips"><small>'+iweb_object.uploader_options.max_error_message+'</small></div>';
                                 checking = false;
                             }
                             else {
@@ -1208,11 +1218,11 @@ var iweb = {
                         uploader += '<div class="title">'+(file.name)+'</div>';
                         uploader += '<div class="size">'+iweb_object.formatBytes(file.size, 0)+'</strong></div>';
                         if(iweb_object.isValue(iweb_object.uploader_options.allowed_types) && $.inArray(extension.toLowerCase(),iweb_object.uploader_options.allowed_types) < 0) {
-                            uploader += '<div class="tips"><small style="color:red;">'+iweb_object.uploader_options.type_error_message+'</small></div>';
+                            uploader += '<div class="tips"><small>'+iweb_object.uploader_options.type_error_message+'</small></div>';
                             checking = false;
                         }
                         else if(file.size > iweb_object.uploader_options.max_filesize*1024*1024) {
-                            uploader += '<div class="tips"><small style="color:red;">'+iweb_object.uploader_options.max_error_message+'</small></div>';
+                            uploader += '<div class="tips"><small>'+iweb_object.uploader_options.max_error_message+'</small></div>';
                             checking = false;
                         }
                         else {
@@ -1235,13 +1245,14 @@ var iweb = {
     },
     uploaderStart: function(index) {
         var iweb_object = this;
+        
         if(iweb.isValue(iweb_object.uploader_files) && $.inArray(index, iweb_object.uploader_files_skip) < 0) {
           
             var selectingFiles = iweb_object.uploader_files;
             var local_time = iweb.getDateTime(null,'time');
             var formData = new FormData();
             formData.append('action', 'file_upload');
-            formData.append('X-iToken', window.btoa(md5(iweb.csrf_token+'#dt'+local_time)+'%'+local_time));
+            formData.append('itoken', window.btoa(md5(iweb.csrf_token+'#dt'+local_time)+'%'+local_time));
             
             if(iweb.isValue(iweb_object.uploader_options.values)) {
                 $.each(iweb_object.uploader_options.values,function(key, value) {
@@ -1273,15 +1284,13 @@ var iweb = {
                     enctype: 'multipart/form-data',
                     success: function(response_data){
                         if(iweb_object.isValue(response_data)) {
-                            if(iweb_object.isJsonString(response_data)) {
-                                if(iweb.isValue(response_data.message)) {
-                                    $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.progress-bar').remove();
-                                    $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.info').append('<div class="tips"><small style="color:red;">'+response_data.message+'</small></div>');
-                                }
+                            if(iweb.isValue(response_data.message)) {
+                                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.progress-bar').remove();
+                                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.info').append('<div class="tips"><small>'+response_data.message+'</small></div>');
                             }
                             else {
                                 $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.progress-bar').remove();
-                                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.info').append('<div class="tips"><small style="color:red;">'+response_data+'</small></div>');
+                                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.info').append('<div class="tips"><small>'+response_data+'</small></div>');
                             }
                         }
                     },
@@ -1322,19 +1331,6 @@ var iweb = {
         const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'];
         const i = Math.floor(Math.log(bytes) / Math.log(k));
         return parseFloat((bytes / Math.pow(k, i)).toFixed(dm))+sizes[i];
-    },
-    isJsonString:function(str) {
-        try {
-            if(typeof str === 'object') {
-                JSON.parse(JSON.stringify(str));
-            }
-            else {
-                return false;
-            }
-        } catch (e) {
-            return false;
-        }
-        return true;
     },
     isValue:function(value){
         if(value !== null && (typeof value !== 'undefined')){
@@ -1685,9 +1681,9 @@ $(window).on('load',function(){
         iweb_ifunc_done();
     }
     var delay_timer = setTimeout(function(){
-        iweb.init_status = true;
-        iweb.processing(false);
         clearTimeout(delay_timer);
+        iweb.init_status = true;
+        iweb.processing(false, 500);
     }, 250);
 });
 
@@ -1695,6 +1691,7 @@ $(window).on('resize',function(){
     if(iweb.resizing()){
         $('div.iweb-selector').removeClass('show');
         var delay_timer = setTimeout(function(){
+            clearTimeout(delay_timer);
             iweb.responsive();
             if(typeof iweb_layout == 'function'){
                 iweb_layout(iweb.win_width);
@@ -1702,7 +1699,6 @@ $(window).on('resize',function(){
             if(typeof iweb_ilayout == 'function'){
                 iweb_ilayout(iweb.win_width);
             }
-            clearTimeout(delay_timer);
         }, 250);
     }
 });

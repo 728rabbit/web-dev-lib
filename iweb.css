@@ -66,8 +66,8 @@ a.font-switch {
     width: 36px;
     height: 36px;
     text-align: center;
-    line-height: 36px;
-    border: 1px solid #e6e6e6;
+    line-height: 32px;
+    border: 2px solid #e6e6e6;
     margin: 0px 4px;
     border-radius: 4px;
     vertical-align: top;
@@ -90,8 +90,6 @@ video {
     font-size: 0px;
     max-width: 100%;
     max-height: 100%;
-    width: auto;
-    height: auto;
     border: 0px;
     vertical-align: middle;
 }
@@ -104,15 +102,29 @@ img.image-grayscale {
 
 input[type="text"],
 input[type="number"],
-input[type="password"],
+input[type="password"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    font-size: 1rem;
+    max-width: 100%;
+    height: 36px;
+    padding: 8px 12px;
+    border: 2px solid #e6e6e6;
+    border-radius: 4px;
+    resize: none;
+}
+
 textarea {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
     font-size: 1rem;
     max-width: 100%;
+    height: 92px;
     padding: 8px 12px;
-    border: 1px solid #e6e6e6;
+    line-height: 1.5;
+    border: 2px solid #e6e6e6;
     border-radius: 4px;
     resize: none;
 }
@@ -121,7 +133,7 @@ input[type="text"].error,
 input[type="number"].error,
 input[type="password"].error,
 textarea.error {
-    border-color: lightpink !important;
+    border: 2px solid lightpink!important;
 }
 
 select {
@@ -263,9 +275,13 @@ div.iweb-selector {
     position: relative;
     display: block;
     max-width: 100%;
-    border: 1px solid #e6e6e6;
+    border: 2px solid #e6e6e6;
     border-radius: 4px;
     vertical-align: top;
+}
+
+div.iweb-selector.error {
+    border-color: lightpink!important;
 }
 
 div.iweb-selector:before {
@@ -347,6 +363,9 @@ div.iweb-selector > div.virtual > div.result > a {
     position: relative;
     background: transparent;
     display: block;
+    width: 100%;
+    height: 32px;
+    line-height: 18px;
     padding-top: 8px;
     padding-left: 12px;
     padding-right: 36px;
@@ -365,7 +384,7 @@ div.iweb-selector > div.virtual > div.options > ul {
     left: -1px;
     right: -1px;
     max-height: 240px;
-    border: 1px solid #e6e6e6;
+    border: 2px solid #e6e6e6;
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
     overflow: auto;
@@ -397,10 +416,13 @@ div.iweb-selector > div.virtual > div.options ul > li.filter > input {
 div.iweb-selector > div.virtual > div.options ul > li > a {
     position: relative;
     display: block;
-    padding-top: 10px;
+    width: 100%;
+    height: 36px;
+    line-height: 20px;
+    padding-top: 8px;
     padding-left: 12px;
     padding-right: 12px;
-    padding-bottom: 10px;
+    padding-bottom: 8px;
 }
 
 div.iweb-selector-multiple > div.virtual > div.options ul > li > a {
@@ -523,8 +545,8 @@ div.iweb-checkbox > div.options > div.checked:after {
     height: 18px;
     top: 50%;
     left: 2px;
-    margin-top: -11px;
-    line-height: normal!important;
+    margin-top: -9px;
+    line-height: 18px!important;
 }
 
 div.iweb-checkbox > div.options > div > input {
@@ -1033,6 +1055,10 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.
     font-weight: bold;
     line-height: 1.5;
     vertical-align: middle;
+}
+
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.info > div.tips > small {
+    color: #ef4130;
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.info > div.progress-bar {

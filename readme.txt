@@ -271,7 +271,7 @@
     function verifyCSRFToken() {
         $token = '96ca6fd5cc5283000910785ba2344044';  // your random code here
         $server_name = (($_SERVER['SERVER_NAME'])?$_SERVER['SERVER_NAME']:'/');
-        $csrf_token = explode('%',base64_decode($_POST['X-iToken']));
+        $csrf_token = explode('%',base64_decode($_POST['itoken']));
         if(is_array($csrf_token) && !empty($csrf_token[0]) && !empty($csrf_token[1])){
             if(trim(md5(md5(md5('iweb@'.$_SERVER['SERVER_NAME']).'@'.$token).'#dt'.$csrf_token[1])) == trim($csrf_token[0])) {
                 return true;
@@ -451,7 +451,7 @@
         <a class="font-switch large" href="#" data-size="large">Large</a>
     </div>
 
-23. uploader: function(files_id,options,callback) {
+23. uploader: function(options,callback) {
     
     options = { 
         url: '',
