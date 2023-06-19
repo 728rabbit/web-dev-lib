@@ -973,13 +973,13 @@ var iweb = {
             $(form_id).ajaxForm({
                 dataType: ((iweb_object.isValue(dataType))?dataType:'json'),
                 forceSync: true,
-                beforeSubmit: function(arr){
+                beforeSubmit: function(form_data, form_object){
                     if(iweb_object.processing_status){
                         return false;
                     }
 
                     if(typeof check_func == 'function'){
-                        if(!check_func(arr)){
+                        if(!check_func(form_data, form_object)){
                             return false;
                         }
                     }
@@ -991,7 +991,7 @@ var iweb = {
                     
                     if(iweb_object.csrf_token.length > 0){
                         var local_time = iweb_object.getDateTime(null,'time');
-                        arr.push({
+                        form_data.push({
                             name: 'itoken',
                             value: window.btoa(md5(iweb_object.csrf_token+'#dt'+local_time)+'%'+local_time)
                         });
@@ -1001,7 +1001,7 @@ var iweb = {
                         return true;
                     }
                 },
-                success: function(response_data){
+                success: function(response_data, statusText, xhr, form_object){
                     iweb_object.processing_status = false;
                     if(iweb_object.isMatch(showProcessing,true) || iweb_object.isMatch(showProcessing,1) || iweb_object.isMatch(showProcessing,2)) {
                         if(!iweb_object.isMatch(showProcessing,2)) {
@@ -1009,7 +1009,7 @@ var iweb = {
                         }
                     }
                     if(typeof callback == 'function'){
-                        callback(response_data);
+                        callback(response_data, form_object);
                     }
                     return true;
                 },
@@ -1116,7 +1116,7 @@ var iweb = {
     uploaderPreview: function(selectingFiles, key) {
         var iweb_object = this;
         
-        const regex = /^([a-zA-Z0-9\s_\\.\-:])+(.jpg|.jpeg|.gif|.png|.bmp)$/;
+        const regex = /^(.*)(.jpg|.jpeg|.gif|.png|.bmp)$/;
         if(!iweb_object.isValue(key)) { key = 0; }
         if(parseInt(key) < selectingFiles.length) {
             var file = selectingFiles[key];
@@ -1125,7 +1125,6 @@ var iweb = {
                 reader.onload = function (e) {
                     var extension = file.name.slice((file.name.lastIndexOf('.') - 1 >>> 0) + 2);
                     var checking = true;
-                    
                     var uploader = '<div class="item" data-index="'+key+'">';
                         uploader += '<div class="photo">';
                             uploader += '<img src="'+e.target.result+'"/>';
