@@ -258,12 +258,12 @@
     (true or 1: show loading & auto close, 2: show loading & not auto close, false or 0:, not show loading)
 
 
-    iweb.form('#testform','json',function(arr) {
-        // arr.push({ name:'exra_parameter', value: 'AAAA' });
+    iweb.form('#testform','json',function(form_data, form_object) {
+        // form_data.push({ name:'exra_parameter', value: 'AAAA' });
         var check_status = true;
         // your code here
         return check_status;
-    },function(response_data) {
+    },function(response_data, form_objec) {
         // your code here
     });
 
