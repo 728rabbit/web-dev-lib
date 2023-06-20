@@ -216,8 +216,9 @@ var iweb = {
             iweb_object.checkbox();
             iweb_object.radiobox();
             $('form').find('input[data-isrequired="1"],input[data-ispassword="1"],input[data-isemail="1"],textarea[data-isrequired="1"]').each(function() {
-                if(iweb_object.isMatch($(this).data('type'),'password')) {
-
+                if(iweb_object.isValue($(this).data('ispassword'))) {
+                    $(this).wrap('<div class="iweb-input"><div></div></div>');
+                    $(this).parent().append('<button class="small switch-pwd-type" type="button"><i class="fa fa-eye-slash hide" style="display: block;"></i><i class="fa fa-eye show" style="display: none;"></i></button>')
                 }
                 else {
                     $(this).wrap('<div class="iweb-input"><div></div></div>');
@@ -271,6 +272,20 @@ var iweb = {
                     $(this).removeClass('current');
                 }
             });
+        });
+        
+        $(document).on('click','button.switch-pwd-type',function(){
+            if(iweb.isMatch($(this).parent().find('input').attr('type'), 'password')) {
+                $(this).parent().find('input').attr('type','text');
+                $(this).parent().find('i.show').css('display','block');
+                $(this).parent().find('i.hide').css('display','none');
+            }
+            else {
+                $(this).parent().find('input').attr('type','password');
+                $(this).parent().find('i.show').css('display','none');
+                $(this).parent().find('i.hide').css('display','block');
+            }
+            return false;
         });
         
         $(document).on('reset','form',function(e){
@@ -937,8 +952,9 @@ var iweb = {
                 iweb_object.checkbox();
                 iweb_object.radiobox();
                 $('form').find('input[data-isrequired="1"],input[data-ispassword="1"],input[data-isemail="1"],textarea[data-isrequired="1"]').each(function() {
-                    if(iweb_object.isMatch($(this).data('type'),'password')) {
-
+                    if(iweb_object.isValue($(this).data('ispassword'))) {
+                        $(this).wrap('<div class="iweb-input"><div></div></div>');
+                        $(this).parent().append('<button class="small switch-pwd-type" type="button"><i class="fa fa-eye-slash hide" style="display: block;"></i><i class="fa fa-eye show" style="display: none;"></i></button>')
                     }
                     else {
                         $(this).wrap('<div class="iweb-input"><div></div></div>');

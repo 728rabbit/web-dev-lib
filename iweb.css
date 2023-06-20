@@ -117,6 +117,10 @@ input[type="number"]{
     resize: none;
 }
 
+input[data-ispassword="1"] {
+    padding-right: 40px;
+}
+
 textarea {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -163,6 +167,19 @@ button {
 button:hover {
     font-weight: bold;
     box-shadow: 0px 0px 10px #0099ff;
+}
+
+button.switch-pwd-type {
+    position: absolute;
+    background: transparent;
+    top: 0px;
+    right: 0px;
+    height: 36px;
+}
+
+button.switch-pwd-type:hover,
+button.switch-pwd-type:focus {
+    box-shadow:none!important;
 }
 
 div.clearboth {
