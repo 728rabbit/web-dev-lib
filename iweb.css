@@ -144,6 +144,10 @@ select {
     font-size: 1rem;
 }
 
+select.error {
+    border-color: lightpink!important;
+}
+
 button {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -325,7 +329,7 @@ div.iweb-selector.show > div.virtual:before {
     transform: rotate(-135deg);
 }
 
-div.iweb-selector.error > div.virtual {
+div.iweb-selector > div.virtual.error {
     border-color: lightpink!important;
 }
 
@@ -389,10 +393,6 @@ div.iweb-selector > div.real > select {
 
 div.iweb-selector > div.real > select::-ms-expand {
     display: none;
-}
-
-div.iweb-selector.error > div.real > select {
-    border-color: lightpink!important;
 }
 
 div.iweb-selector > div.virtual {

@@ -1035,9 +1035,8 @@ var iweb = {
                     }
 
                     var default_check_result = true;
-                    form_object.find('div.iweb-input input.error').removeClass('error');
-                    form_object.find('div.iweb-input textarea.error').removeClass('error');
-                    form_object.find('div.iweb-selector').removeClass('error');
+                    form_object.find('div.iweb-input .error').removeClass('error');
+                    form_object.find('div.iweb-selector .error').removeClass('error');
                     form_object.find('div.iweb-input small.tips').remove();
                     form_object.find('div.iweb-selector small.tips').remove();
 
@@ -1098,7 +1097,8 @@ var iweb = {
                             else {
                                 $(this).closest('div.iweb-selector').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
                             }
-                            $(this).closest('div.iweb-selector').addClass('error');
+                            $(this).closest('div.iweb-selector').find('select').addClass('error');
+                            $(this).closest('div.iweb-selector').find('div.virtual').addClass('error');
                             default_check_result = false;
                         }
                     });
