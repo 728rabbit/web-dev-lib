@@ -159,10 +159,42 @@ var iweb = {
     initialize: function(key){
         var iweb_object = this;
 
-        iweb_object.language['en'] = {'btn_confirm':'OK','btn_yes':'Yes','btn_no':'No','select':'Please select','type_error':'File type is not allowed.','max_error':'Maximum allowed file size {num}M.'};
-        iweb_object.language['zh-hant'] = {'btn_confirm':'確定','btn_yes':'是','btn_no':'否','select':'請選擇','type_error':'不允許的檔案類型。','max_error':'檔案大小不能超過{num}M。'};
-        iweb_object.language['zh-hans'] = {'btn_confirm':'确定','btn_yes':'是','btn_no':'否','select':'请选择','type_error':'不允许的檔案类型。','max_error':'档案大小不能超过{num}M。'};
-       
+        iweb_object.language['en'] = {
+            btn_confirm: 'OK',
+            btn_yes: 'Yes',
+            btn_no: 'No',
+            please_select: 'Please Select',
+            type_error: 'File type is not allowed.',
+            max_error: 'Maximum allowed file size {num}M.',
+            is_required: 'This field is required.',
+            password_error: 'Password must contain at least 6 characters, including upper/lowercase and numbers (e.g. Abc123).',
+            email_error: 'Invalid email address.'
+        };
+        
+        iweb_object.language['zh-hant'] = {
+            btn_confirm: '確定',
+            btn_yes: '是',
+            btn_no: '否',
+            please_select: '請選擇',
+            type_error: '不允許的檔案類型。',
+            max_error:'檔案大小不能超過{num}M。',
+            is_required: '此欄位必須填寫。',
+            password_error: '密碼必須至少包含6個字符，包括大寫/小寫和數字(例如Abc123)。',
+            email_error: '無效的郵件地址。'
+        };
+        
+        iweb_object.language['zh-hans'] = {
+            btn_confirm: '确定',
+            btn_yes: '是',
+            btn_no: '否',
+            please_select: '请选择',
+            type_error: '不允许的档案类型。',
+            max_error:'档案大小不能超过{num}M。',
+            is_required: '此栏位必须填写。',
+            password_error: '密码必须至少包含6个字符，包括大写/小写和数字(例如Abc123)。',
+            email_error: '无效的邮件地址。'
+        };
+        
         if(iweb_object.isValue($('html').attr('lang')) && iweb_object.isValue(iweb_object.language[$('html').attr('lang').toString().toLowerCase()])){
             iweb_object.default_language = $('html').attr('lang').toString().toLowerCase();
         }
@@ -179,9 +211,19 @@ var iweb = {
         $('body > *').not('script,noscript').wrapAll('<div class="iweb-viewer"></div>');
         
         iweb_object.iframe();
-        iweb_object.selector();
-        iweb_object.checkbox();
-        iweb_object.radiobox();
+        if($('form').length > 0) {
+            iweb_object.selector();
+            iweb_object.checkbox();
+            iweb_object.radiobox();
+            $('form').find('input[data-isrequired="1"],input[data-ispassword="1"],input[data-isemail="1"],textarea[data-isrequired="1"]').each(function() {
+                if(iweb_object.isMatch($(this).data('type'),'password')) {
+
+                }
+                else {
+                    $(this).wrap('<div class="iweb-input"><div></div></div>');
+                }
+            });
+        }
         iweb_object.responsive();
 
         if(iweb_object.isValue(iweb_object.getCookie('iweb_font_size'))){
@@ -231,72 +273,70 @@ var iweb = {
             });
         });
         
-        if($('form').length > 0) {
-            $(document).on('reset','form',function(e){
-                $('body').append('<div class="iweb-blank-mask" style="position:fixed;top:0px;left:0px;right:0px;bottom:0px;z-index:9999;"></div>');
-                var form_object = $(this);
-                var delay_timer = setTimeout(function(){
-                    clearTimeout(delay_timer);
-                    form_object.find('div.iweb-selector').each(function() {
-                        var selected_option = [];
-                        var selected_option_label = '';
-                        $.each($(this).find('select').children(),function(){
-                            if(parseInt($(this).children().length) > 0){
-                                $.each($(this).children(),function(){
-                                    if($(this).is(':selected')){
-                                        selected_option.push($(this).val().toString());
-                                    }
-                                });
-                            }
-                            else {
+        $(document).on('reset','form',function(e){
+            $('body').append('<div class="iweb-blank-mask" style="position:fixed;top:0px;left:0px;right:0px;bottom:0px;z-index:9999;"></div>');
+            var form_object = $(this);
+            var delay_timer = setTimeout(function(){
+                clearTimeout(delay_timer);
+                form_object.find('div.iweb-selector').each(function() {
+                    var selected_option = [];
+                    var selected_option_label = '';
+                    $.each($(this).find('select').children(),function(){
+                        if(parseInt($(this).children().length) > 0){
+                            $.each($(this).children(),function(){
                                 if($(this).is(':selected')){
                                     selected_option.push($(this).val().toString());
                                 }
-                            }
-                        });
-                        $(this).find('div.virtual > div.options ul > li.node').removeClass('hide');
-                        $(this).find('div.virtual > div.options ul > li > a').each(function(){
-                            if(iweb_object.isValue($(this).data('value'))){
-                                if(!iweb_object.isMatch(parseInt($.inArray($(this).data('value').toString(),selected_option)),-1)){
-                                    $(this).parent().addClass('node-selected');
-                                    if(iweb_object.isValue(selected_option_label)){
-                                        selected_option_label += ', ';
-                                    }
-                                    selected_option_label += $(this).text();
-                                }
-                                else {
-                                    $(this).parent().removeClass('node-selected');
-                                }
-                            }
-                        });
-                        if(!iweb_object.isValue(selected_option_label)){
-                            selected_option_label = ((iweb_object.isValue($(this).data('default')))?$(this).data('default'):iweb_object.language[iweb_object.default_language]['select']);
-                        }
-                        $(this).find('div.virtual > div.result > a').html(selected_option_label);
-                    });
-                    
-                    form_object.find('div.iweb-checkbox').each(function() {
-                        if($(this).find('input[type="checkbox"]').is(':checked')){
-                            $(this).find('input[type="checkbox"]').parent().addClass('checked');
+                            });
                         }
                         else {
-                            $(this).find('input[type="checkbox"]').parent().removeClass('checked');
+                            if($(this).is(':selected')){
+                                selected_option.push($(this).val().toString());
+                            }
                         }
                     });
-                    
-                    form_object.find('div.iweb-radiobox').each(function() {
-                        if($(this).find('input[type="radio"]').is(':checked')){
-                            $(this).find('input[type="radio"]').parent().addClass('checked');
-                        }
-                        else {
-                            $(this).find('input[type="radio"]').parent().removeClass('checked');
+                    $(this).find('div.virtual > div.options ul > li.node').removeClass('hide');
+                    $(this).find('div.virtual > div.options ul > li > a').each(function(){
+                        if(iweb_object.isValue($(this).data('value'))){
+                            if(!iweb_object.isMatch(parseInt($.inArray($(this).data('value').toString(),selected_option)),-1)){
+                                $(this).parent().addClass('node-selected');
+                                if(iweb_object.isValue(selected_option_label)){
+                                    selected_option_label += ', ';
+                                }
+                                selected_option_label += $(this).text();
+                            }
+                            else {
+                                $(this).parent().removeClass('node-selected');
+                            }
                         }
                     });
-                    
-                    $('div.iweb-blank-mask').remove();
-                }, 250);
-            });
-        }
+                    if(!iweb_object.isValue(selected_option_label)){
+                        selected_option_label = ((iweb_object.isValue($(this).data('default')))?$(this).data('default'):iweb_object.language[iweb_object.default_language]['please_select']);
+                    }
+                    $(this).find('div.virtual > div.result > a').html(selected_option_label);
+                });
+
+                form_object.find('div.iweb-checkbox').each(function() {
+                    if($(this).find('input[type="checkbox"]').is(':checked')){
+                        $(this).find('input[type="checkbox"]').parent().addClass('checked');
+                    }
+                    else {
+                        $(this).find('input[type="checkbox"]').parent().removeClass('checked');
+                    }
+                });
+
+                form_object.find('div.iweb-radiobox').each(function() {
+                    if($(this).find('input[type="radio"]').is(':checked')){
+                        $(this).find('input[type="radio"]').parent().addClass('checked');
+                    }
+                    else {
+                        $(this).find('input[type="radio"]').parent().removeClass('checked');
+                    }
+                });
+
+                $('div.iweb-blank-mask').remove();
+            }, 250);
+        });
 
         $('body').removeAttr('data-processing');
         $('body').removeAttr('data-macosx');
@@ -482,7 +522,7 @@ var iweb = {
                     }
                 });
                 if(!iweb_object.isValue(selected_option_label)){
-                    selected_option_label = ((iweb_object.isValue($(this).data('default')))?$(this).data('default'):iweb_object.language[iweb_object.default_language]['select']);
+                    selected_option_label = ((iweb_object.isValue($(this).data('default')))?$(this).data('default'):iweb_object.language[iweb_object.default_language]['please_select']);
                 }
                 $(this).closest('div.iweb-selector').find('div.virtual > div.result > a').html(selected_option_label);
             });
@@ -572,7 +612,7 @@ var iweb = {
                                 return;
                             }
                         });
-                        $(this).prepend('<option value=""'+((!has_default_selected)?' selected':'')+'>'+((iweb_object.isValue($(this).data('default')))?$(this).data('default'):iweb_object.language[iweb_object.default_language]['select'])+'</option>');
+                        $(this).prepend('<option value=""'+((!has_default_selected)?' selected':'')+'>'+((iweb_object.isValue($(this).data('default')))?$(this).data('default'):iweb_object.language[iweb_object.default_language]['please_select'])+'</option>');
                     }
 
                     $(this).wrap('<div class="iweb-selector'+(isMultiple?' iweb-selector-multiple':'')+'"><div class="real hidden"></div></div>');
@@ -625,7 +665,7 @@ var iweb = {
                     });
                     
                     if(!iweb_object.isValue(virtualSelect)) {
-                        virtualSelect = ((iweb_object.isValue($(this).data('default')))?$(this).data('default'):iweb_object.language[iweb_object.default_language]['select']);
+                        virtualSelect = ((iweb_object.isValue($(this).data('default')))?$(this).data('default'):iweb_object.language[iweb_object.default_language]['please_select']);
                     }
                     
                     virtualHtml += '</ul>';
@@ -883,6 +923,7 @@ var iweb = {
                     callback();
                 }
             });
+            
             $(document).on('click', 'div.iweb-info-dialog > div > div.dialog-content > a.btn-close ', function(){
                 $('div.iweb-info-dialog').remove();
                 $('body').removeClass('iweb-disable-scroll');
@@ -890,6 +931,21 @@ var iweb = {
                     callback();
                 }
             });
+            
+            if($('form').length > 0) {
+                iweb_object.selector();
+                iweb_object.checkbox();
+                iweb_object.radiobox();
+                $('form').find('input[data-isrequired="1"],input[data-ispassword="1"],input[data-isemail="1"],textarea[data-isrequired="1"]').each(function() {
+                    if(iweb_object.isMatch($(this).data('type'),'password')) {
+
+                    }
+                    else {
+                        $(this).wrap('<div class="iweb-input"><div></div></div>');
+                    }
+                });
+            }
+            iweb_object.responsive();
             
             var delay_timer = setTimeout(function(){
                 clearTimeout(delay_timer);
@@ -978,10 +1034,82 @@ var iweb = {
                         return false;
                     }
 
+                    var default_check_result = true;
+                    form_object.find('div.iweb-input input.error').removeClass('error');
+                    form_object.find('div.iweb-input textarea.error').removeClass('error');
+                    form_object.find('div.iweb-selector').removeClass('error');
+                    form_object.find('div.iweb-input small.tips').remove();
+                    form_object.find('div.iweb-selector small.tips').remove();
+
+                    form_object.find('input[data-isrequired="1"],textarea[data-isrequired="1"]').each(function() {
+                        if(!iweb_object.isValue($(this).val())) {
+                            if(iweb_object.isValue($(this).data('notempty'))) {
+                                $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                            }
+                            else {
+                                $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
+                            }
+                            $(this).addClass('error');
+                            default_check_result = false;
+                        }
+                    });
+                    
+                    form_object.find('input[data-ispassword="1"]').each(function() {
+                        if(!iweb_object.isValue($(this).val())) {
+                            if(iweb_object.isValue($(this).data('notempty'))) {
+                                $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                            }
+                            else {
+                                $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
+                            }
+                            $(this).addClass('error');
+                            default_check_result = false;
+                        }
+                        else if(!iweb_object.isPassword($(this).val())) {
+                            $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['password_error']+'</small>');
+                            $(this).addClass('error');
+                            default_check_result = false; 
+                        }
+                    });
+                    
+                    form_object.find('input[data-isemail="1"]').each(function() {
+                        if(!iweb_object.isValue($(this).val())) {
+                            if(iweb_object.isValue($(this).data('notempty'))) {
+                                $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                            }
+                            else {
+                                $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
+                            }
+                            $(this).addClass('error');
+                            default_check_result = false;
+                        }
+                        else if(!iweb_object.isEmail($(this).val())) {
+                            $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['email_error']+'</small>');
+                            $(this).addClass('error');
+                            default_check_result = false; 
+                        }
+                    });
+                    
+                    form_object.find('select[data-isrequired="1"]').each(function() {
+                        if(!iweb_object.isValue($(this).val()) || (iweb_object.isValue($(this).val()) && parseInt($(this).val()) === 0)) {
+                            if(iweb_object.isValue($(this).data('notempty'))) {
+                                $(this).closest('div.iweb-selector').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                            }
+                            else {
+                                $(this).closest('div.iweb-selector').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
+                            }
+                            $(this).closest('div.iweb-selector').addClass('error');
+                            default_check_result = false;
+                        }
+                    });
+                    
                     if(typeof check_func == 'function'){
-                        if(!check_func(form_data, form_object)){
+                        if(!check_func(form_data, form_object) || !default_check_result){
                             return false;
                         }
+                    }
+                    else if(!default_check_result) {
+                        return false;
                     }
                     
                     iweb_object.processing_status = true;
