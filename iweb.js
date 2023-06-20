@@ -311,7 +311,7 @@ var iweb = {
                         }
                     });
                     if(!iweb_object.isValue(selected_option_label)){
-                        selected_option_label = ((iweb_object.isValue($(this).data('default')))?$(this).data('default'):iweb_object.language[iweb_object.default_language]['please_select']);
+                        selected_option_label = ((iweb_object.isValue($(this).find('select').data('default')))?$(this).find('select').data('default'):iweb_object.language[iweb_object.default_language]['please_select']);
                     }
                     $(this).find('div.virtual > div.result > a').html(selected_option_label);
                 });
