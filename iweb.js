@@ -215,7 +215,7 @@ var iweb = {
             iweb_object.selector();
             iweb_object.checkbox();
             iweb_object.radiobox();
-            $('form').find('input[data-isrequired="1"],input[data-ispassword="1"],input[data-isemail="1"],textarea[data-isrequired="1"]').each(function() {
+            $('form').find('input[data-isrequired="1"],input[data-ispassword="1"],input[data-isemail="1"],input[data-ispassword="2"],input[data-isemail="2"],textarea[data-isrequired="1"]').each(function() {
                 if(iweb_object.isValue($(this).data('ispassword'))) {
                     $(this).wrap('<div class="iweb-input"><div></div></div>');
                     $(this).parent().append('<button class="small switch-pwd-type" type="button"><i class="fa fa-eye-slash hide" style="display: block;"></i><i class="fa fa-eye show" style="display: none;"></i></button>')
@@ -951,7 +951,7 @@ var iweb = {
                 iweb_object.selector();
                 iweb_object.checkbox();
                 iweb_object.radiobox();
-                $('form').find('input[data-isrequired="1"],input[data-ispassword="1"],input[data-isemail="1"],textarea[data-isrequired="1"]').each(function() {
+                $('form').find('input[data-isrequired="1"],input[data-ispassword="1"],input[data-isemail="1"],input[data-ispassword="2"],input[data-isemail="2"],textarea[data-isrequired="1"]').each(function() {
                     if(iweb_object.isValue($(this).data('ispassword'))) {
                         $(this).wrap('<div class="iweb-input"><div></div></div>');
                         $(this).parent().append('<button class="small switch-pwd-type" type="button"><i class="fa fa-eye-slash hide" style="display: block;"></i><i class="fa fa-eye show" style="display: none;"></i></button>')
@@ -1087,6 +1087,14 @@ var iweb = {
                         }
                     });
                     
+                    form_object.find('input[data-ispassword="2"]').each(function() {
+                       if(iweb_object.isValue($(this).val()) && !iweb_object.isPassword($(this).val())) {
+                            $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['password_error']+'</small>');
+                            $(this).addClass('error');
+                            default_check_result = false; 
+                        }
+                    });
+                    
                     form_object.find('input[data-isemail="1"]').each(function() {
                         if(!iweb_object.isValue($(this).val())) {
                             if(iweb_object.isValue($(this).data('notempty'))) {
@@ -1099,6 +1107,14 @@ var iweb = {
                             default_check_result = false;
                         }
                         else if(!iweb_object.isEmail($(this).val())) {
+                            $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['email_error']+'</small>');
+                            $(this).addClass('error');
+                            default_check_result = false; 
+                        }
+                    });
+                    
+                    form_object.find('input[data-isemail="2"]').each(function() {
+                        if(iweb_object.isValue($(this).val()) && !iweb_object.isEmail($(this).val())) {
                             $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['email_error']+'</small>');
                             $(this).addClass('error');
                             default_check_result = false; 
