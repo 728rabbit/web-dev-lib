@@ -168,7 +168,8 @@ var iweb = {
             max_error: 'Maximum allowed file size {num}M.',
             is_required: 'This field is required.',
             password_error: 'Password must contain at least 6 characters, including upper/lowercase and numbers (e.g. Abc123).',
-            email_error: 'Invalid email address.'
+            email_error: 'Invalid email address.',
+            required_error: 'Please fill in the required information.'
         };
         
         iweb_object.language['zh-hant'] = {
@@ -180,7 +181,8 @@ var iweb = {
             max_error:'檔案大小不能超過{num}M。',
             is_required: '此欄位必須填寫。',
             password_error: '密碼必須至少包含6個字符，包括大寫/小寫和數字(例如Abc123)。',
-            email_error: '無效的郵件地址。'
+            email_error: '無效的郵件地址。',
+            required_error: '請正確填寫必須填寫的項目。'
         };
         
         iweb_object.language['zh-hans'] = {
@@ -192,7 +194,8 @@ var iweb = {
             max_error:'档案大小不能超过{num}M。',
             is_required: '此栏位必须填写。',
             password_error: '密码必须至少包含6个字符，包括大写/小写和数字(例如Abc123)。',
-            email_error: '无效的邮件地址。'
+            email_error: '无效的邮件地址。',
+            required_error: '请正确填写必须填写的项目。'
         };
         
         if(iweb_object.isValue($('html').attr('lang')) && iweb_object.isValue(iweb_object.language[$('html').attr('lang').toString().toLowerCase()])){
@@ -287,7 +290,11 @@ var iweb = {
             }
             return false;
         });
-        
+
+        $(document).on('click', 'div.iweb-error-message > div > a.close', function() {
+            $(this).closest('div.iweb-error-message').empty();
+        });
+
         $(document).on('reset','form',function(e){
             $('body').append('<div class="iweb-blank-mask" style="position:fixed;top:0px;left:0px;right:0px;bottom:0px;z-index:9999;"></div>');
             var form_object = $(this);
@@ -1141,6 +1148,11 @@ var iweb = {
                         }
                     }
                     else if(!default_check_result) {
+                        if($('div.iweb-error-message').length > 0) {
+                            $('div.iweb-error-message').html('<div class="error"><a class="close">×</a><span>'+iweb_object.language[iweb_object.default_language]['required_error']+'</span></div>').each(function() {
+                                iweb_object.scrollto();
+                            });
+                        }
                         return false;
                     }
                     
