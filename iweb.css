@@ -90,6 +90,7 @@ video {
     font-size: 0px;
     max-width: 100%;
     max-height: 100%;
+    height: auto;
     border: 0px;
     vertical-align: middle;
 }
@@ -158,11 +159,14 @@ button {
     appearance: none;
     font-size: 1rem;
     max-width: 100%;
-    min-height: 36px;
     padding: 8px 12px;
     border: 0px;
     border-radius: 4px;
     cursor: pointer;
+}
+
+button.btn {
+    min-height: 36px;
 }
 
 button:hover {

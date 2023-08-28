@@ -278,7 +278,7 @@ var iweb = {
         });
         
         $(document).on('click','button.switch-pwd-type',function(){
-            if(iweb.isMatch($(this).parent().find('input').attr('type'), 'password')) {
+            if(iweb_object.isMatch($(this).parent().find('input').attr('type'), 'password')) {
                 $(this).parent().find('input').attr('type','text');
                 $(this).parent().find('i.show').css('display','block');
                 $(this).parent().find('i.hide').css('display','none');
@@ -435,7 +435,7 @@ var iweb = {
                 var current_width = $(this).innerWidth(); 
                 var new_height = 0; 
                 var define_ratio_width = $(this).data('width'); 
-                var define_ratio_height = $(this).data('height'); 
+                var define_ratio_height = $(this).data('height');
                 if(iweb_object.isValue(define_ratio_width) && iweb_object.isValue(define_ratio_height)){
                     if(define_ratio_height > 0 && define_ratio_width > 0){
                         new_height = parseInt(current_width * define_ratio_height / define_ratio_width);
@@ -1218,7 +1218,7 @@ var iweb = {
                 values: {},
                 dataType: 'json',
                 allowed_types: '',
-                max_filesize: 5,
+                max_filesize: 8,
                 type_error_message: iweb_object.language[iweb_object.default_language]['type_error'],
                 max_error_message: iweb_object.language[iweb_object.default_language]['max_error'],
                 btnStartAll: '<i class="fa fa-upload"></i>',
@@ -1253,9 +1253,13 @@ var iweb = {
 
                     $(document).off('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.start-all');
                     $(document).on('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.start-all',function() {
+                        var loop_upload_index = [];
+                        var last_upload_index = 0;
                         $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item').each(function() {
-                            iweb_object.uploaderStart($(this).data('index'));
+                            loop_upload_index.push($(this).data('index'));
+                            last_upload_index = $(this).data('index');
                         });
+                        iweb_object.uploaderStart(-1, loop_upload_index, last_upload_index);
                     });
 
                     $(document).off('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.close');
@@ -1285,7 +1289,92 @@ var iweb = {
         };
         files_input.click();
     },
-    uploaderPreview: function(selectingFiles, key) {
+    uploaderArea: function(file_input_id,options,callback) {
+        var iweb_object = this;
+        
+        var files_input = document.getElementById(file_input_id);
+        files_input.multiple = true;
+        files_input.onchange = function(){
+            iweb_object.uploader_files = files_input.files;
+            iweb_object.uploader_files_skip = [-1];
+            iweb_object.uploader_options = {
+                url: '',
+                values: {},
+                dataType: 'json',
+                allowed_types: '',
+                max_filesize: 8,
+                type_error_message: iweb_object.language[iweb_object.default_language]['type_error'],
+                max_error_message: iweb_object.language[iweb_object.default_language]['max_error'],
+                btnStartAll: '<i class="fa fa-upload"></i>',
+                btnClose: '<i class="fa fa-close"></i>',
+                btnStart: '<i class="fa fa-upload"></i>',
+                btnRemove: '<i class="fa fa-trash"></i>'
+            };
+
+            if(iweb_object.isValue(options)) {
+                iweb_object.uploader_options = $.extend(iweb_object.uploader_options, options);
+            }
+
+            if(iweb_object.isValue(iweb_object.uploader_options.allowed_types)) {
+                iweb_object.uploader_options.allowed_types = iweb_object.uploader_options.allowed_types.split('|');
+            }
+            iweb_object.uploader_options.max_error_message = iweb_object.uploader_options.max_error_message.replace('{num}',iweb_object.uploader_options.max_filesize);
+
+            if(iweb_object.isValue(iweb_object.uploader_options.url) && parseInt(iweb_object.uploader_files.length) > 0) {
+                var uploader = '<div class="action">';
+                    uploader += '<button class="start-all" type="button" title="Start All">';
+                        uploader += '<i class="fa fa-upload"></i>',
+                    uploader += '</button>'
+
+                    uploader += '<button class="close" type="button" title="Close">';
+                        uploader += '<i class="fa fa-close"></i>',
+                    uploader += '</button>'
+                uploader += '</div>';
+                uploader += '<div class="list"></div>';
+
+                iweb_object.dialog(uploader,function() {
+                    iweb_object.uploaderPreview(iweb_object.uploader_files);
+
+                    $(document).off('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.start-all');
+                    $(document).on('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.start-all',function() {
+                        var loop_upload_index = [];
+                        var last_upload_index = 0;
+                        $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item').each(function() {
+                            loop_upload_index.push($(this).data('index'));
+                            last_upload_index = $(this).data('index');
+                        });
+                        iweb_object.uploaderStart(-1, loop_upload_index, last_upload_index);
+                    });
+
+                    $(document).off('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.close');
+                    $(document).on('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.close',function() {
+                        $('div.iweb-info-dialog > div > div.dialog-content > a.btn-close').trigger('click');
+                    });
+
+                    $(document).off('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.start');
+                    $(document).on('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.start',function() {
+                        iweb_object.uploaderStart($(this).closest('div.item').data('index'));
+                    });
+
+                    $(document).off('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.remove');
+                    $(document).on('click','div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.remove',function() {
+                        iweb_object.uploader_files_skip.push($(this).closest('div.item').data('index'));
+                        $(this).closest('div.item').remove();
+                        if($('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item').length == 0) {
+                            $('div.iweb-info-dialog > div > div.dialog-content > a.btn-close').trigger('click');
+                        }
+                    });
+                },function() {
+                    document.getElementById(file_input_id).value = '';
+                    if(typeof callback == 'function'){
+                        callback();
+                    }
+                }, 'uploader');
+            }
+        };
+        files_input.click();
+    },
+    uploaderPreview: function(selectingFiles,key) {
         var iweb_object = this;
         
         const regex = /^(.*)(.jpg|.jpeg|.gif|.png|.bmp)$/;
@@ -1414,88 +1503,192 @@ var iweb = {
             }
         }
     },
-    uploaderStart: function(index) {
+    uploaderStart: function(index,loop_upload_index,last_upload_index) {
         var iweb_object = this;
         
-        if(iweb.isValue(iweb_object.uploader_files) && $.inArray(index, iweb_object.uploader_files_skip) < 0) {
-          
-            var selectingFiles = iweb_object.uploader_files;
-            var local_time = iweb.getDateTime(null,'time');
-            var formData = new FormData();
-            formData.append('action', 'file_upload');
-            formData.append('itoken', window.btoa(md5(iweb.csrf_token+'#dt'+local_time)+'%'+local_time));
-            
-            if(iweb.isValue(iweb_object.uploader_options.values)) {
-                $.each(iweb_object.uploader_options.values,function(key, value) {
-                    formData.append(key, value);
-                });
-            }
-            formData.append('myfile', selectingFiles[index], selectingFiles[index].name);
-            iweb_object.uploader_files_skip.push(index);
-            
-            var extension = selectingFiles[index].name.slice((selectingFiles[index].name.lastIndexOf('.') - 1 >>> 0) + 2);
-            var checking = true;
-            
-            if(iweb_object.isValue(iweb_object.uploader_options.allowed_types) && $.inArray(extension.toLowerCase(),iweb_object.uploader_options.allowed_types) < 0) {
-                checking = false;
-            }
-            else if(selectingFiles[index].size > iweb_object.uploader_options.max_filesize*1024*1024) {
-                checking = false;
-            }
+        $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.start-all').css('display', 'none');
+        $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.start').css('display', 'none');
+        
+        if(iweb_object.isValue(loop_upload_index)) {
+            index = index+1;
+            if(parseInt(index) <= parseInt(last_upload_index)) {
+                if($.inArray(index, loop_upload_index) < 0) {
+                    iweb_object.uploaderStart(index, loop_upload_index, last_upload_index);
+                }
+                else {
+                    if(iweb_object.isValue(iweb_object.uploader_files) && $.inArray(index, iweb_object.uploader_files_skip) < 0) {
 
-            if(checking) {
-                $.ajax({
-                    url: iweb_object.uploader_options.url,
-                    type: 'post',
-                    data: formData,
-                    dataType: iweb_object.uploader_options.dataType,
-                    processData: false,
-                    contentType: false,
-                    cache: false,
-                    enctype: 'multipart/form-data',
-                    success: function(response_data){
-                        if(iweb_object.isValue(response_data)) {
-                            if(iweb.isValue(response_data.message)) {
-                                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.progress-bar').remove();
-                                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.info').append('<div class="tips"><small>'+response_data.message+'</small></div>');
-                            }
-                            else {
-                                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.progress-bar').remove();
-                                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.info').append('<div class="tips"><small>'+response_data+'</small></div>');
-                            }
+                        var selectingFiles = iweb_object.uploader_files;
+                        var local_time = iweb_object.getDateTime(null,'time');
+                        var formData = new FormData();
+                        formData.append('page_action', 'file_upload');
+                        formData.append('itoken', window.btoa(md5(iweb_object.csrf_token+'#dt'+local_time)+'%'+local_time));
+
+                        if(iweb_object.isValue(iweb_object.uploader_options.values)) {
+                            $.each(iweb_object.uploader_options.values,function(key, value) {
+                                formData.append(key, value);
+                            });
                         }
-                    },
-                    error: function(xhr, status, thrownError){
-                        alert(thrownError);
-                        return false;
-                    },
-                    complete: function() {
-                        $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.start').remove();
-                        $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.remove').remove();
-                    },
-                    xhr: function () {
-                        var fileXhr = $.ajaxSettings.xhr();
-                        if(fileXhr.upload) {
-                            fileXhr.upload.addEventListener('progress', function (e) {
-                                if(e.lengthComputable) {
-                                    var percentage = Math.ceil(((e.loaded / e.total) * 100));
-                                    $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.percent').css('width', percentage+'%');
-                                    $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.start').hide();
-                                    $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.remove').hide();
+                        formData.append('myfile', selectingFiles[index], selectingFiles[index].name);
+                        iweb_object.uploader_files_skip.push(index);
+
+                        var extension = selectingFiles[index].name.slice((selectingFiles[index].name.lastIndexOf('.') - 1 >>> 0) + 2);
+                        var checking = true;
+
+                        if(iweb_object.isValue(iweb_object.uploader_options.allowed_types) && $.inArray(extension.toLowerCase(),iweb_object.uploader_options.allowed_types) < 0) {
+                            checking = false;
+                        }
+                        else if(selectingFiles[index].size > iweb_object.uploader_options.max_filesize*1024*1024) {
+                            checking = false;
+                        }
+
+                        if(checking) {
+                            $.ajax({
+                                url: iweb_object.uploader_options.url,
+                                type: 'post',
+                                data: formData,
+                                dataType: iweb_object.uploader_options.dataType,
+                                processData: false,
+                                contentType: false,
+                                cache: false,
+                                enctype: 'multipart/form-data',
+                                success: function(response_data){
+                                    if(iweb_object.isValue(response_data)) {
+                                        if(iweb_object.isValue(response_data.message)) {
+                                            $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.progress-bar').remove();
+                                            $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.info').append('<div class="tips"><small>'+response_data.message+'</small></div>');
+                                        }
+                                        else {
+                                            $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.progress-bar').remove();
+                                            $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.info').append('<div class="tips"><small>'+response_data+'</small></div>');
+                                        }
+                                    }
+                                },
+                                error: function(xhr, status, thrownError){
+                                    alert(thrownError);
+                                    return false;
+                                },
+                                complete: function() {
+                                    $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.start').remove();
+                                    $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.remove').remove();
+                                    iweb_object.uploaderStart(index, loop_upload_index, last_upload_index);
+                                },
+                                xhr: function () {
+                                    var fileXhr = $.ajaxSettings.xhr();
+                                    if(fileXhr.upload) {
+                                        fileXhr.upload.addEventListener('progress', function (e) {
+                                            if(e.lengthComputable) {
+                                                var percentage = Math.ceil(((e.loaded / e.total) * 100));
+                                                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.percent').css('width', percentage+'%');
+                                                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.start').hide();
+                                                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.remove').hide();
+                                            }
+                                        }, false);
+                                    }
+                                    return fileXhr;
                                 }
-                            }, false);
+                            });
                         }
-                        return fileXhr;
+                        else {
+                            $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.start').remove();
+                            $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.remove').remove();
+                            iweb_object.uploaderStart(index, loop_upload_index, last_upload_index);
+                        }
                     }
-                });
+                    else {
+                        iweb_object.uploaderStart(index, loop_upload_index, last_upload_index);
+                    }
+                }
             }
             else {
-                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.start').remove();
-                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.remove').remove();
+                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.start-all').css('display', 'inline-block');
+                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.start').css('display', 'inline-block');
             }
         }
+        else {
+            if(iweb_object.isValue(iweb_object.uploader_files) && $.inArray(index, iweb_object.uploader_files_skip) < 0) {
+
+                var selectingFiles = iweb_object.uploader_files;
+                var local_time = iweb_object.getDateTime(null,'time');
+                var formData = new FormData();
+                formData.append('page_action', 'file_upload');
+                formData.append('itoken', window.btoa(md5(iweb_object.csrf_token+'#dt'+local_time)+'%'+local_time));
+
+                if(iweb_object.isValue(iweb_object.uploader_options.values)) {
+                    $.each(iweb_object.uploader_options.values,function(key, value) {
+                        formData.append(key, value);
+                    });
+                }
+                formData.append('myfile', selectingFiles[index], selectingFiles[index].name);
+                iweb_object.uploader_files_skip.push(index);
+
+                var extension = selectingFiles[index].name.slice((selectingFiles[index].name.lastIndexOf('.') - 1 >>> 0) + 2);
+                var checking = true;
+
+                if(iweb_object.isValue(iweb_object.uploader_options.allowed_types) && $.inArray(extension.toLowerCase(),iweb_object.uploader_options.allowed_types) < 0) {
+                    checking = false;
+                }
+                else if(selectingFiles[index].size > iweb_object.uploader_options.max_filesize*1024*1024) {
+                    checking = false;
+                }
+
+                if(checking) {
+                    $.ajax({
+                        url: iweb_object.uploader_options.url,
+                        type: 'post',
+                        data: formData,
+                        dataType: iweb_object.uploader_options.dataType,
+                        processData: false,
+                        contentType: false,
+                        cache: false,
+                        enctype: 'multipart/form-data',
+                        success: function(response_data){
+                            if(iweb_object.isValue(response_data)) {
+                                if(iweb_object.isValue(response_data.message)) {
+                                    $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.progress-bar').remove();
+                                    $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.info').append('<div class="tips"><small>'+response_data.message+'</small></div>');
+                                }
+                                else {
+                                    $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.progress-bar').remove();
+                                    $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.info').append('<div class="tips"><small>'+response_data+'</small></div>');
+                                }
+                            }
+                        },
+                        error: function(xhr, status, thrownError){
+                            alert(thrownError);
+                            return false;
+                        },
+                        complete: function() {
+                            $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.start-all').css('display', 'inline-block');
+                            $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.start').css('display', 'inline-block');
+                            $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.start').remove();
+                            $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.remove').remove();
+                        },
+                        xhr: function () {
+                            var fileXhr = $.ajaxSettings.xhr();
+                            if(fileXhr.upload) {
+                                fileXhr.upload.addEventListener('progress', function (e) {
+                                    if(e.lengthComputable) {
+                                        var percentage = Math.ceil(((e.loaded / e.total) * 100));
+                                        $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('div.percent').css('width', percentage+'%');
+                                        $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.start').hide();
+                                        $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.remove').hide();
+                                    }
+                                }, false);
+                            }
+                            return fileXhr;
+                        }
+                    });
+                }
+                else {
+                    $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.start').remove();
+                    $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="'+index+'"]').find('button.remove').remove();
+                }
+            }
+        }
+       
     },
-    formatBytes:function(bytes, decimals) {
+    formatBytes:function(bytes,decimals) {
         if(!+bytes) return '0 Bytes';
         const k = 1024;
         const dm = (decimals < 0) ? 0 : decimals;
@@ -1524,7 +1717,7 @@ var iweb = {
             return false;
         }
     },
-    isNumber: function(value, digital_mode){
+    isNumber: function(value,digital_mode){
         var iweb_object = this;
         
         if(!iweb_object.isValue(value)){
@@ -1537,7 +1730,7 @@ var iweb = {
             return reg.test(value);
         }
     },
-    toNumber: function(value, currency_mode, decimal){
+    toNumber: function(value,currency_mode, decimal){
         var iweb_object = this;
         
         value = value.toString().replace( /[^\d|\-|\.]/g, '');
@@ -1752,7 +1945,7 @@ var iweb = {
         }
         return result;
     },
-    getDateTime:function(string, format){
+    getDateTime:function(string,format){
         var iweb_object = this;
         
         var now = new Date();
