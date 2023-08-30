@@ -247,6 +247,7 @@ var iweb = {
             });
         }
 
+        $(document).off('keypress','body');
         $(document).on('keypress','body',function(e){
             var keycode = (e.keyCode ? e.keyCode : e.which);
             if(keycode == 13 && parseInt($('div.iweb-alert-dialog').length) > 0){
@@ -255,12 +256,14 @@ var iweb = {
             }
         });
         
+        $(document).off('click','a');
         $(document).on('click','a',function(e){
             if(!iweb_object.isValue($(this).attr('href')) || iweb_object.isMatch($(this).attr('href'),'#')){
                 e.preventDefault();
             }
         });
         
+        $(document).off('click','a.font-switch');
         $(document).on('click','a.font-switch',function(e){
             e.preventDefault();
             $('a.font-switch').removeClass('current');
@@ -280,6 +283,7 @@ var iweb = {
             });
         });
         
+        $(document).off('click','button.switch-pwd-type');
         $(document).on('click','button.switch-pwd-type',function(){
             if(iweb_object.isMatch($(this).parent().find('input').attr('type'), 'password')) {
                 $(this).parent().find('input').attr('type','text');
@@ -294,10 +298,12 @@ var iweb = {
             return false;
         });
 
+        $(document).off('click', 'div.iweb-error-message > div > a.close');
         $(document).on('click', 'div.iweb-error-message > div > a.close', function() {
             $(this).closest('div.iweb-error-message').empty();
         });
 
+        $(document).off('reset','form');
         $(document).on('reset','form',function(e){
             $('body').append('<div class="iweb-blank-mask" style="position:fixed;top:0px;left:0px;right:0px;bottom:0px;z-index:9999;"></div>');
             var form_object = $(this);
@@ -501,20 +507,24 @@ var iweb = {
         var iweb_object = this;
         
         if(parseInt($('div.iweb-selector').length) == 0){
+            $(document).off('click','body');
             $(document).on('click','body',function(e){
                 if(parseInt($(e.target).closest('div.iweb-selector').length) === 0){
                     $('div.iweb-selector').removeClass('show');
                 }
             });
             
+            $(document).off('focus','div.iweb-selector > div.real > select');
             $(document).on('focus','div.iweb-selector > div.real > select',function(e){
                 $('div.iweb-selector').removeClass('show');
             });
             
+            $(document).off('blur','div.iweb-selector > div.virtual > div.options ul > li > a:last');
             $(document).on('blur','div.iweb-selector > div.virtual > div.options ul > li > a:last',function(){
                 $('div.iweb-selector').removeClass('show');
             });
 
+            $(document).off('change','div.iweb-selector > div.real > select');
             $(document).on('change','div.iweb-selector > div.real > select',function(){
                 var selected_option = [];
                 var selected_option_label = '';
@@ -552,6 +562,7 @@ var iweb = {
                 $(this).closest('div.iweb-selector').find('div.virtual > div.result > a').html(selected_option_label);
             });
             
+            $(document).off('click','div.iweb-selector > div.virtual > div.result > a');
             $(document).on('click','div.iweb-selector > div.virtual > div.result > a',function(){
                 var target_selector = $(this);
                 if($(this).closest('div.iweb-selector').find('div.virtual > div.options > ul').is(":visible")){
@@ -567,6 +578,7 @@ var iweb = {
                 });
             });
             
+            $(document).off('click','div.iweb-selector > div.virtual > div.options ul > li > a');
             $(document).on('click','div.iweb-selector > div.virtual > div.options ul > li > a',function(){
                 if($(this).closest('div.iweb-selector').hasClass('iweb-selector-multiple')){
                     var selected_option = [];
@@ -601,6 +613,7 @@ var iweb = {
                 }
             });
             
+            $(document).off('keyup','div.iweb-selector > div.virtual > div.options ul > li.filter > input');
             $(document).on('keyup','div.iweb-selector > div.virtual > div.options ul > li.filter > input',function(){
                 var fkw = $(this).val();
                 if(iweb_object.isValue(fkw)){
@@ -710,6 +723,7 @@ var iweb = {
         var iweb_object = this;
         
         if(parseInt($('div.iweb-checkbox').length) == 0){
+            $(document).off('click','div.iweb-checkbox > .options > div > input[type="checkbox"]');
             $(document).on('click','div.iweb-checkbox > .options > div > input[type="checkbox"]',function(){
                 $(this).parent().removeClass('error');
                 if(!$(this).is(':checked')){
@@ -720,6 +734,7 @@ var iweb = {
                 }
             });
             
+            $(document).off('click','div.iweb-checkbox > div.options > div > a');
             $(document).on('click','div.iweb-checkbox > div.options > div > a',function(){
                 $(this).closest('.options').find('input[type="checkbox"]').trigger('click');
             });
@@ -754,6 +769,7 @@ var iweb = {
         var iweb_object = this;
         
         if(parseInt($('div.iweb-radiobox').length) == 0){
+            $(document).off('click','div.iweb-radiobox > .options > div > input[type="radio"]');
             $(document).on('click','div.iweb-radiobox > .options > div > input[type="radio"]',function(){
                 var selected_value = $(this).val();
                 var related_object = $('input[type="radio"][name="'+$(this).attr('name')+'"]');
@@ -770,6 +786,7 @@ var iweb = {
                 });
             });
             
+            $(document).off('click','div.iweb-radiobox > div.options > div > a');
             $(document).on('click','div.iweb-radiobox > div.options > div > a',function(){
                 $(this).closest('.options').find('input[type="radio"]').trigger('click');
             });
@@ -840,7 +857,6 @@ var iweb = {
             $('body').addClass('iweb-disable-scroll');
             
             $(document).off('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-close');
-            
             $(document).on('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-close', function(){
                 $('div.iweb-alert-dialog').remove();
                 if(parseInt($('div.iweb-alert-dialog').length) == 0 && parseInt($('div.iweb-info-dialog').length) == 0){
@@ -884,8 +900,6 @@ var iweb = {
             $('body').addClass('iweb-disable-scroll');
             
             $(document).off('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-yes');
-            $(document).off('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-no');
-
             $(document).on('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-yes', function(){
                 $('div.iweb-alert-dialog').remove();
                 if(parseInt($('div.iweb-alert-dialog').length) == 0 && parseInt($('div.iweb-info-dialog').length) == 0){
@@ -896,6 +910,7 @@ var iweb = {
                 }
             });
             
+            $(document).off('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-no');
             $(document).on('click', 'div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-no', function(){
                 $('div.iweb-alert-dialog').remove();
                 if(parseInt($('div.iweb-alert-dialog').length) == 0 && parseInt($('div.iweb-info-dialog').length) == 0){
@@ -939,8 +954,6 @@ var iweb = {
             $('body').addClass('iweb-disable-scroll');
             
             $(document).off('click', 'div.iweb-info-dialog > div > div.dialog-mask');
-            $(document).off('click', 'div.iweb-info-dialog > div > div.dialog-content > a.btn-close ');
-            
             $(document).on('click', 'div.iweb-info-dialog > div > div.dialog-mask', function(e){
                 $('div.iweb-info-dialog').remove();
                 $('body').removeClass('iweb-disable-scroll');
@@ -949,6 +962,7 @@ var iweb = {
                 }
             });
             
+            $(document).off('click', 'div.iweb-info-dialog > div > div.dialog-content > a.btn-close ');
             $(document).on('click', 'div.iweb-info-dialog > div > div.dialog-content > a.btn-close ', function(){
                 $('div.iweb-info-dialog').remove();
                 $('body').removeClass('iweb-disable-scroll');
@@ -957,11 +971,12 @@ var iweb = {
                 }
             });
             
-            if($('form').length > 0) {
-                iweb_object.selector();
-                iweb_object.checkbox();
-                iweb_object.radiobox();
-                $('form').find('input[data-isrequired="1"],input[data-ispassword="1"],input[data-isemail="1"],input[data-ispassword="2"],input[data-isemail="2"],textarea[data-isrequired="1"]').each(function() {
+            iweb_object.selector();
+            iweb_object.checkbox();
+            iweb_object.radiobox();
+            
+            if($('div.iweb-info-dialog form').length > 0) {
+                $('div.iweb-info-dialog form').find('input[data-isrequired="1"],input[data-ispassword="1"],input[data-isemail="1"],input[data-ispassword="2"],input[data-isemail="2"],textarea[data-isrequired="1"]').each(function() {
                     if(iweb_object.isValue($(this).data('ispassword'))) {
                         $(this).wrap('<div class="iweb-input"><div></div></div>');
                         $(this).parent().append('<button class="small switch-pwd-type" type="button"><i class="fa fa-eye-slash hide" style="display: block;"></i><i class="fa fa-eye show" style="display: none;"></i></button>')
@@ -971,6 +986,7 @@ var iweb = {
                     }
                 });
             }
+            
             iweb_object.responsive();
             
             var delay_timer = setTimeout(function(){
