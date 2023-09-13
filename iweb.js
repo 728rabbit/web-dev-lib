@@ -168,7 +168,9 @@ var iweb = {
             max_error: 'Maximum allowed file size {num}M.',
             is_required: 'This field is required.',
             password_error: 'Password must contain at least 6 characters, including upper/lowercase and numbers (e.g. Abc123).',
-            email_error: 'Invalid email address.',
+            email_error: 'Invalid email address format.',
+            number_error: 'Invalid number format.',
+            date_error: 'Invalid date format.',
             required_error: 'Please fill in the required information.',
             custom_error: ''
         };
@@ -182,7 +184,9 @@ var iweb = {
             max_error:'檔案大小不能超過{num}M。',
             is_required: '此欄位必須填寫。',
             password_error: '密碼必須至少包含6個字符，包括大寫/小寫和數字(例如Abc123)。',
-            email_error: '無效的郵件地址。',
+            email_error: '無效的郵件地址格式。',
+            number_error: '無效的數字格式。',
+            date_error: '無效的日期格式。',
             required_error: '請正確填寫必須填寫的項目。',
             custom_error: ''
         };
@@ -196,7 +200,9 @@ var iweb = {
             max_error:'档案大小不能超过{num}M。',
             is_required: '此栏位必须填写。',
             password_error: '密码必须至少包含6个字符，包括大写/小写和数字(例如Abc123)。',
-            email_error: '无效的邮件地址。',
+            email_error: '无效的邮件地址格式。',
+            number_error: '无效的数字格式。',
+            date_error: '無效的日期格式。',
             required_error: '请正确填写必须填写的项目。',
             custom_error: ''
         };
@@ -221,8 +227,8 @@ var iweb = {
             iweb_object.selector();
             iweb_object.checkbox();
             iweb_object.radiobox();
-            $('form').find('input[data-isrequired="1"],input[data-ispassword="1"],input[data-isemail="1"],input[data-ispassword="2"],input[data-isemail="2"],textarea[data-isrequired="1"]').each(function() {
-                if(iweb_object.isValue($(this).data('ispassword'))) {
+            $('form').find('input[type="text"],input[type="password"],input[type="date"],input[type="email"],input[type="number"],textarea').each(function() {
+                if(iweb_object.isMatch($(this).attr('type'),'password')) {
                     $(this).wrap('<div class="iweb-input"><div></div></div>');
                     $(this).parent().append('<button class="small switch-pwd-type" type="button"><i class="fa fa-eye-slash hide" style="display: block;"></i><i class="fa fa-eye show" style="display: none;"></i></button>')
                 }
@@ -744,6 +750,7 @@ var iweb = {
            checkbox_object = $('body').find('input[type="checkbox"]');
         }
         
+        var checkbox_group_name = [];
         checkbox_object.each(function(){
             if(!$(this).parent().parent().parent().hasClass('iweb-checkbox')){
                 var find_checkbox_label = $(this).next();
@@ -755,12 +762,19 @@ var iweb = {
                 else {
                     $(this).wrap('<div class="iweb-checkbox"><div class="options"><div'+(ischecked?' class="checked"':'')+'></div></div><div class="virtual-msg">&nbsp;</div></div>');
                 }
-                $('<a>&nbsp;</a>').insertAfter($(this));
                 if(ischecked){
                     $(this).attr('data-ori','checked');
                 }
+                $('<a>&nbsp;</a>').insertAfter($(this));
+                checkbox_group_name.push($(this).attr('name'));
             }
         });
+        
+        checkbox_group_name = $.unique(checkbox_group_name);
+        $.each(checkbox_group_name, function(key, value) {
+            $('input[name="'+value+'"]').closest('div.iweb-checkbox').wrapAll('<div class="iweb-checkbox-set"></div>');
+        });
+        
         if(typeof callback == 'function'){
             callback();
         }
@@ -796,6 +810,7 @@ var iweb = {
            radiobox_object = $('body').find('input[type="radio"]');
         }
         
+        var radiobox_group_name = [];
         radiobox_object.each(function(){
             if(!$(this).parent().parent().parent().hasClass('iweb-radiobox')){
                 var find_radiobox_label = $(this).next();
@@ -811,8 +826,15 @@ var iweb = {
                     $(this).attr('data-ori','checked');
                 }
                 $('<a>&nbsp;</a>').insertAfter($(this));
+                radiobox_group_name.push($(this).attr('name'));
             }
         });
+        
+        radiobox_group_name = $.unique(radiobox_group_name);
+        $.each(radiobox_group_name, function(key, value) {
+            $('input[name="'+value+'"]').closest('div.iweb-radiobox').wrapAll('<div class="iweb-radiobox-set"></div>');
+        });
+        
         if(typeof callback == 'function'){
             callback();
         }
@@ -976,7 +998,7 @@ var iweb = {
             iweb_object.radiobox();
             
             if($('div.iweb-info-dialog form').length > 0) {
-                $('div.iweb-info-dialog form').find('input[data-isrequired="1"],input[data-ispassword="1"],input[data-isemail="1"],input[data-ispassword="2"],input[data-isemail="2"],textarea[data-isrequired="1"]').each(function() {
+                $('div.iweb-info-dialog form').find('input[type="text"],input[type="password"],input[type="date"],input[type="email"],input[type="number"],textarea').each(function() {
                     if(iweb_object.isValue($(this).data('ispassword'))) {
                         $(this).wrap('<div class="iweb-input"><div></div></div>');
                         $(this).parent().append('<button class="small switch-pwd-type" type="button"><i class="fa fa-eye-slash hide" style="display: block;"></i><i class="fa fa-eye show" style="display: none;"></i></button>')
@@ -1079,23 +1101,57 @@ var iweb = {
                     var default_check_result = true;
                     form_object.find('div.iweb-input .error').removeClass('error');
                     form_object.find('div.iweb-selector .error').removeClass('error');
+                    form_object.find('div.iweb-checkbox .error').removeClass('error');
+                    form_object.find('div.iweb-radiobox .error').removeClass('error');
                     form_object.find('div.iweb-input small.tips').remove();
+                    form_object.find('div.iweb-checkbox-set small.tips').remove();
+                    form_object.find('div.iweb-radiobox-set small.tips').remove();
                     form_object.find('div.iweb-selector small.tips').remove();
 
-                    form_object.find('input[data-isrequired="1"],textarea[data-isrequired="1"]').each(function() {
-                        if(!iweb_object.isValue($(this).val())) {
-                            if(iweb_object.isValue($(this).data('notempty'))) {
-                                $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                    form_object.find('input[data-validation="required"],textarea[data-validation="required"]').each(function() {
+                        if(iweb_object.isMatch($(this).attr('type'),'checkbox')) {
+                            if($(this).closest('div.iweb-checkbox-set').find('input[type="checkbox"]:checked').length == 0) {
+                                if($(this).closest('div.iweb-checkbox-set').find('small.tips').length == 0) {
+                                    if(iweb_object.isValue($(this).data('notempty'))) {
+                                        $(this).closest('div.iweb-checkbox-set').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                                    }
+                                    else {
+                                        $(this).closest('div.iweb-checkbox-set').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
+                                    }
+                                }
+                                $(this).parent().addClass('error');
+                                default_check_result = false;
                             }
-                            else {
-                                $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
+                        }
+                        else if(iweb_object.isMatch($(this).attr('type'),'radio')) {
+                            if($(this).closest('div.iweb-radiobox-set').find('input[type="radio"]:checked').length == 0) {
+                                if($(this).closest('div.iweb-radiobox-set').find('small.tips').length == 0) {
+                                    if(iweb_object.isValue($(this).data('notempty'))) {
+                                        $(this).closest('div.iweb-radiobox-set').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                                    }
+                                    else {
+                                        $(this).closest('div.iweb-radiobox-set').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
+                                    }
+                                }
+                                $(this).parent().addClass('error');
+                                default_check_result = false;
                             }
-                            $(this).addClass('error');
-                            default_check_result = false;
+                        }
+                        else {
+                            if(!iweb_object.isValue($(this).val())) {
+                                if(iweb_object.isValue($(this).data('notempty'))) {
+                                    $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                                }
+                                else {
+                                    $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
+                                }
+                                $(this).addClass('error');
+                                default_check_result = false;
+                            }
                         }
                     });
                     
-                    form_object.find('input[data-ispassword="1"]').each(function() {
+                    form_object.find('input[data-validation="required|password"]').each(function() {
                         if(!iweb_object.isValue($(this).val())) {
                             if(iweb_object.isValue($(this).data('notempty'))) {
                                 $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('notempty')+'</small>');
@@ -1113,7 +1169,7 @@ var iweb = {
                         }
                     });
                     
-                    form_object.find('input[data-ispassword="2"]').each(function() {
+                    form_object.find('input[data-validation="password"]').each(function() {
                        if(iweb_object.isValue($(this).val()) && !iweb_object.isPassword($(this).val())) {
                             $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['password_error']+'</small>');
                             $(this).addClass('error');
@@ -1121,7 +1177,7 @@ var iweb = {
                         }
                     });
                     
-                    form_object.find('input[data-isemail="1"]').each(function() {
+                    form_object.find('input[data-validation="required|email"]').each(function() {
                         if(!iweb_object.isValue($(this).val())) {
                             if(iweb_object.isValue($(this).data('notempty'))) {
                                 $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('notempty')+'</small>');
@@ -1139,7 +1195,7 @@ var iweb = {
                         }
                     });
                     
-                    form_object.find('input[data-isemail="2"]').each(function() {
+                    form_object.find('input[data-validation="email"]').each(function() {
                         if(iweb_object.isValue($(this).val()) && !iweb_object.isEmail($(this).val())) {
                             $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['email_error']+'</small>');
                             $(this).addClass('error');
@@ -1147,7 +1203,59 @@ var iweb = {
                         }
                     });
                     
-                    form_object.find('select[data-isrequired="1"]').each(function() {
+                    form_object.find('input[data-validation="required|number"]').each(function() {
+                        if(!iweb_object.isValue($(this).val())) {
+                            if(iweb_object.isValue($(this).data('notempty'))) {
+                                $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                            }
+                            else {
+                                $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
+                            }
+                            $(this).addClass('error');
+                            default_check_result = false;
+                        }
+                        else if(!iweb_object.isNumber($(this).val())) {
+                            $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['number_error']+'</small>');
+                            $(this).addClass('error');
+                            default_check_result = false; 
+                        }
+                    });
+                    
+                    form_object.find('input[data-validation="number"]').each(function() {
+                        if(iweb_object.isValue($(this).val()) && !iweb_object.isNumber($(this).val())) {
+                            $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['number_error']+'</small>');
+                            $(this).addClass('error');
+                            default_check_result = false; 
+                        }
+                    });
+                    
+                    form_object.find('input[data-validation="required|date"]').each(function() {
+                        if(!iweb_object.isValue($(this).val())) {
+                            if(iweb_object.isValue($(this).data('notempty'))) {
+                                $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                            }
+                            else {
+                                $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
+                            }
+                            $(this).addClass('error');
+                            default_check_result = false;
+                        }
+                        else if(!iweb_object.isDate($(this).val(), $(this).data('format'))) {
+                            $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['date_error']+'</small>');
+                            $(this).addClass('error');
+                            default_check_result = false; 
+                        }
+                    });
+                    
+                    form_object.find('input[data-validation="date"]').each(function() {
+                        if(iweb_object.isValue($(this).val()) && !iweb_object.isDate($(this).val(), $(this).data('format'))) {
+                            $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['date_error']+'</small>');
+                            $(this).addClass('error');
+                            default_check_result = false; 
+                        }
+                    });
+                    
+                    form_object.find('select[data-validation="required"]').each(function() {
                         if(!iweb_object.isValue($(this).val()) || (iweb_object.isValue($(this).val()) && parseInt($(this).val()) === 0)) {
                             if(iweb_object.isValue($(this).data('notempty'))) {
                                 $(this).closest('div.iweb-selector').append('<small class="tips">'+$(this).data('notempty')+'</small>');
@@ -1176,6 +1284,15 @@ var iweb = {
                                 }
                                 iweb_object.language[iweb_object.default_language]['custom_error'] = '';
                             }
+                            else {
+                                if(default_check_result && iweb.isValue(iweb_object.language[iweb_object.default_language]['custom_error'])) {
+                                    iweb_object.alert(iweb_object.language[iweb_object.default_language]['custom_error']);
+                                }
+                                else {
+                                    iweb_object.alert(iweb_object.language[iweb_object.default_language]['required_error']);
+                                }
+                                iweb_object.language[iweb_object.default_language]['custom_error'] = '';
+                            }
                             return false;
                         }
                     }
@@ -1184,6 +1301,9 @@ var iweb = {
                             $('div.iweb-error-message').html('<div class="error"><a class="close">×</a><span>'+iweb_object.language[iweb_object.default_language]['required_error']+'</span></div>').each(function() {
                                 iweb_object.scrollto();
                             });
+                        }
+                        else {
+                            iweb_object.alert(iweb_object.language[iweb_object.default_language]['required_error']);
                         }
                         return false;
                     }
@@ -1809,6 +1929,56 @@ var iweb = {
             return reg.test(value);
         }
     },
+    isDate: function(value, format){
+        var iweb_object = this;
+        
+        if(!iweb_object.isValue(value)){
+            return false;
+        } else {
+            var reg = /^(\d{4})(\-)(\d{2})(\-)(\d{2})$/;
+            if(!iweb_object.isMatch(format, 'y-m-d')) {
+                value = value.split('/').reverse().join('-');
+            }
+
+            if(reg.test(value)) {
+                var ymd_checking = true;
+                var parts = value.split('-');
+                var day = parseInt(parts[2]);
+                var month = parseInt(parts[1]);
+                var year = parseInt(parts[0]);
+                if (isNaN(day) || isNaN(month) || isNaN(year)) {
+                    ymd_checking = false;
+                }
+                else {
+                    if (year <= 0 || month <= 0 || month > 12 || day <=0) {
+                        ymd_checking = false;
+                    }
+                    else if ((month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12) && day > 31) {
+                        ymd_checking = false;
+                    }
+                    else if ((month == 4 || month == 6 || month == 9 || month == 11 ) && day > 30) {
+                        ymd_checking = false;
+                    }
+                    else if (month == 2) {
+                        if (((year % 4) == 0 && (year % 100) != 0) || ((year % 400) == 0 && (year % 100) == 0)) {
+                            if (day > 29) {
+                                ymd_checking = false;
+                            }
+                        } else {
+                            if (day > 28) {
+                                ymd_checking = false;
+                            }
+                        }      
+                    }
+                }
+                
+                return (new Date(value) instanceof Date) && ymd_checking;
+            }
+            else {
+                return false;
+            }
+        }
+    },
     isMatch: function(value1,value2,sensitive){
         var iweb_object = this;
         
@@ -2010,24 +2180,27 @@ var iweb = {
                  second = '0'+second;
             }
             if(!iweb_object.isValue(format)){
-                format = 'yy-mm-dd h:i:s'
+                format = 'y-m-d h:i:s'
             }
             var dateTime = year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second;
             switch(format){
-                case 'dd-mm-yy h:i:s':
-                    dateTime = day+'-'+month+'-'+year+' '+hour+':'+minute+':'+second;
+                case 'y-m-d h:i:s':
+                    dateTime = year+'-'+month+'-'+day+' '+hour+':'+minute+':'+second;
                     break;
-                case 'yy-mm-dd h:i':
+                case 'y-m-d h:i':
                     dateTime = year+'-'+month+'-'+day+' '+hour+':'+minute;
                     break;
-                case 'dd-mm-yy h:i':
-                    dateTime = day+'-'+month+'-'+year+' '+hour+':'+minute;
+                case 'd/m/y h:i:s':
+                    dateTime = day+'/'+month+'/'+year+' '+hour+':'+minute+':'+second;
                     break;
-                case 'yy-mm-dd':
+                case 'd/m/y h:i':
+                    dateTime = day+'/'+month+'/'+year+' '+hour+':'+minute;
+                    break;
+                case 'y-m-d':
                     dateTime = year+'-'+month+'-'+day;
                     break;
-                case 'dd-mm-yy':
-                    dateTime = day+'-'+month+'-'+year;
+                case 'd/m/y':
+                    dateTime = day+'/'+month+'/'+year;
                     break;
                 case 'h:i:s':
                     dateTime = hour+':'+minute+':'+second;
@@ -2035,13 +2208,13 @@ var iweb = {
                 case 'h:i':
                     dateTime = hour+':'+minute;
                     break;
-                case 'yy':
+                case 'Y':
                     dateTime = year;
                     break;
-                case 'mm':
+                case 'm':
                     dateTime = month;
                     break;
-                case 'dd':
+                case 'd':
                     dateTime = day;
                     break;
                 case 'h':

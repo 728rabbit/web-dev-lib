@@ -125,6 +125,9 @@
     // Password must contain at least 6 characters, including upper/lowercase and numbers (e.g. Abc123)
     // 密碼必須至少包含6個字符，包括大寫/小寫和數字（例如Abc123）
 
+    iweb.isDate(value, format);  // if value is non-date, return false
+    - format_mode: 'y-m-d' or 'd/m/y'
+
     iweb.isExist(element);   // if element not exist, return false
 
     iweb.isMatch(value1,value2, sensitive);   // compare tow vaule
@@ -135,6 +138,10 @@
     // if maxlength > 0, return true or false, check string whether larger than maxlength
     // else, return string length
     // 中文 = 2 bytes, 英文 = 1 byte
+
+
+    data-validation="required|password|email|number|date"
+
 
 9.  Alert Dialog:
     ----------------------------------------------------------------------------

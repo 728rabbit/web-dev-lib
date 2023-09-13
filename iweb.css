@@ -303,6 +303,8 @@ div.iweb-editor:after {
 
 div.iweb-input {
     position: relative;
+    display: inline-block;
+    vertical-align: top;
 }
 
 div.iweb-input > div {
@@ -310,6 +312,7 @@ div.iweb-input > div {
 }
 
 div.iweb-input small.tips {
+    position: relative;
     display: block;
     color: #ef4130;
     padding-top: 4px;
@@ -320,6 +323,7 @@ div.iweb-selector {
 }
 
 div.iweb-selector small.tips {
+    position: relative;
     display: block;
     color: #ef4130;
     padding-top: 4px;
@@ -744,6 +748,14 @@ div.iweb-radiobox > div.virtual-msg > label {
 
 div.iweb-radiobox > div.virtual-msg > label > a {
     text-decoration: underline;
+}
+
+div.iweb-checkbox-set small.tips,
+div.iweb-radiobox-set small.tips {
+    position: relative;
+    display: block;
+    color: #ef4130;
+    padding-top: 4px;
 }
 
 div.iweb-responsive {
