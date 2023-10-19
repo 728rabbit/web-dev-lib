@@ -1112,8 +1112,8 @@ var iweb = {
                         if(iweb_object.isMatch($(this).attr('type'),'checkbox')) {
                             if($(this).closest('div.iweb-checkbox-set').find('input[type="checkbox"]:checked').length == 0) {
                                 if($(this).closest('div.iweb-checkbox-set').find('small.tips').length == 0) {
-                                    if(iweb_object.isValue($(this).data('notempty'))) {
-                                        $(this).closest('div.iweb-checkbox-set').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                                    if(iweb_object.isValue($(this).data('tips'))) {
+                                        $(this).closest('div.iweb-checkbox-set').append('<small class="tips">'+$(this).data('tips')+'</small>');
                                     }
                                     else {
                                         $(this).closest('div.iweb-checkbox-set').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
@@ -1126,8 +1126,8 @@ var iweb = {
                         else if(iweb_object.isMatch($(this).attr('type'),'radio')) {
                             if($(this).closest('div.iweb-radiobox-set').find('input[type="radio"]:checked').length == 0) {
                                 if($(this).closest('div.iweb-radiobox-set').find('small.tips').length == 0) {
-                                    if(iweb_object.isValue($(this).data('notempty'))) {
-                                        $(this).closest('div.iweb-radiobox-set').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                                    if(iweb_object.isValue($(this).data('tips'))) {
+                                        $(this).closest('div.iweb-radiobox-set').append('<small class="tips">'+$(this).data('tips')+'</small>');
                                     }
                                     else {
                                         $(this).closest('div.iweb-radiobox-set').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
@@ -1139,8 +1139,8 @@ var iweb = {
                         }
                         else {
                             if(!iweb_object.isValue($(this).val())) {
-                                if(iweb_object.isValue($(this).data('notempty'))) {
-                                    $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                                if(iweb_object.isValue($(this).data('tips'))) {
+                                    $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('tips')+'</small>');
                                 }
                                 else {
                                     $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
@@ -1153,8 +1153,8 @@ var iweb = {
                     
                     form_object.find('input[data-validation="required|password"]').each(function() {
                         if(!iweb_object.isValue($(this).val())) {
-                            if(iweb_object.isValue($(this).data('notempty'))) {
-                                $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                            if(iweb_object.isValue($(this).data('tips'))) {
+                                $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('tips')+'</small>');
                             }
                             else {
                                 $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
@@ -1179,8 +1179,8 @@ var iweb = {
                     
                     form_object.find('input[data-validation="required|email"]').each(function() {
                         if(!iweb_object.isValue($(this).val())) {
-                            if(iweb_object.isValue($(this).data('notempty'))) {
-                                $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                            if(iweb_object.isValue($(this).data('tips'))) {
+                                $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('tips')+'</small>');
                             }
                             else {
                                 $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
@@ -1205,8 +1205,8 @@ var iweb = {
                     
                     form_object.find('input[data-validation="required|number"]').each(function() {
                         if(!iweb_object.isValue($(this).val())) {
-                            if(iweb_object.isValue($(this).data('notempty'))) {
-                                $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                            if(iweb_object.isValue($(this).data('tips'))) {
+                                $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('tips')+'</small>');
                             }
                             else {
                                 $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
@@ -1231,8 +1231,8 @@ var iweb = {
                     
                     form_object.find('input[data-validation="required|date"]').each(function() {
                         if(!iweb_object.isValue($(this).val())) {
-                            if(iweb_object.isValue($(this).data('notempty'))) {
-                                $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                            if(iweb_object.isValue($(this).data('tips'))) {
+                                $(this).closest('div.iweb-input').append('<small class="tips">'+$(this).data('tips')+'</small>');
                             }
                             else {
                                 $(this).closest('div.iweb-input').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
@@ -1257,8 +1257,8 @@ var iweb = {
                     
                     form_object.find('select[data-validation="required"]').each(function() {
                         if(!iweb_object.isValue($(this).val()) || (iweb_object.isValue($(this).val()) && parseInt($(this).val()) === 0)) {
-                            if(iweb_object.isValue($(this).data('notempty'))) {
-                                $(this).closest('div.iweb-selector').append('<small class="tips">'+$(this).data('notempty')+'</small>');
+                            if(iweb_object.isValue($(this).data('tips'))) {
+                                $(this).closest('div.iweb-selector').append('<small class="tips">'+$(this).data('tips')+'</small>');
                             }
                             else {
                                 $(this).closest('div.iweb-selector').append('<small class="tips">'+iweb_object.language[iweb_object.default_language]['is_required']+'</small>');
