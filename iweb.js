@@ -222,37 +222,6 @@ var iweb = {
         
         $('body > *').not('script,noscript').wrapAll('<div class="iweb-viewer"></div>');
         
-        iweb_object.iframe();
-        if($('form').length > 0) {
-            iweb_object.selector();
-            iweb_object.checkbox();
-            iweb_object.radiobox();
-            $('form').find('input[type="text"],input[type="password"],input[type="date"],input[type="email"],input[type="number"],textarea').each(function() {
-                if(iweb_object.isMatch($(this).attr('type'),'password')) {
-                    $(this).wrap('<div class="iweb-input"><div></div></div>');
-                    $(this).parent().append('<button class="small switch-pwd-type" type="button"><i class="fa fa-eye-slash hide" style="display: block;"></i><i class="fa fa-eye show" style="display: none;"></i></button>')
-                }
-                else {
-                    $(this).wrap('<div class="iweb-input"><div></div></div>');
-                }
-            });
-        }
-        iweb_object.responsive();
-
-        if(iweb_object.isValue(iweb_object.getCookie('iweb_font_size'))){
-            if(iweb_object.isMatch(iweb_object.getCookie('iweb_font_size'),'small') || iweb_object.isMatch(iweb_object.getCookie('iweb_font_size'),'large')){
-                $('html').addClass(iweb_object.getCookie('iweb_font_size')+'-font');
-            }
-            $('a.font-switch').each(function(){
-                if(iweb_object.isMatch($(this).data('size'),iweb_object.getCookie('iweb_font_size'))){
-                    $(this).addClass('current');
-                }
-                else {
-                    $(this).removeClass('current');
-                }
-            });
-        }
-
         $(document).off('keypress','body');
         $(document).on('keypress','body',function(e){
             var keycode = (e.keyCode ? e.keyCode : e.which);
@@ -268,6 +237,20 @@ var iweb = {
                 e.preventDefault();
             }
         });
+        
+        if(iweb_object.isValue(iweb_object.getCookie('iweb_font_size'))){
+            if(iweb_object.isMatch(iweb_object.getCookie('iweb_font_size'),'small') || iweb_object.isMatch(iweb_object.getCookie('iweb_font_size'),'large')){
+                $('html').addClass(iweb_object.getCookie('iweb_font_size')+'-font');
+            }
+            $('a.font-switch').each(function(){
+                if(iweb_object.isMatch($(this).data('size'),iweb_object.getCookie('iweb_font_size'))){
+                    $(this).addClass('current');
+                }
+                else {
+                    $(this).removeClass('current');
+                }
+            });
+        }
         
         $(document).off('click','a.font-switch');
         $(document).on('click','a.font-switch',function(e){
@@ -287,6 +270,40 @@ var iweb = {
                     $(this).removeClass('current');
                 }
             });
+        });
+        
+        iweb_object.iframe();
+        iweb_object.selector();
+        iweb_object.checkbox();
+        iweb_object.radiobox();
+        $('body').find('input[type="text"],input[type="password"],input[type="date"],input[type="email"],input[type="number"],input[type="number"],textarea').each(function() {
+            if(iweb_object.isMatch($(this).attr('type'),'password')) {
+                $(this).wrap('<div class="iweb-input"><div></div></div>');
+                $(this).parent().append('<button class="small switch-pwd-type" type="button"><i class="fa fa-eye-slash hide" style="display: block;"></i><i class="fa fa-eye show" style="display: none;"></i></button>')
+            }
+            else {
+                $(this).wrap('<div class="iweb-input"><div></div></div>');
+            }
+        });
+        iweb_object.responsive();
+
+        
+        $(document).off('input', 'input[type="text"],input[type="password"],input[type="date"],input[type="email"],input[type="number"],textarea');
+        $(document).on('input', 'input[type="text"],input[type="password"],input[type="date"],input[type="email"],input[type="number"],textarea', function() {
+            $(this).closest('div.iweb-input').find('.error').removeClass('error');
+            $(this).closest('div.iweb-input').find('small.tips').remove();
+        });
+        
+        $(document).off('change', 'select,input[type="checkbox"],input[type="radio"]');
+        $(document).on('change', 'select,input[type="checkbox"],input[type="radio"]', function() {
+            $(this).closest('div.iweb-selector').find('.error').removeClass('error');
+            $(this).closest('div.iweb-selector').find('small.tips').remove();
+            
+            $(this).closest('div.iweb-checkbox-set').find('.error').removeClass('error');
+            $(this).closest('div.iweb-checkbox-set').find('small.tips').remove();
+            
+            $(this).closest('div.iweb-radiobox-set').find('.error').removeClass('error');
+            $(this).closest('div.iweb-radiobox-set').find('small.tips').remove();
         });
         
         $(document).off('click','button.switch-pwd-type');
@@ -310,12 +327,18 @@ var iweb = {
         });
 
         $(document).off('reset','form');
-        $(document).on('reset','form',function(e){
+        $(document).on('reset','form',function(e){ 
             $('body').append('<div class="iweb-blank-mask" style="position:fixed;top:0px;left:0px;right:0px;bottom:0px;z-index:9999;"></div>');
+
             var form_object = $(this);
+            form_object.find('.error').removeClass('error');
+            form_object.find('small.tips').remove();
+            
             var delay_timer = setTimeout(function(){
                 clearTimeout(delay_timer);
                 form_object.find('div.iweb-selector').each(function() {
+                    
+                    
                     var selected_option = [];
                     var selected_option_label = '';
                     $.each($(this).find('select').children(),function(){
