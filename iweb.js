@@ -290,12 +290,15 @@ var iweb = {
         
         $(document).off('input', 'input[type="text"],input[type="password"],input[type="date"],input[type="email"],input[type="number"],textarea');
         $(document).on('input', 'input[type="text"],input[type="password"],input[type="date"],input[type="email"],input[type="number"],textarea', function() {
+            $('body').find('div.iweb-error-message').html('');
             $(this).closest('div.iweb-input').find('.error').removeClass('error');
             $(this).closest('div.iweb-input').find('small.tips').remove();
         });
         
         $(document).off('change', 'select,input[type="checkbox"],input[type="radio"]');
         $(document).on('change', 'select,input[type="checkbox"],input[type="radio"]', function() {
+            $('body').find('div.iweb-error-message').html('');
+            
             $(this).closest('div.iweb-selector').find('.error').removeClass('error');
             $(this).closest('div.iweb-selector').find('small.tips').remove();
             
@@ -329,6 +332,7 @@ var iweb = {
         $(document).off('reset','form');
         $(document).on('reset','form',function(e){ 
             $('body').append('<div class="iweb-blank-mask" style="position:fixed;top:0px;left:0px;right:0px;bottom:0px;z-index:9999;"></div>');
+            $('body').find('div.iweb-error-message').html('');
 
             var form_object = $(this);
             form_object.find('.error').removeClass('error');
