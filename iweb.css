@@ -187,6 +187,10 @@ button.switch-pwd-type:focus {
     box-shadow:none!important;
 }
 
+button.switch-pwd-type > i {
+    color: #2b2b2b!important;
+}
+
 div.clearboth {
     position: relative;
     display: block;
@@ -572,7 +576,7 @@ div.iweb-checkbox {
     vertical-align: middle;
 }
 
-div.iweb-checkbox * {
+div.iweb-checkbox label {
     cursor: pointer;
 }
 
@@ -652,6 +656,7 @@ div.iweb-checkbox > div.virtual-msg {
 div.iweb-checkbox > div.virtual-msg > label {
     display: block;
     padding-left: 10px;
+    padding-right: 10px;
 }
 
 div.iweb-checkbox > div.virtual-msg > label > a {
@@ -664,7 +669,7 @@ div.iweb-radiobox {
     vertical-align: middle;
 }
 
-div.iweb-radiobox * {
+div.iweb-radiobox label {
     cursor: pointer;
 }
 
@@ -744,6 +749,7 @@ div.iweb-radiobox > div.virtual-msg {
 div.iweb-radiobox > div.virtual-msg > label {
     display: block;
     padding-left: 10px;
+    padding-right: 10px;
 }
 
 div.iweb-radiobox > div.virtual-msg > label > a {
@@ -1337,7 +1343,7 @@ div.iweb-error-message > div > span {
 }
 
 .iscroll-textarea {
-    border: 1px solid #e6e6e6ccc;
+    border: 1px solid #e6e6e6;
     border-top-color: #999999;
 }
 
