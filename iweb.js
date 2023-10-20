@@ -1383,6 +1383,19 @@ var iweb = {
             });
         }
     },
+    show_tips_message: function(message) {
+        var iweb_object = this;
+        if(iweb_object.isValue(message)) {
+            if($('div.iweb-tips-message').length > 0) {
+                $('div.iweb-tips-message').html('<div class="error"><a class="close">×</a><span>'+message+'</span></div>').each(function() {
+                    iweb_object.scrollto();
+                });
+            }
+            else {
+                iweb_object.alert(message);
+            }
+        }
+    },
     uploader: function(options,callback) {
         var iweb_object = this;
         
