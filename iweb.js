@@ -290,14 +290,14 @@ var iweb = {
         
         $(document).off('input', 'input[type="text"],input[type="password"],input[type="date"],input[type="email"],input[type="number"],textarea');
         $(document).on('input', 'input[type="text"],input[type="password"],input[type="date"],input[type="email"],input[type="number"],textarea', function() {
-            $('body').find('div.iweb-error-message').html('');
+            $('body').find('div.iweb-tips-message').html('');
             $(this).closest('div.iweb-input').find('.error').removeClass('error');
             $(this).closest('div.iweb-input').find('small.tips').remove();
         });
         
         $(document).off('change', 'select,input[type="checkbox"],input[type="radio"]');
         $(document).on('change', 'select,input[type="checkbox"],input[type="radio"]', function() {
-            $('body').find('div.iweb-error-message').html('');
+            $('body').find('div.iweb-tips-message').html('');
             
             $(this).closest('div.iweb-selector').find('.error').removeClass('error');
             $(this).closest('div.iweb-selector').find('small.tips').remove();
@@ -324,15 +324,15 @@ var iweb = {
             return false;
         });
 
-        $(document).off('click', 'div.iweb-error-message > div > a.close');
-        $(document).on('click', 'div.iweb-error-message > div > a.close', function() {
-            $(this).closest('div.iweb-error-message').empty();
+        $(document).off('click', 'div.iweb-tips-message > div > a.close');
+        $(document).on('click', 'div.iweb-tips-message > div > a.close', function() {
+            $(this).closest('div.iweb-tips-message').empty();
         });
 
         $(document).off('reset','form');
         $(document).on('reset','form',function(e){ 
             $('body').append('<div class="iweb-blank-mask" style="position:fixed;top:0px;left:0px;right:0px;bottom:0px;z-index:9999;"></div>');
-            $('body').find('div.iweb-error-message').html('');
+            $('body').find('div.iweb-tips-message').html('');
 
             var form_object = $(this);
             form_object.find('.error').removeClass('error');
@@ -1298,14 +1298,14 @@ var iweb = {
                     
                     if(typeof check_func == 'function'){
                         if(!check_func(form_data, form_object) || !default_check_result){
-                            if($('div.iweb-error-message').length > 0) {
+                            if($('div.iweb-tips-message').length > 0) {
                                 if(default_check_result && iweb.isValue(iweb_object.language[iweb_object.default_language]['custom_error'])) {
-                                    $('div.iweb-error-message').html('<div class="error"><a class="close">×</a><span>'+iweb_object.language[iweb_object.default_language]['custom_error']+'</span></div>').each(function() {
+                                    $('div.iweb-tips-message').html('<div class="error"><a class="close">×</a><span>'+iweb_object.language[iweb_object.default_language]['custom_error']+'</span></div>').each(function() {
                                         iweb_object.scrollto();
                                     });
                                 }
                                 else {
-                                    $('div.iweb-error-message').html('<div class="error"><a class="close">×</a><span>'+iweb_object.language[iweb_object.default_language]['required_error']+'</span></div>').each(function() {
+                                    $('div.iweb-tips-message').html('<div class="error"><a class="close">×</a><span>'+iweb_object.language[iweb_object.default_language]['required_error']+'</span></div>').each(function() {
                                         iweb_object.scrollto();
                                     });
                                 }
@@ -1324,8 +1324,8 @@ var iweb = {
                         }
                     }
                     else if(!default_check_result) {
-                        if($('div.iweb-error-message').length > 0) {
-                            $('div.iweb-error-message').html('<div class="error"><a class="close">×</a><span>'+iweb_object.language[iweb_object.default_language]['required_error']+'</span></div>').each(function() {
+                        if($('div.iweb-tips-message').length > 0) {
+                            $('div.iweb-tips-message').html('<div class="error"><a class="close">×</a><span>'+iweb_object.language[iweb_object.default_language]['required_error']+'</span></div>').each(function() {
                                 iweb_object.scrollto();
                             });
                         }

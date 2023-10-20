@@ -1265,11 +1265,11 @@ div.iweb-pagination > ul > li > a:hover {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=80)";
 }
 
-div.iweb-error-message {
+div.iweb-tips-message {
     position: relative;
 }
 
-div.iweb-error-message > div {
+div.iweb-tips-message > div {
     position: relative;
     padding: 6px 12px;
     margin-bottom: 20px;
@@ -1278,17 +1278,17 @@ div.iweb-error-message > div {
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
 
-div.iweb-error-message > div.error {
+div.iweb-tips-message > div.error {
     background: #ffecec;
     border-color: #f5aca6;
 }
 
-div.iweb-error-message > div.success {
+div.iweb-tips-message > div.success {
     background: #fff8c4;
     border-color: #f2c779;
 }
 
-div.iweb-error-message > div > a.close {
+div.iweb-tips-message > div > a.close {
     position: absolute;
     display: inline-block;
     top: 0px;
@@ -1298,7 +1298,7 @@ div.iweb-error-message > div > a.close {
     text-align: center;
 }
 
-div.iweb-error-message > div > span {
+div.iweb-tips-message > div > span {
     line-height: 24px;
 }
 
