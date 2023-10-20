@@ -1271,7 +1271,7 @@ div.iweb-tips-message {
 
 div.iweb-tips-message > div {
     position: relative;
-    padding: 6px 12px;
+    padding: 6px 30px 6px 10px;
     margin-bottom: 20px;
     border-left: 4px solid transparent;
     border-radius: 4px;
