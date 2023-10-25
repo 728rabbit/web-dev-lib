@@ -776,8 +776,7 @@ var iweb = {
         if(!iweb_object.isValue(checkbox_object)){
            checkbox_object = $('body').find('input[type="checkbox"]');
         }
-        
-        var checkbox_group_name = [];
+
         checkbox_object.each(function(){
             if(!$(this).parent().parent().parent().hasClass('iweb-checkbox')){
                 var find_checkbox_label = $(this).next();
@@ -793,15 +792,9 @@ var iweb = {
                     $(this).attr('data-ori','checked');
                 }
                 $('<a>&nbsp;</a>').insertAfter($(this));
-                checkbox_group_name.push($(this).attr('name'));
             }
         });
-        
-        checkbox_group_name = $.unique(checkbox_group_name);
-        $.each(checkbox_group_name, function(key, value) {
-            $('input[name="'+value+'"]').closest('div.iweb-checkbox').wrapAll('<div class="iweb-checkbox-set"></div>');
-        });
-        
+
         if(typeof callback == 'function'){
             callback();
         }
@@ -836,8 +829,7 @@ var iweb = {
         if(!iweb_object.isValue(radiobox_object)){
            radiobox_object = $('body').find('input[type="radio"]');
         }
-        
-        var radiobox_group_name = [];
+ 
         radiobox_object.each(function(){
             if(!$(this).parent().parent().parent().hasClass('iweb-radiobox')){
                 var find_radiobox_label = $(this).next();
@@ -853,13 +845,7 @@ var iweb = {
                     $(this).attr('data-ori','checked');
                 }
                 $('<a>&nbsp;</a>').insertAfter($(this));
-                radiobox_group_name.push($(this).attr('name'));
             }
-        });
-        
-        radiobox_group_name = $.unique(radiobox_group_name);
-        $.each(radiobox_group_name, function(key, value) {
-            $('input[name="'+value+'"]').closest('div.iweb-radiobox').wrapAll('<div class="iweb-radiobox-set"></div>');
         });
         
         if(typeof callback == 'function'){
@@ -1383,11 +1369,11 @@ var iweb = {
             });
         }
     },
-    show_tips_message: function(message) {
+    show_tips_message: function(message, success) {
         var iweb_object = this;
         if(iweb_object.isValue(message)) {
             if($('div.iweb-tips-message').length > 0) {
-                $('div.iweb-tips-message').html('<div class="error"><a class="close">×</a><span>'+message+'</span></div>').each(function() {
+                $('div.iweb-tips-message').html('<div class="'+((iweb_object.isValue(success))?'success':'error')+'"><a class="close">×</a><span>'+message+'</span></div>').each(function() {
                     iweb_object.scrollto();
                 });
             }
@@ -1410,7 +1396,7 @@ var iweb = {
                 values: {},
                 dataType: 'json',
                 allowed_types: '',
-                max_filesize: 8,
+                max_filesize: 64,
                 type_error_message: iweb_object.language[iweb_object.default_language]['type_error'],
                 max_error_message: iweb_object.language[iweb_object.default_language]['max_error'],
                 btnStartAll: '<i class="fa fa-upload"></i>',
@@ -1494,7 +1480,7 @@ var iweb = {
                 values: {},
                 dataType: 'json',
                 allowed_types: '',
-                max_filesize: 8,
+                max_filesize: 64,
                 type_error_message: iweb_object.language[iweb_object.default_language]['type_error'],
                 max_error_message: iweb_object.language[iweb_object.default_language]['max_error'],
                 btnStartAll: '<i class="fa fa-upload"></i>',
