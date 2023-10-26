@@ -1405,9 +1405,9 @@ var iweb = {
                 max_filesize: 64,
                 type_error_message: iweb_object.language[iweb_object.default_language]['type_error'],
                 max_error_message: iweb_object.language[iweb_object.default_language]['max_error'],
-                btnStartAll: '<i class="fa fa-upload"></i>',
+                btnStartAll: '<i class="fa fa-cloud-upload"></i>',
                 btnClose: '<i class="fa fa-close"></i>',
-                btnStart: '<i class="fa fa-upload"></i>',
+                btnStart: '<i class="fa fa-cloud-upload"></i>',
                 btnRemove: '<i class="fa fa-trash"></i>'
             };
 
@@ -1423,7 +1423,7 @@ var iweb = {
             if(iweb_object.isValue(iweb_object.uploader_options.url) && parseInt(iweb_object.uploader_files.length) > 0) {
                 var uploader = '<div class="action">';
                     uploader += '<button class="start-all" type="button" title="Start All">';
-                        uploader += '<i class="fa fa-upload"></i>',
+                        uploader += '<i class="fa fa-cloud-upload"></i>',
                     uploader += '</button>'
 
                     uploader += '<button class="close" type="button" title="Close">';
@@ -1489,9 +1489,9 @@ var iweb = {
                 max_filesize: 64,
                 type_error_message: iweb_object.language[iweb_object.default_language]['type_error'],
                 max_error_message: iweb_object.language[iweb_object.default_language]['max_error'],
-                btnStartAll: '<i class="fa fa-upload"></i>',
+                btnStartAll: '<i class="fa fa-cloud-upload"></i>',
                 btnClose: '<i class="fa fa-close"></i>',
-                btnStart: '<i class="fa fa-upload"></i>',
+                btnStart: '<i class="fa fa-cloud-upload"></i>',
                 btnRemove: '<i class="fa fa-trash"></i>'
             };
 
@@ -1507,7 +1507,7 @@ var iweb = {
             if(iweb_object.isValue(iweb_object.uploader_options.url) && parseInt(iweb_object.uploader_files.length) > 0) {
                 var uploader = '<div class="action">';
                     uploader += '<button class="start-all" type="button" title="Start All">';
-                        uploader += '<i class="fa fa-upload"></i>',
+                        uploader += '<i class="fa fa-cloud-upload"></i>',
                     uploader += '</button>'
 
                     uploader += '<button class="close" type="button" title="Close">';
@@ -1592,7 +1592,7 @@ var iweb = {
                         uploader += '</div>';
                         
                         if(checking) {
-                            uploader += '<button class="start" type="button"><i class="fa fa-upload"></i></button>';
+                            uploader += '<button class="start" type="button"><i class="fa fa-cloud-upload"></i></button>';
                         }
                         uploader += '<button class="remove" type="button"><i class="fa fa-trash"></i></button>';
                     uploader += '</div>';
@@ -1675,7 +1675,7 @@ var iweb = {
                     uploader += '</div>';
                     
                     if(checking) {
-                        uploader += '<button class="start" type="button"><i class="fa fa-upload"></i></button>';
+                        uploader += '<button class="start" type="button"><i class="fa fa-cloud-upload"></i></button>';
                     }
                     uploader += '<button class="remove" type="button"><i class="fa fa-trash"></i></button>';
                 uploader += '</div>';
