@@ -2125,8 +2125,9 @@ var iweb = {
         }
         return '';
     },
-    getUrl: function(){
-        return (window.location.href.split('?')[0]).toString();
+    getUrl: function(extra){
+        var iweb_object = this;
+        return (window.location.href.split('?')[0]).toString()+((iweb_object.isValue(extra))?('/'+extra):'');
     },
     getUrlParameter: function(name){
         var iweb_object = this;
