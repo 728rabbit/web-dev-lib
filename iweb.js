@@ -1785,8 +1785,7 @@ var iweb = {
                 }
             }
             else {
-                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.start-all').css('display', 'inline-block');
-                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.start').css('display', 'inline-block');
+                $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.close').trigger('click');
             }
         }
         else {
