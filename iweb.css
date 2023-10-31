@@ -1059,6 +1059,7 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > bu
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list {
     position: relative;
+    min-height: 360px;
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item {
