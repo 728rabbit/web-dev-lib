@@ -1019,7 +1019,7 @@ div.iweb-info-dialog.uploader > div > div.dialog-mask {
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content {
-    max-width: 520px;
+    max-width: 700px;
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > a.btn-close {
@@ -1059,8 +1059,6 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > bu
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list {
     position: relative;
-    height: 360px;
-    overflow: auto;
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item {
