@@ -1142,7 +1142,6 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.
     display: inline-block;
     width: calc(100% - 70px);
     padding: 10px 0px 10px 10px;
-    font-size: 0.875rem;
     font-weight: bold;
     line-height: 1.5;
     vertical-align: middle;

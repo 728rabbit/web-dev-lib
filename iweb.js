@@ -1059,7 +1059,7 @@ var iweb = {
                     dataType: post_data.dataType,
                     success: function(response_data){
                         if(typeof callback == 'function'){
-                            if(iweb_object.isValue(response_data.status)) {
+                            if(!iweb_object.isValue(response_data.status)) {
                                 response_data.status = 0;
                             }
                             callback(response_data);
