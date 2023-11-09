@@ -1301,12 +1301,6 @@ var iweb = {
                                 iweb_object.language[iweb_object.default_language]['custom_error'] = '';
                             }
                             else {
-                                if(default_check_result && iweb.isValue(iweb_object.language[iweb_object.default_language]['custom_error'])) {
-                                    iweb_object.alert(iweb_object.language[iweb_object.default_language]['custom_error']);
-                                }
-                                else {
-                                    iweb_object.alert(iweb_object.language[iweb_object.default_language]['required_error']);
-                                }
                                 iweb_object.language[iweb_object.default_language]['custom_error'] = '';
                             }
                             return false;
@@ -1317,9 +1311,6 @@ var iweb = {
                             $('div.iweb-tips-message').html('<div class="error"><a class="close">×</a><span>'+iweb_object.language[iweb_object.default_language]['required_error']+'</span></div>').each(function() {
                                 iweb_object.scrollto();
                             });
-                        }
-                        else {
-                            iweb_object.alert(iweb_object.language[iweb_object.default_language]['required_error']);
                         }
                         return false;
                     }
