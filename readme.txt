@@ -21,33 +21,42 @@
     ----------------------------------------------------------------------------
     function iweb_func() { your common function(s) code here }
 
-    function iweb_ifunc() { your individual function(s) code here }
+    function iweb_self_func() { your individual function(s) code here }
+
+    function iweb_extra_func() { your extra function(s) code here }
 
 
 3.  Window load functions:
     ----------------------------------------------------------------------------
     function iweb_layout_done() { your common layout function(s) code here }
 
-    function iweb_ilayout_done() { your individual layout function(s) code here }
+    function iweb_self_layout_done() { your individual layout function(s) code here }
+
+    function iweb_extra_layout_done() { your extra layout function(s) code here }
 
     function iweb_func_done() { your common function(s) code here }
 
-    function iweb_ifunc_done() { your individual function(s) code here }
+    function iweb_self_func_done() { your individual function(s) code here }
 
+    function iweb_extra_func_done() { your extra function(s) code here }
 
 
 4.  Window resize functions:
     ----------------------------------------------------------------------------
     function iweb_layout() { your common layout function(s) code here }
 
-    function iweb_ilayout() { your individual resize function(s) code here }
+    function iweb_self_layout() { your individual resize function(s) code here }
+
+    function iweb_extra_layout() { your individual resize function(s) code here }
 
 
 5.  Window scroll functions:
     ----------------------------------------------------------------------------
     function iweb_scroll(y) { your common scroll function(s) code here }
 
-    function iweb_iscroll(y) { your individual scroll function(s) code here }
+    function iweb_self_scroll(y) { your individual scroll function(s) code here }
+
+    function iweb_extra_scroll(y) { your individual scroll function(s) code here }
 
 
     /********************************************************
