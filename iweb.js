@@ -410,8 +410,8 @@ var iweb = {
         }
         
         iweb_object.win_width = parseInt($('div.iweb-viewer').width());
-        if(typeof iweb_layout == 'function'){
-            iweb_layout(iweb_object.win_width);
+        if(typeof iweb_global_layout == 'function'){
+            iweb_global_layout(iweb_object.win_width);
         }
         if(typeof iweb_self_layout == 'function'){
             iweb_self_layout(iweb_object.win_width);
@@ -419,8 +419,8 @@ var iweb = {
         if(typeof iweb_extra_layout == 'function'){
             iweb_extra_layout(iweb_object.win_width);
         }
-        if(typeof iweb_func == 'function'){
-            iweb_func();
+        if(typeof iweb_global_func == 'function'){
+            iweb_global_func();
         }
         if(typeof iweb_self_func == 'function'){
             iweb_self_func();
@@ -1040,7 +1040,7 @@ var iweb = {
             }, 250);
         });
     },
-    post: function(post_data,callback){
+    post: function(post_data,callback,final_callback){
         var iweb_object = this;
         var local_time = iweb_object.getDateTime(null,'time');
         if(iweb_object.isValue(post_data)){
@@ -1091,6 +1091,9 @@ var iweb = {
                             if(!iweb_object.isMatch(post_data.showProcessing,2)){
                                 iweb_object.processing(false);
                             }
+                        }
+                        if(typeof final_callback == 'function'){
+                            final_callback();
                         }
                     }
                 });
@@ -2266,8 +2269,8 @@ $(document).ready(function(){
 });
 
 $(window).on('load',function(){
-    if(typeof iweb_layout_done == 'function'){
-        iweb_layout_done(iweb.win_width);
+    if(typeof iweb_global_layout_done == 'function'){
+        iweb_global_layout_done(iweb.win_width);
     }
     if(typeof iweb_self_layout_done == 'function'){
         iweb_self_layout_done(iweb.win_width);
@@ -2275,8 +2278,8 @@ $(window).on('load',function(){
     if(typeof iweb_extra_layout_done == 'function'){
         iweb_extra_layout_done(iweb.win_width);
     }
-    if(typeof iweb_func_done == 'function'){
-        iweb_func_done();
+    if(typeof iweb_global_func_done == 'function'){
+        iweb_global_func_done();
     }
     if(typeof iweb_self_func_done == 'function'){
         iweb_self_func_done();
@@ -2297,8 +2300,8 @@ $(window).on('resize',function(){
         var delay_timer = setTimeout(function(){
             clearTimeout(delay_timer);
             iweb.responsive();
-            if(typeof iweb_layout == 'function'){
-                iweb_layout(iweb.win_width);
+            if(typeof iweb_global_layout == 'function'){
+                iweb_global_layout(iweb.win_width);
             }
             if(typeof iweb_self_layout == 'function'){
                 iweb_self_layout(iweb.win_width);
@@ -2313,8 +2316,8 @@ $(window).on('resize',function(){
 $(window).on('scroll',function(){
     if(iweb.init_status){
         iweb.win_scroll_top = parseInt($(window).scrollTop());
-        if(typeof iweb_scroll == 'function'){
-            iweb_scroll(parseInt($(window).scrollTop()));
+        if(typeof iweb_global_scroll == 'function'){
+            iweb_global_scroll(parseInt($(window).scrollTop()));
         }
         if(typeof iweb_self_scroll == 'function'){
             iweb_self_scroll(parseInt($(window).scrollTop()));
