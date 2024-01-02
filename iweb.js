@@ -148,6 +148,7 @@ var iweb = {
 
     init_status: false,
     processing_status: false,
+    doing_autocomple: false,
     
     uploader_options: null,
     uploader_files: null,
@@ -221,6 +222,17 @@ var iweb = {
         }
         
         $('body > *').not('script,noscript').wrapAll('<div class="iweb-viewer"></div>');
+        
+        $(document).off('click','body');
+        $(document).on('click','body',function(e){
+            if(parseInt($(e.target).closest('div.iweb-selector').length) === 0){
+                $('div.iweb-selector').removeClass('show');
+            }
+            
+            if(parseInt($(e.target).closest('div.iweb-autocomplete').length) === 0){
+                $('div.iweb-autocomple').find('ul').remove();
+            }
+        });
         
         $(document).off('keypress','body');
         $(document).on('keypress','body',function(e){
@@ -328,6 +340,75 @@ var iweb = {
         $(document).on('click', 'div.iweb-tips-message > div > a.close', function() {
             $(this).closest('div.iweb-tips-message').empty();
         });
+        
+        $('div.iweb-autocomple input[class="fill-id"]').attr('type', 'text').prop('readonly', true).prop('disabled', true).css('display', 'none');
+        $(document).off('input', 'div.iweb-autocomple input[class="fill-txt"]');
+        $(document).on('input', 'div.iweb-autocomple input[class="fill-txt"]', function() {
+            var object = $(this);
+            
+            var extra_values = [];
+            var param1 = object.closest('div.iweb-autocomple').data('param1');
+            var param2 = object.closest('div.iweb-autocomple').data('param2');
+            var param3 = object.closest('div.iweb-autocomple').data('param3');
+            var param4 = object.closest('div.iweb-autocomple').data('param4');
+            var param5 = object.closest('div.iweb-autocomple').data('param5');
+            if(iweb_object.isValue(param1)) {
+                extra_values[param1.substring(0, param1.indexOf(':'))] = param1.substring(param1.indexOf(':') + 1); 
+            }
+            if(iweb_object.isValue(param2)) {
+                extra_values[param2.substring(0, param2.indexOf(':'))] = param2.substring(param2.indexOf(':') + 1); 
+            }
+            if(iweb_object.isValue(param3)) {
+                extra_values[param3.substring(0, param3.indexOf(':'))] = param3.substring(param3.indexOf(':') + 1); 
+            }
+            if(iweb_object.isValue(param4)) {
+                extra_values[param4.substring(0, param4.indexOf(':'))] = param4.substring(param4.indexOf(':') + 1); 
+            }
+            if(iweb_object.isValue(param5)) {
+                extra_values[param5.substring(0, param5.indexOf(':'))] = param5.substring(param5.indexOf(':') + 1); 
+            }
+            
+            var post_data = {
+                url: object.closest('div.iweb-autocomple').data('url'),
+                values: $.extend({
+                    keywords: $.trim(object.val())
+                }, extra_values),
+                dataType: 'json',
+                showProcessing: false
+            };
+
+            if(iweb_object.isValue($.trim(object.val())) && !iweb_object.doing_autocomple) {
+                iweb_object.doing_autocomple = true;
+                iweb_object.post(post_data,function(response_data) {
+                    if(iweb_object.isValue(response_data)) {
+                        var picker = '<ul class="fill-options">';
+                        $.each(response_data, function(key, value) {
+                            picker += '<li><a data-id="'+(value.id)+'">'+(value.name)+'</a></li>';
+                        });
+                        picker += '</ul>';
+                        object.closest('div.iweb-autocomple').find('ul').remove();
+                        object.parent().append(picker);
+                    }
+                }, function() {
+                    iweb_object.doing_autocomple = false;
+                });
+            }
+        });
+
+        $(document).off('click', 'div.iweb-autocomple ul > li > a');
+        $(document).on('click', 'div.iweb-autocomple ul > li > a', function() {
+            $(this).closest('div.iweb-autocomple').find('input[class="fill-id"]').val($(this).data('id')).prop('disabled', false);
+            $(this).closest('div.iweb-autocomple').find('input[class="fill-txt"]').val($(this).text()).prop('disabled', true);
+            $(this).closest('div.iweb-autocomple').find('input[class="fill-txt"]').parent().append('<a class="fill-reset"><i class="fa fa-times" style="color:#d73d32"></i></a>');
+            $(this).closest('div.iweb-autocomple').find('ul').remove();
+        });
+
+        $(document).off('click', 'div.iweb-autocomple a.fill-reset');
+        $(document).on('click', 'div.iweb-autocomple a.fill-reset', function() {
+            $(this).closest('div.iweb-autocomple').find('input[class="fill-id"]').val(0).prop('disabled', true);
+            $(this).closest('div.iweb-autocomple').find('input[class="fill-txt"]').val('').prop('disabled', false);
+            $(this).closest('div.iweb-autocomple').find('a.fill-reset').remove();
+        });
 
         $(document).off('reset','form');
         $(document).on('reset','form',function(e){ 
@@ -341,8 +422,7 @@ var iweb = {
             var delay_timer = setTimeout(function(){
                 clearTimeout(delay_timer);
                 form_object.find('div.iweb-selector').each(function() {
-                    
-                    
+
                     var selected_option = [];
                     var selected_option_label = '';
                     $.each($(this).find('select').children(),function(){
@@ -395,6 +475,14 @@ var iweb = {
                     }
                     else {
                         $(this).find('input[type="radio"]').parent().removeClass('checked');
+                    }
+                });
+                
+                form_object.find('div.iweb-autocomple input[class="fill-id"]').each(function() {
+                    if(parseInt($(this).val()) == 0) {
+                        $(this).closest('div.iweb-autocomple').find('input[class="fill-id"]').val(0).prop('disabled', true);
+                        $(this).closest('div.iweb-autocomple').find('input[class="fill-txt"]').val('').prop('disabled', false);
+                        $(this).closest('div.iweb-autocomple').find('a.fill-reset').remove();
                     }
                 });
 
@@ -546,13 +634,6 @@ var iweb = {
         var iweb_object = this;
         
         if(parseInt($('div.iweb-selector').length) == 0){
-            $(document).off('click','body');
-            $(document).on('click','body',function(e){
-                if(parseInt($(e.target).closest('div.iweb-selector').length) === 0){
-                    $('div.iweb-selector').removeClass('show');
-                }
-            });
-            
             $(document).off('focus','div.iweb-selector > div.real > select');
             $(document).on('focus','div.iweb-selector > div.real > select',function(e){
                 $('div.iweb-selector').removeClass('show');
