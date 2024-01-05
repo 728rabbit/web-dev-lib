@@ -10,8 +10,6 @@
     <html lang="zh-hant">
     <html lang="zh-hans">
 
-    // show page loading
-    <body data-processing="1"></body>
 
     // set csrf-token
     <meta name="csrf-token" content="96ca6fd5cc5283000910785ba2344044"/>
@@ -19,7 +17,7 @@
  
 2.  Document ready functions:
     ----------------------------------------------------------------------------
-    function iweb_func() { your common function(s) code here }
+    function iweb_global_func() { your common function(s) code here }
 
     function iweb_self_func() { your individual function(s) code here }
 
@@ -43,7 +41,7 @@
 
 4.  Window resize functions:
     ----------------------------------------------------------------------------
-    function iweb_layout() { your common layout function(s) code here }
+    function iweb_global_layout() { your common layout function(s) code here }
 
     function iweb_self_layout() { your individual resize function(s) code here }
 
@@ -52,7 +50,7 @@
 
 5.  Window scroll functions:
     ----------------------------------------------------------------------------
-    function iweb_scroll(y) { your common scroll function(s) code here }
+    function iweb_global_scroll(y) { your common scroll function(s) code here }
 
     function iweb_self_scroll(y) { your individual scroll function(s) code here }
 
@@ -478,6 +476,16 @@
         type_error_message: 'File type is not allowed.',
         max_error_message: 'Maximum allowed file size 5M.'
     }
+
+24. autocomplete
+
+<div class="iweb-autocomple" 
+        data-url="<?php echo url('admin/master/api/guardian') ;?>"
+        data-param1="_token:<?php echo @csrf_token();?>"
+        data-param2="type:123">
+    <input type="hidden" class="fill-id" name="guardian_id[]" value="">
+    <input type="text" class="fill-txt"  name="guardian_name[]" value="">
+</div>
 
 /* base color: #e3f2e1 */
     
