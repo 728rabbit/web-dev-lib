@@ -1411,7 +1411,7 @@ var iweb = {
 					});
 
 					form_object.find('select[data-validation="required"]').each(function() {
-						if (!iweb_object.isValue($(this).val()) || (iweb_object.isValue($(this).val()) && parseInt($(this).val()) === 0)) {
+						if (!iweb_object.isValue($(this).val())) {
                             if ($(this).closest('div.iweb-selector').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).data('showtips'), 0) && !iweb_object.isMatch($(this).data('showtips'), false))) {
                                 if (iweb_object.isValue($(this).data('tips'))) {
                                     $(this).closest('div.iweb-selector').append('<small class="tips">' + $(this).data('tips') + '</small>');
