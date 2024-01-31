@@ -1992,20 +1992,25 @@ var iweb = {
 		}
 	},
 	isValue: function(value) {
-		if (value !== null && (typeof value !== 'undefined')) {
-			if (typeof value === 'object' || typeof value === 'array') {
-				if (parseInt(Object.keys(value).length) > 0) {
-					return true;
-				} else {
-					return false;
-				}
-			} else {
-				if ($.trim(value.toString()) !== '') {
-					return true;
-				} else {
-					return false
-				}
-			}
+		if (typeof value !== 'undefined') {
+            if(value !== null) {
+                if (typeof value === 'object' || typeof value === 'array') {
+                    if (parseInt(Object.keys(value).length) > 0) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                } else {
+                    if ($.trim(value.toString()) !== '') {
+                        return true;
+                    } else {
+                        return false
+                    }
+                }
+            }
+            else {
+                return false;
+            }
 		} else {
 			return false;
 		}
