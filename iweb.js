@@ -1439,6 +1439,7 @@ var iweb = {
 								}
 								iweb_object.language[iweb_object.current_language]['custom_error'] = '';
 							} else {
+                                iweb.scrollto('.error', 120);
 								iweb_object.language[iweb_object.current_language]['custom_error'] = '';
 							}
 							return false;
@@ -1449,6 +1450,9 @@ var iweb = {
 								iweb_object.scrollto();
 							});
 						}
+                        else {
+                            iweb.scrollto('.error', 120);
+                        }
 						return false;
 					}
 
