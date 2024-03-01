@@ -148,6 +148,8 @@ var iweb = {
 
 	init_status: false,
 	is_processing: false,
+    
+    autocomple_timer: null,
 	doing_autocomple: false,
 
 	uploader_options: null,
@@ -294,7 +296,7 @@ var iweb = {
 			}
 		});
 
-		$('div.iweb-autocomple input[class="fill-id"]').attr('type', 'text').prop('readonly', true).css('display', 'none');
+		$('div.iweb-autocomple input.fill-id').attr('type', 'hidden').prop('readonly', true);
 
 		if (typeof callback == 'function') {
 			callback();
@@ -554,76 +556,84 @@ var iweb = {
 		});
 
 		/* autocomple */
-		$(document).off('input', 'div.iweb-autocomple input[class="fill-txt"]');
-		$(document).on('input', 'div.iweb-autocomple input[class="fill-txt"]', function() {
+		$(document).off('input', 'div.iweb-autocomple input.fill-txt');
+		$(document).on('input', 'div.iweb-autocomple input.fill-txt', function() {
 			var object = $(this);
+            
+            object.closest('div.iweb-autocomple').find('small.tips').remove();
+            
+            if(iweb_object.isValue(iweb_object.autocomple_timer)) {
+                clearTimeout(iweb_object.autocomple_timer);
+            }
 
-			/* max 5 param */
-			var extra_values = [];
-			var param1 = object.closest('div.iweb-autocomple').data('param1');
-			var param2 = object.closest('div.iweb-autocomple').data('param2');
-			var param3 = object.closest('div.iweb-autocomple').data('param3');
-			var param4 = object.closest('div.iweb-autocomple').data('param4');
-			var param5 = object.closest('div.iweb-autocomple').data('param5');
-			if (iweb_object.isValue(param1)) {
-				extra_values[param1.substring(0, param1.indexOf(':'))] = param1.substring(param1.indexOf(':') + 1);
-			}
-			if (iweb_object.isValue(param2)) {
-				extra_values[param2.substring(0, param2.indexOf(':'))] = param2.substring(param2.indexOf(':') + 1);
-			}
-			if (iweb_object.isValue(param3)) {
-				extra_values[param3.substring(0, param3.indexOf(':'))] = param3.substring(param3.indexOf(':') + 1);
-			}
-			if (iweb_object.isValue(param4)) {
-				extra_values[param4.substring(0, param4.indexOf(':'))] = param4.substring(param4.indexOf(':') + 1);
-			}
-			if (iweb_object.isValue(param5)) {
-				extra_values[param5.substring(0, param5.indexOf(':'))] = param5.substring(param5.indexOf(':') + 1);
-			}
+            iweb_object.autocomple_timer = setTimeout(function() {
+                /* max 5 param */
+                var extra_values = [];
+                var param1 = object.closest('div.iweb-autocomple').data('param1');
+                var param2 = object.closest('div.iweb-autocomple').data('param2');
+                var param3 = object.closest('div.iweb-autocomple').data('param3');
+                var param4 = object.closest('div.iweb-autocomple').data('param4');
+                var param5 = object.closest('div.iweb-autocomple').data('param5');
+                if (iweb_object.isValue(param1)) {
+                    extra_values[param1.substring(0, param1.indexOf(':'))] = param1.substring(param1.indexOf(':') + 1);
+                }
+                if (iweb_object.isValue(param2)) {
+                    extra_values[param2.substring(0, param2.indexOf(':'))] = param2.substring(param2.indexOf(':') + 1);
+                }
+                if (iweb_object.isValue(param3)) {
+                    extra_values[param3.substring(0, param3.indexOf(':'))] = param3.substring(param3.indexOf(':') + 1);
+                }
+                if (iweb_object.isValue(param4)) {
+                    extra_values[param4.substring(0, param4.indexOf(':'))] = param4.substring(param4.indexOf(':') + 1);
+                }
+                if (iweb_object.isValue(param5)) {
+                    extra_values[param5.substring(0, param5.indexOf(':'))] = param5.substring(param5.indexOf(':') + 1);
+                }
 
-			/* merge post data */
-			var post_data = {
-				url: object.closest('div.iweb-autocomple').data('url'),
-				values: $.extend({
-					keywords: $.trim(object.val())
-				}, extra_values),
-				dataType: 'json',
-				showProcessing: false
-			};
+                /* merge post data */
+                var post_data = {
+                    url: object.closest('div.iweb-autocomple').data('url'),
+                    values: $.extend({
+                        keywords: $.trim(object.val())
+                    }, extra_values),
+                    dataType: 'json',
+                    showProcessing: false
+                };
 
-			/* get search result */
-			if (iweb_object.isValue($.trim(object.val())) && !iweb_object.doing_autocomple) {
-				iweb_object.doing_autocomple = true;
-				iweb_object.post(post_data, function(response_data) {
-					if (iweb_object.isValue(response_data)) {
-						var picker = '<ul class="fill-options">';
-						$.each(response_data, function(key, value) {
-							picker += '<li><a data-id="' + (value.id) + '">' + (value.name) + '</a></li>';
-						});
-						picker += '</ul>';
-						object.closest('div.iweb-autocomple').find('ul').remove();
-						object.parent().append(picker);
-					}
-				}, function() {
-					iweb_object.doing_autocomple = false;
-				});
-			}
+                /* get search result */
+                if (iweb_object.isValue($.trim(object.val())) && !iweb_object.doing_autocomple) {
+                    iweb_object.doing_autocomple = true;
+                    iweb_object.post(post_data, function(response_data) {
+                        if (iweb_object.isValue(response_data)) {
+                            var picker = '<ul class="fill-options">';
+                            $.each(response_data, function(key, value) {
+                                picker += '<li><a data-id="' + (value.id) + '">' + (value.name) + '</a></li>';
+                            });
+                            picker += '</ul>';
+                            object.closest('div.iweb-autocomple').find('ul').remove();
+                            object.parent().append(picker);
+                        }
+                    }, function() {
+                        iweb_object.doing_autocomple = false;
+                    });
+                }
+            }, 500);
 		});
 
 		/* match data picker */
 		$(document).off('click', 'div.iweb-autocomple ul > li > a');
 		$(document).on('click', 'div.iweb-autocomple ul > li > a', function() {
-			$(this).closest('div.iweb-autocomple').find('input[class="fill-id"]').val($(this).data('id'));
-			$(this).closest('div.iweb-autocomple').find('input[class="fill-txt"]').val($(this).text()).prop('disabled', true);
-			$(this).closest('div.iweb-autocomple').find('input[class="fill-txt"]').parent().append('<a class="fill-reset"><i class="fa fa-times" style="color:#d73d32"></i></a>');
+			$(this).closest('div.iweb-autocomple').find('input.fill-id').val($(this).data('id'));
+			$(this).closest('div.iweb-autocomple').find('input.fill-txt').val($(this).text()).prop('disabled', true);
+			$(this).closest('div.iweb-autocomple').find('input.fill-txt').parent().append('<a class="fill-reset"><i class="fa fa-times" style="color:#d73d32"></i></a>');
 			$(this).closest('div.iweb-autocomple').find('ul').remove();
 		});
 
 		/* remove autocomple value*/
 		$(document).off('click', 'div.iweb-autocomple a.fill-reset');
 		$(document).on('click', 'div.iweb-autocomple a.fill-reset', function() {
-			$(this).closest('div.iweb-autocomple').find('input[class="fill-id"]').val('');
-			$(this).closest('div.iweb-autocomple').find('input[class="fill-txt"]').val('').prop('disabled', false);
+			$(this).closest('div.iweb-autocomple').find('input.fill-id').val('');
+			$(this).closest('div.iweb-autocomple').find('input.fill-txt').val('').prop('disabled', false);
 			$(this).closest('div.iweb-autocomple').find('a.fill-reset').remove();
 		});
 
@@ -818,10 +828,10 @@ var iweb = {
 				clearTimeout(delay_timer);
 
 				/* reset autocomple */
-				form_object.find('div.iweb-autocomple input[class="fill-id"]').each(function() {
+				form_object.find('div.iweb-autocomple input.fill-id').each(function() {
 					if (!iweb_object.isValue($(this).val())) {
-						$(this).closest('div.iweb-autocomple').find('input[class="fill-id"]').val('');
-						$(this).closest('div.iweb-autocomple').find('input[class="fill-txt"]').val('').prop('disabled', false);
+						$(this).closest('div.iweb-autocomple').find('input.fill-id').val('');
+						$(this).closest('div.iweb-autocomple').find('input.fill-txt').val('').prop('disabled', false);
 						$(this).closest('div.iweb-autocomple').find('a.fill-reset').remove();
 					}
 				});
@@ -1184,9 +1194,6 @@ var iweb = {
 					dataType: post_data.dataType,
 					success: function(response_data) {
 						if (typeof callback == 'function') {
-							if (!iweb_object.isValue(response_data.status)) {
-								response_data.status = 0;
-							}
 							callback(response_data);
 						}
 					},
@@ -1287,6 +1294,21 @@ var iweb = {
 								$(this).addClass('error');
 								default_check_result = false;
 							}
+						}
+					});
+                    
+                    form_object.find('div.iweb-autocomple input.fill-id[data-validation="required"]').each(function() {
+						if (!iweb_object.isValue($(this).val())) {
+                            if ($(this).closest('div.iweb-autocomple').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).data('showtips'), 0) && !iweb_object.isMatch($(this).data('showtips'), false))) {
+                                if (iweb_object.isValue($(this).data('tips'))) {
+                                    $(this).closest('div.iweb-autocomple').append('<small class="tips">' + $(this).data('tips') + '</small>');
+                                } else {
+                                    $(this).closest('div.iweb-autocomple').append('<small class="tips">' + iweb_object.language[iweb_object.current_language]['is_required'] + '</small>');
+                                }
+                            }
+                            $(this).closest('div.iweb-autocomple').find('input.fill-id').removeClass('error');
+							$(this).closest('div.iweb-autocomple').find('input.fill-text').addClass('error');
+							default_check_result = false;
 						}
 					});
 
@@ -1481,9 +1503,6 @@ var iweb = {
 						}
 					}
 					if (typeof callback == 'function') {
-						if (!iweb_object.isValue(response_data.status)) {
-							response_data.status = 0;
-						}
 						callback(response_data, form_object);
 					}
 					return true;
