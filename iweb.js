@@ -9,136 +9,91 @@ function md5cycle(f,h){var i=f[0],n=f[1],r=f[2],g=f[3];n=ii(n=ii(n=ii(n=ii(n=hh(
 
 /* iweb lib, requires jQuery v1.11 or later, copyright 2023 kaiyunchan */
 (function($) {
-	$.fn.iweb_pagination = function(options) {
-		var settings = $.extend({
-			mode: 1,
-			size: 3,
-			total: 1,
-			placeholder: ''
-		}, options);
+    $.fn.iweb_pagination = function(options) {
+        var settings = $.extend({
+            mode: 1,
+            size: 3,
+            total: 1,
+            placeholder: ''
+        }, options);
 
-		var currentPage = 1;
-		var urlStr = '';
-		var urlParameters = window.location.search.substring(1).split('&');
-		for (var i = 0; i < parseInt(urlParameters.length); i++) {
-			var currentParameter = urlParameters[i].split('=');
-			var currentParameter_index = currentParameter[0];
-			var currentParameter_value = currentParameter[1];
-			if (currentParameter_index !== '' && (typeof currentParameter_index !== 'undefined') && currentParameter_value !== '' && (typeof currentParameter_value !== 'undefined')) {
-				if ((currentParameter_index.toString().toLowerCase()) !== 'page') {
-					if (urlStr !== '') {
-						urlStr += '&' + currentParameter_index + '=' + currentParameter_value;
-					} else {
-						urlStr += '?' + currentParameter_index + '=' + currentParameter_value;
-					}
-				} else {
-					currentPage = parseInt(currentParameter_value);
-				}
-			}
-		}
-		if (urlStr !== '') {
-			urlStr += '&';
-		} else {
-			urlStr += '?';
-		}
-		urlStr = ((window.location.href.split('?')[0]).toString()) + urlStr;
+        var currentPage = 1;
+        
+        var url = new URL(window.location.href);
+        var searchParams = new URLSearchParams(url.search);
+        if (searchParams.has('page')) {
+            currentPage = parseInt(searchParams.get('page'));
+        }
 
-		$(document).off('keypress', 'div.iweb-pagination > ul > li > input[type="text"].jumpto_page');
-		$(document).on('keypress', 'div.iweb-pagination > ul > li > input[type="text"].jumpto_page', function(e) {
-			var jumpto_page = parseInt($(this).val());
-			var maxvalue = parseInt($(this).data('max'));
-			if (jumpto_page > maxvalue) {
-				jumpto_page = maxvalue;
-			}
-			if (e.which === 13) {
-				window.location.href = urlStr + 'page=' + jumpto_page;
-			}
-		});
+        searchParams.delete('page');
+        var baseUrl = url.origin + url.pathname + '?' + searchParams.toString();
 
-		this.each(function() {
-			var pageSize = parseInt(settings.size);
-			var totalPage = parseInt(settings.total);
-			if ($(this).data('size') !== null && (typeof $(this).data('size') !== 'undefined')) {
-				pageSize = parseInt($(this).data('size'));
-				if (pageSize < parseInt(settings.size)) {
-					pageSize = parseInt(settings.size);
-				}
-			}
-			if ($(this).data('totalpage') !== null && (typeof $(this).data('totalpage') !== 'undefined')) {
-				totalPage = parseInt($(this).data('totalpage'));
-				$(this).removeAttr('data-totalpage');
-			}
+        $(document).off('keypress', 'div.iweb-pagination > ul > li > input[type="text"].jumpto_page');
+        $(document).on('keypress', 'div.iweb-pagination > ul > li > input[type="text"].jumpto_page', function(e) {
+            if (e.which === 13) {
+                var jumpto_page = parseInt($(this).val()) || 1;
+                var maxvalue = parseInt($(this).data('max'));
+                jumpto_page = Math.min(Math.max(jumpto_page, 1), maxvalue);
+                window.location.href = baseUrl + '&page=' + jumpto_page;
+            }
+        });
 
-			var firstPage = 1;
-			var prevPage = parseInt(currentPage - 1);
-			if (prevPage < 1) {
-				prevPage = 1;
-			}
-			var nextPage = parseInt(currentPage + 1);
-			if (nextPage > totalPage) {
-				nextPage = totalPage;
-			}
-			var lastPage = totalPage;
+        this.each(function() {
+            var pageSize = parseInt(settings.size);
+            var totalPage = parseInt(settings.total);
 
-			var start_page_num = 1;
-			var end_page_num = pageSize;
-			var diff_page_num = parseInt(pageSize / 2);
-			if (totalPage <= pageSize) {
-				start_page_num = 1;
-				end_page_num = totalPage;
-			} else {
-				start_page_num = currentPage - diff_page_num;
-				end_page_num = currentPage + diff_page_num;
-				if (start_page_num < 1) {
-					start_page_num = firstPage;
-					end_page_num = pageSize;
-					if (end_page_num > lastPage) {
-						end_page_num = lastPage;
-					}
-				} else {
-					if (end_page_num > lastPage) {
-						end_page_num = lastPage;
-						start_page_num = (lastPage - pageSize) + 1;
-						if (start_page_num < firstPage) {
-							start_page_num = firstPage;
-						}
-					}
-				}
-			}
+            if ($(this).data('size') !== undefined) {
+                pageSize = Math.max(parseInt($(this).data('size')), settings.size);
+            }
+            if ($(this).data('totalpage') !== undefined) {
+                totalPage = parseInt($(this).data('totalpage'));
+                $(this).removeAttr('data-totalpage');
+            }
 
-			if (totalPage > 1) {
-				var pagination_html = '<ul>';
-				if (parseInt(settings.mode) === 2) {
-					if (currentPage > parseInt(pageSize / 2)) {
-						pagination_html += '<li><a class="first" href="' + urlStr + 'page=' + firstPage + '"><span>' + firstPage + '..</span></a></li>';
-					}
-				} else {
-					pagination_html += '<li><a class="first" href="' + urlStr + 'page=' + firstPage + '"><i></i><i></i></a></li>';
-				}
-				pagination_html += '<li><a class="prev" href="' + urlStr + 'page=' + prevPage + '"><i></i></a></li>';
+            var firstPage = 1;
+            var prevPage = Math.max(currentPage - 1, 1);
+            var nextPage = Math.min(currentPage + 1, totalPage);
+            var lastPage = totalPage;
+            var diff_page_num = parseInt(pageSize / 2);
+            var start_page_num = Math.max(currentPage - diff_page_num, firstPage);
+            var end_page_num = Math.min(currentPage + diff_page_num, lastPage);
+            if (end_page_num - start_page_num + 1 < pageSize) {
+                if (currentPage < firstPage + diff_page_num) {
+                    end_page_num = Math.min(lastPage, start_page_num + pageSize - 1);
+                } else {
+                    start_page_num = Math.max(firstPage, end_page_num - pageSize + 1);
+                }
+            }
 
-				for (var i = start_page_num; i <= end_page_num; i++) {
-					if (i === currentPage) {
-						pagination_html += '<li><a class="num current" href="' + urlStr + 'page=' + i + '"><span>' + i + '</span></a></li>';
-					} else {
-						pagination_html += '<li><a class="num" href="' + urlStr + 'page=' + i + '"><span>' + i + '</span></a></li>';
-					}
-				}
+            if (totalPage > 1) {
+                var pagination_html = '<ul>';
+                if (parseInt(settings.mode) === 2) {
+                    if (currentPage > parseInt(pageSize / 2)) {
+                        pagination_html += '<li><a class="first" href="' + baseUrl + '&page=' + firstPage + '"><span>' + firstPage + '..</span></a></li>';
+                    }
+                } else {
+                    pagination_html += '<li><a class="first" href="' + baseUrl + '&page=' + firstPage + '"><i></i><i></i></a></li>';
+                }
+                pagination_html += '<li><a class="prev" href="' + baseUrl + '&page=' + prevPage + '"><i></i></a></li>';
 
-				pagination_html += '<li><a class="next" href="' + urlStr + 'page=' + nextPage + '"><i></i></a></li>';
-				if (parseInt(settings.mode) === 2) {
-					if (currentPage < totalPage - parseInt(pageSize / 2)) {
-						pagination_html += '<li><a class="last" href="' + urlStr + 'page=' + lastPage + '"><span>..' + lastPage + '</span></a></li>';
-					}
-				} else {
-					pagination_html += '<li><a class="last" href="' + urlStr + 'page=' + lastPage + '"><i></i><i></i></a></li>';
-				}
-				pagination_html += '<li><input type="text" class="jumpto_page" name="jumpto_page" data-max="' + totalPage + '" placeholder="' + settings.placeholder + '"/></li>';
-				pagination_html += '</ul>';
-				$(this).html('<div class="iweb-pagination">' + pagination_html + '</div>');
-			}
-		});
-	};
+                for (var i = start_page_num; i <= end_page_num; i++) {
+                    pagination_html += '<li><a class="num' + (i === currentPage ? ' current' : '') + '" href="' + baseUrl + '&page=' + i + '"><span>' + i + '</span></a></li>';
+                }
+
+                pagination_html += '<li><a class="next" href="' + baseUrl + '&page=' + nextPage + '"><i></i></a></li>';
+                if (parseInt(settings.mode) === 2) {
+                    if (currentPage < totalPage - parseInt(pageSize / 2)) {
+                        pagination_html += '<li><a class="last" href="' + baseUrl + '&page=' + lastPage + '"><span>..' + lastPage + '</span></a></li>';
+                    }
+                } else {
+                    pagination_html += '<li><a class="last" href="' + baseUrl + '&page=' + lastPage + '"><i></i><i></i></a></li>';
+                }
+                pagination_html += '<li><input type="text" class="jumpto_page" name="jumpto_page" data-max="' + totalPage + '" placeholder="' + settings.placeholder + '"/></li>';
+                pagination_html += '</ul>';
+                $(this).html('<div class="iweb-pagination">' + pagination_html + '</div>');
+            }
+        });
+    };
 }(jQuery));
 
 var iweb = {
@@ -558,10 +513,11 @@ var iweb = {
 		/* autocomple */
 		$(document).off('input', 'div.iweb-autocomple input.fill-txt');
 		$(document).on('input', 'div.iweb-autocomple input.fill-txt', function() {
+            var init_callback = $(this).closest('div.iweb-autocomple').data('ifunc');
+            
 			var object = $(this);
-            
             object.closest('div.iweb-autocomple').find('small.tips').remove();
-            
+
             if(iweb_object.isValue(iweb_object.autocomple_timer)) {
                 clearTimeout(iweb_object.autocomple_timer);
             }
@@ -612,6 +568,10 @@ var iweb = {
                             picker += '</ul>';
                             object.closest('div.iweb-autocomple').find('ul').remove();
                             object.parent().append(picker);
+                            
+                            if (typeof window[init_callback] == 'function') {
+                                window[init_callback](response_data);
+                            }
                         }
                     }, function() {
                         iweb_object.doing_autocomple = false;
@@ -623,18 +583,30 @@ var iweb = {
 		/* match data picker */
 		$(document).off('click', 'div.iweb-autocomple ul > li > a');
 		$(document).on('click', 'div.iweb-autocomple ul > li > a', function() {
+            var select_callback = $(this).closest('div.iweb-autocomple').data('sfunc');
+            
 			$(this).closest('div.iweb-autocomple').find('input.fill-id').val($(this).data('id'));
 			$(this).closest('div.iweb-autocomple').find('input.fill-txt').val($(this).text()).prop('disabled', true);
 			$(this).closest('div.iweb-autocomple').find('input.fill-txt').parent().append('<a class="fill-reset"><i class="fa fa-times" style="color:#d73d32"></i></a>');
 			$(this).closest('div.iweb-autocomple').find('ul').remove();
+
+            if (typeof window[select_callback] == 'function') {
+                window[select_callback]($(this).data('id'));
+            }
 		});
 
 		/* remove autocomple value*/
 		$(document).off('click', 'div.iweb-autocomple a.fill-reset');
 		$(document).on('click', 'div.iweb-autocomple a.fill-reset', function() {
+            var remove_callback = $(this).closest('div.iweb-autocomple').data('rfunc');
+            
 			$(this).closest('div.iweb-autocomple').find('input.fill-id').val('');
 			$(this).closest('div.iweb-autocomple').find('input.fill-txt').val('').prop('disabled', false);
 			$(this).closest('div.iweb-autocomple').find('a.fill-reset').remove();
+
+            if (typeof window[remove_callback] == 'function') {
+                window[remove_callback]();
+            }
 		});
 
 		/* selector */
@@ -2391,66 +2363,70 @@ var iweb = {
 	}
 };
 
-$(document).ready(function() {
-	iweb.initialize();
+$(function() {
+    iweb.initialize();
 });
 
 $(window).on('load', function() {
-	if (typeof iweb_global_layout_done == 'function') {
-		iweb_global_layout_done(iweb.win_width);
-	}
-	if (typeof iweb_self_layout_done == 'function') {
-		iweb_self_layout_done(iweb.win_width);
-	}
-	if (typeof iweb_extra_layout_done == 'function') {
-		iweb_extra_layout_done(iweb.win_width);
-	}
-	if (typeof iweb_global_func_done == 'function') {
-		iweb_global_func_done();
-	}
-	if (typeof iweb_self_func_done == 'function') {
-		iweb_self_func_done();
-	}
-	if (typeof iweb_extra_func_done == 'function') {
-		iweb_extra_func_done();
-	}
-	var delay_timer = setTimeout(function() {
-		clearTimeout(delay_timer);
-		iweb.init_status = true;
-	}, 250);
+    if (typeof iweb_global_layout_done === 'function') {
+        iweb_global_layout_done(iweb.win_width);
+    }
+    if (typeof iweb_self_layout_done === 'function') {
+        iweb_self_layout_done(iweb.win_width);
+    }
+    if (typeof iweb_extra_layout_done === 'function') {
+        iweb_extra_layout_done(iweb.win_width);
+    }
+    if (typeof iweb_global_func_done === 'function') {
+        iweb_global_func_done();
+    }
+    if (typeof iweb_self_func_done === 'function') {
+        iweb_self_func_done();
+    }
+    if (typeof iweb_extra_func_done === 'function') {
+        iweb_extra_func_done();
+    }
+    var delay_timer = setTimeout(function() {
+        iweb.init_status = true;
+    }, 250);
 });
 
+var window_resizeTimeout;
 $(window).on('resize', function() {
-	if (iweb.resizing()) {
-		$('div.iweb-selector').removeClass('show');
-		var delay_timer = setTimeout(function() {
-			clearTimeout(delay_timer);
-			iweb.responsive();
-			if (typeof iweb_global_layout == 'function') {
-				iweb_global_layout(iweb.win_width);
-			}
-			if (typeof iweb_self_layout == 'function') {
-				iweb_self_layout(iweb.win_width);
-			}
-			if (typeof iweb_extra_layout == 'function') {
-				iweb_extra_layout(iweb.win_width);
-			}
-		}, 250);
-	}
+    clearTimeout(window_resizeTimeout);
+    window_resizeTimeout = setTimeout(function() {
+        if (iweb.resizing()) {
+            $('div.iweb-selector').removeClass('show');
+            iweb.responsive();
+            if (typeof iweb_global_layout === 'function') {
+                iweb_global_layout(iweb.win_width);
+            }
+            if (typeof iweb_self_layout === 'function') {
+                iweb_self_layout(iweb.win_width);
+            }
+            if (typeof iweb_extra_layout === 'function') {
+                iweb_extra_layout(iweb.win_width);
+            }
+        }
+    }, 250);
 });
 
+var window_scrollTimeout;
 $(window).on('scroll', function() {
-	if (iweb.init_status) {
-		iweb.win_scroll_top = parseInt($(window).scrollTop());
-		if (typeof iweb_global_scroll == 'function') {
-			iweb_global_scroll(parseInt($(window).scrollTop()));
-		}
-		if (typeof iweb_self_scroll == 'function') {
-			iweb_self_scroll(parseInt($(window).scrollTop()));
-		}
-		if (typeof iweb_extra_scroll == 'function') {
-			iweb_extra_scroll(parseInt($(window).scrollTop()));
-		}
-	}
+    clearTimeout(window_scrollTimeout);
+    window_scrollTimeout = setTimeout(function() {
+        if (iweb.init_status) {
+            iweb.win_scroll_top = $(window).scrollTop();
+            if (typeof iweb_global_scroll === 'function') {
+                iweb_global_scroll(iweb.win_scroll_top);
+            }
+            if (typeof iweb_self_scroll === 'function') {
+                iweb_self_scroll(iweb.win_scroll_top);
+            }
+            if (typeof iweb_extra_scroll === 'function') {
+                iweb_extra_scroll(iweb.win_scroll_top);
+            }
+        }
+    }, 100);
 });
 /* iweb lib, requires jQuery v1.11 or later, copyright 2023 kaiyunchan */
