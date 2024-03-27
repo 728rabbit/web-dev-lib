@@ -252,6 +252,14 @@ var iweb = {
 		});
 
 		$('div.iweb-autocomple input.fill-id').attr('type', 'hidden').prop('readonly', true);
+        $('div.iweb-autocomple input.fill-id').each(function() {
+            if(iweb_object.isValue($(this).val()) && parseInt($(this).val()) > 0) {
+                $(this).closest('div.iweb-autocomple').find('input.fill-txt').prop('disabled', true);
+            }
+            else {
+                $(this).closest('div.iweb-autocomple').find('input.fill-txt').prop('disabled', false);
+            }
+        });
 
 		if (typeof callback == 'function') {
 			callback();
