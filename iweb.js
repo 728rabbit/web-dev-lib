@@ -531,6 +531,8 @@ var iweb = {
             }
 
             iweb_object.autocomple_timer = setTimeout(function() {
+                clearTimeout(iweb_object.autocomple_timer);
+                
                 /* max 5 param */
                 var extra_values = [];
                 var param1 = object.closest('div.iweb-autocomple').data('param1');
@@ -2395,14 +2397,15 @@ $(window).on('load', function() {
         iweb_extra_func_done();
     }
     var delay_timer = setTimeout(function() {
+        clearTimeout(delay_timer);
         iweb.init_status = true;
     }, 250);
 });
 
 var window_resizeTimeout;
 $(window).on('resize', function() {
-    clearTimeout(window_resizeTimeout);
     window_resizeTimeout = setTimeout(function() {
+        clearTimeout(window_resizeTimeout);
         if (iweb.resizing()) {
             $('div.iweb-selector').removeClass('show');
             iweb.responsive();
@@ -2421,8 +2424,8 @@ $(window).on('resize', function() {
 
 var window_scrollTimeout;
 $(window).on('scroll', function() {
-    clearTimeout(window_scrollTimeout);
     window_scrollTimeout = setTimeout(function() {
+        clearTimeout(window_scrollTimeout);
         if (iweb.init_status) {
             iweb.win_scroll_top = $(window).scrollTop();
             if (typeof iweb_global_scroll === 'function') {
