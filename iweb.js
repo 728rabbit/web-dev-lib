@@ -34,7 +34,7 @@ function md5cycle(f,h){var i=f[0],n=f[1],r=f[2],g=f[3];n=ii(n=ii(n=ii(n=ii(n=hh(
                 var jumpto_page = parseInt($(this).val()) || 1;
                 var maxvalue = parseInt($(this).data('max'));
                 jumpto_page = Math.min(Math.max(jumpto_page, 1), maxvalue);
-                window.location.href = baseUrl + '&page=' + jumpto_page;
+                window.location.href = ((baseUrl + '&page=' + jumpto_page).replace('?&', '?'));
             }
         });
 
@@ -69,24 +69,24 @@ function md5cycle(f,h){var i=f[0],n=f[1],r=f[2],g=f[3];n=ii(n=ii(n=ii(n=ii(n=hh(
                 var pagination_html = '<ul>';
                 if (parseInt(settings.mode) === 2) {
                     if (currentPage > parseInt(pageSize / 2)) {
-                        pagination_html += '<li><a class="first" href="' + baseUrl + '&page=' + firstPage + '"><span>' + firstPage + '..</span></a></li>';
+                        pagination_html += '<li><a class="first" href="' + ((baseUrl + '&page=' + firstPage).replace('?&', '?')) + '"><span>' + firstPage + '..</span></a></li>';
                     }
                 } else {
-                    pagination_html += '<li><a class="first" href="' + baseUrl + '&page=' + firstPage + '"><i></i><i></i></a></li>';
+                    pagination_html += '<li><a class="first" href="' + ((baseUrl + '&page=' + firstPage).replace('?&', '?')) + '"><i></i><i></i></a></li>';
                 }
-                pagination_html += '<li><a class="prev" href="' + baseUrl + '&page=' + prevPage + '"><i></i></a></li>';
+                pagination_html += '<li><a class="prev" href="' + ((baseUrl + '&page=' + prevPage).replace('?&', '?')) + '"><i></i></a></li>';
 
                 for (var i = start_page_num; i <= end_page_num; i++) {
-                    pagination_html += '<li><a class="num' + (i === currentPage ? ' current' : '') + '" href="' + baseUrl + '&page=' + i + '"><span>' + i + '</span></a></li>';
+                    pagination_html += '<li><a class="num' + (i === currentPage ? ' current' : '') + '" href="' + ((baseUrl + '&page=' + i).replace('?&', '?')) + '"><span>' + i + '</span></a></li>';
                 }
 
-                pagination_html += '<li><a class="next" href="' + baseUrl + '&page=' + nextPage + '"><i></i></a></li>';
+                pagination_html += '<li><a class="next" href="' + ((baseUrl + '&page=' + nextPage).replace('?&', '?')) + '"><i></i></a></li>';
                 if (parseInt(settings.mode) === 2) {
                     if (currentPage < totalPage - parseInt(pageSize / 2)) {
-                        pagination_html += '<li><a class="last" href="' + baseUrl + '&page=' + lastPage + '"><span>..' + lastPage + '</span></a></li>';
+                        pagination_html += '<li><a class="last" href="' + ((baseUrl + '&page=' + lastPage).replace('?&', '?')) + '"><span>..' + lastPage + '</span></a></li>';
                     }
                 } else {
-                    pagination_html += '<li><a class="last" href="' + baseUrl + '&page=' + lastPage + '"><i></i><i></i></a></li>';
+                    pagination_html += '<li><a class="last" href="' + ((baseUrl + '&page=' + lastPage).replace('?&', '?')) + '"><i></i><i></i></a></li>';
                 }
                 pagination_html += '<li><input type="text" class="jumpto_page" name="jumpto_page" data-max="' + totalPage + '" placeholder="' + settings.placeholder + '"/></li>';
                 pagination_html += '</ul>';
