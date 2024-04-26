@@ -316,7 +316,7 @@ div.iweb-input {
     vertical-align: top;
 }
 
-div.iweb-autocomple div.iweb-input {
+div.iweb-autocomplete div.iweb-input {
     width: 100%;
 }
 
@@ -324,7 +324,7 @@ div.iweb-input > div {
     position: relative;
 }
 
-div.iweb-autocomple small.tips,
+div.iweb-autocomplete small.tips,
 div.iweb-input small.tips {
     position: relative;
     display: block;
@@ -781,16 +781,16 @@ div.iweb-radiobox-set small.tips {
     padding-top: 4px;
 }
 
-div.iweb-autocomple {
+div.iweb-autocomplete {
     position: relative;
 }
 
-div.iweb-autocomple input[type="text"] {
+div.iweb-autocomplete input[type="text"] {
     width: 100%;
     padding-right: 22px;
 }
 
-div.iweb-autocomple ul {
+div.iweb-autocomplete ul {
     position: absolute;
     background: #fff;
     top: 100%;
@@ -801,26 +801,26 @@ div.iweb-autocomple ul {
     z-index: 1;
 }
 
-div.iweb-autocomple.top ul {
+div.iweb-autocomplete.top ul {
     top: auto;
     bottom: 100%;
 }
 
-div.iweb-autocomple ul > li {
+div.iweb-autocomplete ul > li {
     display: block;
     border-top: 1px dotted #e6e6e6;
 }
 
-div.iweb-autocomple ul > li > a {
+div.iweb-autocomplete ul > li > a {
     display: block;
     padding: 8px;
 }
 
-div.iweb-autocomple ul > li > a:hover {
+div.iweb-autocomplete ul > li > a:hover {
     color: #03b3b2;
 }
 
-div.iweb-autocomple a.fill-reset {
+div.iweb-autocomplete a.fill-reset {
     position: absolute;
     display: inline-block;
     top: 50%;

@@ -104,8 +104,8 @@ var iweb = {
 	init_status: false,
 	is_processing: false,
     
-    autocomple_timer: null,
-	doing_autocomple: false,
+    autocomplete_timer: null,
+	doing_autocomplete: false,
 
 	uploader_options: null,
 	uploader_files: null,
@@ -251,13 +251,13 @@ var iweb = {
 			}
 		});
 
-		$('div.iweb-autocomple input.fill-id').attr('type', 'hidden').prop('readonly', true);
-        $('div.iweb-autocomple input.fill-id').each(function() {
+		$('div.iweb-autocomplete input.fill-id').attr('type', 'hidden').prop('readonly', true);
+        $('div.iweb-autocomplete input.fill-id').each(function() {
             if(iweb_object.isValue($(this).val()) && parseInt($(this).val()) > 0) {
-                $(this).closest('div.iweb-autocomple').find('input.fill-txt').prop('disabled', true);
+                $(this).closest('div.iweb-autocomplete').find('input.fill-txt').prop('disabled', true);
             }
             else {
-                $(this).closest('div.iweb-autocomple').find('input.fill-txt').prop('disabled', false);
+                $(this).closest('div.iweb-autocomplete').find('input.fill-txt').prop('disabled', false);
             }
         });
 
@@ -463,7 +463,7 @@ var iweb = {
 			}
 
 			if (parseInt($(e.target).closest('div.iweb-autocomplete').length) === 0) {
-				$('div.iweb-autocomple').find('ul').remove();
+				$('div.iweb-autocomplete').find('ul').remove();
 			}
 		});
 
@@ -518,28 +518,28 @@ var iweb = {
 			return false;
 		});
 
-		/* autocomple */
-		$(document).off('input', 'div.iweb-autocomple input.fill-txt');
-		$(document).on('input', 'div.iweb-autocomple input.fill-txt', function() {
-            var init_callback = $(this).closest('div.iweb-autocomple').data('ifunc');
+		/* autocomplete */
+		$(document).off('input', 'div.iweb-autocomplete input.fill-txt');
+		$(document).on('input', 'div.iweb-autocomplete input.fill-txt', function() {
+            var init_callback = $(this).closest('div.iweb-autocomplete').data('ifunc');
             
 			var object = $(this);
-            object.closest('div.iweb-autocomple').find('small.tips').remove();
+            object.closest('div.iweb-autocomplete').find('small.tips').remove();
 
-            if(iweb_object.isValue(iweb_object.autocomple_timer)) {
-                clearTimeout(iweb_object.autocomple_timer);
+            if(iweb_object.isValue(iweb_object.autocomplete_timer)) {
+                clearTimeout(iweb_object.autocomplete_timer);
             }
 
-            iweb_object.autocomple_timer = setTimeout(function() {
-                clearTimeout(iweb_object.autocomple_timer);
+            iweb_object.autocomplete_timer = setTimeout(function() {
+                clearTimeout(iweb_object.autocomplete_timer);
                 
                 /* max 5 param */
                 var extra_values = [];
-                var param1 = object.closest('div.iweb-autocomple').data('param1');
-                var param2 = object.closest('div.iweb-autocomple').data('param2');
-                var param3 = object.closest('div.iweb-autocomple').data('param3');
-                var param4 = object.closest('div.iweb-autocomple').data('param4');
-                var param5 = object.closest('div.iweb-autocomple').data('param5');
+                var param1 = object.closest('div.iweb-autocomplete').data('param1');
+                var param2 = object.closest('div.iweb-autocomplete').data('param2');
+                var param3 = object.closest('div.iweb-autocomplete').data('param3');
+                var param4 = object.closest('div.iweb-autocomplete').data('param4');
+                var param5 = object.closest('div.iweb-autocomplete').data('param5');
                 if (iweb_object.isValue(param1)) {
                     extra_values[param1.substring(0, param1.indexOf(':'))] = param1.substring(param1.indexOf(':') + 1);
                 }
@@ -558,7 +558,7 @@ var iweb = {
 
                 /* merge post data */
                 var post_data = {
-                    url: object.closest('div.iweb-autocomple').data('url'),
+                    url: object.closest('div.iweb-autocomplete').data('url'),
                     values: $.extend({
                         keywords: $.trim(object.val())
                     }, extra_values),
@@ -567,8 +567,8 @@ var iweb = {
                 };
 
                 /* get search result */
-                if (iweb_object.isValue($.trim(object.val())) && !iweb_object.doing_autocomple) {
-                    iweb_object.doing_autocomple = true;
+                if (iweb_object.isValue($.trim(object.val())) && !iweb_object.doing_autocomplete) {
+                    iweb_object.doing_autocomplete = true;
                     iweb_object.post(post_data, function(response_data) {
                         if (iweb_object.isValue(response_data)) {
                             var picker = '<ul class="fill-options">';
@@ -576,7 +576,7 @@ var iweb = {
                                 picker += '<li><a data-id="' + (value.id) + '">' + (value.name) + '</a></li>';
                             });
                             picker += '</ul>';
-                            object.closest('div.iweb-autocomple').find('ul').remove();
+                            object.closest('div.iweb-autocomplete').find('ul').remove();
                             object.parent().append(picker);
                             
                             if (typeof window[init_callback] == 'function') {
@@ -584,35 +584,35 @@ var iweb = {
                             }
                         }
                     }, function() {
-                        iweb_object.doing_autocomple = false;
+                        iweb_object.doing_autocomplete = false;
                     });
                 }
             }, 500);
 		});
 
 		/* match data picker */
-		$(document).off('click', 'div.iweb-autocomple ul > li > a');
-		$(document).on('click', 'div.iweb-autocomple ul > li > a', function() {
-            var select_callback = $(this).closest('div.iweb-autocomple').data('sfunc');
+		$(document).off('click', 'div.iweb-autocomplete ul > li > a');
+		$(document).on('click', 'div.iweb-autocomplete ul > li > a', function() {
+            var select_callback = $(this).closest('div.iweb-autocomplete').data('sfunc');
             
-			$(this).closest('div.iweb-autocomple').find('input.fill-id').val($(this).data('id'));
-			$(this).closest('div.iweb-autocomple').find('input.fill-txt').val($(this).text()).prop('disabled', true);
-			$(this).closest('div.iweb-autocomple').find('input.fill-txt').parent().append('<a class="fill-reset"><i class="fa fa-times" style="color:#d73d32"></i></a>');
-			$(this).closest('div.iweb-autocomple').find('ul').remove();
+			$(this).closest('div.iweb-autocomplete').find('input.fill-id').val($(this).data('id'));
+			$(this).closest('div.iweb-autocomplete').find('input.fill-txt').val($(this).text()).prop('disabled', true);
+			$(this).closest('div.iweb-autocomplete').find('input.fill-txt').parent().append('<a class="fill-reset"><i class="fa fa-times" style="color:#d73d32"></i></a>');
+			$(this).closest('div.iweb-autocomplete').find('ul').remove();
 
             if (typeof window[select_callback] == 'function') {
                 window[select_callback]($(this).data('id'));
             }
 		});
 
-		/* remove autocomple value*/
-		$(document).off('click', 'div.iweb-autocomple a.fill-reset');
-		$(document).on('click', 'div.iweb-autocomple a.fill-reset', function() {
-            var remove_callback = $(this).closest('div.iweb-autocomple').data('rfunc');
+		/* remove autocomplete value*/
+		$(document).off('click', 'div.iweb-autocomplete a.fill-reset');
+		$(document).on('click', 'div.iweb-autocomplete a.fill-reset', function() {
+            var remove_callback = $(this).closest('div.iweb-autocomplete').data('rfunc');
             
-			$(this).closest('div.iweb-autocomple').find('input.fill-id').val('');
-			$(this).closest('div.iweb-autocomple').find('input.fill-txt').val('').prop('disabled', false);
-			$(this).closest('div.iweb-autocomple').find('a.fill-reset').remove();
+			$(this).closest('div.iweb-autocomplete').find('input.fill-id').val('');
+			$(this).closest('div.iweb-autocomplete').find('input.fill-txt').val('').prop('disabled', false);
+			$(this).closest('div.iweb-autocomplete').find('a.fill-reset').remove();
 
             if (typeof window[remove_callback] == 'function') {
                 window[remove_callback]();
@@ -809,12 +809,12 @@ var iweb = {
 			var delay_timer = setTimeout(function() {
 				clearTimeout(delay_timer);
 
-				/* reset autocomple */
-				form_object.find('div.iweb-autocomple input.fill-id').each(function() {
+				/* reset autocomplete */
+				form_object.find('div.iweb-autocomplete input.fill-id').each(function() {
 					if (!iweb_object.isValue($(this).val())) {
-						$(this).closest('div.iweb-autocomple').find('input.fill-id').val('');
-						$(this).closest('div.iweb-autocomple').find('input.fill-txt').val('').prop('disabled', false);
-						$(this).closest('div.iweb-autocomple').find('a.fill-reset').remove();
+						$(this).closest('div.iweb-autocomplete').find('input.fill-id').val('');
+						$(this).closest('div.iweb-autocomplete').find('input.fill-txt').val('').prop('disabled', false);
+						$(this).closest('div.iweb-autocomplete').find('a.fill-reset').remove();
 					}
 				});
 
@@ -1279,17 +1279,17 @@ var iweb = {
 						}
 					});
                     
-                    form_object.find('div.iweb-autocomple input.fill-id[data-validation="required"]').each(function() {
+                    form_object.find('div.iweb-autocomplete input.fill-id[data-validation="required"]').each(function() {
 						if (!iweb_object.isValue($(this).val())) {
-                            if ($(this).closest('div.iweb-autocomple').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).data('showtips'), 0) && !iweb_object.isMatch($(this).data('showtips'), false))) {
+                            if ($(this).closest('div.iweb-autocomplete').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).data('showtips'), 0) && !iweb_object.isMatch($(this).data('showtips'), false))) {
                                 if (iweb_object.isValue($(this).data('tips'))) {
-                                    $(this).closest('div.iweb-autocomple').append('<small class="tips">' + $(this).data('tips') + '</small>');
+                                    $(this).closest('div.iweb-autocomplete').append('<small class="tips">' + $(this).data('tips') + '</small>');
                                 } else {
-                                    $(this).closest('div.iweb-autocomple').append('<small class="tips">' + iweb_object.language[iweb_object.current_language]['is_required'] + '</small>');
+                                    $(this).closest('div.iweb-autocomplete').append('<small class="tips">' + iweb_object.language[iweb_object.current_language]['is_required'] + '</small>');
                                 }
                             }
-                            $(this).closest('div.iweb-autocomple').find('input.fill-id').removeClass('error');
-							$(this).closest('div.iweb-autocomple').find('input.fill-text').addClass('error');
+                            $(this).closest('div.iweb-autocomplete').find('input.fill-id').removeClass('error');
+							$(this).closest('div.iweb-autocomplete').find('input.fill-text').addClass('error');
 							default_check_result = false;
 						}
 					});
