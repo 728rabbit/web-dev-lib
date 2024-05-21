@@ -446,10 +446,10 @@
     <input type="checkbox" id="vehicle-bike" name="vehicle1" value="Bike" checked>
     <label for="vehicle-bike"> I have a bike</label>
 
-21. radiobox
+21. radio
     ----------------------------------------------------------------------------
-    iweb.radiobox(radiobox_object,callback);
-    - radiobox_object: optional, default = $('body').find('input[type="raido"]');
+    iweb.radio(radio_object,callback);
+    - radio_object: optional, default = $('body').find('input[type="raido"]');
     - callback: optional  
 
     e.g.

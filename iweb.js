@@ -198,7 +198,7 @@ var iweb = {
 		iweb_object.inputbox();
 		iweb_object.selector();
 		iweb_object.checkbox();
-		iweb_object.radiobox();
+		iweb_object.radio();
 		iweb_object.iframe();
 		iweb_object.responsive();
 
@@ -383,22 +383,22 @@ var iweb = {
 			callback();
 		}
 	},
-	radiobox: function(radiobox_object, callback) {
+	radio: function(radio_object, callback) {
 		var iweb_object = this;
 
-		if (!iweb_object.isValue(radiobox_object)) {
-			radiobox_object = $('body').find('input[type="radio"]');
+		if (!iweb_object.isValue(radio_object)) {
+			radio_object = $('body').find('input[type="radio"]');
 		}
 
-		radiobox_object.each(function() {
-			if (!$(this).parent().parent().parent().hasClass('iweb-radiobox')) {
-				var find_radiobox_label = $(this).next();
+		radio_object.each(function() {
+			if (!$(this).parent().parent().parent().hasClass('iweb-radio')) {
+				var find_radio_label = $(this).next();
 				var ischecked = $(this).is(':checked');
-				if (parseInt(find_radiobox_label.length) > 0 && iweb_object.isMatch(find_radiobox_label[0].nodeName, 'label')) {
-					$(this).wrap('<div class="iweb-radiobox"><div class="options"><div' + (ischecked ? ' class="checked"' : '') + '></div></div><div class="virtual-msg">' + (find_radiobox_label[0].outerHTML) + '</div></div>');
-					find_radiobox_label.remove();
+				if (parseInt(find_radio_label.length) > 0 && iweb_object.isMatch(find_radio_label[0].nodeName, 'label')) {
+					$(this).wrap('<div class="iweb-radio"><div class="options"><div' + (ischecked ? ' class="checked"' : '') + '></div></div><div class="virtual-msg">' + (find_radio_label[0].outerHTML) + '</div></div>');
+					find_radio_label.remove();
 				} else {
-					$(this).wrap('<div class="iweb-radiobox"><div class="options"><div' + (ischecked ? ' class="checked"' : '') + '></div></div><div class="virtual-msg">&nbsp;</div></div>');
+					$(this).wrap('<div class="iweb-radio"><div class="options"><div' + (ischecked ? ' class="checked"' : '') + '></div></div><div class="virtual-msg">&nbsp;</div></div>');
 				}
 				if (ischecked) {
 					$(this).attr('data-ori', 'checked');
@@ -746,9 +746,9 @@ var iweb = {
 			$(this).closest('div.options').find('input[type="checkbox"]').trigger('click');
 		});
 
-		/* radiobox */
-		$(document).off('click', 'div.iweb-radiobox > div.options > div > input[type="radio"]');
-		$(document).on('click', 'div.iweb-radiobox > div.options > div > input[type="radio"]', function() {
+		/* radio */
+		$(document).off('click', 'div.iweb-radio > div.options > div > input[type="radio"]');
+		$(document).on('click', 'div.iweb-radio > div.options > div > input[type="radio"]', function() {
 			var selected_value = $(this).val();
 			var related_object = $('input[type="radio"][name="' + $(this).attr('name') + '"]');
 			$.each(related_object, function() {
@@ -763,8 +763,8 @@ var iweb = {
 			});
 		});
 
-		$(document).off('click', 'div.iweb-radiobox > div.options > div > a');
-		$(document).on('click', 'div.iweb-radiobox > div.options > div > a', function() {
+		$(document).off('click', 'div.iweb-radio > div.options > div > a');
+		$(document).on('click', 'div.iweb-radio > div.options > div > a', function() {
 			$(this).closest('div.options').find('input[type="radio"]').trigger('click');
 		});
 
@@ -786,8 +786,8 @@ var iweb = {
 			$(this).closest('div.iweb-checkbox-set').find('.error').removeClass('error');
 			$(this).closest('div.iweb-checkbox-set').find('small.tips').remove();
 
-			$(this).closest('div.iweb-radiobox-set').find('.error').removeClass('error');
-			$(this).closest('div.iweb-radiobox-set').find('small.tips').remove();
+			$(this).closest('div.iweb-radio-set').find('.error').removeClass('error');
+			$(this).closest('div.iweb-radio-set').find('small.tips').remove();
 		});
 
 		$(document).off('click', 'div.iweb-tips-message > div > a.close');
@@ -864,8 +864,8 @@ var iweb = {
 					}
 				});
 
-				/* reset radiobox */
-				form_object.find('div.iweb-radiobox').each(function() {
+				/* reset radio */
+				form_object.find('div.iweb-radio').each(function() {
 					if ($(this).find('input[type="radio"]').is(':checked')) {
 						$(this).find('input[type="radio"]').parent().addClass('checked');
 					} else {
@@ -1117,7 +1117,7 @@ var iweb = {
 			iweb_object.inputbox();
 			iweb_object.selector();
 			iweb_object.checkbox();
-			iweb_object.radiobox();
+			iweb_object.radio();
 			iweb_object.iframe();
 			iweb_object.responsive();
 
@@ -1233,10 +1233,10 @@ var iweb = {
 					form_object.find('div.iweb-input .error').removeClass('error');
 					form_object.find('div.iweb-selector .error').removeClass('error');
 					form_object.find('div.iweb-checkbox .error').removeClass('error');
-					form_object.find('div.iweb-radiobox .error').removeClass('error');
+					form_object.find('div.iweb-radio .error').removeClass('error');
 					form_object.find('div.iweb-input small.tips').remove();
 					form_object.find('div.iweb-checkbox-set small.tips').remove();
-					form_object.find('div.iweb-radiobox-set small.tips').remove();
+					form_object.find('div.iweb-radio-set small.tips').remove();
 					form_object.find('div.iweb-selector small.tips').remove();
 
 					form_object.find('input[data-validation="required"],textarea[data-validation="required"]').each(function() {
@@ -1253,12 +1253,12 @@ var iweb = {
 								default_check_result = false;
 							}
 						} else if (iweb_object.isMatch($(this).attr('type'), 'radio')) {
-							if ($(this).closest('div.iweb-radiobox-set').find('input[type="radio"]:checked').length == 0) {
-								if ($(this).closest('div.iweb-radiobox-set').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).closest('div.iweb-radiobox-set').data('showtips'), 0) && !iweb_object.isMatch($(this).closest('div.iweb-radiobox-set').data('showtips'), false))) {
+							if ($(this).closest('div.iweb-radio-set').find('input[type="radio"]:checked').length == 0) {
+								if ($(this).closest('div.iweb-radio-set').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).closest('div.iweb-radio-set').data('showtips'), 0) && !iweb_object.isMatch($(this).closest('div.iweb-radio-set').data('showtips'), false))) {
 									if (iweb_object.isValue($(this).data('tips'))) {
-										$(this).closest('div.iweb-radiobox-set').append('<small class="tips">' + $(this).data('tips') + '</small>');
+										$(this).closest('div.iweb-radio-set').append('<small class="tips">' + $(this).data('tips') + '</small>');
 									} else {
-										$(this).closest('div.iweb-radiobox-set').append('<small class="tips">' + iweb_object.language[iweb_object.current_language]['is_required'] + '</small>');
+										$(this).closest('div.iweb-radio-set').append('<small class="tips">' + iweb_object.language[iweb_object.current_language]['is_required'] + '</small>');
 									}
 								}
 								$(this).parent().addClass('error');

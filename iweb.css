@@ -1,3 +1,16 @@
+:root {
+    --background-color: #fff8f2;
+    --color-base: #66cdaa;
+    --color-green: #29a29a;
+    --color-red: #ef4130;
+    --color-yellow: #fda525;
+    --color-blue: #2ca4e9;
+    --color-white: #fff;
+    --color-black: #000;
+    --color-lightgray: #e6e6e6;
+    --color-lightpink: #ffb6c1;
+}
+
 * {
     font-family: Arial, "Microsoft JhengHei", 微軟正黑體, "Heiti TC", "PMingLiU", 新細明體;
     box-sizing: border-box;
@@ -36,7 +49,7 @@ html.large-font {
 
 body {
     font-size: 1rem;
-    color: #2b2b2b;
+    color: var(--color-black);
     min-width: 320px;
     width: 100%;
     opacity: 0;
@@ -53,7 +66,7 @@ table td {
 }
 
 a {
-    color: #2b2b2b;
+    color: var(--color-black);
     cursor: pointer;
     text-decoration: none;
     -webkit-touch-callout: none;
@@ -67,7 +80,7 @@ a.font-switch {
     height: 36px;
     text-align: center;
     line-height: 32px;
-    border: 2px solid #e6e6e6;
+    border: 2px solid var(--color-lightgray);
     margin: 0px 4px;
     border-radius: 4px;
     vertical-align: top;
@@ -82,7 +95,7 @@ a.font-switch.large {
 }
 
 a.font-switch.current {
-    background: #66cdaa;
+    background: var(--color-base);
 }
 
 img,
@@ -109,13 +122,13 @@ input[type="number"]{
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-color: #fff;
+    background-color: var(--color-white);
     font-size: 1rem;
-    color: #2b2b2b;
+    color: var(--color-black);
     max-width: 100%;
     height: 36px;
     padding: 6px 12px;
-    border: 2px solid #e6e6e6;
+    border: 2px solid var(--color-lightgray);
     border-radius: 4px;
     resize: none;
 }
@@ -136,14 +149,14 @@ textarea {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-color: #fff;
+    background-color: var(--color-white);
     font-size: 1rem;
-    color: #2b2b2b;
+    color: var(--color-black);
     max-width: 100%;
     height: 180px;
     padding: 6px 12px;
     line-height: 1.5;
-    border: 2px solid #e6e6e6;
+    border: 2px solid var(--color-lightgray);
     border-radius: 4px;
     resize: none;
 }
@@ -158,9 +171,9 @@ textarea.error {
 }
 
 select {
-    background-color: #fff;
+    background-color: var(--color-white);
     font-size: 1rem;
-    color: #2b2b2b;
+    color: var(--color-black);
 }
 
 select.error {
@@ -202,7 +215,7 @@ button.switch-pwd-type:focus {
 }
 
 button.switch-pwd-type > i {
-    color: #2b2b2b!important;
+    color: var(--color-black)!important;
 }
 
 div.clearboth {
@@ -239,12 +252,12 @@ body.iweb > div.iweb-viewer {
     padding: 0px;
     margin: 0px;
     overflow: hidden;
-    box-shadow: 0px -10px 10px #e6e6e6;
+    box-shadow: 0px -10px 10px var(--color-lightgray);
 }
 
 div.iweb-processing {
     position: fixed;
-    background-color: #fff;
+    background-color: var(--color-white);
     top: 0px;
     left: 0px;
     width: 100%;
@@ -268,7 +281,7 @@ div.iweb-processing > div.loading > svg {
 }
 
 div.iweb-processing > div.loading > svg > circle {
-    stroke: #66cdaa;
+    stroke: var(--color-base);
 }
 
 div.iweb-editor {
@@ -298,7 +311,7 @@ div.iweb-editor img.right {
 
 div.iweb-editor hr {
     border: 0px;
-    border-top: 1px solid #e6e6e6;
+    border-top: 1px solid var(--color-lightgray);
 }
 
 div.iweb-editor:before,
@@ -328,7 +341,7 @@ div.iweb-autocomplete small.tips,
 div.iweb-input small.tips {
     position: relative;
     display: block;
-    color: #ef4130;
+    color: var(--color-red);
     padding-top: 4px;
 }
 
@@ -339,7 +352,7 @@ div.iweb-selector {
 div.iweb-selector small.tips {
     position: relative;
     display: block;
-    color: #ef4130;
+    color: var(--color-red);
     padding-top: 4px;
 }
 
@@ -353,7 +366,7 @@ div.iweb-selector > div.virtual:before {
     right: 13px;
     padding: 3px;
     margin-top: -6px;
-    border-color: #2b2b2b;
+    border-color: var(--color-black);
     border-style: solid;
     border-width: 0px 2px 2px 0px;
     -webkit-transform: rotate(45deg);
@@ -396,7 +409,7 @@ div.iweb-selector > div.real:before {
     right: 13px;
     padding: 3px;
     margin-top: -6px;
-    border-color: #2b2b2b;
+    border-color: var(--color-black);
     border-style: solid;
     border-width: 0px 2px 2px 0px;
     -webkit-transform: rotate(45deg);
@@ -421,7 +434,7 @@ div.iweb-selector > div.real > select {
     padding-left: 12px;
     padding-right: 28px;
     padding-bottom: 6px;
-    border: 2px solid #e6e6e6;
+    border: 2px solid var(--color-lightgray);
     border-radius: 4px;
     text-overflow: ellipsis;
     -webkit-appearance: none;
@@ -436,7 +449,7 @@ div.iweb-selector > div.real > select::-ms-expand {
 
 div.iweb-selector > div.virtual {
     position: relative;
-    border: 2px solid #e6e6e6;
+    border: 2px solid var(--color-lightgray);
     border-radius: 4px;
 }
 
@@ -462,14 +475,14 @@ div.iweb-selector > div.virtual > div.result > a {
 
 div.iweb-selector > div.virtual > div.options > ul {
     position: absolute;
-    background-color: #fff;
+    background-color: var(--color-white);
     display: none;
     list-style: none;
     top: 100%;
     left: -1px;
     right: -1px;
     max-height: 240px;
-    border: 2px solid #e6e6e6;
+    border: 2px solid var(--color-lightgray);
     border-bottom-left-radius: 4px;
     border-bottom-right-radius: 4px;
     overflow: auto;
@@ -520,13 +533,13 @@ div.iweb-selector-multiple > div.virtual > div.options ul > li.node-parent > a {
 
 div.iweb-selector-multiple > div.virtual > div.options ul > li > a:before {
     position: absolute;
-    background-color: #fff;
-    content: "";
+    background-color: var(--color-white);
+    content: '';
     top: 50%;
     left: 10px;
     width: 18px;
     height: 18px;
-    border: 2px solid #e6e6e6;
+    border: 2px solid var(--color-lightgray);
     border-radius: 4px;
     margin-top: -9px;
 }
@@ -539,20 +552,20 @@ div.iweb-selector-multiple > div.virtual > div.options ul > li.node-parent > a:b
     width: 15px;
     height: 0px;
     left: 12px;
-    border: 1px solid #e6e6e6;
+    border: 1px solid var(--color-lightgray);
     margin-top: -1px;
 }
 
 div.iweb-selector > div.virtual > div.options ul > li > a:hover {
-    background: #66cdaa;
-    color: #fff;
+    background: var(--color-base);
+    color: var(--color-white);
 }
 
 div.iweb-selector-multiple > div.virtual > div.options ul > li.node-selected > a:after {
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
     content: "✔";
-    color: #66cdaa;
+    color: var(--color-base);
     font-size: 16px;
     font-weight: bold;
     height: 18px;
@@ -582,6 +595,7 @@ div.iweb-selector-multiple > div.virtual > div.options > ul > li > ul > li > a {
 div.iweb-checkbox {
     position: relative;
     display: inline-block;
+    padding: 4px 20px;
     vertical-align: middle;
 }
 
@@ -590,11 +604,12 @@ div.iweb-checkbox label {
 }
 
 div.iweb-checkbox > div.options {
-    position: relative;
-    display: inline-block;
+    position: absolute;
+    display: block;
+    top: 4px;
+    left: 0px;
     width: 18px;
     height: 18px;
-    vertical-align: middle;
     overflow: hidden;
 }
 
@@ -606,13 +621,13 @@ div.iweb-checkbox > div.options > div {
 
 div.iweb-checkbox > div.options > div:before {
     position: absolute;
-    background-color: #fff;
-    content: "";
+    background-color: var(--color-white);
+    content: '';
     width: 100%;
     height: 100%;
     top: 0px;
     left: 0px;
-    border: 2px solid #e6e6e6;
+    border: 2px solid var(--color-lightgray);
     border-radius: 4px;
 }
 
@@ -624,14 +639,14 @@ div.iweb-checkbox > div.options > div.checked:after {
     position: absolute;
     font-family: Arial, Helvetica, sans-serif;
     content: "✔";
-    color: #66cdaa;
+    color: var(--color-base);
     font-size: 16px;
     font-weight: bold;
     height: 18px;
     top: 50%;
     left: 2px;
-    margin-top: -9px;
-    line-height: 18px!important;
+    margin-top: -8px;
+    line-height: 18px !important;
 }
 
 div.iweb-checkbox > div.options > div > input {
@@ -662,66 +677,67 @@ div.iweb-checkbox > div.options > div > a {
 
 div.iweb-checkbox > div.virtual-msg {
     position: relative;
-    display: inline-block;
-    vertical-align: middle;
+    display: block;
+    padding-left: 8px;
 }
 
 div.iweb-checkbox > div.virtual-msg > label {
     display: block;
-    padding-left: 10px;
-    padding-right: 10px;
+    word-break: break-all;
 }
 
 div.iweb-checkbox > div.virtual-msg > label > a {
     text-decoration: underline;
 }
 
-div.iweb-radiobox {
+div.iweb-radio {
     position: relative;
     display: inline-block;
+    padding: 4px 20px;
     vertical-align: middle;
 }
 
-div.iweb-radiobox label {
+div.iweb-radio label {
     cursor: pointer;
 }
 
-div.iweb-radiobox > div.options {
-    position: relative;
-    display: inline-block;
+div.iweb-radio > div.options {
+    position: absolute;
+    display: block;
+    top: 4px;
+    left: 0px;
     width: 18px;
     height: 18px;
-    vertical-align: middle;
     overflow: hidden;
 }
 
-div.iweb-radiobox > div.options > div {
+div.iweb-radio > div.options > div {
     position: relative;
     width: 100%;
     height: 100%;
 }
 
-div.iweb-radiobox > div.options > div:before {
+div.iweb-radio > div.options > div:before {
     position: absolute;
-    background-color: #fff;
-    content: "";
+    background-color: var(--color-white);
+    content: '';
     width: 100%;
     height: 100%;
     top: 0px;
     left: 0px;
-    border: 2px solid #e6e6e6;
+    border: 2px solid var(--color-lightgray);
     border-radius: 50%;
 }
 
-div.iweb-radiobox > div.options > div.error:before {
+div.iweb-radio > div.options > div.error:before {
     border-color: lightpink !important;
 }
 
-div.iweb-radiobox > div.options > div.checked:after {
+div.iweb-radio > div.options > div.checked:after {
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
-    background: #66cdaa;
-    content: "";
+    background: var(--color-base);
+    content: '';
     width: 10px;
     height: 10px;
     top: 4px;
@@ -730,7 +746,7 @@ div.iweb-radiobox > div.options > div.checked:after {
     line-height: normal!important;
 }
 
-div.iweb-radiobox > div.options > div > input {
+div.iweb-radio > div.options > div > input {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -742,7 +758,7 @@ div.iweb-radiobox > div.options > div > input {
     z-index: 1;
 }
 
-div.iweb-radiobox > div.options > div > a {
+div.iweb-radio > div.options > div > a {
     position: absolute;
     display: block;
     top: 2px;
@@ -757,27 +773,26 @@ div.iweb-radiobox > div.options > div > a {
     z-index: 2;
 }
 
-div.iweb-radiobox > div.virtual-msg {
+div.iweb-radio > div.virtual-msg {
     position: relative;
-    display: inline-block;
-    vertical-align: middle;
-}
-
-div.iweb-radiobox > div.virtual-msg > label {
     display: block;
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 8px;
 }
 
-div.iweb-radiobox > div.virtual-msg > label > a {
+div.iweb-radio > div.virtual-msg > label {
+    display: block;
+    word-break: break-all;
+}
+
+div.iweb-radio > div.virtual-msg > label > a {
     text-decoration: underline;
 }
 
 div.iweb-checkbox-set small.tips,
-div.iweb-radiobox-set small.tips {
+div.iweb-radio-set small.tips {
     position: relative;
     display: block;
-    color: #ef4130;
+    color: var(--color-red);
     padding-top: 4px;
 }
 
@@ -792,11 +807,11 @@ div.iweb-autocomplete input[type="text"] {
 
 div.iweb-autocomplete ul {
     position: absolute;
-    background: #fff;
+    background: var(--color-white);
     top: 100%;
     left: 0px;
     right: 0px;
-    border: 2px solid #e6e6e6;
+    border: 2px solid var(--color-lightgray);
     border-top: 0px;
     z-index: 1;
 }
@@ -808,7 +823,7 @@ div.iweb-autocomplete.top ul {
 
 div.iweb-autocomplete ul > li {
     display: block;
-    border-top: 1px dotted #e6e6e6;
+    border-top: 1px dotted var(--color-lightgray);
 }
 
 div.iweb-autocomplete ul > li > a {
@@ -817,7 +832,7 @@ div.iweb-autocomplete ul > li > a {
 }
 
 div.iweb-autocomplete ul > li > a:hover {
-    color: #03b3b2;
+    color: var(--color-base);
 }
 
 div.iweb-autocomplete a.fill-reset {
@@ -888,12 +903,12 @@ div.iweb-alert-dialog > div > div.dialog-content {
 
 div.iweb-alert-dialog > div > div.dialog-content > div {
     position: relative;
-    background-color: #fff;
+    background-color: var(--color-white);
     display: block;
     max-width: 360px;
     margin: auto;
     border-radius: 4px;
-    border-top: 4px solid #66cdaa;
+    border-top: 4px solid var(--color-base);
     overflow: hidden;
 }
 
@@ -911,7 +926,7 @@ div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-close {
     display: block;
     font-weight: bold;
     width: 100%;
-    border-top: 1px solid #e6e6e6;
+    border-top: 1px solid var(--color-lightgray);
 }
 
 div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-yes {
@@ -920,8 +935,8 @@ div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-yes {
     display: inline-block;
     font-weight: bold;
     width: 50%;
-    border-top: 1px solid #e6e6e6;
-    border-right: 1px solid #e6e6e6;
+    border-top: 1px solid var(--color-lightgray);
+    border-right: 1px solid var(--color-lightgray);
     border-radius: 0px;
 }
 
@@ -931,7 +946,7 @@ div.iweb-alert-dialog > div > div.dialog-content > div > button.btn-no {
     display: inline-block;
     font-weight: bold;
     width: 50%;
-    border-top: 1px solid #e6e6e6;
+    border-top: 1px solid var(--color-lightgray);
     border-radius: 0px;
 }
 
@@ -979,7 +994,7 @@ div.iweb-info-dialog > div > div.dialog-loading  > svg {
 }
 
 div.iweb-info-dialog > div > div.dialog-loading  > svg > circle {
-    stroke: #fff;
+    stroke: var(--color-white);
 }
 
 div.iweb-info-dialog > div > div.dialog-mask {
@@ -1008,7 +1023,7 @@ div.iweb-info-dialog > div > div.dialog-content {
 
 div.iweb-info-dialog > div > div.dialog-content > a.btn-close {
     position: absolute;
-    background-color: #fff;
+    background-color: var(--color-white);
     display: inline-block;
     width: 30px;
     height: 30px;
@@ -1031,7 +1046,7 @@ div.iweb-info-dialog > div > div.dialog-content > a.btn-close > div {
 
 div.iweb-info-dialog > div > div.dialog-content > a.btn-close > div:before {
     position: absolute;
-    background: #2b2b2b;
+    background: var(--color-black);
     content: '';
     width: 100%;
     height: 2px;
@@ -1044,7 +1059,7 @@ div.iweb-info-dialog > div > div.dialog-content > a.btn-close > div:before {
 
 div.iweb-info-dialog > div > div.dialog-content > a.btn-close > div:after {
     position: absolute;
-    background: #2b2b2b;
+    background: var(--color-black);
     content: '';
     width: 100%;
     height: 2px;
@@ -1057,7 +1072,7 @@ div.iweb-info-dialog > div > div.dialog-content > a.btn-close > div:after {
 
 div.iweb-info-dialog > div > div.dialog-content > div {
     position: relative;
-    background-color: #fff;
+    background-color: var(--color-white);
     min-height: 120px;
     border-radius: 4px;
     padding: 20px;
@@ -1094,13 +1109,13 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action {
     text-align: right;
     padding-bottom: 10px;
     margin-bottom: 10px;
-    border-bottom: 1px solid #e6e6e6;
+    border-bottom: 1px solid var(--color-lightgray);
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button {
     display: inline-block;
-    background: #66cdaa;
-    color: #fff;
+    background: var(--color-base);
+    color: var(--color-white);
     width: 36px;
     height: 36px;
     padding: 6px;
@@ -1109,12 +1124,12 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > bu
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.close {
-    background: #ef4130;
+    background: var(--color-red);
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button > i {
     display: inline-block;
-    color: #fff;
+    color: var(--color-white);
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list {
@@ -1127,7 +1142,7 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.
     display: block;
     padding: 8px;
     margin-top: 10px;
-    border: 1px solid #e6e6e6;
+    border: 1px solid var(--color-lightgray);
     border-radius: 4px;
     box-shadow: 0px 0px 8px rgba(43, 43, 43, 0.15);
 }
@@ -1147,7 +1162,7 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.start > i {
-    color: #66cdaa;
+    color: var(--color-base);
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.remove {
@@ -1161,15 +1176,15 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.remove > i {
-    color: #ef4130;
+    color: var(--color-red);
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.photo {
     display: inline-block;
-    background: #f6f6f6;
+    background: var(--color-white);
     width: 70px;
     height: 70px;
-    border: 1px solid #e6e6e6;
+    border: 1px solid var(--color-lightgray);
     border-radius: 4px;
     vertical-align: middle;
     text-align: center;
@@ -1208,7 +1223,7 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.info > div.tips > small {
-    color: #ef4130;
+    color: var(--color-red);
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.info > div.progress-bar {
@@ -1217,14 +1232,14 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.
     width: 100%;
     height: 8px;
     margin-top: 4px;
-    border: 1px solid #e6e6e6;
+    border: 1px solid var(--color-lightgray);
     border-radius: 4px;
     overflow: hidden;
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.info > div.progress-bar > div.percent {
     position: absolute;
-    background: #66cdaa;
+    background: var(--color-base);
     top: 0px;
     left: 0px;
     width: 0px;
@@ -1252,17 +1267,17 @@ div.iweb-pagination > ul > li > a {
     position: relative;
     display: block;
     text-align: center;
-    border: 1px solid #e6e6e6;
+    border: 1px solid var(--color-lightgray);
     padding: 2px;
-    color: #2b2b2b;
+    color: var(--color-black);
     min-width: 28px;
     height: 28px;
     border-radius: 4px;
 }
 
 div.iweb-pagination > ul > li > a.current {
-    background: #66cdaa;
-    color: #fff;
+    background: var(--color-base);
+    color: var(--color-white);
 }
 
 div.iweb-pagination > ul > li > a > span {
@@ -1271,7 +1286,7 @@ div.iweb-pagination > ul > li > a > span {
 
 div.iweb-pagination > ul > li > a > i {
     position: absolute;
-    border-color: #2b2b2b;
+    border-color: var(--color-black);
     border-style: solid;
     border-width: 0px 1px 1px 0px;
     display: inline-block;
@@ -1326,7 +1341,7 @@ div.iweb-pagination > ul > li > a:hover {
 div.iweb-pagination input[type="text"] {
     width: 46px;
     height: 28px;
-    border: 1px solid #e6e6e6;
+    border: 1px solid var(--color-lightgray);
     padding: 3px 6px;
     text-align: center;
 }
@@ -1409,8 +1424,7 @@ div.iweb-tips-message > div > span {
 }
 
 .iscroll-textarea {
-    border: 1px solid #e6e6e6;
-    border-top-color: #999999;
+    border: 1px solid var(--color-lightgray);
 }
 
 .iscroll-textarea > .iscroll-content {
@@ -1476,19 +1490,19 @@ div.iweb-tips-message > div > span {
 }
 
 .iscroll-inner > .iscroll-element .iscroll-element-track {
-    background-color: #e6e6e6;
+    background-color: var(--color-lightgray);
 }
 
 .iscroll-inner > .iscroll-element .iscroll-bar {
-    background-color: #66cdaa;
+    background-color: var(--color-base);
 }
 
 .iscroll-inner > .iscroll-element:hover .iscroll-bar {
-    background-color: #66cdaa;
+    background-color: var(--color-base);
 }
 
 .iscroll-inner > .iscroll-element.iscroll-draggable .iscroll-bar {
-    background-color: #66cdaa;
+    background-color: var(--color-base);
 }
 
 .iscroll-inner > .iscroll-element.scroll-x.iscroll-visible
@@ -1522,7 +1536,7 @@ div.iweb-tips-message > div > span {
 }
 
 .iscroll-outer > .iscroll-element {
-    background-color: #ffffff;
+    background-color: var(--color-white)fff;
 }
 
 .iscroll-outer > .iscroll-element div {
@@ -1562,7 +1576,7 @@ div.iweb-tips-message > div > span {
 }
 
 .iscroll-outer > .iscroll-element .iscroll-element-track {
-    background-color: #e6e6e6;
+    background-color: var(--color-lightgray);
 }
 
 .iscroll-outer > .iscroll-element .iscroll-element-outer,
@@ -1572,15 +1586,15 @@ div.iweb-tips-message > div > span {
 }
 
 .iscroll-outer > .iscroll-element .iscroll-bar {
-    background-color: #66cdaa;
+    background-color: var(--color-base);
 }
 
 .iscroll-outer > .iscroll-element .iscroll-bar:hover {
-    background-color: #66cdaa;
+    background-color: var(--color-base);
 }
 
 .iscroll-outer > .iscroll-element.iscroll-draggable .iscroll-bar {
-    background-color: #66cdaa;
+    background-color: var(--color-base);
 }
 
 .iscroll-outer > .iscroll-content.iscroll-visible {
@@ -1643,7 +1657,7 @@ div.iweb-tips-message > div > span {
 }
 
 .iscroll-macosx > .iscroll-element .iscroll-bar {
-    background-color: #66cdaa;
+    background-color: var(--color-base);
     display: block;
     border-radius: 0px;
     opacity: 0;
