@@ -1,8 +1,8 @@
 :root {
     --background-color: #fff8f2;
-    --color-base: #66cdaa;
-    --color-green: #29a29a;
-    --color-red: #ef4130;
+    --color-base: #7ac943;
+    --color-green: #53a93f;
+    --color-red: #d73d32;
     --color-yellow: #fda525;
     --color-blue: #2ca4e9;
     --color-white: #fff;
@@ -167,7 +167,7 @@ input[type="date"].error,
 input[type="email"].error,
 input[type="number"].error,
 textarea.error {
-    border-color: lightpink!important;
+    border-color: var(--color-lightpink)!important;
 }
 
 select {
@@ -177,7 +177,7 @@ select {
 }
 
 select.error {
-    border-color: lightpink!important;
+    border-color: var(--color-lightpink)!important;
 }
 
 button {
@@ -325,8 +325,7 @@ div.iweb-editor:after {
 
 div.iweb-input {
     position: relative;
-    display: inline-block;
-    vertical-align: top;
+    display: block;
 }
 
 div.iweb-autocomplete div.iweb-input {
@@ -347,6 +346,7 @@ div.iweb-input small.tips {
 
 div.iweb-selector {
     position: relative;
+    display: block;
 }
 
 div.iweb-selector small.tips {
@@ -383,7 +383,7 @@ div.iweb-selector.show > div.virtual:before {
 }
 
 div.iweb-selector > div.virtual.error {
-    border-color: lightpink!important;
+    border-color: var(--color-lightpink)!important;
 }
 
 div.iweb-selector * {
@@ -515,7 +515,6 @@ div.iweb-selector > div.virtual > div.options ul > li > a {
     position: relative;
     display: block;
     width: 100%;
-    height: 36px;
     line-height: 20px;
     padding-top: 8px;
     padding-left: 12px;
@@ -632,7 +631,7 @@ div.iweb-checkbox > div.options > div:before {
 }
 
 div.iweb-checkbox > div.options > div.error:before {
-    border-color: lightpink !important;
+    border-color: var(--color-lightpink) !important;
 }
 
 div.iweb-checkbox > div.options > div.checked:after {
@@ -730,7 +729,7 @@ div.iweb-radio > div.options > div:before {
 }
 
 div.iweb-radio > div.options > div.error:before {
-    border-color: lightpink !important;
+    border-color: var(--color-lightpink) !important;
 }
 
 div.iweb-radio > div.options > div.checked:after {
@@ -1089,6 +1088,16 @@ div.iweb-info-dialog > div > div.dialog-content > div:after {
     width: 100%;
 }
 
+div.iweb-info-dialog.uploader.busy:before {
+    position: absolute;
+    content: '';
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
 div.iweb-info-dialog.uploader > div > div.dialog-mask {
     display: none;
 }
@@ -1116,8 +1125,8 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > bu
     display: inline-block;
     background: var(--color-base);
     color: var(--color-white);
-    width: 36px;
-    height: 36px;
+    width: 32px;
+    height: 32px;
     padding: 6px;
     margin-left: 6px;
     vertical-align: middle;
@@ -1144,7 +1153,7 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.
     margin-top: 10px;
     border: 1px solid var(--color-lightgray);
     border-radius: 4px;
-    box-shadow: 0px 0px 8px rgba(43, 43, 43, 0.15);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item:nth-child(1) {
@@ -1216,7 +1225,8 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.info {
     display: inline-block;
     width: calc(100% - 70px);
-    padding: 10px 0px 10px 10px;
+    padding: 0px 10px;
+    font-size: 13px;
     font-weight: bold;
     line-height: 1.5;
     vertical-align: middle;
@@ -1238,6 +1248,194 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.info > div.progress-bar > div.percent {
+    position: absolute;
+    background: var(--color-base);
+    top: 0px;
+    left: 0px;
+    width: 0px;
+    height: 8px;
+}
+
+div.iweb-files-dropzone {
+    position: relative;
+    width: 100%;
+    min-height: 180px;
+    border: 2px solid var(--color-lightgray);
+    border-radius: 4px;
+}
+
+
+div.iweb-files-dropzone:before {
+    position: absolute;
+    content: url('data:image/x-icon;base64,iVBORw0KGgoAAAANSUhEUgAAACgAAAAoCAMAAAC7IEhfAAAAAXNSR0IB2cksfwAAAAlwSFlzAAAR/gAAEf4Bk4/8wwAAASBQTFRFAAAAG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6ruG6rux40VVgAAAGB0Uk5TAAATVpawm2EZJez/86w3Uvb6cQR+XvmDL3+fnnUnASDw/DJLxvu4q7du/Stq/nIa8p2CswLjshxfQNqS30f0zRHVSBDn7SMp6IlmitSj99sK+NLchsoO5T/LBzp8onBvSCZdFAAAAXFJREFUeJxjZCASMI4qRIiCAIj8+R+vQs6/LIwwDZ/wKORn/A1nszEyvsWlUOQ7Cvf3L+wKGUUYv6KK8LxEUSjMyggFr9G0ijHeQyiUAyp7BqS5BRifYLhF9uZ/uEJNxoeYjoUDhaswhTpg03EC5UtQhfqMt/GpY1A7D1VodBOvOgaNsxCFJozXUMS5GdACSPsURKH5FRRhJaBCVCdDrbZkvIgibHCUwfoCiojhpU9AhbaMZ1FETRgPMDgwnkIRM2bZx+jMeBxFzIpxF5B0/3cMRdT2B6PnIVSH228DU14HUYUdGH32owg4bYEkVUaffSjijox+e5H5LowboKyA/3uQJdxQFXL/EHgMNVH2AwdyaDozBu1E4spr/tn6B8xi8Wa5jpxO3BlDtqO62ms1mArdhirsyRjGuIUIhT7/GRkidvwmqJDVYwUoChWu3MOrUEln6ydwoohiZNzvBBNlXASm4v/BBPY5/v+/bBAWUoNLIQATnWCblVfvMAAAAABJRU5ErkJggg==');
+    width: 40px;
+    height: 40px;
+    top: 50%;
+    left: 50%;
+    margin-top: -20px;
+    margin-left: -20px;
+}
+
+div.iweb-files-dropzone input[type="file"] {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+    cursor: pointer;
+}
+
+div.iweb-files-uploader {
+    position: relative;
+    background: var(--color-white);
+    padding: 10px;
+}
+
+div.iweb-files-uploader.busy:before {
+    position: absolute;
+    content: '';
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+
+div.iweb-files-uploader > div.action {
+    position: relative;
+    text-align: right;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--color-lightgray);
+}
+
+div.iweb-files-uploader > div.action > button {
+    display: inline-block;
+    background: var(--color-base);
+    color: var(--color-white);
+    width: 32px;
+    height: 32px;
+    padding: 6px;
+    margin-left: 6px;
+    vertical-align: middle;
+}
+
+div.iweb-files-uploader > div.action > button.close {
+    background: var(--color-red);
+}
+
+div.iweb-files-uploader > div.action > button > i {
+    display: inline-block;
+    color: var(--color-white);
+}
+
+div.iweb-files-uploader > div.list {
+    position: relative;
+    min-height: 100px;
+}
+
+div.iweb-files-uploader > div.list > div.item {
+    position: relative;
+    display: block;
+    padding: 8px;
+    margin-top: 10px;
+    border: 1px solid var(--color-lightgray);
+    border-radius: 4px;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+}
+
+div.iweb-files-uploader > div.list > div.item:nth-child(1) {
+    margin-top: 0px;
+}
+
+div.iweb-files-uploader > div.list > div.item > button.start {
+    position: absolute;
+    background: transparent;
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    top: 0px;
+    right: 28px;
+}
+
+div.iweb-files-uploader > div.list > div.item > button.start > i {
+    color: var(--color-base);
+}
+
+div.iweb-files-uploader > div.list > div.item > button.remove {
+    position: absolute;
+    background: transparent;
+    width: 28px;
+    height: 28px;
+    padding: 4px;
+    top: 0px;
+    right: 0px;
+}
+
+div.iweb-files-uploader > div.list > div.item > button.remove > i {
+    color: var(--color-red);
+}
+
+div.iweb-files-uploader > div.list > div.item > div.photo {
+    display: inline-block;
+    background: var(--color-white);
+    width: 70px;
+    height: 70px;
+    border: 1px solid var(--color-lightgray);
+    border-radius: 4px;
+    vertical-align: middle;
+    text-align: center;
+}
+
+div.iweb-files-uploader > div.list > div.item > div.photo:before {
+    display: inline-block;
+    content: '';
+    width: 0px;
+    height: 100%;
+    vertical-align: middle;
+}
+
+div.iweb-files-uploader > div.list > div.item > div.photo > img {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+div.iweb-files-uploader > div.list > div.item > div.photo > i {
+    display: inline-block;
+    font-size: 50px;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    vertical-align: middle;
+}
+
+div.iweb-files-uploader > div.list > div.item > div.info {
+    display: inline-block;
+    width: calc(100% - 70px);
+    padding: 0px 10px;
+    font-size: 13px;
+    font-weight: bold;
+    line-height: 1.5;
+    vertical-align: middle;
+}
+
+div.iweb-files-uploader > div.list > div.item > div.info > div.tips > small {
+    color: var(--color-red);
+}
+
+div.iweb-files-uploader > div.list > div.item > div.info > div.progress-bar {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: 8px;
+    margin-top: 4px;
+    border: 1px solid var(--color-lightgray);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+div.iweb-files-uploader > div.list > div.item > div.info > div.progress-bar > div.percent {
     position: absolute;
     background: var(--color-base);
     top: 0px;
@@ -1268,7 +1466,7 @@ div.iweb-pagination > ul > li > a {
     display: block;
     text-align: center;
     border: 1px solid var(--color-lightgray);
-    padding: 2px;
+    padding: 4px;
     color: var(--color-black);
     min-width: 28px;
     height: 28px;
@@ -1281,7 +1479,8 @@ div.iweb-pagination > ul > li > a.current {
 }
 
 div.iweb-pagination > ul > li > a > span {
-    line-height: 22px;
+    display: block;
+    line-height: 20px;
 }
 
 div.iweb-pagination > ul > li > a > i {
@@ -1383,20 +1582,20 @@ div.iweb-tips-message > div > span {
     line-height: 24px;
 }
 
-.iscroll {
+div.iscroll {
     position: relative;
     padding: 0px !important;
     margin: 0px !important;
     overflow: hidden !important;
 }
 
-.iscroll > .iscroll-content {
+div.iscroll > div.iscroll-content {
     position: relative !important;
     width: auto !important;
     height: auto;
     top: 0px;
     left: 0px;
-    padding: 0px;
+    padding: 8px;
     margin: 0px;
     max-height: none;
     max-width: none !important;
@@ -1404,34 +1603,34 @@ div.iweb-tips-message > div > span {
     overflow: auto !important;
 }
 
-.iscroll > .iscroll-content::-webkit-scrollbar {
+div.iscroll > div.iscroll-content::-webkit-scrollbar {
     height: 0px;
     width: 0px;
 }
 
-.iscroll-element {
+div.iscroll-element {
     display: none;
 }
 
-.iscroll-element.scroll-x.iscroll-scrollx-visible,
-.iscroll-element.scroll-y.iscroll-scrolly-visible {
+div.iscroll-element.scroll-x.iscroll-scrollx-visible,
+div.iscroll-element.scroll-y.iscroll-scrolly-visible {
     display: block;
 }
 
-.iscroll-element .iscroll-bar,
-.iscroll-element .iscroll-arrow {
+div.iscroll-element div.iscroll-bar,
+div.iscroll-element div.iscroll-arrow {
     cursor: default;
 }
 
-.iscroll-textarea {
+div.iscroll-textarea {
     border: 1px solid var(--color-lightgray);
 }
 
-.iscroll-textarea > .iscroll-content {
+div.iscroll-textarea > div.iscroll-content {
     overflow: hidden !important;
 }
 
-.iscroll-textarea > .iscroll-content > textarea {
+div.iscroll-textarea > div.iscroll-content > textarea {
     position: relative !important;
     border: none !important;
     width: 100% !important;
@@ -1443,199 +1642,197 @@ div.iweb-tips-message > div > span {
     overflow: auto !important;
 }
 
-.iscroll-textarea > .iscroll-content > textarea::-webkit-scrollbar {
+div.iscroll-textarea > div.iscroll-content > textarea::-webkit-scrollbar {
     height: 0px;
     width: 0px;
 }
 
-.iscroll-inner > .iscroll-element,
-.iscroll-inner > .iscroll-element div {
+div.iscroll-inner > div.iscroll-element,
+div.iscroll-inner > div.iscroll-element div {
     border: none;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     position: absolute;
     z-index: 10;
 }
 
-.iscroll-inner > .iscroll-element div {
+div.iscroll-inner > div.iscroll-element div {
     display: block;
     height: 100%;
-    left: 0;
-    top: 0;
+    left: 0px;
+    top: 0px;
     width: 100%;
 }
 
-.iscroll-inner > .iscroll-element.scroll-x {
+div.iscroll-inner > div.iscroll-element.scroll-x {
     bottom: 2px;
     height: 6px;
-    left: 0;
+    left: 0px;
     width: 100%;
 }
 
-.iscroll-inner > .iscroll-element.scroll-y {
+div.iscroll-inner > div.iscroll-element.scroll-y {
     height: 100%;
     right: 2px;
-    top: 0;
+    top: 0px;
     width: 6px;
 }
 
-.iscroll-inner > .iscroll-element .iscroll-element-outer {
+div.iscroll-inner > div.iscroll-element div.iscroll-element-outer {
     overflow: hidden;
 }
 
-.iscroll-inner > .iscroll-element .iscroll-element-outer,
-.iscroll-inner > .iscroll-element .iscroll-element-track,
-.iscroll-inner > .iscroll-element .iscroll-bar {
+div.iscroll-inner > div.iscroll-element div.iscroll-element-outer,
+div.iscroll-inner > div.iscroll-element div.iscroll-element-track,
+div.iscroll-inner > div.iscroll-element div.iscroll-bar {
     border-radius: 0px;
 }
 
-.iscroll-inner > .iscroll-element .iscroll-element-track {
+div.iscroll-inner > div.iscroll-element div.iscroll-element-track {
     background-color: var(--color-lightgray);
 }
 
-.iscroll-inner > .iscroll-element .iscroll-bar {
+div.iscroll-inner > div.iscroll-element div.iscroll-bar {
     background-color: var(--color-base);
 }
 
-.iscroll-inner > .iscroll-element:hover .iscroll-bar {
+div.iscroll-inner > div.iscroll-element:hover div.iscroll-bar {
     background-color: var(--color-base);
 }
 
-.iscroll-inner > .iscroll-element.iscroll-draggable .iscroll-bar {
+div.iscroll-inner > div.iscroll-element.iscroll-draggable div.iscroll-bar {
     background-color: var(--color-base);
 }
 
-.iscroll-inner > .iscroll-element.scroll-x.iscroll-visible
+div.iscroll-inner > div.iscroll-element.scroll-x.iscroll-visible
     .iscroll-element-track {
     left: -6px;
 }
 
-.iscroll-inner > .iscroll-element.scroll-y.iscroll-scrollx-visible
+div.iscroll-inner > div.iscroll-element.scroll-y.iscroll-scrollx-visible
     .iscroll-element-track {
     top: -6px;
 }
 
-.iscroll-inner > .iscroll-element.scroll-x.iscroll-visible
+div.iscroll-inner > div.iscroll-element.scroll-x.iscroll-visible
     .iscroll-element-size {
     left: -6px;
 }
 
-.iscroll-inner > .iscroll-element.scroll-y.iscroll-scrollx-visible
+div.iscroll-inner > div.iscroll-element.scroll-y.iscroll-scrollx-visible
     .iscroll-element-size {
     top: -6px;
 }
 
-.iscroll-outer > .iscroll-element,
-.iscroll-outer > .iscroll-element div {
+div.iscroll-outer > div.iscroll-element,
+div.iscroll-outer > div.iscroll-element div {
     position: absolute;
     border: none;
-    margin: 0;
-    padding: 0;
+    margin: 0px;
+    padding: 0px;
     border-radius: 0px;
     z-index: 200;
 }
 
-.iscroll-outer > .iscroll-element {
-    background-color: var(--color-white)fff;
+div.iscroll-outer > div.iscroll-element {
+    background-color: var(--color-white);
 }
 
-.iscroll-outer > .iscroll-element div {
+div.iscroll-outer > div.iscroll-element div {
     display: block;
     height: 100%;
-    left: 0;
-    top: 0;
+    left: 0px;
+    top: 0px;
     width: 100%;
 }
 
-.iscroll-outer > .iscroll-element.scroll-x {
-    bottom: 0;
+div.iscroll-outer > div.iscroll-element.scroll-x {
+    bottom: 0px;
     height: 6px;
-    left: 0;
+    left: 0px;
     width: 100%;
 }
 
-.iscroll-outer > .iscroll-element.scroll-y {
+div.iscroll-outer > div.iscroll-element.scroll-y {
     height: 100%;
-    right: 0;
-    top: 0;
+    right: 0px;
+    top: 0px;
     width: 6px;
 }
 
-.iscroll-outer > .iscroll-element.scroll-x .iscroll-element-outer {
+div.iscroll-outer > div.iscroll-element.scroll-x div.iscroll-element-outer {
     height: 6px;
     top: 2px;
 }
 
-.iscroll-outer > .iscroll-element.scroll-y .iscroll-element-outer {
+div.iscroll-outer > div.iscroll-element.scroll-y div.iscroll-element-outer {
     left: 0px;
     width: 6px;
 }
 
-.iscroll-outer > .iscroll-element .iscroll-element-outer {
+div.iscroll-outer > div.iscroll-element div.iscroll-element-outer {
     overflow: hidden;
 }
 
-.iscroll-outer > .iscroll-element .iscroll-element-track {
+div.iscroll-outer > div.iscroll-element div.iscroll-element-track {
     background-color: var(--color-lightgray);
 }
 
-.iscroll-outer > .iscroll-element .iscroll-element-outer,
-.iscroll-outer > .iscroll-element .iscroll-element-track,
-.iscroll-outer > .iscroll-element .iscroll-bar {
+div.iscroll-outer > div.iscroll-element div.iscroll-element-outer,
+div.iscroll-outer > div.iscroll-element div.iscroll-element-track,
+div.iscroll-outer > div.iscroll-element div.iscroll-bar {
     border-radius: 0px;
 }
 
-.iscroll-outer > .iscroll-element .iscroll-bar {
+div.iscroll-outer > div.iscroll-element div.iscroll-bar {
     background-color: var(--color-base);
 }
 
-.iscroll-outer > .iscroll-element .iscroll-bar:hover {
+div.iscroll-outer > div.iscroll-element div.iscroll-bar:hover {
     background-color: var(--color-base);
 }
 
-.iscroll-outer > .iscroll-element.iscroll-draggable .iscroll-bar {
+div.iscroll-outer > div.iscroll-element.iscroll-draggable div.iscroll-bar {
     background-color: var(--color-base);
 }
 
-.iscroll-outer > .iscroll-content.iscroll-visible {
+div.iscroll-outer > div.iscroll-content.iscroll-visible {
     left: -6px;
     margin-left: 6px;
 }
 
-.iscroll-outer > .iscroll-content.iscroll-scrollx-visible {
+div.iscroll-outer > div.iscroll-content.iscroll-scrollx-visible {
     top: -6px;
     margin-top: 6px;
 }
 
-.iscroll-outer > .iscroll-element.scroll-x .iscroll-bar {
+div.iscroll-outer > div.iscroll-element.scroll-x div.iscroll-bar {
     min-width: 10px;
 }
 
-.iscroll-outer > .iscroll-element.scroll-y .iscroll-bar {
+div.iscroll-outer > div.iscroll-element.scroll-y div.iscroll-bar {
     min-height: 10px;
 }
 
-.iscroll-outer > .iscroll-element.scroll-x.iscroll-visible
-    .iscroll-element-track {
+div.iscroll-outer > div.iscroll-element.scroll-x.iscroll-visible div.iscroll-element-track {
     left: -14px;
 }
 
-.iscroll-outer > .iscroll-element.scroll-y.iscroll-scrollx-visible
-    .iscroll-element-track {
+div.iscroll-outer > div.iscroll-element.scroll-y.iscroll-scrollx-visible div.iscroll-element-track {
     top: -14px;
 }
 
-.iscroll-outer > .iscroll-element.scroll-x.iscroll-visible
+div.iscroll-outer > div.iscroll-element.scroll-x.iscroll-visible
     .iscroll-element-size {
     left: -14px;
 }
 
-.iscroll-outer > .iscroll-element.scroll-y.iscroll-scrollx-visible .iscroll-element-size {
+div.iscroll-outer > div.iscroll-element.scroll-y.iscroll-scrollx-visible div.iscroll-element-size {
     top: -14px;
 }
 
-.iscroll-macosx > .iscroll-element,
-.iscroll-macosx > .iscroll-element div {
+div.iscroll-macosx > div.iscroll-element,
+div.iscroll-macosx > div.iscroll-element div {
     position: absolute;
     background: none;
     border: none;
@@ -1644,19 +1841,19 @@ div.iweb-tips-message > div > span {
     z-index: 200;
 }
 
-.iscroll-macosx > .iscroll-element div {
+div.iscroll-macosx > div.iscroll-element div {
     display: block;
     height: 100%;
-    left: 0;
-    top: 0;
+    left: 0px;
+    top: 0px;
     width: 100%;
 }
 
-.iscroll-macosx > .iscroll-element .iscroll-element-track {
+div.iscroll-macosx > div.iscroll-element div.iscroll-element-track {
     display: none;
 }
 
-.iscroll-macosx > .iscroll-element .iscroll-bar {
+div.iscroll-macosx > div.iscroll-element div.iscroll-bar {
     background-color: var(--color-base);
     display: block;
     border-radius: 0px;
@@ -1666,62 +1863,62 @@ div.iweb-tips-message > div > span {
     transition: opacity 0.2s linear;
 }
 
-.iscroll-macosx:hover > .iscroll-element .iscroll-bar,
-.iscroll-macosx > .iscroll-element.iscroll-draggable .iscroll-bar {
+div.iscroll-macosx:hover > div.iscroll-element div.iscroll-bar,
+div.iscroll-macosx > div.iscroll-element.iscroll-draggable div.iscroll-bar {
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)";
     filter: alpha(opacity=100);
     opacity: 1;
 }
 
-.iscroll-macosx > .iscroll-element.scroll-x {
+div.iscroll-macosx > div.iscroll-element.scroll-x {
     bottom: 0px;
     height: 0px;
-    left: 0;
+    left: 0px;
     min-width: 100%;
     overflow: visible;
     width: 100%;
 }
 
-.iscroll-macosx > .iscroll-element.scroll-y {
+div.iscroll-macosx > div.iscroll-element.scroll-y {
     height: 100%;
     min-height: 100%;
     right: 0px;
-    top: 0;
+    top: 0px;
     width: 0px;
 }
 
-.iscroll-macosx > .iscroll-element.scroll-x .iscroll-bar {
+div.iscroll-macosx > div.iscroll-element.scroll-x div.iscroll-bar {
     height: 6px;
     min-width: 10px;
     top: -8px;
 }
 
-.iscroll-macosx > .iscroll-element.scroll-y .iscroll-bar {
+div.iscroll-macosx > div.iscroll-element.scroll-y div.iscroll-bar {
     left: -8px;
     min-height: 10px;
     width: 6px;
 }
 
-.iscroll-macosx > .iscroll-element.scroll-x .iscroll-element-outer {
+div.iscroll-macosx > div.iscroll-element.scroll-x div.iscroll-element-outer {
     left: 2px;
 }
 
-.iscroll-macosx > .iscroll-element.scroll-x .iscroll-element-size {
+div.iscroll-macosx > div.iscroll-element.scroll-x div.iscroll-element-size {
     left: -4px;
 }
 
-.iscroll-macosx > .iscroll-element.scroll-y .iscroll-element-outer {
+div.iscroll-macosx > div.iscroll-element.scroll-y div.iscroll-element-outer {
     top: 2px;
 }
 
-.iscroll-macosx > .iscroll-element.scroll-y .iscroll-element-size {
+div.iscroll-macosx > div.iscroll-element.scroll-y div.iscroll-element-size {
     top: -4px;
 }
 
-.iscroll-macosx > .iscroll-element.scroll-x.iscroll-visible .iscroll-element-size {
+div.iscroll-macosx > div.iscroll-element.scroll-x.iscroll-visible div.iscroll-element-size {
     left: -11px;
 }
 
-.iscroll-macosx > .iscroll-element.scroll-y.iscroll-scrollx-visible .iscroll-element-size {
+div.iscroll-macosx > div.iscroll-element.scroll-y.iscroll-scrollx-visible div.iscroll-element-size {
     top: -11px;
 }
