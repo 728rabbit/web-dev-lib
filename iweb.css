@@ -1225,11 +1225,15 @@ div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.info {
     display: inline-block;
     width: calc(100% - 70px);
-    padding: 0px 10px;
+    padding-left: 10px;
     font-size: 13px;
     font-weight: bold;
     line-height: 1.5;
     vertical-align: middle;
+}
+
+div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.info > div.title {
+    padding-right: 50px;
 }
 
 div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > div.info > div.tips > small {
@@ -1413,11 +1417,15 @@ div.iweb-files-uploader > div.list > div.item > div.photo > i {
 div.iweb-files-uploader > div.list > div.item > div.info {
     display: inline-block;
     width: calc(100% - 70px);
-    padding: 0px 10px;
+    padding-left: 10px;
     font-size: 13px;
     font-weight: bold;
     line-height: 1.5;
     vertical-align: middle;
+}
+
+div.iweb-files-uploader > div.list > div.item > div.info > div.title {
+    padding-right: 50px;
 }
 
 div.iweb-files-uploader > div.list > div.item > div.info > div.tips > small {

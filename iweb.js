@@ -4,88 +4,8 @@
 /* scrollbar */
 !function(l,e){"use strict";"function"==typeof define&&define.amd?define(["jquery"],e):"undefined"!=typeof exports?module.exports=e(require("jquery")):e(jQuery)}(0,function(l){"use strict";var e={data:{index:0,name:"iscroll"},firefox:/firefox/i.test(navigator.userAgent),macosx:/mac/i.test(navigator.platform),msedge:/edge\/\d+/i.test(navigator.userAgent),msie:/(msie|trident)/i.test(navigator.userAgent),mobile:/android|webos|iphone|ipad|ipod|blackberry/i.test(navigator.userAgent),overlay:null,scroll:null,scrolls:[],webkit:/webkit/i.test(navigator.userAgent)&&!/edge\/\d+/i.test(navigator.userAgent)};e.scrolls.add=function(l){this.remove(l).push(l)},e.scrolls.remove=function(e){for(;l.inArray(e,this)>=0;)this.splice(l.inArray(e,this),1);return this};var s={mode:"outer",autoScrollSize:!0,autoUpdate:!0,debug:!1,disableBodyScroll:!1,duration:200,ignoreMobile:!1,ignoreOverlay:!1,isRtl:!1,scrollStep:30,showArrows:!1,stepScrolling:!0,scrollx:null,scrolly:null,onDestroy:null,onFallback:null,onInit:null,onScroll:null,onUpdate:null},o=function(o){var i;e.scroll||(e.overlay=!((i=c(!0)).height||i.width),e.scroll=c(),n(),l(window).resize(function(){var l=!1;if(e.scroll&&(e.scroll.height||e.scroll.width)){var s=c();s.height===e.scroll.height&&s.width===e.scroll.width||(e.scroll=s,l=!0)}n(l)})),this.container=o,this.namespace=".iscroll-"+e.data.index++,this.options=l.extend({},s,window.jQueryiscrollOptions||{}),this.scrollTo=null,this.scrollx={},this.scrolly={},o.data(e.data.name,this),e.scrolls.add(this)};o.prototype={destroy:function(){if(this.wrapper){this.container.removeData(e.data.name),e.scrolls.remove(this);var s=this.container.scrollLeft(),o=this.container.scrollTop();this.container.insertBefore(this.wrapper).css({height:"",margin:"","max-height":""}).removeClass("iscroll-content iscroll-scrollx-visible iscroll-visible").off(this.namespace).scrollLeft(s).scrollTop(o),this.scrollx.scroll.removeClass("iscroll-scrollx-visible").find("div").addBack().off(this.namespace),this.scrolly.scroll.removeClass("iscroll-visible").find("div").addBack().off(this.namespace),this.wrapper.remove(),l(document).add("body").off(this.namespace),l.isFunction(this.options.onDestroy)&&this.options.onDestroy.apply(this,[this.container])}},init:function(s){var o=this,i=this.container,r=this.containerWrapper||i,t=this.namespace,n=l.extend(this.options,s||{}),c={x:this.scrollx,y:this.scrolly},d=this.wrapper,h={},u={scrollLeft:i.scrollLeft(),scrollTop:i.scrollTop()};if(e.mobile&&n.ignoreMobile||e.overlay&&n.ignoreOverlay||e.macosx&&!e.webkit)return l.isFunction(n.onFallback)&&n.onFallback.apply(this,[i]),!1;if(d)(h={height:"auto","margin-bottom":-1*e.scroll.height+"px","max-height":""})[n.isRtl?"margin-left":"margin-right"]=-1*e.scroll.width+"px",r.css(h);else{var f=i.attr("class");if(this.wrapper=d=l("<div>").addClass(f).addClass("iscroll").addClass("iscroll-"+n.mode).css("position","absolute"===i.css("position")?"absolute":"relative").insertBefore(i).append(i),n.isRtl&&d.addClass("iscroll-rtl"),i.is("textarea")&&(this.containerWrapper=r=l("<div>").insertBefore(i).append(i),d.addClass("iscroll-textarea")),(h={height:"auto","margin-bottom":-1*e.scroll.height+"px","max-height":""})[n.isRtl?"margin-left":"margin-right"]=-1*e.scroll.width+"px",r.removeClass(f).addClass("iscroll-content").css(h),i.on("scroll"+t,function(s){var r=i.scrollLeft(),t=i.scrollTop();if(n.isRtl)switch(!0){case e.firefox:r=Math.abs(r);case e.msedge||e.msie:r=i[0].scrollWidth-i[0].clientWidth-r}l.isFunction(n.onScroll)&&n.onScroll.call(o,{maxScroll:c.y.maxScrollOffset,scroll:t,size:c.y.size,visible:c.y.visible},{maxScroll:c.x.maxScrollOffset,scroll:r,size:c.x.size,visible:c.x.visible}),c.x.isVisible&&c.x.scroll.bar.css("left",r*c.x.kx+"px"),c.y.isVisible&&c.y.scroll.bar.css("top",t*c.y.kx+"px")}),d.on("scroll"+t,function(){d.scrollTop(0).scrollLeft(0)}),n.disableBodyScroll){var p=function(l){a(l)?c.y.isVisible&&c.y.mousewheel(l):c.x.isVisible&&c.x.mousewheel(l)};d.on("MozMousePixelScroll"+t,p),d.on("mousewheel"+t,p),e.mobile&&d.on("touchstart"+t,function(e){var s=e.originalEvent.touches&&e.originalEvent.touches[0]||e,o=s.pageX,r=s.pageY,n=i.scrollLeft(),c=i.scrollTop();l(document).on("touchmove"+t,function(l){var e=l.originalEvent.targetTouches&&l.originalEvent.targetTouches[0]||l;i.scrollLeft(n+o-e.pageX),i.scrollTop(c+r-e.pageY),l.preventDefault()}),l(document).on("touchend"+t,function(){l(document).off(t)})})}l.isFunction(n.onInit)&&n.onInit.apply(this,[i])}l.each(c,function(s,r){var d=null,h=1,u="x"===s?"scrollLeft":"scrollTop",f=n.scrollStep,p=function(){var l=i[u]();i[u](l+f),1==h&&l+f>=v&&(l=i[u]()),-1==h&&l+f<=v&&(l=i[u]()),i[u]()==l&&d&&d()},v=0;r.scroll||(r.scroll=o._getScroll(n["scroll"+s]).addClass("scroll-"+s),n.showArrows&&r.scroll.addClass("iscroll-element-arrows-visible"),r.mousewheel=function(l){if(!r.isVisible||"x"===s&&a(l))return!0;if("y"===s&&!a(l))return c.x.mousewheel(l),!0;var e=-1*l.originalEvent.wheelDelta||l.originalEvent.detail,t=r.size-r.visible-r.offset;return e||("x"===s&&l.originalEvent.deltaX?e=40*l.originalEvent.deltaX:"y"===s&&l.originalEvent.deltaY&&(e=40*l.originalEvent.deltaY)),(e>0&&v<t||e<0&&v>0)&&((v +=e)<0&&(v=0),v>t&&(v=t),o.scrollTo=o.scrollTo||{},o.scrollTo[u]=v,setTimeout(function(){o.scrollTo&&(i.stop().animate(o.scrollTo,240,"linear",function(){v=i[u]()}),o.scrollTo=null)},1)),l.preventDefault(),!1},r.scroll.on("MozMousePixelScroll"+t,r.mousewheel).on("mousewheel"+t,r.mousewheel).on("mouseenter"+t,function(){v=i[u]()}),r.scroll.find(".iscroll-arrow, .iscroll-element-track").on("mousedown"+t,function(t){if(1!=t.which)return!0;h=1;var c={eventOffset:t["x"===s?"pageX":"pageY"],maxScrollValue:r.size-r.visible-r.offset,iscrollOffset:r.scroll.bar.offset()["x"===s?"left":"top"],iscrollSize:r.scroll.bar["x"===s?"outerWidth":"outerHeight"]()},a=0,m=0;if(l(this).hasClass("iscroll-arrow")){if(h=l(this).hasClass("iscroll-arrow_more")?1:-1,f=n.scrollStep*h,v=h>0?c.maxScrollValue:0,n.isRtl)switch(!0){case e.firefox:v=h>0?0:-1*c.maxScrollValue;break;case e.msie||e.msedge:}}else h=c.eventOffset>c.iscrollOffset+c.iscrollSize?1:c.eventOffset<c.iscrollOffset?-1:0,"x"===s&&n.isRtl&&(e.msie||e.msedge)&&(h*=-1),f=Math.round(.75*r.visible)*h,v=c.eventOffset-c.iscrollOffset-(n.stepScrolling?1==h?c.iscrollSize:0:Math.round(c.iscrollSize/2)),v=i[u]()+v/r.kx;return o.scrollTo=o.scrollTo||{},o.scrollTo[u]=n.stepScrolling?i[u]()+f:v,n.stepScrolling&&(d=function(){v=i[u](),clearInterval(m),clearTimeout(a),a=0,m=0},a=setTimeout(function(){m=setInterval(p,40)},n.duration+100)),setTimeout(function(){o.scrollTo&&(i.animate(o.scrollTo,n.duration),o.scrollTo=null)},1),o._handleMouseDown(d,t)}),r.scroll.bar.on("mousedown"+t,function(c){if(1!=c.which)return!0;var a=c["x"===s?"pageX":"pageY"],d=i[u]();return r.scroll.addClass("iscroll-draggable"),l(document).on("mousemove"+t,function(l){var o=parseInt((l["x"===s?"pageX":"pageY"]-a)/r.kx,10);"x"===s&&n.isRtl&&(e.msie||e.msedge)&&(o*=-1),i[u](d+o)}),o._handleMouseDown(function(){r.scroll.removeClass("iscroll-draggable"),v=i[u]()},c)}))}),l.each(c,function(l,e){var s="iscroll-scroll"+l+"-visible",o="x"==l?c.y:c.x;e.scroll.removeClass(s),o.scroll.removeClass(s),r.removeClass(s)}),l.each(c,function(e,s){l.extend(s,"x"==e?{offset:parseInt(i.css("left"),10)||0,size:i.prop("scrollWidth"),visible:d.width()}:{offset:parseInt(i.css("top"),10)||0,size:i.prop("scrollHeight"),visible:d.height()})}),this._updateScroll("x",this.scrollx),this._updateScroll("y",this.scrolly),l.isFunction(n.onUpdate)&&n.onUpdate.apply(this,[i]),l.each(c,function(l,e){var s="x"===l?"left":"top",o="x"===l?"outerWidth":"outerHeight",r="x"===l?"width":"height",t=parseInt(i.css(s),10)||0,c=e.size,a=e.visible+t,d=e.scroll.size[o]()+(parseInt(e.scroll.size.css(s),10)||0);n.autoScrollSize&&(e.iscrollSize=parseInt(d*a/c,10),e.scroll.bar.css(r,e.iscrollSize+"px")),e.iscrollSize=e.scroll.bar[o](),e.kx=(d-e.iscrollSize)/(c-a)||1,e.maxScrollOffset=c-a}),i.scrollLeft(u.scrollLeft).scrollTop(u.scrollTop).trigger("scroll")},_getScroll:function(e){var s={advanced:['<div class="iscroll-element">','<div class="iscroll-element-corner"></div>','<div class="iscroll-arrow iscroll-arrow-less"></div>','<div class="iscroll-arrow iscroll-arrow-more"></div>','<div class="iscroll-element-outer">','<div class="iscroll-element-size"></div>','<div class="iscroll-element-inner-wrapper">','<div class="iscroll-element-inner iscroll-element-track">','<div class="iscroll-element-inner-bottom"></div>',"</div>","</div>",'<div class="iscroll-bar">','<div class="iscroll-bar-body">','<div class="iscroll-bar-body-inner"></div>',"</div>",'<div class="iscroll-bar-bottom"></div>','<div class="iscroll-bar-center"></div>',"</div>","</div>","</div>"].join(""),simple:['<div class="iscroll-element">','<div class="iscroll-element-outer">','<div class="iscroll-element-size"></div>','<div class="iscroll-element-track"></div>','<div class="iscroll-bar"></div>',"</div>","</div>"].join("")};return s[e]&&(e=s[e]),e||(e=s.simple),e="string"==typeof e?l(e).appendTo(this.wrapper):l(e),l.extend(e,{bar:e.find(".iscroll-bar"),size:e.find(".iscroll-element-size"),track:e.find(".iscroll-element-track")}),e},_handleMouseDown:function(e,s){var o=this.namespace;return l(document).on("blur"+o,function(){l(document).add("body").off(o),e&&e()}),l(document).on("dragstart"+o,function(l){return l.preventDefault(),!1}),l(document).on("mouseup"+o,function(){l(document).add("body").off(o),e&&e()}),l("body").on("selectstart"+o,function(l){return l.preventDefault(),!1}),s&&s.preventDefault(),!1},_updateScroll:function(s,o){var i=this.container,r=this.containerWrapper||i,t="iscroll-scroll"+s+"-visible",n="x"===s?this.scrolly:this.scrollx,c=parseInt(this.container.css("x"===s?"left":"top"),10)||0,a=this.wrapper,d=o.size,h=o.visible+c;o.isVisible=d-h>1,o.isVisible?(o.scroll.addClass(t),n.scroll.addClass(t),r.addClass(t)):(o.scroll.removeClass(t),n.scroll.removeClass(t),r.removeClass(t)),"y"===s&&(i.is("textarea")||d<h?r.css({height:h+e.scroll.height+"px","max-height":"none"}):r.css({"max-height":h+e.scroll.height+"px"})),o.size==i.prop("scrollWidth")&&n.size==i.prop("scrollHeight")&&o.visible==a.width()&&n.visible==a.height()&&o.offset==(parseInt(i.css("left"),10)||0)&&n.offset==(parseInt(i.css("top"),10)||0)||(l.extend(this.scrollx,{offset:parseInt(i.css("left"),10)||0,size:i.prop("scrollWidth"),visible:a.width()}),l.extend(this.scrolly,{offset:parseInt(i.css("top"),10)||0,size:this.container.prop("scrollHeight"),visible:a.height()}),this._updateScroll("x"===s?"y":"x",n))}};var i=o;l.fn.iScroll=function(s,o){return"string"!=typeof s&&(o=s,s="init"),void 0===o&&(o=[]),l.isArray(o)||(o=[o]),this.not("body, .iscroll").each(function(){var r=l(this),t=r.data(e.data.name);(t||"init"===s)&&(t||(t=new i(r)),t[s]&&t[s].apply(t,o))}),this},l.fn.iScroll.options=s;var r,t,n=(r=0,function(l){var s,o,i,t,c,a,d;for(s=0;s<e.scrolls.length;s++)o=(t=e.scrolls[s]).container,i=t.options,c=t.wrapper,a=t.scrollx,d=t.scrolly,(l||i.autoUpdate&&c&&c.is(":visible")&&(o.prop("scrollWidth")!=a.size||o.prop("scrollHeight")!=d.size||c.width()!=a.visible||c.height()!=d.visible))&&(t.init(),i.debug&&window.console&&console.log({scrollHeight:o.prop("scrollHeight")+":"+t.scrolly.size,scrollWidth:o.prop("scrollWidth")+":"+t.scrollx.size,visibleHeight:c.height()+":"+t.scrolly.visible,visibleWidth:c.width()+":"+t.scrollx.visible},!0));clearTimeout(r),r=setTimeout(n,300)});function c(s){if(e.webkit&&!s)return{height:0,width:0};if(!e.data.outer){var o={border:"none","box-sizing":"content-box",height:"200px",margin:"0",padding:"0",width:"200px"};e.data.inner=l("<div>").css(l.extend({},o)),e.data.outer=l("<div>").css(l.extend({left:"-1000px",overflow:"scroll",position:"absolute",top:"-1000px"},o)).append(e.data.inner).appendTo("body")}return e.data.outer.scrollLeft(1e3).scrollTop(1e3),{height:Math.ceil(e.data.outer.offset().top-e.data.inner.offset().top||0),width:Math.ceil(e.data.outer.offset().left-e.data.inner.offset().left||0)}}function a(l){var e=l.originalEvent;return(!e.axis||e.axis!==e.HORIZONTAL_AXIS)&&!e.wheelDeltaX}window.angular&&(t=window.angular).module("jQueryiscroll",[]).provider("jQueryiscroll",function(){var l=s;return{setOptions:function(e){t.extend(l,e)},$get:function(){return{options:t.copy(l)}}}}).directive("jqueryiscroll",["jQueryiscroll","$parse",function(l,e){return{restrict:"AC",link:function(s,o,i){var r=e(i.jqueryiscroll)(s);o.iscroll(r||l.options).on("$destroy",function(){o.iscroll("destroy")})}}}])});
 
-/* MD5 */
-function md5cycle(f,h){var i=f[0],n=f[1],r=f[2],g=f[3];n=ii(n=ii(n=ii(n=ii(n=hh(n=hh(n=hh(n=hh(n=gg(n=gg(n=gg(n=gg(n=ff(n=ff(n=ff(n=ff(n,r=ff(r,g=ff(g,i=ff(i,n,r,g,h[0],7,-680876936),n,r,h[1],12,-389564586),i,n,h[2],17,606105819),g,i,h[3],22,-1044525330),r=ff(r,g=ff(g,i=ff(i,n,r,g,h[4],7,-176418897),n,r,h[5],12,1200080426),i,n,h[6],17,-1473231341),g,i,h[7],22,-45705983),r=ff(r,g=ff(g,i=ff(i,n,r,g,h[8],7,1770035416),n,r,h[9],12,-1958414417),i,n,h[10],17,-42063),g,i,h[11],22,-1990404162),r=ff(r,g=ff(g,i=ff(i,n,r,g,h[12],7,1804603682),n,r,h[13],12,-40341101),i,n,h[14],17,-1502002290),g,i,h[15],22,1236535329),r=gg(r,g=gg(g,i=gg(i,n,r,g,h[1],5,-165796510),n,r,h[6],9,-1069501632),i,n,h[11],14,643717713),g,i,h[0],20,-373897302),r=gg(r,g=gg(g,i=gg(i,n,r,g,h[5],5,-701558691),n,r,h[10],9,38016083),i,n,h[15],14,-660478335),g,i,h[4],20,-405537848),r=gg(r,g=gg(g,i=gg(i,n,r,g,h[9],5,568446438),n,r,h[14],9,-1019803690),i,n,h[3],14,-187363961),g,i,h[8],20,1163531501),r=gg(r,g=gg(g,i=gg(i,n,r,g,h[13],5,-1444681467),n,r,h[2],9,-51403784),i,n,h[7],14,1735328473),g,i,h[12],20,-1926607734),r=hh(r,g=hh(g,i=hh(i,n,r,g,h[5],4,-378558),n,r,h[8],11,-2022574463),i,n,h[11],16,1839030562),g,i,h[14],23,-35309556),r=hh(r,g=hh(g,i=hh(i,n,r,g,h[1],4,-1530992060),n,r,h[4],11,1272893353),i,n,h[7],16,-155497632),g,i,h[10],23,-1094730640),r=hh(r,g=hh(g,i=hh(i,n,r,g,h[13],4,681279174),n,r,h[0],11,-358537222),i,n,h[3],16,-722521979),g,i,h[6],23,76029189),r=hh(r,g=hh(g,i=hh(i,n,r,g,h[9],4,-640364487),n,r,h[12],11,-421815835),i,n,h[15],16,530742520),g,i,h[2],23,-995338651),r=ii(r,g=ii(g,i=ii(i,n,r,g,h[0],6,-198630844),n,r,h[7],10,1126891415),i,n,h[14],15,-1416354905),g,i,h[5],21,-57434055),r=ii(r,g=ii(g,i=ii(i,n,r,g,h[12],6,1700485571),n,r,h[3],10,-1894986606),i,n,h[10],15,-1051523),g,i,h[1],21,-2054922799),r=ii(r,g=ii(g,i=ii(i,n,r,g,h[8],6,1873313359),n,r,h[15],10,-30611744),i,n,h[6],15,-1560198380),g,i,h[13],21,1309151649),r=ii(r,g=ii(g,i=ii(i,n,r,g,h[4],6,-145523070),n,r,h[11],10,-1120210379),i,n,h[2],15,718787259),g,i,h[9],21,-343485551),f[0]=add32(i,f[0]),f[1]=add32(n,f[1]),f[2]=add32(r,f[2]),f[3]=add32(g,f[3])}function cmn(f,h,i,n,r,g){return h=add32(add32(h,f),add32(n,g)),add32(h<<r|h>>>32-r,i)}function ff(f,h,i,n,r,g,t){return cmn(h&i|~h&n,f,h,r,g,t)}function gg(f,h,i,n,r,g,t){return cmn(h&n|i&~n,f,h,r,g,t)}function hh(f,h,i,n,r,g,t){return cmn(h^i^n,f,h,r,g,t)}function ii(f,h,i,n,r,g,t){return cmn(i^(h|~n),f,h,r,g,t)}function md51(f){txt="";var h,i=f.length,n=[1732584193,-271733879,-1732584194,271733878];for(h=64;h<=f.length;h +=64)md5cycle(n,md5blk(f.substring(h-64,h)));f=f.substring(h-64);var r=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0];for(h=0;h<f.length;h++)r[h>>2]|=f.charCodeAt(h)<<(h%4<<3);if(r[h>>2]|=128<<(h%4<<3),h>55)for(md5cycle(n,r),h=0;h<16;h++)r[h]=0;return r[14]=8*i,md5cycle(n,r),n}function md5blk(f){var h,i=[];for(h=0;h<64;h +=4)i[h>>2]=f.charCodeAt(h)+(f.charCodeAt(h+1)<<8)+(f.charCodeAt(h+2)<<16)+(f.charCodeAt(h+3)<<24);return i}var hex_chr="0123456789abcdef".split("");function rhex(f){for(var h="",i=0;i<4;i++)h +=hex_chr[f>>8*i+4&15]+hex_chr[f>>8*i&15];return h}function hex(f){for(var h=0;h<f.length;h++)f[h]=rhex(f[h]);return f.join("")}function md5(f){return hex(md51(f))}function add32(f,h){return f+h&4294967295}if("5d41402abc4b2a76b9719d911017c592"!=md5("hello"))function add32(f,h){var i=(65535&f)+(65535&h);return(f>>16)+(h>>16)+(i>>16)<<16|65535&i}
-
 /* iweb lib, requires jQuery v1.11 or later, copyright 2023 kaiyunchan */
-(function($) {
-    $.fn.iweb_pagination = function(options) {
-        var settings = $.extend({
-            mode: 1,
-            size: 5,
-            total: 1,
-            placeholder: ''
-        }, options);
-
-        var currentPage = 1;
-        var url = new URL(window.location.href);
-        var searchParams = new URLSearchParams(url.search);
-        if (searchParams.has('page')) {
-            currentPage = Math.max(parseInt(searchParams.get('page')), 1);
-        }
-        searchParams.delete('page');
-        var baseUrl = url.origin + url.pathname + '?' + searchParams.toString();
-
-        function createPageUrl(page) {
-            return (baseUrl + '&page=' + page).replace('?&', '?');
-        }
-
-        $(document).off('keypress', 'div.iweb-pagination input.jumpto_page').on('keypress', 'div.iweb-pagination input.jumpto_page', function(e) {
-            if (e.which === 13) {
-                var jumptoPage = Math.min(Math.max(parseInt($(this).val()) || 1, 1), $(this).data('max'));
-                window.location.href = createPageUrl(jumptoPage);
-            }
-        });
-
-        return this.each(function() {
-            if ($(this).find('div.iweb-pagination').length === 0) {
-                var pageSize = $(this).data('size') || settings.size;
-                var totalPage = $(this).data('totalpage') || settings.total;
-
-                var firstPage = 1;
-                var prevPage = Math.max(currentPage - 1, firstPage);
-                var nextPage = Math.min(currentPage + 1, totalPage);
-                var lastPage = totalPage;
-                var diffPageNum = Math.floor(pageSize / 2);
-                var startPageNum = Math.max(currentPage - diffPageNum, firstPage);
-                var endPageNum = Math.min(currentPage + diffPageNum, lastPage);
-
-                if (endPageNum - startPageNum + 1 < pageSize) {
-                    if (currentPage < firstPage + diffPageNum) {
-                        endPageNum = Math.min(lastPage, startPageNum + pageSize - 1);
-                    } else {
-                        startPageNum = Math.max(firstPage, endPageNum - pageSize + 1);
-                    }
-                }
-
-                if (totalPage > 1) {
-                    var paginationHtml = '<ul>';
-                    if (settings.mode === 2 && currentPage > diffPageNum) {
-                        paginationHtml += '<li><a class="first" href="' + createPageUrl(firstPage) + '" title="First Page"><span>' + firstPage + '..</span></a></li>';
-                    } else {
-                        paginationHtml += '<li><a class="first" href="' + createPageUrl(firstPage) + '" title="First Page"><i></i><i></i></a></li>';
-                    }
-                    paginationHtml += '<li><a class="prev" href="' + createPageUrl(prevPage) + '" title="Previous Page"><i></i></a></li>';
-
-                    for (var i = startPageNum; i <= endPageNum; i++) {
-                        paginationHtml += '<li><a class="num' + (i === currentPage ? ' current' : '') + '" href="' + createPageUrl(i) + '"><span>' + i + '</span></a></li>';
-                    }
-
-                    paginationHtml += '<li><a class="next" href="' + createPageUrl(nextPage) + '" title="Next Page"><i></i></a></li>';
-                    if (settings.mode === 2 && currentPage < totalPage - diffPageNum) {
-                        paginationHtml += '<li><a class="last" href="' + createPageUrl(lastPage) + '" title="Last Page"><span>..' + lastPage + '</span></a></li>';
-                    } else {
-                        paginationHtml += '<li><a class="last" href="' + createPageUrl(lastPage) + '" title="Last Page"><i></i><i></i></a></li>';
-                    }
-                    paginationHtml += '<li><input type="text" class="jumpto_page" data-max="' + totalPage + '" placeholder="' + settings.placeholder + '"/></li>';
-                    paginationHtml += '</ul>';
-                    $(this).html('<div class="iweb-pagination">' + paginationHtml + '</div>');
-                }
-            }
-        });
-    };
-}(jQuery));
-
+// core
 var iweb = {
 	current_language: 'en',
 	language: [],
@@ -1516,7 +1436,8 @@ var iweb = {
 				btnStartAll: '<i class="fa fa-cloud-upload"></i>',
 				btnClose: '<i class="fa fa-close"></i>',
 				btnStart: '<i class="fa fa-cloud-upload"></i>',
-				btnRemove: '<i class="fa fa-trash"></i>'
+				btnRemove: '<i class="fa fa-trash"></i>',
+                auto_close: true
 			};
 
 			if (iweb_object.isValue(options)) {
@@ -1604,7 +1525,8 @@ var iweb = {
 				btnStartAll: '<i class="fa fa-cloud-upload"></i>',
 				btnClose: '<i class="fa fa-close"></i>',
 				btnStart: '<i class="fa fa-cloud-upload"></i>',
-				btnRemove: '<i class="fa fa-trash"></i>'
+				btnRemove: '<i class="fa fa-trash"></i>',
+                auto_close: true
 			};
 
 			if (iweb_object.isValue(options)) {
@@ -1673,7 +1595,6 @@ var iweb = {
                 });
 			}
 		};
-		files_input.click();
 	},
 	uploaderPreview: function(selectingFiles, key, file_input_id) {
 		var iweb_object = this;
@@ -1682,6 +1603,7 @@ var iweb = {
 		if (!iweb_object.isValue(key)) {
 			key = 0;
 		}
+
 		if (parseInt(key) < selectingFiles.length) {
 			var file = selectingFiles[key];
 			if (regex.test(file.name.toLowerCase()) && (typeof(FileReader) !== 'undefined')) {
@@ -1936,6 +1858,9 @@ var iweb = {
                 } else {
                     $(('#'+file_input_id+'-iweb-files-dropzone')+' > div.iweb-files-uploader').removeClass('busy');
                     $(('#'+file_input_id+'-iweb-files-dropzone')+' > div.iweb-files-uploader > div.action > button.start-all').remove();
+                    if(iweb_object.uploader_options[('inline_' + md5(file_input_id))].auto_close) {
+                        $(('#'+file_input_id+'-iweb-files-dropzone')+' > div.iweb-files-uploader > div.action > button.close').trigger('click');
+                    }
                 }
             } else {
                 if (iweb_object.isValue(iweb_object.uploader_files[('inline_' + md5(file_input_id))]) && $.inArray(index, iweb_object.uploader_files_skip[('inline_' + md5(file_input_id))]) < 0) {
@@ -1994,6 +1919,9 @@ var iweb = {
                                 $(('#'+file_input_id+'-iweb-files-dropzone')+' > div.iweb-files-uploader > div.list > div.item[data-index="' + index + '"]').find('button.remove').remove();
                                 if($(('#'+file_input_id+'-iweb-files-dropzone')+' > div.iweb-files-uploader > div.list > div.item > button.start').length == 0) {
                                     $(('#'+file_input_id+'-iweb-files-dropzone')+' > div.iweb-files-uploader > div.action > button.start-all').remove();
+                                    if(iweb_object.uploader_options[('inline_' + md5(file_input_id))].auto_close) {
+                                        $(('#'+file_input_id+'-iweb-files-dropzone')+' > div.iweb-files-uploader > div.action > button.close').trigger('click');
+                                    }
                                 }
                             },
                             xhr: function() {
@@ -2108,6 +2036,9 @@ var iweb = {
                 } else {
                     $('div.iweb-info-dialog.uploader').removeClass('busy');
                     $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.start-all').remove();
+                    if(iweb_object.uploader_options['dialog'].auto_close) {
+                        $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.close').trigger('click');
+                    }
                 }
             } else {
                 if (iweb_object.isValue(iweb_object.uploader_files['dialog']) && $.inArray(index, iweb_object.uploader_files_skip['dialog']) < 0) {
@@ -2166,6 +2097,9 @@ var iweb = {
                                 $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item[data-index="' + index + '"]').find('button.remove').remove();
                                 if($('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.list > div.item > button.start').length == 0) {
                                     $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.start-all').remove();
+                                    if(iweb_object.uploader_options['dialog'].auto_close) {
+                                        $('div.iweb-info-dialog.uploader > div > div.dialog-content > div > div.action > button.close').trigger('click');
+                                    }
                                 }
                             },
                             xhr: function() {
@@ -2550,22 +2484,22 @@ var iweb = {
 	},
 	detectDevice: function(index) {
 		var isMobile = {
-			Android: function() {
-				return navigator.userAgent.match(/Android/i);
-			},
-			BlackBerry: function() {
-				return navigator.userAgent.match(/BlackBerry/i);
-			},
-			iOS: function() {
-				return navigator.userAgent.match(/Mac|iPhone|iPad|iPod/i);
-			},
-			Opera: function() {
-				return navigator.userAgent.match(/Opera Mini/i);
-			},
-			Windows: function() {
-				return navigator.userAgent.match(/IEMobile/i);
-			}
-		};
+            Android: function() {
+                return navigator.userAgent.match(/Android/i);
+            },
+            BlackBerry: function() {
+                return navigator.userAgent.match(/BlackBerry/i);
+            },
+            iOS: function() {
+                return navigator.userAgent.match(/Mac|iPhone|iPad|iPod/i);
+            },
+            Opera: function() {
+                return navigator.userAgent.match(/Opera Mini/i);
+            },
+            Windows: function() {
+                return navigator.userAgent.match(/IEMobile/i);
+            }
+        };
 		switch (index) {
 			case 'android':
 				return isMobile.Android();
@@ -2588,6 +2522,240 @@ var iweb = {
 	}
 };
 
+// MD5
+function md5(input) {
+    function add32(a, b) {
+        return (a + b) & 0xFFFFFFFF;
+    }
+
+    function cmn(q, a, b, x, s, t) {
+        return add32((add32(add32(a, q), add32(x, t)) << s) | (add32(add32(a, q), add32(x, t)) >>> (32 - s)), b);
+    }
+
+    function ff(a, b, c, d, x, s, t) {
+        return cmn((b & c) | ((~b) & d), a, b, x, s, t);
+    }
+
+    function gg(a, b, c, d, x, s, t) {
+        return cmn((b & d) | (c & (~d)), a, b, x, s, t);
+    }
+
+    function hh(a, b, c, d, x, s, t) {
+        return cmn(b ^ c ^ d, a, b, x, s, t);
+    }
+
+    function ii(a, b, c, d, x, s, t) {
+        return cmn(c ^ (b | (~d)), a, b, x, s, t);
+    }
+
+    function md5cycle(x, k) {
+        var a = x[0], b = x[1], c = x[2], d = x[3];
+
+        a = ff(a, b, c, d, k[0], 7, -680876936);
+        d = ff(d, a, b, c, k[1], 12, -389564586);
+        c = ff(c, d, a, b, k[2], 17, 606105819);
+        b = ff(b, c, d, a, k[3], 22, -1044525330);
+        a = ff(a, b, c, d, k[4], 7, -176418897);
+        d = ff(d, a, b, c, k[5], 12, 1200080426);
+        c = ff(c, d, a, b, k[6], 17, -1473231341);
+        b = ff(b, c, d, a, k[7], 22, -45705983);
+        a = ff(a, b, c, d, k[8], 7, 1770035416);
+        d = ff(d, a, b, c, k[9], 12, -1958414417);
+        c = ff(c, d, a, b, k[10], 17, -42063);
+        b = ff(b, c, d, a, k[11], 22, -1990404162);
+        a = ff(a, b, c, d, k[12], 7, 1804603682);
+        d = ff(d, a, b, c, k[13], 12, -40341101);
+        c = ff(c, d, a, b, k[14], 17, -1502002290);
+        b = ff(b, c, d, a, k[15], 22, 1236535329);
+
+        a = gg(a, b, c, d, k[1], 5, -165796510);
+        d = gg(d, a, b, c, k[6], 9, -1069501632);
+        c = gg(c, d, a, b, k[11], 14, 643717713);
+        b = gg(b, c, d, a, k[0], 20, -373897302);
+        a = gg(a, b, c, d, k[5], 5, -701558691);
+        d = gg(d, a, b, c, k[10], 9, 38016083);
+        c = gg(c, d, a, b, k[15], 14, -660478335);
+        b = gg(b, c, d, a, k[4], 20, -405537848);
+        a = gg(a, b, c, d, k[9], 5, 568446438);
+        d = gg(d, a, b, c, k[14], 9, -1019803690);
+        c = gg(c, d, a, b, k[3], 14, -187363961);
+        b = gg(b, c, d, a, k[8], 20, 1163531501);
+        a = gg(a, b, c, d, k[13], 5, -1444681467);
+        d = gg(d, a, b, c, k[2], 9, -51403784);
+        c = gg(c, d, a, b, k[7], 14, 1735328473);
+        b = gg(b, c, d, a, k[12], 20, -1926607734);
+
+        a = hh(a, b, c, d, k[5], 4, -378558);
+        d = hh(d, a, b, c, k[8], 11, -2022574463);
+        c = hh(c, d, a, b, k[11], 16, 1839030562);
+        b = hh(b, c, d, a, k[14], 23, -35309556);
+        a = hh(a, b, c, d, k[1], 4, -1530992060);
+        d = hh(d, a, b, c, k[4], 11, 1272893353);
+        c = hh(c, d, a, b, k[7], 16, -155497632);
+        b = hh(b, c, d, a, k[10], 23, -1094730640);
+        a = hh(a, b, c, d, k[13], 4, 681279174);
+        d = hh(d, a, b, c, k[0], 11, -358537222);
+        c = hh(c, d, a, b, k[3], 16, -722521979);
+        b = hh(b, c, d, a, k[6], 23, 76029189);
+        a = hh(a, b, c, d, k[9], 4, -640364487);
+        d = hh(d, a, b, c, k[12], 11, -421815835);
+        c = hh(c, d, a, b, k[15], 16, 530742520);
+        b = hh(b, c, d, a, k[2], 23, -995338651);
+
+        a = ii(a, b, c, d, k[0], 6, -198630844);
+        d = ii(d, a, b, c, k[7], 10, 1126891415);
+        c = ii(c, d, a, b, k[14], 15, -1416354905);
+        b = ii(b, c, d, a, k[5], 21, -57434055);
+        a = ii(a, b, c, d, k[12], 6, 1700485571);
+        d = ii(d, a, b, c, k[3], 10, -1894986606);
+        c = ii(c, d, a, b, k[10], 15, -1051523);
+        b = ii(b, c, d, a, k[1], 21, -2054922799);
+        a = ii(a, b, c, d, k[8], 6, 1873313359);
+        d = ii(d, a, b, c, k[15], 10, -30611744);
+        c = ii(c, d, a, b, k[6], 15, -1560198380);
+        b = ii(b, c, d, a, k[13], 21, 1309151649);
+        a = ii(a, b, c, d, k[4], 6, -145523070);
+        d = ii(d, a, b, c, k[11], 10, -1120210379);
+        c = ii(c, d, a, b, k[2], 15, 718787259);
+        b = ii(b, c, d, a, k[9], 21, -343485551);
+
+        x[0] = add32(a, x[0]);
+        x[1] = add32(b, x[1]);
+        x[2] = add32(c, x[2]);
+        x[3] = add32(d, x[3]);
+    }
+
+    function md5blk(s) {
+        var md5blks = [], i;
+        for (i = 0; i < 64; i += 4) {
+            md5blks[i >> 2] = s.charCodeAt(i) + (s.charCodeAt(i + 1) << 8) + (s.charCodeAt(i + 2) << 16) + (s.charCodeAt(i + 3) << 24);
+        }
+        return md5blks;
+    }
+
+    function md51(s) {
+        var n = s.length,
+            state = [1732584193, -271733879, -1732584194, 271733878],
+            i;
+        
+        for (i = 64; i <= s.length; i += 64) {
+            md5cycle(state, md5blk(s.substring(i - 64, i)));
+        }
+        
+        s = s.substring(i - 64);
+        var tail = new Array(16).fill(0);
+        for (i = 0; i < s.length; i++) {
+            tail[i >> 2] |= s.charCodeAt(i) << ((i % 4) << 3);
+        }
+        tail[i >> 2] |= 0x80 << ((i % 4) << 3);
+        if (i > 55) {
+            md5cycle(state, tail);
+            tail.fill(0);
+        }
+        tail[14] = n * 8;
+        md5cycle(state, tail);
+        return state;
+    }
+
+    function rhex(n) {
+        var s = '', j;
+        for (j = 0; j < 4; j++) {
+            s += hex_chr[(n >> (j * 8 + 4)) & 0x0F] + hex_chr[(n >> (j * 8)) & 0x0F];
+        }
+        return s;
+    }
+
+    function hex(x) {
+        for (var i = 0; i < x.length; i++) {
+            x[i] = rhex(x[i]);
+        }
+        return x.join('');
+    }
+
+    var hex_chr = '0123456789abcdef'.split('');
+    return hex(md51(input));
+}
+
+// pagination
+(function($) {
+    $.fn.iweb_pagination = function(options) {
+        var settings = $.extend({
+            mode: 1,
+            size: 5,
+            total: 1,
+            placeholder: ''
+        }, options);
+
+        var currentPage = 1;
+        var url = new URL(window.location.href);
+        var searchParams = new URLSearchParams(url.search);
+        if (searchParams.has('page')) {
+            currentPage = Math.max(parseInt(searchParams.get('page')), 1);
+        }
+        searchParams.delete('page');
+        var baseUrl = url.origin + url.pathname + '?' + searchParams.toString();
+
+        function createPageUrl(page) {
+            return (baseUrl + '&page=' + page).replace('?&', '?');
+        }
+
+        $(document).off('keypress', 'div.iweb-pagination input.jumpto_page').on('keypress', 'div.iweb-pagination input.jumpto_page', function(e) {
+            if (e.which === 13) {
+                var jumptoPage = Math.min(Math.max(parseInt($(this).val()) || 1, 1), $(this).data('max'));
+                window.location.href = createPageUrl(jumptoPage);
+            }
+        });
+
+        return this.each(function() {
+            if ($(this).find('div.iweb-pagination').length === 0) {
+                var pageSize = $(this).data('size') || settings.size;
+                var totalPage = $(this).data('totalpage') || settings.total;
+
+                var firstPage = 1;
+                var prevPage = Math.max(currentPage - 1, firstPage);
+                var nextPage = Math.min(currentPage + 1, totalPage);
+                var lastPage = totalPage;
+                var diffPageNum = Math.floor(pageSize / 2);
+                var startPageNum = Math.max(currentPage - diffPageNum, firstPage);
+                var endPageNum = Math.min(currentPage + diffPageNum, lastPage);
+
+                if (endPageNum - startPageNum + 1 < pageSize) {
+                    if (currentPage < firstPage + diffPageNum) {
+                        endPageNum = Math.min(lastPage, startPageNum + pageSize - 1);
+                    } else {
+                        startPageNum = Math.max(firstPage, endPageNum - pageSize + 1);
+                    }
+                }
+
+                if (totalPage > 1) {
+                    var paginationHtml = '<ul>';
+                    if (settings.mode === 2 && currentPage > diffPageNum) {
+                        paginationHtml += '<li><a class="first" href="' + createPageUrl(firstPage) + '" title="First Page"><span>' + firstPage + '..</span></a></li>';
+                    } else {
+                        paginationHtml += '<li><a class="first" href="' + createPageUrl(firstPage) + '" title="First Page"><i></i><i></i></a></li>';
+                    }
+                    paginationHtml += '<li><a class="prev" href="' + createPageUrl(prevPage) + '" title="Previous Page"><i></i></a></li>';
+
+                    for (var i = startPageNum; i <= endPageNum; i++) {
+                        paginationHtml += '<li><a class="num' + (i === currentPage ? ' current' : '') + '" href="' + createPageUrl(i) + '"><span>' + i + '</span></a></li>';
+                    }
+
+                    paginationHtml += '<li><a class="next" href="' + createPageUrl(nextPage) + '" title="Next Page"><i></i></a></li>';
+                    if (settings.mode === 2 && currentPage < totalPage - diffPageNum) {
+                        paginationHtml += '<li><a class="last" href="' + createPageUrl(lastPage) + '" title="Last Page"><span>..' + lastPage + '</span></a></li>';
+                    } else {
+                        paginationHtml += '<li><a class="last" href="' + createPageUrl(lastPage) + '" title="Last Page"><i></i><i></i></a></li>';
+                    }
+                    paginationHtml += '<li><input type="text" class="jumpto_page" data-max="' + totalPage + '" placeholder="' + settings.placeholder + '"/></li>';
+                    paginationHtml += '</ul>';
+                    $(this).html('<div class="iweb-pagination">' + paginationHtml + '</div>');
+                }
+            }
+        });
+    };
+}(jQuery));
+
+// execute iweb lib
 $(function() {
     iweb.initialize();
 });

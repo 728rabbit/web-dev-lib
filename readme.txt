@@ -465,8 +465,9 @@
         <a class="font-switch large" href="#" data-size="large">Large</a>
     </div>
 
-23. uploader: function(options,callback) {
-    
+23. uploader: function(options,callback) 
+    uploaderArea: function(file_input_id, options, callback)
+
     options = { 
         url: '',
         value: null,
@@ -474,18 +475,28 @@
         allowed_types: '',   // optional: jpg|png|pdf
         max_filesize: 5,
         type_error_message: 'File type is not allowed.',
-        max_error_message: 'Maximum allowed file size 5M.'
+        max_error_message: 'Maximum allowed file size 5M.',
+        auto_close: true
+    }
+
+    /* post hanlder */
+    $target_dir = 'temp/';
+    $target_file = $target_dir . basename($_FILES['myfile']['name']);
+    if (move_uploaded_file($_FILES['myfile']['tmp_name'], $target_file)) {
+        echo 'The file '. basename($_FILES['myfile']['name']). ' has been uploaded.';
+    } else {
+        echo 'Sorry, there was an error uploading your file.';
     }
 
 24. autocomplete
 
 <div class="iweb-autocomple" 
-        data-url="<?php echo url('admin/master/api/guardian') ;?>"
-        data-param1="_token:<?php echo @csrf_token();?>"
-        data-param2="type:123">
-    <input type="hidden" class="fill-id" name="guardian_id[]" value="">
-    <input type="text" class="fill-txt"  name="guardian_name[]" value="">
+        data-url="your_url_here"
+        data-param1="_token:xxx"
+        data-param2="type:123"
+        data-ifunc="your_init_callback_func_name_here"
+        data-sfunc="your_select_callback_func_name_here"
+        data-rfunc="your_remove_callback_func_name_here">
+    <input type="hidden" class="fill-id" name="id[]" value="">
+    <input type="text" class="fill-txt" value="">
 </div>
-
-/* base color: #e3f2e1 */
-    
