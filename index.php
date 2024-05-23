@@ -13,7 +13,7 @@
         <script src="dist/iweb.min.js" type="text/javascript"></script>
         <script>
      
-            function iweb_func() { 
+            function iweb_global_func() { 
                 iweb.pagination('.mypage');
 
                 $(document).on('click','#btn-alert',function(){
@@ -28,7 +28,7 @@
                 });
                 
                 $(document).on('click','#btn-popup',function(){
-                    iweb.dialog('<div style="height:1000px;">Hello World</div>');
+                    iweb.dialog('<div style="height:1000px;">Hello World<form><input type="password" name="password" style="width:100%"><input type="radio" id="male" name="gender3" value="male" data-validation="required"><label for="male">Male</label><br><input type="radio" id="female" name="gender3" value="female" data-validation="required"><label for="female">Female</label><br></form></div><div class="iweb-autocomplete top" data-url="http://localhost/mylib/fetch.php" data-param2="type:123"><input type="hidden" class="fill-id" name="guardian_id[]" value="" data-validation="required"> <input type="text" class="fill-txt"  name="guardian_name[]" value=""></div>');
                 });
                 
                 
@@ -50,14 +50,17 @@
                 });
                 
                 
-                iweb.form('#test-form', 'text' ,function(arr) {
-                    // arr.push({ name:'exra_parameter', value: 'AAAA' });
-                    var check_status = true;
+                iweb.form('#test-form', 'text' ,function(form_data, form_object) {
+                    // form_data.push({ name:'exra_parameter', value: 'AAAA' });
+                    var check_result = true;
                     // your code here
+                    
+                    console.log(form_object);
         
-                    return check_status;
-                },function(response_data) {
+                    return check_result;
+                },function(response_data, form_object) {
                     alert('Hello');
+                    console.log(form_object);
                 });
                 
 
@@ -86,7 +89,28 @@
                 },1000);
 
             }
-            function iweb_ifunc() { 
+            function iweb_self_func() { 
+                iweb.uploaderArea('myfiles1', {
+                    url: 'http://localhost/mylib/upload.php',
+                    dataType: 'text',
+                    values: {
+                        name: 'abc'
+                    },
+                    allowed_types: 'jpg|png'
+                }, function() {
+                    alert('end upload 1');
+                });
+                
+                iweb.uploaderArea('myfiles2', {
+                    url: 'http://localhost/mylib/upload.php',
+                    dataType: 'text',
+                    values: {
+                        name: 'abc'
+                    }
+                }, function() {
+                    alert('end upload 2');
+                });
+                
                 $(document).on('click', '#btn-select-files', function() {
                     iweb.uploader({
                         url: 'http://localhost/mylib/upload.php',
@@ -100,7 +124,16 @@
                 
                 iweb.scrollbar('#sb-content > div');
             }
-
+            
+            function init_autoc() {
+                console.log('init_autoc');
+            }
+            function select_autoc() {
+                console.log('select_autoc');
+            }
+            function remove_autoc() {
+                console.log('remove_autoc');
+            }
 
         </script>
         <style>
@@ -115,7 +148,6 @@
             #sb-content {
                 height: 200px;
                 width: 100%;
-                border: 2px solid #e6e6e6;
             }
 
             #sb-content > div {
@@ -141,10 +173,11 @@
                     <td>默認：</td>
                     <td>
                         <div>
-                            <select name="s1" data-virtual="1" data-default="請選擇運動項目 1">
+                            <select name="s1" data-virtual="0" data-validation="required">
+                                <option>請選擇運動項目 1</option>
                                 <optgroup label="Sport">
                                     <option value="Sport">Sport</option>
-                                    <option value="Harbour Race">Harbour Race</option>
+                                    <option value="Harbour Race" selected>Harbour Race</option>
                                     <option value="Masters Swimming">Masters Swimming</option>
                                     <option value="Open Water Swimming">Open Water Swimming</option>
                                     <option value="Diving">Diving</option>
@@ -161,7 +194,7 @@
                     <td>帶搜尋功能：</td>
                     <td>
                         <div>
-                            <select name="s2" data-virtual="1" data-filter="1">
+                            <select name="s2" data-virtual="1" data-filter="1" data-default="請選擇運動項目 2"  data-validation="required">
                                 <optgroup label="Sport">
                                     <option value="Swimming">Swimming</option>
                                     <option value="Harbour Race">Harbour Race</option>
@@ -181,13 +214,13 @@
                     <td>多選：</td>
                     <td>
                         <div>
-                            <select name="s3[]" data-virtual="1" data-filter="1" multiple  data-default="請選擇運動項目 2">
+                            <select name="s3[]" data-virtual="0" data-filter="1" multiple  data-default="請選擇運動項目 3" data-validation="required">
                                 <optgroup label="Sport">
                                     <option value="Swimming">Swimming</option>
                                     <option value="Harbour Race">Harbour Race</option>
-                                    <option value="Masters Swimming">Masters Swimming</option>
+                                    <option value="Masters Swimming" selected>Masters Swimming</option>
                                     <option value="Open Water Swimming">Open Water Swimming</option>
-                                    <option value="Diving">Diving</option>
+                                    <option value="Diving" selected>Diving</option>
                                     <option value="Water Polo">Water Polo</option>
                                     <option value="Artistic Swimming">Artistic Swimming</option>
                                     <option value="General">General</option>
@@ -201,38 +234,88 @@
             </table>
 
             <h3>3. Checkbox 簡單美化</h3>
-            <div>
-                <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike">
-                <label for="vehicle1"> I have a bike</label>
-            </div>
-            <div>
-                <input type="checkbox" id="vehicle2" name="vehicle2" value="Car">
+            <div class="iweb-checkbox-set" data-showtips="false">
+                <input type="checkbox" id="vehicle1" name="vehicle[]" value="Bike" data-validation="required">
+                <label for="vehicle1"> I have a bike  I have a bike I have a bike I have a bike I have a bike I have a bike</label>
+                
+                <input type="checkbox" id="vehicle2" name="vehicle[]" value="Car" data-validation="required">
                 <label for="vehicle2"> I have a car</label>
+                
+                <input type="checkbox" id="vehicle3" name="vehicle[]" value="Boat" data-validation="required">
+                <label for="vehicle3"> I have a boat</label>
+            </div>
+            
+            
+            <p>&nbsp;</p>
+            
+            <div>
+                <input type="checkbox" id="vehicle21" name="vehicle2[]" value="Bike">
+                <label for="vehicle21"> I have a bike</label>
             </div>
             <div>
-                <input type="checkbox" id="vehicle3" name="vehicle3" value="Boat">
-                <label for="vehicle3"> I have a boat</label>
+                <input type="checkbox" id="vehicle22" name="vehicle2[]" value="Car">
+                <label for="vehicle22"> I have a car</label>
+            </div>
+            <div>
+                <input type="checkbox" id="vehicle23" name="vehicle2[]" value="Boat">
+                <label for="vehicle23"> I have a boat</label>
             </div>
 
             <h3>4. Radio 簡單美化</h3>
-            <input type="radio" id="male" name="gender" value="male">
-            <label for="male">Male</label><br>
-            <input type="radio" id="female" name="gender" value="female">
-            <label for="female">Female</label><br>
-            <input type="radio" id="other" name="gender" value="other">
-            <label for="other">Other</label>
+            <div class="iweb-radiobox-set"  data-showtips="false">
+                <input type="radio" id="male" name="gender" value="male" data-validation="required">
+                <label for="male">Male Male Male MaleMale Male Male MaleMale Male MaleMale Male Male MaleMale Male MaleMale Male Male MaleMale Male MaleMale Male Male Male</label>
+                
+                <input type="radio" id="female" name="gender" value="female" data-validation="required">
+                <label for="female">Female</label>
+                
+                <input type="radio" id="other" name="gender" value="other" data-validation="required">
+                <label for="other">Other</label>
+            </div>
 
             <h3>5. Text Box</h3>
-            <div><input type="text" name="name" style="width:100%"/></div>
+            <div><input type="text" name="name" style="width:100%" data-validation="required" data-tips="please enter your name"/></div>
             <div>&nbsp;</div>
-            <div><input type="password" name="password" style="width:100%"/></div>
+            <div><input type="password" name="password" style="width:100%" data-validation="required|password"/></div>
             <div>&nbsp;</div>
-            <div><textarea name="content" style="width:100%"></textarea></div>
+            <div><input type="text" name="email" style="width:100%" data-validation="required|email"  data-showtips="false"/></div>
+            <div>&nbsp;</div>
+            <div><input type="text" name="number" style="width:100%" data-validation="required|number"/></div>
+            <div>&nbsp;</div>
+            <div><input type="text" name="text" class="datepicker" style="width:100%" data-validation="required|date" placeholder="(e.g. 28/02/2022)"  data-showtips="true"></div>
+            <div>&nbsp;</div>
+            <div><textarea name="content" style="width:100%" data-validation="required"  data-showtips="true"></textarea></div>
+            
+            <div>&nbsp;</div>
+            <div class="iweb-autocomplete" 
+                data-url="http://localhost/mylib/fetch.php"
+                data-param2="type:123"
+                data-ifunc="init_autoc"
+                data-sfunc="select_autoc"
+                data-rfunc="remove_autoc">
+                <input type="hidden" class="fill-id" name="guardian_id[]" value="" data-validation="required">
+                <input type="text" class="fill-txt"  name="guardian_name[]" value="">
+            </div>
 
             <h3>6. 上載文檔</h3>
             <div>
+                <div>
+                    <input type="file" id="myfiles1" class="dropfiles">
+                </div>
+                
+                
+                <div>
+                    <input type="file" id="myfiles2" class="dropfiles">
+                </div>
+                
+                <div>&nbsp;</div>
+                <div>&nbsp;</div>
+                
                 <button type="button" id="btn-select-files">選擇文檔</button>
             </div>
+            
+            
+            
 
             <div>&nbsp;</div>
             <div>&nbsp;</div>
@@ -250,6 +333,8 @@
                 <button id="btn-popup" style="padding: 5px 20px;">Content</button>
                 <button id="btn-post" style="padding: 5px 20px;">Post</button>
             </div>
+            
+            
             
          
             <h3>9. Scrollbar</h3>
@@ -281,5 +366,7 @@
         
             <div style="height: 800px;"></div>
         </div>
+        
+        
      </body>
 </html>
