@@ -1022,6 +1022,14 @@ div.iweb-info-dialog > div > div.dialog-content {
     z-index: 1;
 }
 
+div.iweb-info-dialog.max > div > div.dialog-content {
+    max-width: 100%;
+}
+
+div.iweb-info-dialog.min > div > div.dialog-content {
+    max-width: 480px;
+}
+
 div.iweb-info-dialog > div > div.dialog-content > a.btn-close {
     position: absolute;
     background-color: var(--color-white);

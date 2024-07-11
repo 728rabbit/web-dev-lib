@@ -1091,7 +1091,7 @@ var iweb = {
 					},
 					error: function(xhr, status, thrownError) {
 						iweb_object.showProcessing(false);
-						var alert_error_message = thrownError;
+						var alert_error_message = xhr.statusText;
 						if (iweb_object.isMatch(xhr.status, 0)) {
 							alert_error_message = 'Unstable network, please chcek your network connection.';
 						} else if (iweb_object.isMatch(xhr.status, 404)) {
