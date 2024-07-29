@@ -1033,6 +1033,7 @@ var iweb = {
 
 			$(document).off('click', 'div.iweb-info-dialog > div > div.dialog-mask');
 			$(document).on('click', 'div.iweb-info-dialog > div > div.dialog-mask', function(e) {
+                $('div.iweb-tips-message').remove();
 				$('div.iweb-info-dialog').remove();
 				$('body').removeClass('iweb-disable-scroll');
 				if (typeof callback == 'function') {
@@ -1042,6 +1043,7 @@ var iweb = {
 
 			$(document).off('click', 'div.iweb-info-dialog > div > div.dialog-content > a.btn-close ');
 			$(document).on('click', 'div.iweb-info-dialog > div > div.dialog-content > a.btn-close ', function() {
+                $('div.iweb-tips-message').remove();
 				$('div.iweb-info-dialog').remove();
 				$('body').removeClass('iweb-disable-scroll');
 				if (typeof callback == 'function') {
@@ -1340,34 +1342,21 @@ var iweb = {
 					});
 
 					if (typeof check_func == 'function') {
-						if (!check_func(form_data, form_object) || !default_check_result) {
-							if ($('div.iweb-tips-message').length > 0) {
-								if (default_check_result && iweb.isValue(iweb_object.language[iweb_object.current_language]['custom_error'])) {
-									$('div.iweb-tips-message').html('<div class="error"><a class="close">×</a><span>' + iweb_object.language[iweb_object.current_language]['custom_error'] + '</span></div>').each(function() {
-										iweb_object.scrollto();
-									});
-								} else {
-									$('div.iweb-tips-message').html('<div class="error"><a class="close">×</a><span>' + iweb_object.language[iweb_object.current_language]['required_error'] + '</span></div>').each(function() {
-										iweb_object.scrollto();
-									});
-								}
-								iweb_object.language[iweb_object.current_language]['custom_error'] = '';
-							} else {
-                                iweb.scrollto('.error', 120);
-								iweb_object.language[iweb_object.current_language]['custom_error'] = '';
-							}
-							return false;
-						}
-					} else if (!default_check_result) {
-						if ($('div.iweb-tips-message').length > 0) {
-							$('div.iweb-tips-message').html('<div class="error"><a class="close">×</a><span>' + iweb_object.language[iweb_object.current_language]['required_error'] + '</span></div>').each(function() {
-								iweb_object.scrollto();
-							});
-						}
-                        else {
-                            iweb.scrollto('.error', 120);
+                        default_check_result = (default_check_result && check_func(form_data, form_object));
+                    }
+                    
+                    if(!default_check_result) {
+						var show_error_message = iweb_object.language[iweb_object.current_language]['required_error'];
+                        if(iweb.isValue(iweb_object.language[iweb_object.current_language]['custom_error'])) {
+                            show_error_message = iweb_object.language[iweb_object.current_language]['custom_error'];
                         }
-						return false;
+                        iweb_object.showTipsMessage(show_error_message, null, function() {
+                            if ($('div.iweb-tips-message').length == 0) {
+                                iweb.scrollto('.error', 120);
+                            }
+                            iweb_object.language[iweb_object.current_language]['custom_error'] = '';
+                        });
+                        return false;
 					}
 
 					iweb_object.is_processing = true;
@@ -2133,16 +2122,24 @@ var iweb = {
 		const i = Math.floor(Math.log(bytes) / Math.log(k));
 		return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + sizes[i];
 	},
-	showTipsMessage: function(message, success) {
+	showTipsMessage: function(message, success, callback) {
 		var iweb_object = this;
 		if (iweb_object.isValue(message)) {
-			if ($('div.iweb-tips-message').length > 0) {
-				$('div.iweb-tips-message').html('<div class="' + ((iweb_object.isValue(success)) ? 'success' : 'error') + '"><a class="close">×</a><span>' + message + '</span></div>').each(function() {
-					iweb_object.scrollto();
-				});
-			} else {
-				iweb_object.alert(message);
-			}
+            if ($('div.iweb-info-dialog').length > 0) {
+                iweb_object.alert(message);
+            }
+            else {
+                if ($('div.iweb-tips-message').length > 0) {
+                    $('div.iweb-tips-message').html('<div class="' + ((iweb_object.isValue(success)) ? 'success' : 'error') + '"><a class="close">×</a><span>' + message + '</span></div>').each(function() {
+                        iweb_object.scrollto();
+                    });
+                } else {
+                    iweb_object.alert(message);
+                }
+            }
+            if (typeof callback == 'function') {
+                callback();
+            }
 		}
 	},
 	isValue: function(value) {
