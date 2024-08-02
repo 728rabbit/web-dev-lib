@@ -480,6 +480,7 @@ var iweb = {
                 if (iweb_object.isValue($.trim(object.val())) && !iweb_object.doing_autocomplete) {
                     iweb_object.doing_autocomplete = true;
                     iweb_object.post(post_data, function(response_data) {
+                        object.parent().find('ul.fill-options').remove();
                         if (iweb_object.isValue(response_data)) {
                             var picker = '<ul class="fill-options">';
                             $.each(response_data, function(key, value) {

@@ -814,7 +814,7 @@ div.iweb-autocomplete ul {
     right: 0px;
     border: 2px solid var(--color-lightgray);
     border-top: 0px;
-    z-index: 1;
+    z-index: 2;
 }
 
 div.iweb-autocomplete.top ul {
