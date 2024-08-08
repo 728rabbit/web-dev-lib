@@ -1152,7 +1152,7 @@ var iweb = {
 					form_object.find('div.iweb-radio-set small.tips').remove();
 					form_object.find('div.iweb-selector small.tips').remove();
 
-					form_object.find('input[data-validation="required"],textarea[data-validation="required"]').each(function() {
+					form_object.find('input[data-validation="required"]:not(:disabled),textarea[data-validation="required"]:not(:disabled)').each(function() {
 						if (iweb_object.isMatch($(this).attr('type'), 'checkbox')) {
 							if ($(this).closest('div.iweb-checkbox-set').find('input[type="checkbox"]:checked').length == 0) {
 								if ($(this).closest('div.iweb-checkbox-set').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).closest('div.iweb-checkbox-set').data('showtips'), 0) && !iweb_object.isMatch($(this).closest('div.iweb-checkbox-set').data('showtips'), false))) {
@@ -1192,7 +1192,7 @@ var iweb = {
 						}
 					});
                     
-                    form_object.find('div.iweb-autocomplete input.fill-id[data-validation="required"]').each(function() {
+                    form_object.find('div.iweb-autocomplete input.fill-id[data-validation="required"]:not(:disabled)').each(function() {
 						if (!iweb_object.isValue($(this).val())) {
                             if ($(this).closest('div.iweb-autocomplete').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).data('showtips'), 0) && !iweb_object.isMatch($(this).data('showtips'), false))) {
                                 if (iweb_object.isValue($(this).data('tips'))) {
@@ -1207,7 +1207,7 @@ var iweb = {
 						}
 					});
 
-					form_object.find('input[data-validation="required|password"]').each(function() {
+					form_object.find('input[data-validation="required|password"]:not(:disabled)').each(function() {
 						if (!iweb_object.isValue($(this).val())) {
                             if ($(this).closest('div.iweb-input').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).data('showtips'), 0) && !iweb_object.isMatch($(this).data('showtips'), false))) {
                                 if (iweb_object.isValue($(this).data('tips'))) {
@@ -1227,7 +1227,7 @@ var iweb = {
 						}
 					});
 
-					form_object.find('input[data-validation="password"]').each(function() {
+					form_object.find('input[data-validation="password"]:not(:disabled)').each(function() {
 						if (iweb_object.isValue($(this).val()) && !iweb_object.isPassword($(this).val())) {
                             if ($(this).closest('div.iweb-input').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).data('showtips'), 0) && !iweb_object.isMatch($(this).data('showtips'), false))) {
                                 $(this).closest('div.iweb-input').append('<small class="tips">' + iweb_object.language[iweb_object.current_language]['password_error'] + '</small>');
@@ -1237,7 +1237,7 @@ var iweb = {
 						}
 					});
 
-					form_object.find('input[data-validation="required|email"]').each(function() {
+					form_object.find('input[data-validation="required|email"]:not(:disabled)').each(function() {
 						if (!iweb_object.isValue($(this).val())) {
                             if ($(this).closest('div.iweb-input').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).data('showtips'), 0) && !iweb_object.isMatch($(this).data('showtips'), false))) {
                                 if (iweb_object.isValue($(this).data('tips'))) {
@@ -1257,7 +1257,7 @@ var iweb = {
 						}
 					});
 
-					form_object.find('input[data-validation="email"]').each(function() {
+					form_object.find('input[data-validation="email"]:not(:disabled)').each(function() {
 						if (iweb_object.isValue($(this).val()) && !iweb_object.isEmail($(this).val())) {
                             if ($(this).closest('div.iweb-input').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).data('showtips'), 0) && !iweb_object.isMatch($(this).data('showtips'), false))) {
                                 $(this).closest('div.iweb-input').append('<small class="tips">' + iweb_object.language[iweb_object.current_language]['email_error'] + '</small>');
@@ -1267,7 +1267,7 @@ var iweb = {
 						}
 					});
 
-					form_object.find('input[data-validation="required|number"]').each(function() {
+					form_object.find('input[data-validation="required|number"]:not(:disabled)').each(function() {
 						if (!iweb_object.isValue($(this).val())) {
                             if ($(this).closest('div.iweb-input').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).data('showtips'), 0) && !iweb_object.isMatch($(this).data('showtips'), false))) {
                                 if (iweb_object.isValue($(this).data('tips'))) {
@@ -1287,7 +1287,7 @@ var iweb = {
 						}
 					});
 
-					form_object.find('input[data-validation="number"]').each(function() {
+					form_object.find('input[data-validation="number"]:not(:disabled)').each(function() {
 						if (iweb_object.isValue($(this).val()) && !iweb_object.isNumber($(this).val())) {
                             if ($(this).closest('div.iweb-input').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).data('showtips'), 0) && !iweb_object.isMatch($(this).data('showtips'), false))) {
                                 $(this).closest('div.iweb-input').append('<small class="tips">' + iweb_object.language[iweb_object.current_language]['number_error'] + '</small>');
@@ -1297,7 +1297,7 @@ var iweb = {
 						}
 					});
 
-					form_object.find('input[data-validation="required|date"]').each(function() {
+					form_object.find('input[data-validation="required|date"]:not(:disabled)').each(function() {
 						if (!iweb_object.isValue($(this).val())) {
                             if ($(this).closest('div.iweb-input').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).data('showtips'), 0) && !iweb_object.isMatch($(this).data('showtips'), false))) {
                                 if (iweb_object.isValue($(this).data('tips'))) {
@@ -1317,7 +1317,7 @@ var iweb = {
 						}
 					});
 
-					form_object.find('input[data-validation="date"]').each(function() {
+					form_object.find('input[data-validation="date"]:not(:disabled)').each(function() {
 						if (iweb_object.isValue($(this).val()) && !iweb_object.isDate($(this).val(), $(this).data('format'))) {
                             if ($(this).closest('div.iweb-input').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).data('showtips'), 0) && !iweb_object.isMatch($(this).data('showtips'), false))) {
                                 $(this).closest('div.iweb-input').append('<small class="tips">' + iweb_object.language[iweb_object.current_language]['date_error'] + '</small>');
@@ -1327,7 +1327,7 @@ var iweb = {
 						}
 					});
 
-					form_object.find('select[data-validation="required"]').each(function() {
+					form_object.find('select[data-validation="required"]:not(:disabled)').each(function() {
 						if (!iweb_object.isValue($(this).val())) {
                             if ($(this).closest('div.iweb-selector').find('small.tips').length == 0 && (!iweb_object.isMatch($(this).data('showtips'), 0) && !iweb_object.isMatch($(this).data('showtips'), false))) {
                                 if (iweb_object.isValue($(this).data('tips'))) {
