@@ -1087,7 +1087,6 @@ div.iweb-info-dialog > div > div.dialog-content > div {
     border-radius: 4px;
     padding: 20px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
 }
 
 div.iweb-info-dialog > div > div.dialog-content > div:before,
