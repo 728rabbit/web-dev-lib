@@ -9,13 +9,11 @@ class iweb {
                 please_select: 'Please Select',
                 type_error: 'File type is not allowed.',
                 max_error: 'Maximum allowed file size {num}M.',
-                is_required: 'This field is required.',
+                required_error: 'This field is required.',
                 password_error: 'Password must contain at least 6 characters, including upper/lowercase and numbers (e.g. Abc123).',
                 email_error: 'Invalid email address format.',
                 number_error: 'Invalid number format.',
-                date_error: 'Invalid date format.',
-                required_error: 'Please fill in the required information.',
-                custom_error: ''
+                date_error: 'Invalid date format.'
             },
             zh_hant: {
                 btn_confirm: '確定',
@@ -24,13 +22,11 @@ class iweb {
                 please_select: '請選擇',
                 type_error: '不允許的檔案類型。',
                 max_error: '檔案大小不能超過{num}M。',
-                is_required: '此欄位必須填寫。',
+                required_error: '此項目必須填寫。',
                 password_error: '密碼必須至少包含6個字符，包括大寫/小寫和數字(例如Abc123)。',
                 email_error: '無效的郵件地址格式。',
                 number_error: '無效的數字格式。',
-                date_error: '無效的日期格式。',
-                required_error: '請正確填寫必須填寫的項目。',
-                custom_error: ''
+                date_error: '無效的日期格式。'
             },
             zh_hans: {
                 btn_confirm: '确定',
@@ -39,13 +35,11 @@ class iweb {
                 please_select: '请选择',
                 type_error: '不允许的档案类型。',
                 max_error: '档案大小不能超过{num}M。',
-                is_required: '此栏位必须填写。',
+                required_error: '此项目必须填写。',
                 password_error: '密码必须至少包含6个字符，包括大写/小写和数字(例如Abc123)。',
                 email_error: '无效的邮件地址格式。',
                 number_error: '无效的数字格式。',
-                date_error: '无效的日期格式。',
-                required_error: '请正确填写必须填写的项目。',
-                custom_error: ''
+                date_error: '无效的日期格式。'
             }
         };
         
@@ -88,6 +82,9 @@ class iweb {
 
         // init component
 		iweb_object.initComponent();
+        
+        // init form
+		iweb_object.initForm();
         
         // callback
         iweb_object.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
@@ -198,40 +195,220 @@ class iweb {
         iweb_object.inputBox();
 		iweb_object.selectBox();
 		iweb_object.checkBox();
-		//iweb_object.radioBox();
+		iweb_object.radioBox();
 		//iweb_object.iframe();
 		//iweb_object.responsive();
+    }
+    
+    initForm(form_object = null) {
+        const iweb_object = this;
+
+        if (!iweb_object.isValue(form_object)) {
+            form_object = document.querySelectorAll('form[data-ajax="1"]');
+        }
+        
+        if(form_object.length > 0) {
+            form_object.forEach(function(form) {
+                const showTips = ((!iweb_object.isMatch(form.dataset.showtips, false)) && (!iweb_object.isMatch(form.dataset.showtips, 0)));
+                form.removeAttribute('data-ajax');
+                form.removeAttribute('data-showtips');
+                form.method = 'post';
+                form.autocomplete = 'off';
+
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+         
+                    // remove error classes and tips
+                    const errorElements = form.querySelectorAll('.error');
+                    errorElements.forEach(function(el) {
+                        el.classList.remove('error');
+                    });
+
+                    const tipsElements = form.querySelectorAll('small.tips');
+                    tipsElements.forEach(function(tips) {
+                        tips.remove();
+                    });
+                    
+                    // do checking before submit
+                    let can_submit = true;
+                    const requiredInputs =  form.querySelectorAll('input[data-validation]:not(:disabled), select[data-validation]:not(:disabled), textarea[data-validation]:not(:disabled)');
+                    if(requiredInputs.length > 0) {
+                        requiredInputs.forEach(function(input) {
+                            const validationArray = ((input.dataset.validation).toString().split('|'));
+                            if (iweb_object.isMatch(input.type, 'checkbox')) {
+                                if(validationArray.includes('required') && !input.closest('div.iweb-checkbox-set').querySelector('input[type="checkbox"]:checked')) {
+                                    if(showTips && !input.closest('div.iweb-checkbox-set').querySelector('small.tips')) {
+                                        const errorTips = document.createElement('small');
+                                        errorTips.classList.add('tips');
+                                        errorTips.textContent = iweb_object.language[iweb_object.current_language]['required_error'];
+                                        input.closest('div.iweb-checkbox-set').appendChild(errorTips);
+                                    }
+                                    input.closest('div.iweb-checkbox').classList.add('error');
+                                    can_submit = false;
+                                }
+                            } 
+                            else if (iweb_object.isMatch(input.type, 'radio')) {
+                                if ((validationArray.includes('required')) && !input.closest('div.iweb-radio-set').querySelector('input[type="radio"]:checked')) {
+                                    if(showTips && !input.closest('div.iweb-radio-set').querySelector('small.tips')) {
+                                        const errorTips = document.createElement('small');
+                                        errorTips.classList.add('tips');
+                                        errorTips.textContent = iweb_object.language[iweb_object.current_language]['required_error'];
+                                        input.closest('div.iweb-radio-set').appendChild(errorTips);
+                                    }
+                                    input.closest('div.iweb-radio').classList.add('error');
+                                    can_submit = false;
+                                }
+                            } 
+                            else if (iweb_object.isMatch(input.type, 'select-one') || iweb_object.isMatch(input.type, 'select-multiple')) {
+                                if ((validationArray.includes('required')) && !iweb_object.isValue(input.value)) {
+                                    if(showTips && !input.closest('div.iweb-select').querySelector('small.tips')) {
+                                        const errorTips = document.createElement('small');
+                                        errorTips.classList.add('tips');
+                                        errorTips.textContent = iweb_object.language[iweb_object.current_language]['required_error'];
+                                        input.closest('div.iweb-select').appendChild(errorTips);
+                                    }
+                                    input.closest('div.iweb-select').classList.add('error');
+                                    can_submit = false;
+                                }
+                            }
+                            else {
+                                if ((validationArray.includes('required')) && !iweb_object.isValue(input.value)) {
+                                    if(showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                        const errorTips = document.createElement('small');
+                                        errorTips.classList.add('tips');
+                                        errorTips.textContent = iweb_object.language[iweb_object.current_language]['required_error'];
+                                        input.closest('div.iweb-input').appendChild(errorTips);
+                                    }
+                                    input.closest('div.iweb-input').classList.add('error');
+                                    can_submit = false;
+                                }
+                                else {
+                                    if ((validationArray.includes('number')) && !iweb_object.isNumber(input.value)) {
+                                        if(showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                            const errorTips = document.createElement('small');
+                                            errorTips.classList.add('tips');
+                                            errorTips.textContent = iweb_object.language[iweb_object.current_language]['number_error'];
+                                            input.closest('div.iweb-input').appendChild(errorTips);
+                                        }
+                                        input.closest('div.iweb-input').classList.add('error');
+                                        can_submit = false;
+                                    }
+                                    else if ((validationArray.includes('email')) && !iweb_object.isEmail(input.value)) {
+                                        if(showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                            const errorTips = document.createElement('small');
+                                            errorTips.classList.add('tips');
+                                            errorTips.textContent = iweb_object.language[iweb_object.current_language]['email_error'];
+                                            input.closest('div.iweb-input').appendChild(errorTips);
+                                        }
+                                        input.closest('div.iweb-input').classList.add('error');
+                                        can_submit = false;
+                                    }
+                                    else if ((validationArray.includes('password')) && !iweb_object.isPassword(input.value)) {
+                                        if(showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                            const errorTips = document.createElement('small');
+                                            errorTips.classList.add('tips');
+                                            errorTips.textContent = iweb_object.language[iweb_object.current_language]['password_error'];
+                                            input.closest('div.iweb-input').appendChild(errorTips);
+                                        }
+                                        input.closest('div.iweb-input').classList.add('error');
+                                        can_submit = false;
+                                    }
+                                    else if ((validationArray.includes('date')) && !iweb_object.isDate(input.value)) {
+                                        if(showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                            const errorTips = document.createElement('small');
+                                            errorTips.classList.add('tips');
+                                            errorTips.textContent = iweb_object.language[iweb_object.current_language]['date_error'];
+                                            input.closest('div.iweb-input').appendChild(errorTips);
+                                        }
+                                        input.closest('div.iweb-input').classList.add('error');
+                                        can_submit = false;
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    // extra checking if need
+                    const validation_func = form.dataset.vfunc;
+                    if (iweb_object.isMatch((typeof window[validation_func]), 'function')) {
+                        can_submit = (can_submit && window[validation_func]());
+                    }
+                    
+                    if(can_submit) {
+                        let post_data = 
+                        {
+                            dataType: 'json',
+                            showBusy: true,
+                            url: form.action,
+                            values: {}
+                        };
+
+                        const formData = new FormData(form);
+                        formData.forEach((value, key) => {
+                            post_data.values[key] = value;
+                        });
+
+                        iweb_object.ajaxPost(post_data, function(response_data) {
+                            // callback if need
+                            const complete_func = form.dataset.cfunc;
+                            if (iweb_object.isMatch((typeof window[complete_func]), 'function')) {
+                                window[complete_func](response_data);
+                            }
+                            else {
+                                if(iweb_object.isValue(response_data.status) && iweb_object.isMatch(response_data.status, 200)) {
+                                    if(iweb_object.isValue(response_data.url)) {
+                                        window.location.href = response_data.url;
+                                    }
+                                    else {
+                                        window.location.reload();
+                                    }
+                                }
+                                else {
+                                    iweb_object.alert(response_data.message);
+                                }
+                            }
+                        });
+                    }
+                    else {
+                        const errorElement = document.querySelector('.error');
+                        if (errorElement) {
+                            errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        }
+                    }
+                });
+            });
+        }
     }
     
     inputBox(input_object = null, callback = null) {
         const iweb_object = this;
         
         if (!iweb_object.isValue(input_object)) {
-            input_object = document.querySelectorAll('input[type="text"], input[type="password"], input[type="date"], input[type="color"], input[type="email"], input[type="number"], input[type="file"], textarea');
+            input_object = document.querySelectorAll('input[type="text"], input[type="password"], input[type="date"], input[type="color"], input[type="tel"], input[type="email"], input[type="number"], input[type="file"], textarea');
         }
         
         if (input_object.length > 0) {
-            input_object.forEach(function(element) {
-                // if the element is already contained in a "iweb-input" class, skip
-                if (!element.closest('div.iweb-input')) {
+            input_object.forEach(function(input) {
+                // if the input is already contained in a "iweb-input" class, skip
+                if (!input.closest('div.iweb-input')) {
                     const wrapperDiv = document.createElement('div');
                     wrapperDiv.classList.add('iweb-input');
-                    if (iweb_object.isMatch(element.dataset.autocomplete, 1) || iweb_object.isMatch(element.dataset.autocomplete, true)) {
+                    if (iweb_object.isMatch(input.dataset.autocomplete, 1) || iweb_object.isMatch(input.dataset.autocomplete, true)) {
                         wrapperDiv.classList.add('iweb-input-autocomplete');
                     }
                     else {
-                        wrapperDiv.classList.add('iweb-input-' + (iweb_object.isValue(element.type) ? element.type : 'text'));
+                        wrapperDiv.classList.add('iweb-input-' + (iweb_object.isValue(input.type) ? input.type : 'text'));
                     }
 
-                    // move the input element into a new wrapper div 
-                    element.parentNode.insertBefore(wrapperDiv, element);
-                    wrapperDiv.appendChild(element);
+                    // move the input input into a new wrapper div 
+                    input.parentNode.insertBefore(wrapperDiv, input);
+                    wrapperDiv.appendChild(input);
                     
                     // handle autocomplete input
-                    if (iweb_object.isMatch(element.dataset.autocomplete, 1) || iweb_object.isMatch(element.dataset.autocomplete, true)) {
-                        element.type = 'hidden';
-                        element.classList.add('fill-id');
-                        element.removeAttribute('data-autocomplete');
+                    if (iweb_object.isMatch(input.dataset.autocomplete, 1) || iweb_object.isMatch(input.dataset.autocomplete, true)) {
+                        input.type = 'hidden';
+                        input.classList.add('fill-id');
+                        input.removeAttribute('data-autocomplete');
 
                         // create search input
                         const fillInput = document.createElement('input');
@@ -264,17 +441,17 @@ class iweb {
                                 
                                 // merge post data
                                 const keywords = e.target.value;
-                                var postData = {
-                                    url: e.target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id').dataset.url,
-                                    values: Object.assign({ keywords: keywords }, extraValues),
+                                const postData = 
+                                {
                                     dataType: 'json',
-                                    showBusy: false
+                                    showBusy: false,
+                                    url: e.target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id').dataset.url,
+                                    values: Object.assign({ keywords: keywords }, extraValues)
                                 };
 
                                 // search result
-                                if (iweb_object.isValue(keywords) && !iweb_object.is_busy) {
-                                    iweb_object.is_busy = true;
-                                    iweb_object.post(postData, function(responseData) {
+                                if (iweb_object.isValue(keywords)) {
+                                    iweb_object.ajaxPost(postData, function(responseData) {
                                         if (iweb_object.isValue(responseData)) {
                                             const picker = document.createElement('ul');
                                             picker.className = 'fill-options';
@@ -324,6 +501,8 @@ class iweb {
                                                     findElementId.closest('div.iweb-input-autocomplete').appendChild(fillReset);
                                                     
                                                     // remove options list
+                                                    findElementId.closest('div.iweb-input-autocomplete').classList.remove('error');
+                                                    findElementId.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
                                                     findElementId.closest('div.iweb-input-autocomplete').querySelector('ul.fill-options')?.remove();
                                                     
                                                     // callback if need
@@ -339,8 +518,6 @@ class iweb {
 
                                             e.target.closest('div.iweb-input-autocomplete').appendChild(picker);
                                         }
-                                    }, function() {
-                                        iweb_object.is_busy = false;
                                     });
                                 }
                             }, 500);
@@ -348,8 +525,8 @@ class iweb {
                         wrapperDiv.appendChild(fillInput);
                         
                         // append reset button
-                        if(iweb_object.isValue(element.dataset.default)) {
-                            fillInput.value = element.dataset.default;
+                        if(iweb_object.isValue(input.dataset.default)) {
+                            fillInput.value = input.dataset.default;
                             fillInput.readOnly = true;
                             const fillReset = document.createElement('a');
                             fillReset.classList.add('fill-reset');
@@ -381,11 +558,11 @@ class iweb {
                             wrapperDiv.appendChild(fillReset);
                         }
                         
-                        element.removeAttribute('data-default');
+                        input.removeAttribute('data-default');
                     }
                     else {
                         // set password & color input
-                        if (iweb_object.isMatch(element.type, 'password')) {
+                        if (iweb_object.isMatch(input.type, 'password')) {
                             const button = document.createElement('button');
                             button.type = 'button';
                             button.classList.add('switch-pwd-type');
@@ -394,12 +571,12 @@ class iweb {
                                 const input = e.target.closest('div.iweb-input').querySelector('input');
                                 const showIcon = e.target.closest('div.iweb-input').querySelector('i.show');
                                 const hideIcon = e.target.closest('div.iweb-input').querySelector('i.hide');
-                                if (iweb_object.isMatch(element.type, 'password')) {
-                                    element.type = 'text';
+                                if (iweb_object.isMatch(input.type, 'password')) {
+                                    input.type = 'text';
                                     showIcon.style.display = 'block';
                                     hideIcon.style.display = 'none';
                                 } else {
-                                    element.type = 'password';
+                                    input.type = 'password';
                                     showIcon.style.display = 'none';
                                     hideIcon.style.display = 'block';
                                 }
@@ -421,11 +598,11 @@ class iweb {
                             button.appendChild(eyeIcon);
                             wrapperDiv.appendChild(button);
                         }
-                        else if (iweb_object.isMatch(element.type, 'color')) {
-                            element.classList.add('icolorpicker');
-                            element.style.position = 'relative';
-                            element.style.zIndex = 1;
-                            element.addEventListener('input', (e) => {
+                        else if (iweb_object.isMatch(input.type, 'color')) {
+                            input.classList.add('icolorpicker');
+                            input.style.position = 'relative';
+                            input.style.zIndex = 1;
+                            input.addEventListener('input', (e) => {
                                 e.preventDefault();
                                 const input = e.target.closest('div').querySelector('input.icolorcode');
                                 // ensure it's a valid hex code
@@ -437,7 +614,7 @@ class iweb {
                             const colorCode = document.createElement('input');
                             colorCode.type = 'text';
                             colorCode.maxLength = 7;
-                            colorCode.value = element.value;
+                            colorCode.value = input.value;
                             colorCode.classList.add('icolorcode');
                             colorCode.style.position = 'absolute';
                             colorCode.style.top = '0px';
@@ -458,12 +635,13 @@ class iweb {
                     }
                     
                     // set style
-                    element.style.display = ((!iweb_object.isMatch(element.type, 'color'))?'block':'inline-block'); 
-                    element.style.width = ((!iweb_object.isMatch(element.type, 'color'))?'100%':'36px');
-                    element.autocomplete = 'off';
+                    input.style.display = ((!iweb_object.isMatch(input.type, 'color'))?'block':'inline-block'); 
+                    input.style.width = ((!iweb_object.isMatch(input.type, 'color'))?'100%':'36px');
+                    input.autocomplete = 'off';
                     
                     // bind event
-                    element.addEventListener('input', (e) => {
+                    input.addEventListener('input', (e) => {
+                        e.target.closest('div.iweb-input').classList.remove('error');
                         e.target.closest('div.iweb-input').querySelector('small.tips')?.remove();
                     });
                 }
@@ -551,6 +729,9 @@ class iweb {
                         // update the virtual result label
                         e.target.closest('div.iweb-select').querySelector('div.virtual > a.result').innerHTML = selectedOptionLabel;
                     }
+                    
+                    e.target.closest('div.iweb-select').classList.remove('error');
+                    e.target.closest('div.iweb-select').querySelector('small.tips')?.remove();
                 });
   
                 // if the element is already contained in a "iweb-select" class, skip
@@ -866,31 +1047,90 @@ class iweb {
             checkbox_object.forEach(function(checkbox) {
                 // check if the parent elements have the class 'iweb-checkbox'
                 if (!checkbox.closest('div.iweb-checkbox')) {
-                    var findCheckboxLabel = checkbox.nextElementSibling;
-                    var isChecked = checkbox.checked;
+                    const findCheckboxLabel = checkbox.nextElementSibling;
                     
-                    var wrapperDiv = document.createElement('div');
+                    const wrapperDiv = document.createElement('div');
                     wrapperDiv.classList.add('iweb-checkbox');
-                    if(isChecked) {
+                    if(checkbox.checked) {
                         wrapperDiv.classList.add('checked');
                     }
                     
                     // move the checkbox element into a new wrapper div 
                     checkbox.parentNode.insertBefore(wrapperDiv, checkbox);
                     wrapperDiv.appendChild(checkbox);
+                    if(findCheckboxLabel) {
+                        findCheckboxLabel.parentNode.insertBefore(wrapperDiv, findCheckboxLabel);
+                        wrapperDiv.appendChild(findCheckboxLabel);
+                    }
                     
-                    findCheckboxLabel.parentNode.insertBefore(wrapperDiv, findCheckboxLabel);
-                    wrapperDiv.appendChild(findCheckboxLabel);
                     
                     // bind event
                     checkbox.addEventListener('change', (e) => {
                         e.preventDefault();
-                        if(e.target.checked) {
-                            e.target.closest('div.iweb-checkbox').classList.add('checked');
-                        }
-                        else {
-                            e.target.closest('div.iweb-checkbox').classList.remove('checked');
-                        }
+                        const relatedObject = document.querySelectorAll('input[type="checkbox"][name="' + (e.target.name) + '"]');
+                        relatedObject.forEach(function(related_checkbox) {
+                            if(related_checkbox.checked) {
+                                related_checkbox.closest('div.iweb-checkbox').classList.add('checked');
+                            } else {
+                                related_checkbox.closest('div.iweb-checkbox').classList.remove('checked');
+                            }
+                            related_checkbox.closest('div.iweb-checkbox').classList.remove('error');
+                        });
+                        e.target.closest('div.iweb-checkbox-set').querySelector('small.tips')?.remove();
+                    });
+                }
+            });
+        }
+
+        // callback
+        if (iweb_object.isMatch((typeof callback), 'function')) {
+            callback();
+        }
+    }
+    
+    radioBox(raido_object = null, callback = null) {
+        var iweb_object = this;
+        
+        if (!iweb_object.isValue(raido_object)) {
+            raido_object = document.querySelectorAll('input[type="radio"]');
+        }
+        
+        if(raido_object.length > 0) {
+            raido_object.forEach(function(raido) {
+                // check if the parent elements have the class 'iweb-raido'
+                if (!raido.closest('div.iweb-raido')) {
+                    const findCheckboxLabel = raido.nextElementSibling;
+                    
+                    const wrapperDiv = document.createElement('div');
+                    wrapperDiv.classList.add('iweb-radio');
+                    if(raido.checked) {
+                        wrapperDiv.classList.add('checked');
+                    }
+                    
+                    // move the raido element into a new wrapper div 
+                    raido.parentNode.insertBefore(wrapperDiv, raido);
+                    wrapperDiv.appendChild(raido);
+                    if(findCheckboxLabel) {
+                        findCheckboxLabel.parentNode.insertBefore(wrapperDiv, findCheckboxLabel);
+                        wrapperDiv.appendChild(findCheckboxLabel);
+                    }
+                    
+                    // bind event
+                    raido.addEventListener('change', (e) => {
+                        e.preventDefault();
+                        const selectedValue = e.target.value;
+                        const relatedObject = document.querySelectorAll('input[type="radio"][name="' + (e.target.name) + '"]');
+                        relatedObject.forEach(function(related_radio) {
+                            if (iweb_object.isMatch(related_radio.value, selectedValue)) {
+                                related_radio.checked = true;
+                                related_radio.closest('div.iweb-radio').classList.add('checked');
+                            } else {
+                                related_radio.checked = false;
+                                related_radio.closest('div.iweb-radio').classList.remove('checked');
+                            }
+                            related_radio.closest('div.iweb-radio').classList.remove('error');
+                        });
+                        e.target.closest('div.iweb-radio-set').querySelector('small.tips')?.remove();
                     });
                 }
             });
@@ -1137,72 +1377,339 @@ class iweb {
         return '';
     }
 
-    // post & form
-    async post(post_data = null, callback = null, final_callback = null) {
+    // ajax post
+    async ajaxPost(post_data = null, callback = null, final_callback = null) {
         const iweb_object = this;
         
-        if (iweb_object.is_busy && iweb_object.isValue(post_data)) {
+        // merge post data
+        post_data = Object.assign(
+        {   
+            dataType: 'json',
+            showBusy: true,
+            url: '',
+            values: {}
+        }, post_data);
+        
+        if (!iweb_object.is_busy && iweb_object.isValue(post_data.url)) {
             const local_time = iweb_object.toDateTime();
-            post_data = Object.assign({
-                url: '',
-                values: {},
-                dataType: 'json',
-                showBusy: true
-            }, post_data);
+            let formData = new FormData();
             
-            // append token
-            post_data.values.itoken = window.btoa(iweb_object.imd5.hash(iweb_object.csrf_token + '#dt' + local_time) + '%' + local_time);
+            formData.append('itoken', window.btoa(iweb_object.imd5.hash(iweb_object.csrf_token + '#dt' + local_time) + '%' + local_time));
+            if(post_data.values) {
+                for (let key in post_data.values) {
+                    formData.append(key, post_data.values[key]);
+                }
+            }
             
             // try to fetch
-            if (iweb_object.isValue(post_data.url)) {
-                try {
-                    if (iweb_object.isMatch(post_data.showBusy, true) || iweb_object.isMatch(post_data.showBusy, 1) || iweb_object.isMatch(post_data.showBusy, 2)) {
-                        iweb_object.showBusy(true, 70);
+            try {
+                if (iweb_object.isMatch(post_data.showBusy, true) || iweb_object.isMatch(post_data.showBusy, 1) || iweb_object.isMatch(post_data.showBusy, 2)) {
+                    iweb_object.showBusy(true, 70);
+                }
+                
+                iweb_object.is_busy = true;
+
+                const response = await fetch(post_data.url, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    // return the response based on the specified format
+                    let responseData;
+                    switch (post_data.dataType.toLowerCase()) {
+                        case 'json':
+                            responseData = await response.json();
+                            break;
+                        case 'blob':
+                            responseData = await response.blob();
+                            break;
+                        default:
+                            responseData = await response.text();
+                            break;
                     }
                     
-                    const response = await fetch(post_data.url, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(post_data.values)
-                    });
+                    // callback
+                    if (typeof callback === 'function') {
+                        callback(responseData);
+                    }
+                } else {
+                    throw new Error(response.statusText);
+                }
+            } catch (error) {
+                // show error
+                let alert_error_message = error.message;
+                if (error.message.includes('NetworkError')) {
+                    alert_error_message = 'Unstable network, please check your network connection.';
+                } else if (error.message.includes('404')) {
+                    alert_error_message = 'The requested page not found.';
+                } else if (error.message.includes('500')) {
+                    alert_error_message = 'Internal Server Error.';
+                }
+                alert(alert_error_message);
+                return false;
+            } finally {
+                // reset
+                iweb_object.is_busy = false;
+                if (iweb_object.isMatch(post_data.showBusy, true) || iweb_object.isMatch(post_data.showBusy, 1) || iweb_object.isMatch(post_data.showBusy, 2)) {
+                    if (!iweb_object.isMatch(post_data.showBusy, 2)) {
+                        iweb_object.showBusy(false);
+                    }
+                }
 
-                    const responseData = await response.json();
-                    if (response.ok) {
-                        if (typeof callback === 'function') {
-                            callback(responseData);
-                        }
-                    } else {
-                        throw new Error(response.statusText);
-                    }
-                } catch (error) {
-                    let alert_error_message = error.message;
-                    if (error.message.includes('NetworkError')) {
-                        alert_error_message = 'Unstable network, please check your network connection.';
-                    } else if (error.message.includes('404')) {
-                        alert_error_message = 'The requested page not found.';
-                    } else if (error.message.includes('500')) {
-                        alert_error_message = 'Internal Server Error.';
-                    }
-                    alert(alert_error_message);
-                    return false;
-                } finally {
-                    if (iweb_object.isMatch(post_data.showBusy, true) || iweb_object.isMatch(post_data.showBusy, 1) || iweb_object.isMatch(post_data.showBusy, 2)) {
-                        if (!iweb_object.isMatch(post_data.showBusy, 2)) {
-                            iweb_object.showBusy(false);
-                        }
-                    }
-                    if (typeof final_callback === 'function') {
-                        final_callback();
-                    }
+                // callback
+                if (iweb_object.isMatch((typeof final_callback), 'function')) {
+                    final_callback();
                 }
             }
         }
     }
     
+    // dialog
+    alert(message = '', callback = null, options = {}) {
+        // prevent duplicate alert dialogs
+        if (document.querySelectorAll('div.iweb-alert-dialog').length > 0) {
+            return;
+        }
+
+        const iweb_object = this;
+
+        // setting
+        const setting = {
+            customizeClass: '',
+            btnClose: iweb_object.language[iweb_object.current_language]['btn_confirm']
+        };
+        if (iweb_object.isValue(options)) {
+            Object.assign(setting, options);
+        }
+
+        // create the alert dialog element
+        const alertDialog = document.createElement('div');
+        alertDialog.classList.add('iweb-alert-dialog');
+        if(iweb_object.isValue(setting.customizeClass)) {
+            alertDialog.classList.add(setting.customizeClass);
+        }
+        
+        const innerDiv = document.createElement('div');
+        const contentDiv = document.createElement('div');
+        contentDiv.classList.add('content');
+        contentDiv.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+        contentDiv.style.transform = 'translateY(-320%)';
+        contentDiv.style.opacity = '0';
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message');
+        messageDiv.innerHTML = message;
+
+        // create the close button
+        const closeButton = document.createElement('button');
+        closeButton.classList.add('btn');
+        closeButton.classList.add('btn-close');
+        closeButton.textContent = setting.btnClose;
+        closeButton.addEventListener('click', function(e) {
+            // close & reset
+            contentDiv.style.transform = 'translateY(-320%)';
+            contentDiv.style.transform = '0'; 
+            contentDiv.addEventListener('transitionend', function () {
+                e.target.closest('div.iweb-alert-dialog').remove();
+                if (document.querySelectorAll('div.iweb-alert-dialog').length === 0 && document.querySelectorAll('div.iweb-info-dialog').length === 0) {
+                    document.body.classList.remove('iweb-disable-scroll');
+                }
+
+                // callback if need
+                if (iweb_object.isMatch((typeof callback), 'function')) {
+                    callback();
+                }
+            }, { once: true });
+        });
+
+        // append to body
+        const viewer = document.querySelector('div.iweb-viewer');
+        innerDiv.appendChild(contentDiv);
+        contentDiv.appendChild(messageDiv);
+        contentDiv.appendChild(closeButton);
+        alertDialog.appendChild(innerDiv);
+        viewer.insertBefore(alertDialog, viewer.firstChild);
+        document.body.classList.add('iweb-disable-scroll');
+        
+        // show dialog
+        iweb_object.delay_timer = setTimeout(function() {
+            clearTimeout(iweb_object.delay_timer);
+            contentDiv.style.transform = 'translateY(0)';
+            contentDiv.style.opacity = '1';
+        }, 10);
+    }
+    
+    confirm(message = '', callback = null, options = {}) {
+        // prevent duplicate alert dialogs
+        if (document.querySelectorAll('div.iweb-alert-dialog').length > 0) {
+            return;
+        }
+
+        const iweb_object = this;
+
+        // setting
+        const setting = {
+            customizeClass: '',
+            btnYes: iweb_object.language[iweb_object.current_language]['btn_yes'],
+            btnNo: iweb_object.language[iweb_object.current_language]['btn_no']
+        };
+        if (iweb_object.isValue(options)) {
+            Object.assign(setting, options);
+        }
+
+        // create the alert dialog element
+        const alertDialog = document.createElement('div');
+        alertDialog.classList.add('iweb-alert-dialog');
+        if(iweb_object.isValue(setting.customizeClass)) {
+            alertDialog.classList.add(setting.customizeClass);
+        }
+        
+        const innerDiv = document.createElement('div');
+        const contentDiv = document.createElement('div');
+        contentDiv.classList.add('content');
+        contentDiv.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+        contentDiv.style.transform = 'translateY(-320%)';
+        contentDiv.style.opacity = '0';
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.classList.add('message');
+        messageDiv.innerHTML = message;
+
+        // create the yes/no button
+        const yesButton = document.createElement('button');
+        yesButton.classList.add('btn');
+        yesButton.classList.add('btn-yes');
+        yesButton.textContent = setting.btnYes;
+        yesButton.addEventListener('click', function(e) {
+            // close & reset
+            contentDiv.style.transform = 'translateY(-320%)';
+            contentDiv.style.transform = '0'; 
+            contentDiv.addEventListener('transitionend', function () {
+                e.target.closest('div.iweb-alert-dialog').remove();
+                if (document.querySelectorAll('div.iweb-alert-dialog').length === 0 && document.querySelectorAll('div.iweb-info-dialog').length === 0) {
+                    document.body.classList.remove('iweb-disable-scroll');
+                }
+
+                // callback if need
+                if (iweb_object.isMatch((typeof callback), 'function')) {
+                    callback(true);
+                }
+            }, { once: true });
+        });
+        
+        const noButton = document.createElement('button');
+        noButton.classList.add('btn');
+        noButton.classList.add('btn-no');
+        noButton.textContent = setting.btnNo;
+        noButton.addEventListener('click', function(e) {
+            // close & reset
+            contentDiv.style.transform = 'translateY(-320%)';
+            contentDiv.style.transform = '0'; 
+            contentDiv.addEventListener('transitionend', function () {
+                e.target.closest('div.iweb-alert-dialog').remove();
+                if (document.querySelectorAll('div.iweb-alert-dialog').length === 0 && document.querySelectorAll('div.iweb-info-dialog').length === 0) {
+                    document.body.classList.remove('iweb-disable-scroll');
+                }
+
+                // callback if need
+                if (iweb_object.isMatch((typeof callback), 'function')) {
+                    callback(false);
+                }
+            }, { once: true });
+        });
+
+        // append to body
+        const viewer = document.querySelector('div.iweb-viewer');
+        innerDiv.appendChild(contentDiv);
+        contentDiv.appendChild(messageDiv);
+        contentDiv.appendChild(yesButton);
+        contentDiv.appendChild(noButton);
+        alertDialog.appendChild(innerDiv);
+        viewer.insertBefore(alertDialog, viewer.firstChild);
+        document.body.classList.add('iweb-disable-scroll');
+        
+        // show dialog
+        iweb_object.delay_timer = setTimeout(function() {
+            clearTimeout(iweb_object.delay_timer);
+            contentDiv.style.transform = 'translateY(0)';
+            contentDiv.style.opacity = '1';
+        }, 10);
+    }
+    
+    dialog(htmlCode, initFunc, callback, customizeClass) {
+        // Check if a dialog already exists
+        if (document.querySelector('div.iweb-info-dialog')) {
+            return;
+        }
+
+        var iwebObject = this;
+
+        // Create the dialog structure using native JS
+        var dialogWrapper = document.createElement('div');
+        dialogWrapper.className = 'iweb-info-dialog' + (customizeClass ? ' ' + customizeClass : '');
+
+        // Create loading element
+        var loadingDiv = document.createElement('div');
+        loadingDiv.className = 'dialog-loading';
+        loadingDiv.innerHTML = `
+            <svg width="48px" height="48px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                <circle cx="50" cy="50" fill="none" stroke="#dddddd" stroke-width="10" r="36" stroke-dasharray="169.64600329384882 58.548667764616276">
+                    <animateTransform attributeName="transform" type="rotate" repeatCount="indefinite" dur="1s" values="0 50 50;360 50 50" keyTimes="0;1"></animateTransform>
+                </circle>
+            </svg>
+        `;
+        dialogWrapper.appendChild(loadingDiv);
+
+        // Create dialog mask
+        var maskDiv = document.createElement('div');
+        maskDiv.className = 'dialog-mask';
+        dialogWrapper.appendChild(maskDiv);
+
+        // Create dialog content container
+        const innerDiv = document.createElement('div');
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'content';
+        contentDiv.innerHTML = `
+            <a class="btn btn-close"><div></div></a>
+            <div>${htmlCode}</div>
+        `;
+        innerDiv.appendChild(contentDiv);                                                                    
+        dialogWrapper.appendChild(innerDiv);
+
+        document.querySelector('div.iweb-viewer').prepend(dialogWrapper);
+        document.body.classList.add('iweb-disable-scroll');
+
+        // Close dialog function
+        function closeDialog() {
+            document.querySelector('div.iweb-tips-message')?.remove();
+            dialogWrapper.remove();
+            document.body.classList.remove('iweb-disable-scroll');
+            if (typeof callback === 'function') {
+                callback();
+            }
+        }
+
+        // Add event listeners for closing the dialog
+        maskDiv.addEventListener('click', closeDialog);
+        contentDiv.querySelector('a.btn-close').addEventListener('click', closeDialog);
+
+        // Delay to remove loading indicator and fade in dialog content
+        setTimeout(function () {
+            loadingDiv.remove(); // Remove loading indicator
+            contentDiv.style.opacity = '1'; // Fade in dialog content
+            if (typeof initFunc === 'function') {
+                initFunc();
+            }
+        }, 250);
+
+        // Initial style for dialog content (hidden before fade in)
+        contentDiv.style.opacity = '0'; // Initially hidden
+    }
+
+    
     // others
-    showBusy(status, value) {
+    showBusy (status, value) {
         const iweb_object = this;
 
         if (iweb_object.isMatch(status, 1) || iweb_object.isMatch(status, true)) {
@@ -1511,7 +2018,7 @@ class iDatePicker {
             borderRadius: '5px',
             boxSizing: 'border-box',
             boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)',
-            zIndex: '100'
+            zIndex: '10'
         }, 'idatepicker-calendar');
 
         document.body.appendChild(this.calendarElement);
@@ -1690,6 +2197,7 @@ class iDatePicker {
         const selectedDate = this.parseDate(dateObj);
         if (!isNaN(selectedDate)) {
             this.activeInputElement.value = this.formatDate(selectedDate);
+            this.activeInputElement.dispatchEvent(new Event('input'));
             this.selectedDate = selectedDate;
             this.buildCalendar();
             this.hideCalendar();
