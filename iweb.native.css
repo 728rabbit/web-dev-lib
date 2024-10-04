@@ -1462,7 +1462,7 @@ div.iweb-pagination > ul > li > a.current {
 
 div.iweb-pagination > ul > li > a > span {
     display: block;
-    line-height: 20px;
+    line-height: 18px;
 }
 
 div.iweb-pagination > ul > li > a > i {
