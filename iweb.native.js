@@ -229,7 +229,7 @@ class iweb {
 		if (input_object.length > 0) {
 			input_object.forEach((input) => {
 				if (!input.closest('div.iweb-input')) {
-					// Create a wrapper div 
+					// Create the wrapper div 
 					const isAutocomplete = iweb_object.isMatch(input.getAttribute('data-autocomplete'), 1) || iweb_object.isMatch(input.getAttribute('data-autocomplete'), true);
 					const wrapperDiv = document.createElement('div');
 					wrapperDiv.classList.add('iweb-input');
@@ -367,7 +367,7 @@ class iweb {
 							});
 						});
 
-						// Append search input into a wrapper div
+						// Append search input into the wrapper div
 						wrapperDiv.appendChild(fillText);
 
 						// Append reset button
@@ -602,7 +602,7 @@ class iweb {
 
 				if (!select.closest('div.iweb-select')) {
 					if (isVirtual) {
-						// Create a wrapper div
+						// Create the wrapper div
 						const wrapperDiv = document.createElement('div');
 						wrapperDiv.classList.add('iweb-select');
 						if (isMultiple) {
@@ -867,7 +867,7 @@ class iweb {
 						virtualDiv.appendChild(optionsDiv);
 						wrapperDiv.appendChild(virtualDiv);
 					} else {
-						// Create a wrapper div
+						// Create the wrapper div
 						const wrapperDiv = document.createElement('div');
 						wrapperDiv.classList.add('iweb-select');
 						const realDiv = document.createElement('div');
@@ -903,7 +903,7 @@ class iweb {
 				if (!checkbox.closest('div.iweb-checkbox')) {
 					const findCheckboxLabel = checkbox.nextElementSibling;
 
-					// Create a wrapper div 
+					// Create the wrapper div 
 					const wrapperDiv = document.createElement('div');
 					wrapperDiv.classList.add('iweb-checkbox');
 					if (checkbox.checked) {
@@ -959,7 +959,7 @@ class iweb {
 				if (!raido.closest('div.iweb-raido')) {
 					const findCheckboxLabel = raido.nextElementSibling;
 
-					// Create a wrapper div
+					// Create the wrapper div
 					const wrapperDiv = document.createElement('div');
 					wrapperDiv.classList.add('iweb-radio');
 					if (raido.checked) {
@@ -1381,7 +1381,7 @@ class iweb {
 			// Create upload list
 			if (iweb_object.isValue(iweb_object.uploader_options['selected_files'].url) && iweb_object.uploader_files['selected_files'].length > 0) {
 
-				// Create a wrapper div for button
+				// Create the wrapper div for button
 				const uploaderDiv = document.createElement('div');
 				uploaderDiv.classList.add('action');
 
@@ -1398,7 +1398,7 @@ class iweb {
 				uploaderDiv.appendChild(startAllButton);
 				uploaderDiv.appendChild(closeAllButton);
 
-				// Create a wrapper div for list
+				// Create the wrapper div for list
 				const listContainer = document.createElement('div');
 				listContainer.classList.add('list');
 
@@ -1521,7 +1521,7 @@ class iweb {
 
 			if (iweb_object.isValue(iweb_object.uploader_options['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)].url) && fileInput.files.length > 0) {
 
-				// Create a wrapper div for button
+				// Create the wrapper div for button
 				const uploader = document.createElement('div');
 				uploader.className = 'action';
 
@@ -1540,7 +1540,7 @@ class iweb {
 
 				uploaderDiv.appendChild(uploader);
 
-				// Create a wrapper div for list
+				// Create the wrapper div for list
 				const listContainer = document.createElement('div');
 				listContainer.classList.add('list');
 				uploaderDiv.appendChild(listContainer);
