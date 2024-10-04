@@ -3126,7 +3126,7 @@ class iPagination {
 
 	jumpToPage(inputElement) {
 		inputElement.addEventListener('keypress', (e) => {
-			if (e.which === 13) { // Enter key
+			if (e.which === 13) {
 				let jumpToPage = Math.min(Math.max(parseInt(inputElement.value) || 1, 1), inputElement.getAttribute('data-max'));
 				window.location.href = this.createPageUrl(jumpToPage);
 			}
