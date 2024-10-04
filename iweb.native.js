@@ -1340,15 +1340,15 @@ class iweb {
 		const iweb_object = this;
 
 		// Create a input file
-		const files_input = document.createElement('input');
-		files_input.type = 'file';
-		files_input.multiple = true;
+		const fileInput = document.createElement('input');
+		fileInput.type = 'file';
+		fileInput.multiple = true;
 
 		// Bind event for file change
-		files_input.onchange = function() {
+		fileInput.onchange = function() {
 			// Limit up to 7 files
 			const maxFiles = 7;
-			let selectedFiles = files_input.files;
+			let selectedFiles = fileInput.files;
 			if (selectedFiles.length > maxFiles) {
 				selectedFiles = Array.from(selectedFiles).slice(0, maxFiles);
 			}
@@ -1467,7 +1467,7 @@ class iweb {
 			}
 		};
 
-		files_input.click();
+		fileInput.click();
 	}
 
 	uploaderArea(file_input_id, options, callback) {
@@ -1487,7 +1487,14 @@ class iweb {
 		fileInput.multiple = true;
 
 		fileInput.onchange = function() {
-			iweb_object.uploader_files['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)] = fileInput.files;
+            // Limit up to 7 files
+			const maxFiles = 7;
+			let selectedFiles = fileInput.files;
+			if (selectedFiles.length > maxFiles) {
+				selectedFiles = Array.from(selectedFiles).slice(0, maxFiles);
+			}
+            
+			iweb_object.uploader_files['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)] = selectedFiles;
 			iweb_object.uploader_files_skip['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)] = [-1];
 			iweb_object.uploader_options['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)] = {
 				dataType: 'json',
