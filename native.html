@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html lang="zh-hant">
     <head>
-        <title>TODO supply a title</title>
+        <title>iweb native lib</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="csrf-token" content="96ca6fd5cc5283000910785ba2344044"/>
         <link href="dist/icon/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <link href="dist/iweb.native.css" rel="stylesheet" type="text/css"/>
         <script src="dist/jquery.min.js" type="text/javascript"></script>
-        <script src="dist/iweb.native.js" type="text/javascript"></script>
+        <script src="dist/iweb.native.min.js" type="text/javascript"></script>
         <style>
             div.row {
                 margin-top: 10px;
@@ -36,16 +36,19 @@
             </div>
             
             <form action="upload.php" data-ajax="1" >
+                <div class="page-message iweb-tips-message">
+                </div>
+                
                 <div class="row">
                     <label>專業</label>
-                    <select name="professionals" data-validation="required" data-virtual="1" data-filter="1" multiple>
+                    <select name="professionals[]" data-validation="required" data-virtual="1" data-filter="1" multiple>
                          <optgroup label="技術類">
-                            <option value="developer">軟體開發人員</option>
+                            <option value="developer" selected>軟體開發人員</option>
                             <option value="engineer">工程師</option>
                             <option value="data_scientist">數據科學家</option>
                         </optgroup>
                         <optgroup label="設計類">
-                            <option value="graphic_designer">平面設計師</option>
+                            <option value="graphic_designer" selected>平面設計師</option>
                             <option value="ux_designer">用戶體驗設計師</option>
                             <option value="ui_designer">用戶介面設計師</option>
                         </optgroup>
@@ -54,21 +57,22 @@
                             <option value="project_manager">專案經理</option>
                             <option value="consultant">顧問</option>
                         </optgroup>
+                        <option value="law">律師</option>
                     </select>
                 </div>
                 
                 <div class="row">
                     <label>姓名</label>
-                    <input type="text" name="name" data-validation="required" data-showtips="false">
+                    <input type="text" name="name" data-validation="required" value="陳大文">
                 </div>
                 
                 <div class="row">
                     <label>性別</label>
-                    <div class="iweb-radio-set"  data-showtips="false">
+                    <div class="iweb-radio-set">
                         <input type="radio" id="male" name="gender" value="male" data-validation="required">
                         <label for="male">男</label>
 
-                        <input type="radio" id="female" name="gender" value="female" data-validation="required">
+                        <input type="radio" id="female" name="gender" value="female" data-validation="required" checked>
                         <label for="female">女</label>
                     </div>
                 </div>
@@ -78,8 +82,8 @@
                     <table style="width:100%">
                         <tr>
                             <td width="110">
-                                <select name="telephone_code" data-validation="required" data-virtual="0">
-                                    <option value="852">+852</option>
+                                <select name="telephone_code" data-validation="required" data-virtual="1">
+                                    <option value="852" selected>+852</option>
                                     <option value="853">+853</option>
                                     <option value="86">+86</option>
                                 </select>
@@ -104,20 +108,20 @@
                 
                 <div class="row">
                     <label>日期</label>
-                    <input type="date" name="start_date" data-validation="required|date" >
+                    <input type="date" name="start_date" data-validation="required|date" value="2024-10-10">
                 </div>
                 
                 
                 <div class="row">
                     <label>代表顔色</label>
-                    <input type="color" name="mycolor" data-validation="required" >
+                    <input type="color" name="mycolor" data-validation="required" value="#cccccc">
                 </div>
                 
                 <div class="row">
                     <label>推薦人</label>
-                    <input type="text" class="fill-id" name="member_id" value="" data-validation="required"
+                    <input type="text" class="fill-id" name="member_id" value="1" data-validation="required"
                         data-autocomplete="1"
-                        data-default=""
+                        data-default="陳大文"
                         data-url="http://localhost/mylib/fetch.php"
                         data-param2="type:123"
                         data-sfunc="select_autoc"
@@ -131,19 +135,19 @@
                 
                 <div class="row">
                     <label>備注</label>
-                    <textarea name="content" data-validation="required"  data-showtips="true"></textarea>
+                    <textarea name="content" data-validation="required"></textarea>
                 </div>
                 
                 <div class="row">
                     <label>接收推廣方式</label>
                     <div class="iweb-checkbox-set">
-                        <input type="checkbox" id="promotional_method_1" name="promotional_method[]" value="email" data-validation="required" checked>
+                        <input type="checkbox" id="promotional_method_1" name="promotional_method[1000]" value="email" data-validation="required" checked>
                         <label for="promotional_method_1">電郵</label>
                         
-                        <input type="checkbox" id="promotional_method_2" name="promotional_method[]" value="mobile" data-validation="required">
+                        <input type="checkbox" id="promotional_method_2" name="promotional_method[]" value="mobile" data-validation="required" >
                         <label for="promotional_method_2">短信</label>
                         
-                        <input type="checkbox" id="promotional_method_3" name="promotional_method[]" value="whatsapp" data-validation="required">
+                        <input type="checkbox" id="promotional_method_3" name="promotional_method[3000]" value="whatsapp" data-validation="required" checked>
                         <label for="promotional_method_3">Whatsapp</label>
                     </div>
                 </div>
@@ -151,6 +155,7 @@
                 <div class="row">
                     <button type="reset" class="btn">重設</button>
                     <button type="submit" class="btn">提交</button>
+                    <button type="button" id="btn-post">Post</button>
                 </div>
                 
                 <div class="row">
@@ -158,15 +163,97 @@
                     <button type="button" class="btn" id="btn-confirm-dialog">Confirm Dialog</button>
                     <button type="button" class="btn" id="btn-content-dialog">Content Dialog</button>
                 </div>
+                
             </form>
+            
+            <div>&nbsp;</div>
+            <div>&nbsp;</div>
+            
+            <h3>6. 上載文檔</h3>
+            <div>
+                <div>
+                    <input type="file" id="myfiles1" class="dropfiles">
+                </div>
+                
+                <div>&nbsp;</div>
+                
+                <div>
+                    <input type="file" id="myfiles2" class="dropfiles">
+                </div>
+                
+                <div>&nbsp;</div>
+                <div>&nbsp;</div>
+                
+                <button type="button" id="btn-select-files">選擇文檔</button>
+            </div>
+            
+            
+            
+
+            <div>&nbsp;</div>
+            <div>&nbsp;</div>
+            
+            
+            <h3>分頁</h3>
+            <div><div class="mypage" data-totalpage="10"></div></div>
+            
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            
+            <div class="iweb-editor">
+                <iframe width="1268" height="713" src="https://www.youtube.com/embed/lHhRhPV--G0" title="Flutter in 100 seconds" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            
         </div>
+        
+        
         <script>const myiweb = (new iweb()); myiweb.init();</script>
         <script>
-            function iweb_global_func() { 
-                
-                
+            function iweb_common_func() { 
+                console.log('init common func');
             }
             
+            function iweb_func() { 
+                console.log('init func');
+                myiweb.pagination('div.mypage');
+                
+                myiweb.uploaderArea('myfiles1', {
+                    url: 'http://localhost/mylib/upload.php',
+                    dataType: 'text',
+                    values: {
+                        name: 'abc'
+                    },
+                    allowed_types: 'jpg|png'
+                }, function() {
+                    alert('end upload 1');
+                });
+                
+                myiweb.uploaderArea('myfiles2', {
+                    url: 'http://localhost/mylib/upload.php',
+                    dataType: 'text',
+                    values: {
+                        name: 'abc'
+                    }
+                }, function() {
+                    alert('end upload 2');
+                });
+                
+                $(document).on('click', '#btn-select-files', function() {
+                    myiweb.uploader({
+                        url: 'http://localhost/mylib/upload.php',
+                        dataType: 'text',
+                        values: {
+                            name: 'abc'
+                        },
+                        allowed_types: '',
+                        auto_close: true
+                    });
+                });
+            }
+            
+            function iweb_extra_func() { 
+                console.log('init extra func');
+            }
             function select_autoc(id) {
                 console.log('select auto value:' + id);
             }
@@ -198,10 +285,29 @@
             });
             
             $('#btn-content-dialog').click(function() { 
-               myiweb.dialog('Hello World', function() { 
+               myiweb.dialog('<h1>Hello World</h1><input type="date">', function() { 
                    console.log('init info dialog');
-               }); 
+               }, function() {
+                   console.log('close info dialog');
+                   
+               }, 'max'); 
+            });
+            
+            $(document).on('click','#btn-post',function(){
+                myiweb.ajaxPost({
+                    dataType: 'text',
+                    url: 'http://localhost/mylib/test.php',
+                    values: {
+                        name_1: 1,
+                        name_2: 2
+                    }
+                },function(responseData) {
+                    console.log(responseData);
+                    alert('post done');
+                });
             });
         </script>
+        
+        
     </body>
 </html>
