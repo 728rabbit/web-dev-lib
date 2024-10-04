@@ -54,7 +54,6 @@ class iweb {
 		this.uploader_files_skip = {};
 
 		this.win_width = 0;
-		this.win_scroll_top = 0;
 	}
 
 	init() {
@@ -69,26 +68,26 @@ class iweb {
 		// Set CSRF token
 		const csrfTokenContent = document.querySelector('meta[name="csrf-token"]')?.content;
 		if (iweb_object.isValue(csrfTokenContent)) {
-			const hostname = location.hostname || '/';
+			const hostname = (location.hostname || '/');
 			iweb_object.csrf_token = iweb_object.imd5.hash(iweb_object.imd5.hash('iweb@' + hostname) + '@' + csrfTokenContent);
 		}
-
-		// Initialize body, component, and form
-		iweb_object.initBody();
-		iweb_object.initComponent();
-		iweb_object.initForm();
-
-		// Get iweb-viewer width once
-		iweb_object.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
-
-		// Helper function to safely call if the function is defined
+        
+        // Helper function to safely call if the function is defined
 		const safeCallFunction = (func, value) => {
 			if ((typeof window[func]) === 'function') {
 				window[func](value);
 			}
 		};
 
-		// Safely call optional layout and extra functions if they are defined
+		// Initialize body, component, and form
+		iweb_object.initBody();
+		iweb_object.initComponent();
+		iweb_object.initForm();
+
+		// Get iweb-viewer width
+		iweb_object.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
+        
+		// Call optional layout and extra functions if they are defined
 		document.addEventListener('DOMContentLoaded', () => {
 			iweb_object.responsive();
 			safeCallFunction('iweb_common_layout', iweb_object.win_width);
@@ -136,7 +135,6 @@ class iweb {
 
 		// Wrap elements except for <script>, <noscript>, and <style>
 		const elementsToWrap = Array.from(document.body.children).filter((el) => !['SCRIPT', 'NOSCRIPT', 'STYLE'].includes(el.tagName.toUpperCase()));
-
 		if (elementsToWrap.length > 0) {
 			const wrapper = document.createElement('div');
 			wrapper.classList.add('iweb-viewer');
@@ -144,7 +142,7 @@ class iweb {
 			document.body.prepend(wrapper);
 		}
 
-		// Global click event binding
+		// Bind event for global click
 		document.body.addEventListener('click', (e) => {
 			const target = e.target;
 			const tagName = target.tagName.toLowerCase();
@@ -155,11 +153,9 @@ class iweb {
 				if (!iweb_object.isValue(href) || iweb_object.isMatch(href, '#')) {
 					e.preventDefault();
 					if (target.closest('div.iweb-tips-message')) {
-						iweb_object.delayTimer(() => {
-							target.closest('div.iweb-tips-message').innerHTML = '';
-							target.closest('div.iweb-tips-message').classList.remove('error');
-							target.closest('div.iweb-tips-message').classList.remove('success');
-						});
+						target.closest('div.iweb-tips-message').innerHTML = '';
+                        target.closest('div.iweb-tips-message').classList.remove('error');
+                        target.closest('div.iweb-tips-message').classList.remove('success');
 					}
 				}
 			}
@@ -177,12 +173,12 @@ class iweb {
 			}
 		});
 
-		// Set default font size if needed
+		// Init default font size
 		const fontSizeClasses = ['small-font', 'middle-font', 'large-font'];
 		const defaultFontSize = iweb_object.getCookie('iweb_font_size');
 		const fontButtons = document.querySelectorAll('a.font-switch');
 		if (iweb_object.isValue(defaultFontSize)) {
-			// Update font size classes
+            // Set new font size
 			document.documentElement.classList.remove(...fontSizeClasses);
 			document.documentElement.classList.add(defaultFontSize + '-font');
 
@@ -192,26 +188,23 @@ class iweb {
 			});
 		}
 
-		// Bind event for font size switching
+		// Bind event for change font size
 		fontButtons.forEach((btn) => {
 			btn.addEventListener('click', (e) => {
 				e.preventDefault();
-				iweb_object.delayTimer(() => {
-					const target = e.target;
-					const newFontSize = target.getAttribute('data-size');
+                const target = e.target;
+                const newFontSize = target.getAttribute('data-size');
+                if (iweb_object.isValue(newFontSize)) {
+                    // Set new font size
+                    iweb_object.setCookie('iweb_font_size', newFontSize);
+                    document.documentElement.classList.remove(...fontSizeClasses);
+                    document.documentElement.classList.add(newFontSize + '-font');
 
-					if (iweb_object.isValue(newFontSize)) {
-						// Set new font size
-						iweb_object.setCookie('iweb_font_size', newFontSize);
-						document.documentElement.classList.remove(...fontSizeClasses);
-						document.documentElement.classList.add(newFontSize + '-font');
-
-						// Update current font size indicator
-						fontButtons.forEach((el) => {
-							el.classList.toggle('current', iweb_object.isMatch(el.getAttribute('data-size'), newFontSize));
-						});
-					}
-				});
+                    // Update current font size indicator
+                    fontButtons.forEach((el) => {
+                        el.classList.toggle('current', iweb_object.isMatch(el.getAttribute('data-size'), newFontSize));
+                    });
+                }
 			});
 		});
 	}
