@@ -46,7 +46,7 @@ class iweb {
 		this.imd5 = (new iMD5());
 		this.csrf_token = '';
 		this.is_busy = false;
-
+   
 		this.idatepicker;
 
 		this.uploader_options = {};
@@ -57,19 +57,19 @@ class iweb {
 	}
 
 	init() {
-		const iweb_object = this;
+		const iwebObject = this;
 
 		// Set current language
 		const htmlLang = document.documentElement.lang?.toLowerCase().replace('-', '_');
-		if (iweb_object.isValue(htmlLang) && iweb_object.isValue(iweb_object.language[htmlLang])) {
-			iweb_object.current_language = htmlLang;
+		if (iwebObject.isValue(htmlLang) && iwebObject.isValue(iwebObject.language[htmlLang])) {
+			iwebObject.current_language = htmlLang;
 		}
 
 		// Set CSRF token
 		const csrfTokenContent = document.querySelector('meta[name="csrf-token"]')?.content;
-		if (iweb_object.isValue(csrfTokenContent)) {
+		if (iwebObject.isValue(csrfTokenContent)) {
 			const hostname = (location.hostname || '/');
-			iweb_object.csrf_token = iweb_object.imd5.hash(iweb_object.imd5.hash('iweb@' + hostname) + '@' + csrfTokenContent);
+			iwebObject.csrf_token = iwebObject.imd5.hash(iwebObject.imd5.hash('iweb@' + hostname) + '@' + csrfTokenContent);
 		}
         
         // Helper function to safely call if the function is defined
@@ -79,45 +79,45 @@ class iweb {
 			}
 		};
 
-		// Initialize body, component, and form
-		iweb_object.initBody();
-		iweb_object.initComponent();
-		iweb_object.initForm();
+		// Init body, component and form
+		iwebObject.initBody();
+		iwebObject.initComponent();
+		iwebObject.initForm();
 
 		// Get iweb-viewer width
-		iweb_object.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
+		iwebObject.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
         
 		// Call optional layout and extra functions if they are defined
-		document.addEventListener('DOMContentLoaded', () => {
-			iweb_object.responsive();
-			safeCallFunction('iweb_common_layout', iweb_object.win_width);
-			safeCallFunction('iweb_layout', iweb_object.win_width);
-			safeCallFunction('iweb_extra_layout', iweb_object.win_width);
+		document.addEventListener('DOMContentLoaded', function() {
+			iwebObject.responsive();
+			safeCallFunction('iweb_common_layout', iwebObject.win_width);
+			safeCallFunction('iweb_layout', iwebObject.win_width);
+			safeCallFunction('iweb_extra_layout', iwebObject.win_width);
 			safeCallFunction('iweb_common_func');
 			safeCallFunction('iweb_func');
 			safeCallFunction('iweb_extra_func');
 		});
 
-		window.onload = () => {
-			safeCallFunction('iweb_common_layout_done', iweb_object.win_width);
-			safeCallFunction('iweb_layout_done', iweb_object.win_width);
-			safeCallFunction('iweb_extra_layout_done', iweb_object.win_width);
+		window.onload = function() {
+			safeCallFunction('iweb_common_layout_done', iwebObject.win_width);
+			safeCallFunction('iweb_layout_done', iwebObject.win_width);
+			safeCallFunction('iweb_extra_layout_done', iwebObject.win_width);
 			safeCallFunction('iweb_common_func_done');
 			safeCallFunction('iweb_func_done');
 			safeCallFunction('iweb_extra_func_done');
 		};
 
-		window.addEventListener('resize', () => {
-			if (iweb_object.win_width !== parseInt(document.querySelector('div.iweb-viewer').offsetWidth)) {
-				iweb_object.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
-				iweb_object.responsive();
-				safeCallFunction('iweb_common_layout', iweb_object.win_width);
-				safeCallFunction('iweb_layout', iweb_object.win_width);
-				safeCallFunction('iweb_extra_layout', iweb_object.win_width);
+		window.addEventListener('resize', function() {
+			if (iwebObject.win_width !== parseInt(document.querySelector('div.iweb-viewer').offsetWidth)) {
+				iwebObject.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
+				iwebObject.responsive();
+				safeCallFunction('iweb_common_layout', iwebObject.win_width);
+				safeCallFunction('iweb_layout', iwebObject.win_width);
+				safeCallFunction('iweb_extra_layout', iwebObject.win_width);
 			}
 		});
 
-		window.addEventListener('scroll', () => {
+		window.addEventListener('scroll', function() {
 			safeCallFunction('iweb_common_scroll', window.scrollY);
 			safeCallFunction('iweb_scroll', window.scrollY);
 			safeCallFunction('iweb_extra_scroll', window.scrollY);
@@ -125,32 +125,35 @@ class iweb {
 	}
 
 	initBody() {
-		const iweb_object = this;
+		const iwebObject = this;
 
 		// Add class to body based on device type
 		document.body.classList.add('iweb');
-		if (iweb_object.detectDevice()) {
+		if (iwebObject.detectDevice()) {
 			document.body.classList.add('iweb-mobile');
 		}
 
 		// Wrap elements except for <script>, <noscript>, and <style>
-		const elementsToWrap = Array.from(document.body.children).filter((el) => !['SCRIPT', 'NOSCRIPT', 'STYLE'].includes(el.tagName.toUpperCase()));
+		const elementsToWrap = Array.from(document.body.children).filter(function(e) { 
+            return !['SCRIPT', 'NOSCRIPT', 'STYLE'].includes(e.tagName.toUpperCase()); 
+        });
 		if (elementsToWrap.length > 0) {
 			const wrapper = document.createElement('div');
 			wrapper.classList.add('iweb-viewer');
-			elementsToWrap.forEach((el) => wrapper.appendChild(el));
+			elementsToWrap.forEach(function(e) { 
+                wrapper.appendChild(e); 
+            });
 			document.body.prepend(wrapper);
 		}
 
 		// Bind event for global click
-		document.body.addEventListener('click', (e) => {
+		document.body.addEventListener('click', iwebObject.deBounce(function(e) {
 			const target = e.target;
-			const tagName = target.tagName.toLowerCase();
 
 			// Handle anchor click
-			if (tagName === 'a') {
+			if ((target.tagName.toLowerCase()) === 'a') {
 				const href = target.getAttribute('href');
-				if (!iweb_object.isValue(href) || iweb_object.isMatch(href, '#')) {
+				if (!iwebObject.isValue(href) || iwebObject.isMatch(href, '#')) {
 					e.preventDefault();
 					if (target.closest('div.iweb-tips-message')) {
 						target.closest('div.iweb-tips-message').innerHTML = '';
@@ -162,218 +165,288 @@ class iweb {
 
 			// Hide autocomplete options
 			if (!target.closest('div.iweb-input-autocomplete')) {
-				document.querySelectorAll('div.iweb-input-autocomplete ul.fill-options').forEach((el) => {
-					el.remove();
+				document.querySelectorAll('div.iweb-input-autocomplete ul.fill-options').forEach(function(e1) {
+					e1.remove();
 				});
 			}
 
 			// Hide select options
 			if (!target.closest('div.iweb-select')) {
-				document.querySelectorAll('div.iweb-select').forEach((el) => el.classList.remove('show'));
+				document.querySelectorAll('div.iweb-select').forEach(function(e1) { 
+                    e1.classList.remove('show'); 
+                });
 			}
-		});
+		}, 100, false));
 
 		// Init default font size
 		const fontSizeClasses = ['small-font', 'middle-font', 'large-font'];
-		const defaultFontSize = iweb_object.getCookie('iweb_font_size');
+		const defaultFontSize = iwebObject.getCookie('iweb_font_size');
 		const fontButtons = document.querySelectorAll('a.font-switch');
-		if (iweb_object.isValue(defaultFontSize)) {
-            // Set new font size
+		if (iwebObject.isValue(defaultFontSize)) {
 			document.documentElement.classList.remove(...fontSizeClasses);
 			document.documentElement.classList.add(defaultFontSize + '-font');
-
-			// Update the current font size indicator
-			fontButtons.forEach((btn) => {
-				btn.classList.toggle('current', iweb_object.isMatch(btn.getAttribute('data-size'), defaultFontSize));
+			fontButtons.forEach(function(btn) {
+				btn.classList.toggle('current', iwebObject.isMatch(btn.getAttribute('data-size'), defaultFontSize));
 			});
 		}
 
 		// Bind event for change font size
-		fontButtons.forEach((btn) => {
-			btn.addEventListener('click', (e) => {
-				e.preventDefault();
+		fontButtons.forEach(function(btn) {
+			btn.addEventListener('click', iwebObject.deBounce(function(e) {
                 const target = e.target;
                 const newFontSize = target.getAttribute('data-size');
-                if (iweb_object.isValue(newFontSize)) {
-                    // Set new font size
-                    iweb_object.setCookie('iweb_font_size', newFontSize);
+                if (iwebObject.isValue(newFontSize)) {
+                    iwebObject.setCookie('iweb_font_size', newFontSize);
                     document.documentElement.classList.remove(...fontSizeClasses);
                     document.documentElement.classList.add(newFontSize + '-font');
-
-                    // Update current font size indicator
-                    fontButtons.forEach((el) => {
-                        el.classList.toggle('current', iweb_object.isMatch(el.getAttribute('data-size'), newFontSize));
+                    fontButtons.forEach(function(e) {
+                        e.classList.toggle('current', iwebObject.isMatch(e.getAttribute('data-size'), newFontSize));
                     });
                 }
-			});
+			}));
 		});
 	}
 
 	initComponent() {
-		const iweb_object = this;
-		iweb_object.inputBox();
-		iweb_object.selectBox();
-		iweb_object.checkBox();
-		iweb_object.radioBox();
-		iweb_object.iframe();
+		const iwebObject = this;
+		iwebObject.inputBox();
+		iwebObject.selectBox();
+		iwebObject.checkBox();
+		iwebObject.radioBox();
+		iwebObject.iframe();
 	}
 
-	inputBox(input_object, callback) {
-		const iweb_object = this;
+	inputBox(inputObject, callBack) {
+		const iwebObject = this;
 
 		// Default to selecting all relevant elements if none provided
-		if (!iweb_object.isValue(input_object)) {
-			input_object = document.querySelectorAll('input[type="text"], input[type="password"], input[type="date"], input[type="color"], input[type="tel"], input[type="email"], input[type="number"], input[type="file"], textarea');
+		if (!iwebObject.isValue(inputObject)) {
+            const default_input = 
+            [
+                'input[type="text"]',
+                'input[type="password"]',
+                'input[type="date"]',
+                'input[type="color"]',
+                'input[type="tel"]',
+                'input[type="email"]',
+                'input[type="number"]',
+                'input[type="file"]',
+                'textarea'
+            ];
+			inputObject = document.querySelectorAll(default_input.join(', '));
 		}
 
-		if (input_object.length > 0) {
-			input_object.forEach((input) => {
+		if (inputObject.length > 0) {
+			inputObject.forEach(function(input) {
 				if (!input.closest('div.iweb-input')) {
-					// Create the wrapper div 
-					const isAutocomplete = iweb_object.isMatch(input.getAttribute('data-autocomplete'), 1) || iweb_object.isMatch(input.getAttribute('data-autocomplete'), true);
+					// Create div and move the input into it
+                    const inputType = input.type;
+					const isAutocomplete = (iwebObject.isMatch(input.getAttribute('data-autocomplete'), 1) || iwebObject.isMatch(input.getAttribute('data-autocomplete'), true));
 					const wrapperDiv = document.createElement('div');
 					wrapperDiv.classList.add('iweb-input');
-					wrapperDiv.classList.add(isAutocomplete ? 'iweb-input-autocomplete' : 'iweb-input-' + (iweb_object.isValue(input.type) ? input.type : 'text'));
-
-					// Move the input into the wrapper div
+					wrapperDiv.classList.add((isAutocomplete ? 'iweb-input-autocomplete' : 'iweb-input-' + (iwebObject.isValue(input.type) ? input.type : 'text')));
 					input.parentNode.insertBefore(wrapperDiv, input);
 					wrapperDiv.appendChild(input);
 
-					// Handle autocomplete input
-					if (isAutocomplete) {
+                    // Add additional elements to the input
+					if (!isAutocomplete) {
+						if (iwebObject.isMatch(inputType, 'password')) {
+                            // Create password switch type button
+							const BtnSwitchType = document.createElement('button');
+							BtnSwitchType.type = 'button';
+							BtnSwitchType.classList.add('switch-pwd-type');
+                            BtnSwitchType.addEventListener('click', iwebObject.deBounce(function(e) {
+                                const target = e.target;
+                                const InputPwd = target.closest('div.iweb-input').querySelector('input');
+                                const ShowIconPwd = target.closest('div.iweb-input').querySelector('i.show');
+                                const HideIconPwd = target.closest('div.iweb-input').querySelector('i.hide');
+                                if (iwebObject.isMatch(input.type, 'password')) {
+                                    InputPwd.type = 'text';
+                                    ShowIconPwd.style.display = 'block';
+                                    HideIconPwd.style.display = 'none';
+                                } else {
+                                    InputPwd.type = 'password';
+                                    ShowIconPwd.style.display = 'none';
+                                    HideIconPwd.style.display = 'block';
+                                }
+							}));
+                            
+							const eyeSlashIcon = document.createElement('i');
+							eyeSlashIcon.classList.add('fa', 'fa-eye-slash', 'hide');
+							eyeSlashIcon.style.display = 'block';
+							const eyeIcon = document.createElement('i');
+							eyeIcon.classList.add('fa', 'fa-eye', 'show');
+							eyeIcon.style.display = 'none';
+
+                            // Append elements
+							BtnSwitchType.appendChild(eyeSlashIcon);
+							BtnSwitchType.appendChild(eyeIcon);
+							wrapperDiv.appendChild(BtnSwitchType);
+						}
+						else if (iwebObject.isMatch(inputType, 'color')) {
+                            // Set color input
+							input.style.position = 'relative';
+							input.style.zIndex = 1;
+                            input.addEventListener('input', iwebObject.deBounce(function(e) {
+                                const target = e.target;
+                                const inputColorCode = target.closest('div.iweb-input-color').querySelector('input[type="text"]');
+                                if (/^#[0-9A-F]{6}$/i.test(target.value)) {
+                                    inputColorCode.value = target.value;
+                                }
+							}));
+						
+                            // Create color code input
+							const inputColorCode = document.createElement('input');
+							inputColorCode.type = 'text';
+							inputColorCode.maxLength = 7;
+							inputColorCode.value = input.value;
+							inputColorCode.style.position = 'absolute';
+							inputColorCode.style.top = '0px';
+							inputColorCode.style.left = '0px';
+							inputColorCode.style.right = '0px';
+							inputColorCode.style.bottom = '0px';
+							inputColorCode.style.paddingLeft = '42px';
+							inputColorCode.addEventListener('input', iwebObject.deBounce(function(e) {
+                                const target = e.target;
+								const input = target.closest('div.iweb-input-color').querySelector('input[type="color"]');
+                                if (!target.value.startsWith('#')) {
+                                    target.value = '#' + target.value;
+                                }
+                                if (/^#[0-9A-F]{6}$/i.test(target.value)) {
+                                    input.value = target.value;
+                                }
+							}));
+                            
+                            // Append elements
+                            wrapperDiv.appendChild(inputColorCode);
+						}
+                    }
+                    else {
+                        // Autocomplete input
 						input.type = 'hidden';
 						input.classList.add('fill-id');
 						input.removeAttribute('data-autocomplete');
 
-						// Create search input
+						// Create seach input
 						const fillText = document.createElement('input');
 						fillText.type = 'text';
 						fillText.classList.add('fill-text');
 						fillText.style.display = 'block';
 						fillText.style.width = '100%';
 						fillText.autocomplete = 'off';
+						fillText.addEventListener('input', iwebObject.deBounce(function(e) {
+                            const target = e.target;
+                            
+                            // Remove error, tips & options list
+                            target.closest('div.iweb-input-autocomplete').classList.remove('error');
+                            target.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
+                            target.closest('div.iweb-input-autocomplete').querySelector('ul.fill-options')?.remove();
 
-						// Bind event for search input
-						fillText.addEventListener('input', (e) => {
-							e.preventDefault();
-							iweb_object.delayTimer(() => {
-								const target = e.target;
-								target.closest('div.iweb-input-autocomplete').querySelector('ul.fill-options')?.remove();
-								target.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
+                            // Gather extra parameters
+                            let extraValues = {};
+                            for (let i = 1; i <= 5; i++) {
+                                let param = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id').getAttribute('data-param' + i);
+                                if (iwebObject.isValue(param)) {
+                                    let [key, value] = param.split(':');
+                                    extraValues[key] = value;
+                                }
+                            }
 
-								// Gather extra parameters
-								let extraValues = {};
-								for (let i = 1; i <= 5; i++) {
-									let param = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id').getAttribute('data-param' + i);
-									if (iweb_object.isValue(param)) {
-										let [key, value] = param.split(':');
-										extraValues[key] = value;
-									}
-								}
+                            // Merge post data
+                            const keywords = target.value;
+                            const url = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id').getAttribute('data-url');
+                            const postData = {
+                                dataType: 'json',
+                                showBusy: false,
+                                url: url,
+                                values: Object.assign({ keywords: keywords }, extraValues)
+                            };
 
-								// Merge post data
-								const keywords = target.value;
-								const url = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id').getAttribute('data-url');
-								const postData = {
-									dataType: 'json',
-									showBusy: false,
-									url: url,
-									values: Object.assign({
-										keywords: keywords
-									}, extraValues)
-								};
+                            // Search result handling
+                            if (iwebObject.isValue(keywords)) {
+                                iwebObject.ajaxPost(postData, function(responseData) {
+                                    if (iwebObject.isValue(responseData)) {
+                                        responseData = Object.values(responseData);
+                                        
+                                        // Create options list
+                                        const fillOptions = document.createElement('ul');
+                                        fillOptions.classList.add('fill-options');
+                                        responseData.forEach(function(value) {
+                                            const li = document.createElement('li');
+                                            const a = document.createElement('a');
+                                            a.setAttribute('data-id', value.id);
+                                            a.textContent = value.name;
+                                            a.addEventListener('click', iwebObject.deBounce(function(e1) {
+                                                const target = e1.target;
+                                                target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset')?.remove();
+                                                
+                                                // Set id input & search input
+                                                const fillId = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
+                                                const fillText = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
+                                                fillId.value = target.getAttribute('data-id');
+                                                fillText.value = target.textContent;
+                                                fillText.readOnly = true;
 
-								// Search result handling
-								if (iweb_object.isValue(keywords)) {
-									iweb_object.ajaxPost(postData, (responseData) => {
-										if (iweb_object.isValue(responseData)) {
-											const fillOptions = document.createElement('ul');
-											fillOptions.classList.add('fill-options');
+                                                // Create reset button
+                                                const fillReset = document.createElement('a');
+                                                fillReset.classList.add('fill-reset');
+                                                fillReset.addEventListener('click', iwebObject.deBounce(function(e2) {
+                                                    const target = e2.target;
+                                                    
+                                                    // Reset id input & search input
+                                                    const fillId = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
+                                                    const fillText = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
+                                                    const fillReset = target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset');
+                                                    fillId.value = '';
+                                                    fillText.value = '';
+                                                    fillText.readOnly = false;
+                                                    fillReset.remove();
 
-											responseData = Object.values(responseData);
-											responseData.forEach((value) => {
-												const li = document.createElement('li');
-												const a = document.createElement('a');
-												a.setAttribute('data-id', value.id);
-												a.textContent = value.name;
+                                                    // Callback if need
+                                                    const remove_callBack = fillId.getAttribute('data-rfunc');
+                                                    if ((typeof window[remove_callBack]) === 'function') {
+                                                        window[remove_callBack]();
+                                                    }
+                                                }));
+                                                
+                                                // Create Reset icon
+                                                const fillResetIcon = document.createElement('i');
+                                                fillResetIcon.classList.add('fa', 'fa-times');
+                                                fillResetIcon.style.color = '#d73d32';
+                                                
+                                                // Append elements
+                                                fillReset.appendChild(fillResetIcon);
+                                                fillId.closest('div.iweb-input-autocomplete').appendChild(fillReset);
 
-												// Bind event for anchor click
-												a.addEventListener('click', (e1) => {
-													e1.preventDefault();
-													iweb_object.delayTimer(() => {
-														const target = e1.target;
-														const fillId = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
-														const fillText = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
-														fillId.value = target.getAttribute('data-id');
-														fillText.value = target.textContent;
-														fillText.readOnly = true;
+                                                // Remove error, tips & options list
+                                                fillId.closest('div.iweb-input-autocomplete').classList.remove('error');
+                                                fillId.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
+                                                fillId.closest('div.iweb-input-autocomplete').querySelector('ul.fill-options')?.remove();
 
-														// Append reset button
-														target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset')?.remove();
-														const fillReset = document.createElement('a');
-														fillReset.classList.add('fill-reset');
+                                                // Callback if need
+                                                const select_callBack = fillId.getAttribute('data-sfunc');
+                                                if ((typeof window[select_callBack]) === 'function') {
+                                                    window[select_callBack](fillId.value);
+                                                }
+                                            }));
+                                            
+                                            // Append elements
+                                            li.appendChild(a);
+                                            fillOptions.appendChild(li);
+                                        });
 
-														// Bind event for fillReset click
-														fillReset.addEventListener('click', (e2) => {
-															e2.preventDefault();
-															iweb_object.delayTimer(() => {
-																const target = e2.target;
-																const fillId = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
-																const fillText = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
-																const fillReset = target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset');
-																fillId.value = '';
-																fillText.value = '';
-																fillText.readOnly = false;
-																fillReset.remove();
+                                        // Append elements
+                                        wrapperDiv.appendChild(fillOptions);
+                                    }
+                                });
+                            }
+						}, 1000));
+                        wrapperDiv.appendChild(fillText);
 
-																// Callback if need
-																const remove_callback = fillId.getAttribute('data-rfunc');
-																if ((typeof window[remove_callback]) === 'function') {
-																	window[remove_callback]();
-																}
-															});
-														});
-
-														// Create reset icon
-														const fillResetIcon = document.createElement('i');
-														fillResetIcon.classList.add('fa', 'fa-times');
-														fillResetIcon.style.color = '#d73d32';
-														fillReset.appendChild(fillResetIcon);
-														fillId.closest('div.iweb-input-autocomplete').appendChild(fillReset);
-
-														// Remove options list
-														fillId.closest('div.iweb-input-autocomplete').classList.remove('error');
-														fillId.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
-														fillId.closest('div.iweb-input-autocomplete').querySelector('ul.fill-options')?.remove();
-
-														// Callback if need
-														const select_callback = fillId.getAttribute('data-sfunc');
-														if ((typeof window[select_callback]) === 'function') {
-															window[select_callback](fillId.value);
-														}
-													});
-												});
-
-												// Append anchor into options child
-												li.appendChild(a);
-												fillOptions.appendChild(li);
-											});
-
-											// Append li into options
-											target.closest('div.iweb-input-autocomplete').appendChild(fillOptions);
-										}
-									});
-								}
-							});
-						});
-
-						// Append search input into the wrapper div
-						wrapperDiv.appendChild(fillText);
-
-						// Append reset button
+						// Create reset button
 						const defaultText = input.getAttribute('data-default');
 						input.removeAttribute('data-default');
-						if (iweb_object.isValue(defaultText)) {
+						if (iwebObject.isValue(defaultText)) {
 							fillText.setAttribute('data-value', input.value);
 							fillText.setAttribute('data-default', defaultText);
 							fillText.value = defaultText;
@@ -381,228 +454,84 @@ class iweb {
 
 							const fillReset = document.createElement('a');
 							fillReset.classList.add('fill-reset');
+                            fillReset.addEventListener('click', iwebObject.deBounce(function(e) {
+                                const target = e.target;
+                                
+                                // Reset id input & search input
+                                const fillId = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
+                                const fillText = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
+                                const fillReset = target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset');
+                                fillId.value = '';
+                                fillText.value = '';
+                                fillText.readOnly = false;
+                                fillReset.remove();
 
-							// Bind event for fillReset click
-							fillReset.addEventListener('click', (e) => {
-								e.preventDefault();
-								iweb_object.delayTimer(() => {
-									const target = e.target;
-									// Reset
-									const fillId = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
-									const fillText = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
-									const fillReset = target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset');
-									fillId.value = '';
-									fillText.value = '';
-									fillText.readOnly = false;
-									fillReset.remove();
-
-									// Callback if need
-									const remove_callback = fillId.getAttribute('data-rfunc');
-									if ((typeof window[remove_callback]) === 'function') {
-										window[remove_callback]();
-									}
-								});
-							});
-
-							// Create reset icon
+                                // Callback if need
+                                const remove_callBack = fillId.getAttribute('data-rfunc');
+                                if ((typeof window[remove_callBack]) === 'function') {
+                                    window[remove_callBack]();
+                                }
+							}));
+                            
+                            // Create Reset icon
 							const fillResetIcon = document.createElement('i');
 							fillResetIcon.classList.add('fa', 'fa-times');
 							fillResetIcon.style.color = '#d73d32';
-							fillReset.appendChild(fillResetIcon);
+
+                            // Append elements
+                            fillReset.appendChild(fillResetIcon);
 							wrapperDiv.appendChild(fillReset);
 						}
-					} else {
-						// Handle password input
-						if (iweb_object.isMatch(input.type, 'password')) {
-							const button = document.createElement('button');
-							button.type = 'button';
-							button.classList.add('switch-pwd-type');
-							button.addEventListener('click', (e) => {
-								e.preventDefault();
-								iweb_object.delayTimer(() => {
-									const target = e.target;
-									const input = target.closest('div.iweb-input').querySelector('input');
-									const showIcon = target.closest('div.iweb-input').querySelector('i.show');
-									const hideIcon = target.closest('div.iweb-input').querySelector('i.hide');
-									if (iweb_object.isMatch(input.type, 'password')) {
-										input.type = 'text';
-										showIcon.style.display = 'block';
-										hideIcon.style.display = 'none';
-									} else {
-										input.type = 'password';
-										showIcon.style.display = 'none';
-										hideIcon.style.display = 'block';
-									}
-								});
-							});
-
-							const eyeSlashIcon = document.createElement('i');
-							eyeSlashIcon.classList.add('fa', 'fa-eye-slash', 'hide');
-							eyeSlashIcon.style.display = 'block';
-
-							const eyeIcon = document.createElement('i');
-							eyeIcon.classList.add('fa', 'fa-eye', 'show');
-							eyeIcon.style.display = 'none';
-
-							button.appendChild(eyeSlashIcon);
-							button.appendChild(eyeIcon);
-							wrapperDiv.appendChild(button);
-						}
-						// Handle color input
-						else if (iweb_object.isMatch(input.type, 'color')) {
-							input.classList.add('icolorpicker');
-							input.style.position = 'relative';
-							input.style.zIndex = 1;
-							input.addEventListener('input', (e) => {
-								e.preventDefault();
-								iweb_object.delayTimer(() => {
-									const target = e.target;
-									const inputColorCode = target.closest('div').querySelector('input.icolorcode');
-									if (/^#[0-9A-F]{6}$/i.test(target.value)) {
-										inputColorCode.value = target.value;
-									}
-								});
-							});
-
-							const inputColorCode = document.createElement('input');
-							inputColorCode.type = 'text';
-							inputColorCode.maxLength = 7;
-							inputColorCode.value = input.value;
-							inputColorCode.classList.add('icolorcode');
-							inputColorCode.style.position = 'absolute';
-							inputColorCode.style.top = '0px';
-							inputColorCode.style.left = '0px';
-							inputColorCode.style.right = '0px';
-							inputColorCode.style.bottom = '0px';
-							inputColorCode.style.paddingLeft = '42px';
-							inputColorCode.addEventListener('input', (e) => {
-								e.preventDefault();
-								iweb_object.delayTimer(() => {
-									const target = e.target;
-									const input = target.closest('div').querySelector('input.icolorpicker');
-									// ensure it's a valid hex code
-									if (/^#[0-9A-F]{6}$/i.test(target.value)) {
-										input.value = target.value;
-									}
-								});
-							});
-							wrapperDiv.appendChild(inputColorCode);
-						}
 					}
-
+                    
 					// Set input styles
-					input.style.display = (iweb_object.isMatch(input.type, 'color') ? 'inline-block' : 'block');
-					input.style.width = (iweb_object.isMatch(input.type, 'color') ? '36px' : '100%');
+					input.style.display = (iwebObject.isMatch(inputType, 'color') ? 'inline-block' : 'block');
+					input.style.width = (iwebObject.isMatch(inputType, 'color') ? '36px' : '100%');
 					input.autocomplete = 'off';
 
-					input.addEventListener('input', (event) => {
-						event.preventDefault();
-						iweb_object.delayTimer(() => {
-							const target = event.target;
-							target.closest('div.iweb-input').classList.remove('error');
-							target.closest('div.iweb-input').querySelector('small.tips')?.remove();
-						});
-					});
+					// Bind event for others input
+                    if(!iwebObject.isMatch(inputType, 'color')) {
+                        input.addEventListener('input', iwebObject.deBounce(function(e) {
+                            const target = e.target;
+                            target.closest('div.iweb-input').classList.remove('error');
+                            target.closest('div.iweb-input').querySelector('small.tips')?.remove();
+                        }));
+                    }
 				}
 			});
 		}
 
-		// Initialize date picker
-		if (!iweb_object.isValue(iweb_object.idatepicker)) {
-			iweb_object.idatepicker = new iDatePicker(iweb_object.current_language);
+		// Init date picker
+		if (!iwebObject.isValue(iwebObject.idatepicker)) {
+			iwebObject.idatepicker = new iDatePicker(iwebObject.current_language);
 		}
-		iweb_object.idatepicker.render('input[type="date"]');
+		iwebObject.idatepicker.render('input[type="date"]');
 
 		// Callback if need
-		if ((typeof callback) === 'function') {
-			callback();
+		if ((typeof callBack) === 'function') {
+			callBack();
 		}
 	}
 
-	selectBox(select_object, callback) {
-		const iweb_object = this;
+	selectBox(select_object, callBack) {
+		const iwebObject = this;
 
 		// Default to selecting all relevant elements if none provided
-		if (!iweb_object.isValue(select_object)) {
+		if (!iwebObject.isValue(select_object)) {
 			select_object = document.querySelectorAll('select');
 		}
 
 		if (select_object.length > 0) {
-			select_object.forEach((select, select_index) => {
-				// Get config
-				const isMultiple = ((iweb_object.isMatch(select.multiple, 1) || iweb_object.isMatch(select.multiple, true)) ? true : false);
-				const isVirtual = ((iweb_object.isMatch(select.getAttribute('data-virtual'), 1) || iweb_object.isMatch(select.getAttribute('data-virtual'), true)) ? true : false);
-				const isFilter = ((iweb_object.isMatch(select.getAttribute('data-filter'), 1) || iweb_object.isMatch(select.getAttribute('data-filter'), true)) ? true : false);
-				const isPositionTop = ((iweb_object.isMatch(select.getAttribute('data-top'), 1) || iweb_object.isMatch(select.getAttribute('data-top'), true)) ? true : false);
-				select.removeAttribute('data-virtual');
-				select.removeAttribute('data-filter');
+			select_object.forEach(function(select, select_index) {
+                if (!select.closest('div.iweb-select')) {
+                    // Get config
+                    const isMultiple = ((iwebObject.isMatch(select.multiple, 1) || iwebObject.isMatch(select.multiple, true)) ? true : false);
+                    const isVirtual = ((iwebObject.isMatch(select.getAttribute('data-virtual'), 1) || iwebObject.isMatch(select.getAttribute('data-virtual'), true)) ? true : false);
+                    const isFilter = ((iwebObject.isMatch(select.getAttribute('data-filter'), 1) || iwebObject.isMatch(select.getAttribute('data-filter'), true)) ? true : false);
+                    const isPositionTop = ((iwebObject.isMatch(select.getAttribute('data-top'), 1) || iwebObject.isMatch(select.getAttribute('data-top'), true)) ? true : false);
 
-				// Bind event for select focus
-				select.addEventListener('focus', (e) => {
-					e.preventDefault();
-					iweb_object.delayTimer(() => {
-						document.querySelectorAll('div.iweb-select').forEach((otherSelect) => {
-							otherSelect.classList.remove('show');
-						});
-					});
-				});
-
-				// Bind event for select change
-				select.addEventListener('change', (e) => {
-					let selectedOptions = [];
-					let selectedOptionLabel = '';
-					iweb_object.delayTimer(() => {
-						const target = e.target;
-						// Traverse through the options
-						Array.from(target.querySelectorAll('option')).forEach((option) => {
-							if (option.children.length > 0) {
-								Array.from(option.children).forEach((childOption) => {
-									if (childOption.selected) {
-										selectedOptions.push(childOption.value.toString());
-									}
-								});
-							} else {
-								if (option.selected) {
-									selectedOptions.push(option.value.toString());
-								}
-							}
-						});
-
-						// Find and update the corresponding virtual options
-						if (target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li > a').length > 0) {
-							target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li > a').forEach((anchor) => {
-								var optionValue = anchor.getAttribute('data-value');
-								if (iweb_object.isValue(optionValue)) {
-									if (!iweb_object.isMatch(selectedOptions.indexOf(optionValue), -1)) {
-										anchor.parentElement.classList.add('node-selected');
-										if (iweb_object.isValue(selectedOptionLabel)) {
-											selectedOptionLabel += ', ';
-										}
-										selectedOptionLabel += anchor.textContent;
-									} else {
-										anchor.parentElement.classList.remove('node-selected');
-									}
-								}
-							});
-
-							// Set the default option label if none selected
-							if (!iweb_object.isValue(selectedOptionLabel)) {
-								selectedOptionLabel = ((iweb_object.isValue(target.getAttribute('data-default'))) ? target.getAttribute('data-default') : iweb_object.language[iweb_object.current_language]['please_select']);
-							}
-
-							// Update the virtual result label
-							target.closest('div.iweb-select').querySelector('div.virtual > a.result').innerHTML = selectedOptionLabel;
-						}
-
-						// Remove any error & tips element if it exists
-						target.closest('div.iweb-select').classList.remove('error');
-						target.closest('div.iweb-select').querySelector('small.tips')?.remove();
-					});
-				});
-
-				if (!select.closest('div.iweb-select')) {
 					if (isVirtual) {
-						// Create the wrapper div
+						// Create div & move the select into div
 						const wrapperDiv = document.createElement('div');
 						wrapperDiv.classList.add('iweb-select');
 						if (isMultiple) {
@@ -611,46 +540,42 @@ class iweb {
 
 						const realDiv = document.createElement('div');
 						realDiv.classList.add('real', 'hidden');
-
-						// Move the select into the wrapper div
+                        
 						select.parentNode.insertBefore(realDiv, select);
 						realDiv.appendChild(select);
 
 						realDiv.parentNode.insertBefore(wrapperDiv, realDiv);
 						wrapperDiv.appendChild(realDiv);
 
-						// Create a virtual div
+						// Create a virtual div & move the result section into div
 						let virtualSelect = '';
 						const virtualDiv = document.createElement('div');
 						virtualDiv.classList.add('virtual');
-
-						// Create result section
+                        
 						const resultLink = document.createElement('a');
 						resultLink.classList.add('result');
 						resultLink.textContent = virtualSelect;
-						resultLink.addEventListener('click', (e) => {
-							e.preventDefault();
-							iweb_object.delayTimer(() => {
-								const target = e.target;
-								const virtualOptions = target.closest('div.iweb-select').querySelector('div.virtual > div.options > ul');
-								if (virtualOptions.offsetWidth > 0 || virtualOptions.offsetHeight > 0) {
-									target.closest('div.iweb-select').classList.remove('show');
-								} else {
-									target.closest('div.iweb-select').classList.add('show');
-								}
+						resultLink.addEventListener('click', iwebObject.deBounce(function(e) {
+                            const target = e.target;
+                            
+                            const virtualOptions = target.closest('div.iweb-select').querySelector('div.virtual > div.options > ul');
+                            if (virtualOptions.offsetWidth > 0 || virtualOptions.offsetHeight > 0) {
+                                target.closest('div.iweb-select').classList.remove('show');
+                            } else {
+                                target.closest('div.iweb-select').classList.add('show');
+                            }
 
-								document.querySelectorAll('div.iweb-select').forEach((otherSelector) => {
-									const otherOptions = otherSelector.querySelector('div.virtual > div.options > ul');
-									if (otherOptions) {
-										if (!iweb_object.isMatch(otherOptions.getAttribute('data-index'), virtualOptions.getAttribute('data-index'))) {
-											otherSelector.classList.remove('show');
-										}
-									}
-								});
-							});
-						});
-						virtualDiv.appendChild(resultLink);
-
+                            document.querySelectorAll('div.iweb-select').forEach(function(otherSelector) {
+                                const otherOptions = otherSelector.querySelector('div.virtual > div.options > ul');
+                                if (otherOptions) {
+                                    if (!iwebObject.isMatch(otherOptions.getAttribute('data-index'), virtualOptions.getAttribute('data-index'))) {
+                                        otherSelector.classList.remove('show');
+                                    }
+                                }
+                            });
+						}));
+                        virtualDiv.appendChild(resultLink);
+                        
 						// Create options list
 						const optionsDiv = document.createElement('div');
 						optionsDiv.classList.add('options');
@@ -670,42 +595,39 @@ class iweb {
 							filterInput.id = 'fkw_' + select_index;
 							filterInput.type = 'text';
 							filterInput.placeholder = placeholderText.trim();
-							filterInput.addEventListener('input', (e) => {
-								e.preventDefault();
-								iweb_object.delayTimer(() => {
-									const target = e.target;
-									const fkw = target.value;
-									if (iweb_object.isValue(fkw)) {
-										// Find all node elements
-										target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li.node > a').forEach((anchor) => {
-											// Get the text of the anchor
-											var textContent = anchor.textContent || anchor.innerText;
-											if (textContent.toLowerCase().indexOf(fkw.toLowerCase()) > -1) {
-												anchor.parentElement.classList.remove('hide');
-												var parentNode = anchor.closest('li.node-parent');
-												if (parentNode) {
-													parentNode.classList.remove('hide');
-												}
-											} else {
-												anchor.parentElement.classList.add('hide');
-											}
-										});
-									} else {
-										// If filter is empty, remove 'hide' class from all node elements
-										target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li.node').forEach((nodeElement) => {
-											nodeElement.classList.remove('hide');
-										});
-									}
-								});
-							});
-
-							filterLi.appendChild(filterInput);
+							filterInput.addEventListener('input', iwebObject.deBounce(function(e) {
+                                const target = e.target;
+                                const fkw = target.value;
+                                if (iwebObject.isValue(fkw)) {
+                                    // Find all node elements
+                                    target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li.node > a').forEach(function(anchor) {
+                                        const textContent = anchor.textContent || anchor.innerText;
+                                        if (textContent.toLowerCase().indexOf(fkw.toLowerCase()) > -1) {
+                                            anchor.parentElement.classList.remove('hide');
+                                            var parentNode = anchor.closest('li.node-parent');
+                                            if (parentNode) {
+                                                parentNode.classList.remove('hide');
+                                            }
+                                        } else {
+                                            anchor.parentElement.classList.add('hide');
+                                        }
+                                    });
+                                } else {
+                                    // If filter is empty, remove 'hide' class from all node elements
+                                    target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li.node').forEach(function(nodeElement) {
+                                        nodeElement.classList.remove('hide');
+                                    });
+                                }
+							}));
+                            
+                            // Append elements
+                            filterLi.appendChild(filterInput);
 							optionsList.appendChild(filterLi);
 						}
 
 						// Loop through options and create the list
 						if (select.children.length > 0) {
-							Array.from(select.children).forEach((optionGroup) => {
+							Array.from(select.children).forEach(function(optionGroup) {
 								if (optionGroup.children.length > 0) {
 									const parentLi = document.createElement('li');
 									parentLi.classList.add('node', 'node-parent');
@@ -715,77 +637,75 @@ class iweb {
 									parentLi.appendChild(parentLink);
 
 									const childUl = document.createElement('ul');
-
-									Array.from(optionGroup.children).forEach((option) => {
-										if (iweb_object.isValue(option.value)) {
+									Array.from(optionGroup.children).forEach(function(option) {
+										if (iwebObject.isValue(option.value)) {
 											const childLi = document.createElement('li');
 											childLi.classList.add('node');
-
-											const childLink = document.createElement('a');
-											childLink.setAttribute('data-value', option.value);
-											childLink.textContent = option.textContent;
-											childLink.addEventListener('click', (e) => {
-												iweb_object.delayTimer(() => {
-													const target = e.target;
-													const isMultiple = target.closest('div.iweb-select').classList.contains('iweb-select-multiple');
-													const selectElement = target.closest('div.iweb-select').querySelector('div.real > select');
-													let selectedOptions = [];
-
-													if (isMultiple) {
-														// handle multiple selection
-														selectElement.querySelectorAll('option').forEach((optionGroup) => {
-															if (optionGroup.children.length > 0) {
-																Array.from(optionGroup.children).forEach((option) => {
-																	if (option.selected) {
-																		selectedOptions.push(option.value.toString());
-																	}
-																});
-															} else if (optionGroup.selected) {
-																selectedOptions.push(optionGroup.value.toString());
-															}
-														});
-
-														const selectedValue = target.getAttribute('data-value').toString();
-														if (!selectedOptions.includes(selectedValue)) {
-															selectedOptions.push(selectedValue);
-														} else {
-															selectedOptions = selectedOptions.filter(function(value) {
-																return value !== selectedValue;
-															});
-														}
-
-														// update the select element with selected options
-														selectElement.querySelectorAll('option').forEach((option) => {
-															if (selectedOptions.includes(option.value.toString())) {
-																option.selected = true;
-															} else {
-																option.selected = false;
-															}
-														});
-														selectElement.dispatchEvent(new Event('change'));
-
-													} else {
-														// handle single selection
-														target.closest('div.iweb-select').classList.remove('show');
-														selectElement.value = target.getAttribute('data-value');
-														selectElement.dispatchEvent(new Event('change'));
-													}
-												});
-											});
-
-											if (option.selected) {
+                                            if (option.selected) {
 												childLi.classList.add('node-selected');
 												childLi.setAttribute('data-ori', 'selected');
 												virtualSelect += (virtualSelect ? ', ' : '');
 												virtualSelect += option.textContent;
 											}
 
+											const childLink = document.createElement('a');
+											childLink.setAttribute('data-value', option.value);
+											childLink.textContent = option.textContent;
+											childLink.addEventListener('click', iwebObject.deBounce(function(e) {
+                                                const target = e.target;
+                                                const isMultiple = target.closest('div.iweb-select').classList.contains('iweb-select-multiple');
+                                                const selectElement = target.closest('div.iweb-select').querySelector('div.real > select');
+                                                
+                                                let selectedOptions = [];
+                                                if (isMultiple) {
+                                                    // Handle multiple selection
+                                                    selectElement.querySelectorAll('option').forEach(function(optionGroup) {
+                                                        if (optionGroup.children.length > 0) {
+                                                            Array.from(optionGroup.children).forEach(function(option) {
+                                                                if (option.selected) {
+                                                                    selectedOptions.push(option.value.toString());
+                                                                }
+                                                            });
+                                                        } else if (optionGroup.selected) {
+                                                            selectedOptions.push(optionGroup.value.toString());
+                                                        }
+                                                    });
+
+                                                    const selectedValue = target.getAttribute('data-value').toString();
+                                                    if (!selectedOptions.includes(selectedValue)) {
+                                                        selectedOptions.push(selectedValue);
+                                                    } else {
+                                                        selectedOptions = selectedOptions.filter(function(value) {
+                                                            return value !== selectedValue;
+                                                        });
+                                                    }
+
+                                                    // Update the select element with selected options
+                                                    selectElement.querySelectorAll('option').forEach(function(option) {
+                                                        if (selectedOptions.includes(option.value.toString())) {
+                                                            option.selected = true;
+                                                        } else {
+                                                            option.selected = false;
+                                                        }
+                                                    });
+                                                    selectElement.dispatchEvent(new Event('change'));
+
+                                                } else {
+                                                    // Handle single selection
+                                                    target.closest('div.iweb-select').classList.remove('show');
+                                                    selectElement.value = target.getAttribute('data-value');
+                                                    selectElement.dispatchEvent(new Event('change'));
+                                                }
+											}));
+                                            
+                                            // Append elements
 											childLi.appendChild(childLink);
 											childUl.appendChild(childLi);
 										}
 									});
-
-									parentLi.appendChild(childUl);
+                                    
+                                    // Append elements
+                                    parentLi.appendChild(childUl);
 									optionsList.appendChild(parentLi);
 								} else {
 									const singleLi = document.createElement('li');
@@ -793,63 +713,61 @@ class iweb {
 									const singleLink = document.createElement('a');
 									singleLink.setAttribute('data-value', optionGroup.value);
 									singleLink.textContent = optionGroup.textContent;
-									singleLink.addEventListener('click', (e) => {
-										iweb_object.delayTimer(() => {
-											const target = e.target;
-											const isMultiple = target.closest('div.iweb-select').classList.contains('iweb-select-multiple');
-											const selectElement = target.closest('div.iweb-select').querySelector('div.real > select');
-											let selectedOptions = [];
-
-											// Handle multiple selection
-											if (isMultiple) {
-												selectElement.querySelectorAll('option').forEach((optionGroup) => {
-													if (optionGroup.children.length > 0) {
-														Array.from(optionGroup.children).forEach((option) => {
-															if (option.selected) {
-																selectedOptions.push(option.value.toString());
-															}
-														});
-													} else if (optionGroup.selected) {
-														selectedOptions.push(optionGroup.value.toString());
-													}
-												});
-
-												const selectedValue = target.getAttribute('data-value').toString();
-												if (!selectedOptions.includes(selectedValue)) {
-													selectedOptions.push(selectedValue);
-												} else {
-													selectedOptions = selectedOptions.filter(function(value) {
-														return value !== selectedValue;
-													});
-												}
-
-												// Update the select element with selected options
-												selectElement.querySelectorAll('option').forEach((option) => {
-													if (selectedOptions.includes(option.value.toString())) {
-														option.selected = true;
-													} else {
-														option.selected = false;
-													}
-												});
-												selectElement.dispatchEvent(new Event('change'));
-
-											}
-											// Handle single selection
-											else {
-												target.closest('div.iweb-select').classList.remove('show');
-												selectElement.value = target.getAttribute('data-value');
-												selectElement.dispatchEvent(new Event('change'));
-											}
-										});
-									});
-
 									if (optionGroup.selected) {
 										singleLi.classList.add('node-selected');
 										singleLi.setAttribute('data-ori', 'selected');
 										virtualSelect += (virtualSelect ? ', ' : '');
 										virtualSelect += optionGroup.textContent;
 									}
+                                    singleLink.addEventListener('click', iwebObject.deBounce(function(e) {
+                                        const target = e.target;
+                                        const isMultiple = target.closest('div.iweb-select').classList.contains('iweb-select-multiple');
+                                        const selectElement = target.closest('div.iweb-select').querySelector('div.real > select');
+                                        
+                                        let selectedOptions = [];
+                                        if (isMultiple) {
+                                            // Multiple selection
+                                            selectElement.querySelectorAll('option').forEach(function(optionGroup) {
+                                                if (optionGroup.children.length > 0) {
+                                                    Array.from(optionGroup.children).forEach(function(option) {
+                                                        if (option.selected) {
+                                                            selectedOptions.push(option.value.toString());
+                                                        }
+                                                    });
+                                                } else if (optionGroup.selected) {
+                                                    selectedOptions.push(optionGroup.value.toString());
+                                                }
+                                            });
 
+                                            const selectedValue = target.getAttribute('data-value').toString();
+                                            if (!selectedOptions.includes(selectedValue)) {
+                                                selectedOptions.push(selectedValue);
+                                            } else {
+                                                selectedOptions = selectedOptions.filter(function(value) {
+                                                    return value !== selectedValue;
+                                                });
+                                            }
+
+                                            // Update the select element with selected options
+                                            selectElement.querySelectorAll('option').forEach(function(option) {
+                                                if (selectedOptions.includes(option.value.toString())) {
+                                                    option.selected = true;
+                                                } else {
+                                                    option.selected = false;
+                                                }
+                                            });
+                                            selectElement.dispatchEvent(new Event('change'));
+
+                                        }
+                                        else {
+                                            // Single selection
+                                            target.closest('div.iweb-select').classList.remove('show');
+                                            selectElement.value = target.getAttribute('data-value');
+                                            selectElement.dispatchEvent(new Event('change'));
+                                        }
+									}));
+                                    
+                                    // Append elements
 									singleLi.appendChild(singleLink);
 									optionsList.appendChild(singleLi);
 								}
@@ -857,60 +775,121 @@ class iweb {
 						}
 
 						// Set the default select text if nothing is selected
-						if (!iweb_object.isValue(virtualSelect)) {
-							virtualSelect = (iweb_object.isValue(select.getAttribute('data-default')) ? select.getAttribute('data-default') : iweb_object.language[iweb_object.current_language]['please_select']);
+						if (!iwebObject.isValue(virtualSelect)) {
+							virtualSelect = (iwebObject.isValue(select.getAttribute('data-default')) ? select.getAttribute('data-default') : iwebObject.language[iwebObject.current_language]['please_select']);
 						}
 						resultLink.textContent = virtualSelect;
 
-						// Append options list to options div
+						// Append elements
 						optionsDiv.appendChild(optionsList);
 						virtualDiv.appendChild(optionsDiv);
 						wrapperDiv.appendChild(virtualDiv);
 					} else {
-						// Create the wrapper div
+						// Create div & move the select into the div
 						const wrapperDiv = document.createElement('div');
 						wrapperDiv.classList.add('iweb-select');
 						const realDiv = document.createElement('div');
 						realDiv.classList.add('real');
 
-						// Move the select into the wrapper div
 						select.parentNode.insertBefore(realDiv, select);
 						realDiv.appendChild(select);
 
 						realDiv.parentNode.insertBefore(wrapperDiv, realDiv);
 						wrapperDiv.appendChild(realDiv);
 					}
-				}
+                    
+                    // Remove select Attribute
+                    select.removeAttribute('data-virtual');
+                    select.removeAttribute('data-filter');
+
+                    // Bind event for select focus/change
+                    select.addEventListener('focus', iwebObject.deBounce(function() {
+                        document.querySelectorAll('div.iweb-select').forEach(function(otherSelect) {
+                            otherSelect.classList.remove('show');
+                        });
+                    }));
+
+                    select.addEventListener('change', iwebObject.deBounce(function(e) {
+                        let selectedOptions = [];
+                        let selectedOptionLabel = '';
+                        const target = e.target;
+
+                        // Remove error & tips
+                        target.closest('div.iweb-select').classList.remove('error');
+                        target.closest('div.iweb-select').querySelector('small.tips')?.remove();
+
+                        // Traverse through the options
+                        Array.from(target.querySelectorAll('option')).forEach(function(option) {
+                            if (option.children.length > 0) {
+                                Array.from(option.children).forEach(function(childOption) {
+                                    if (childOption.selected) {
+                                        selectedOptions.push(childOption.value.toString());
+                                    }
+                                });
+                            } else {
+                                if (option.selected) {
+                                    selectedOptions.push(option.value.toString());
+                                }
+                            }
+                        });
+
+                        // Find and update the corresponding virtual options
+                        if (target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li > a').length > 0) {
+                            target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li > a').forEach(function(anchor) {
+                                const optionValue = anchor.getAttribute('data-value');
+                                if (iwebObject.isValue(optionValue)) {
+                                    if (!iwebObject.isMatch(selectedOptions.indexOf(optionValue), -1)) {
+                                        anchor.parentElement.classList.add('node-selected');
+                                        if (iwebObject.isValue(selectedOptionLabel)) {
+                                            selectedOptionLabel += ', ';
+                                        }
+                                        selectedOptionLabel += anchor.textContent;
+                                    } else {
+                                        anchor.parentElement.classList.remove('node-selected');
+                                    }
+                                }
+                            });
+
+                            // Set the default option label if none selected
+                            if (!iwebObject.isValue(selectedOptionLabel)) {
+                                selectedOptionLabel = ((iwebObject.isValue(target.getAttribute('data-default'))) ? target.getAttribute('data-default') : iwebObject.language[iwebObject.current_language]['please_select']);
+                            }
+
+                            // Update the virtual result label
+                            target.closest('div.iweb-select').querySelector('div.virtual > a.result').innerHTML = selectedOptionLabel;
+                        }
+                    }));
+                }
 			});
 		}
 
 		// Callback if need
-		if ((typeof callback) === 'function') {
-			callback();
+		if ((typeof callBack) === 'function') {
+			callBack();
 		}
 	}
 
-	checkBox(checkbox_object, callback) {
-		const iweb_object = this;
+	checkBox(checkbox_object, callBack) {
+		const iwebObject = this;
 
 		// Default to selecting all relevant elements if none provided
-		if (!iweb_object.isValue(checkbox_object)) {
+		if (!iwebObject.isValue(checkbox_object)) {
 			checkbox_object = document.querySelectorAll('input[type="checkbox"]');
 		}
 
 		if (checkbox_object.length > 0) {
-			checkbox_object.forEach((checkbox) => {
+			checkbox_object.forEach(function(checkbox) {
 				if (!checkbox.closest('div.iweb-checkbox')) {
 					const findCheckboxLabel = checkbox.nextElementSibling;
 
-					// Create the wrapper div 
+					// Create div
 					const wrapperDiv = document.createElement('div');
 					wrapperDiv.classList.add('iweb-checkbox');
 					if (checkbox.checked) {
 						wrapperDiv.classList.add('checked');
 					}
 
-					// Move the checkbox into the wrapper and then append any label next to it
+					// Move the checkbox into div and then append label next to it
 					checkbox.parentNode.insertBefore(wrapperDiv, checkbox);
 					wrapperDiv.appendChild(checkbox);
 					if (findCheckboxLabel) {
@@ -919,54 +898,51 @@ class iweb {
 					}
 
 					// Bind event for checkbox change
-					checkbox.addEventListener('change', (e) => {
-						e.preventDefault();
-						iweb_object.delayTimer(() => {
-							const target = e.target;
-							const relatedObject = document.querySelectorAll('input[type="checkbox"][name="' + (target.name) + '"]');
-							relatedObject.forEach((related_checkbox) => {
-								related_checkbox.closest('div.iweb-checkbox').classList.remove('checked');
-								if (related_checkbox.checked) {
-									related_checkbox.closest('div.iweb-checkbox').classList.add('checked');
-								}
-								related_checkbox.closest('div.iweb-checkbox').classList.remove('error');
-							});
+					checkbox.addEventListener('change', iwebObject.deBounce(function(e) {
+                        const target = e.target;
+                        const relatedObject = document.querySelectorAll('input[type="checkbox"][name="' + (target.name) + '"]');
+                        relatedObject.forEach(function(related_checkbox) {
+                            related_checkbox.closest('div.iweb-checkbox').classList.remove('checked');
+                            if (related_checkbox.checked) {
+                                related_checkbox.closest('div.iweb-checkbox').classList.add('checked');
+                            }
+                            related_checkbox.closest('div.iweb-checkbox').classList.remove('error');
+                        });
 
-							// Remove any tips element if it exists
-							target.closest('div.iweb-checkbox-set').querySelector('small.tips')?.remove();
-						});
-					});
+                        // Remove tips
+                        target.closest('div.iweb-checkbox-set').querySelector('small.tips')?.remove();
+					}));
 				}
 			});
 		}
 
 		// Callback if need
-		if ((typeof callback) === 'function') {
-			callback();
+		if ((typeof callBack) === 'function') {
+			callBack();
 		}
 	}
 
-	radioBox(raido_object, callback) {
-		var iweb_object = this;
+	radioBox(raido_object, callBack) {
+		var iwebObject = this;
 
 		// Default to selecting all relevant elements if none provided
-		if (!iweb_object.isValue(raido_object)) {
+		if (!iwebObject.isValue(raido_object)) {
 			raido_object = document.querySelectorAll('input[type="radio"]');
 		}
 
 		if (raido_object.length > 0) {
-			raido_object.forEach((raido) => {
+			raido_object.forEach(function(raido) {
 				if (!raido.closest('div.iweb-raido')) {
 					const findCheckboxLabel = raido.nextElementSibling;
 
-					// Create the wrapper div
+					// Create div
 					const wrapperDiv = document.createElement('div');
 					wrapperDiv.classList.add('iweb-radio');
 					if (raido.checked) {
 						wrapperDiv.classList.add('checked');
 					}
 
-					// Move the radio into the wrapper and then append any label next to it
+					// Move the radio into div and then append label next to it
 					raido.parentNode.insertBefore(wrapperDiv, raido);
 					wrapperDiv.appendChild(raido);
 					if (findCheckboxLabel) {
@@ -975,506 +951,600 @@ class iweb {
 					}
 
 					// Bind event for radio change
-					raido.addEventListener('change', (e) => {
-						e.preventDefault();
-						iweb_object.delayTimer(() => {
-							const target = e.target;
-							const selectedValue = target.value;
-							const relatedObject = document.querySelectorAll('input[type="radio"][name="' + (target.name) + '"]');
-							relatedObject.forEach((related_radio) => {
-								if (iweb_object.isMatch(related_radio.value, selectedValue)) {
-									related_radio.checked = true;
-									related_radio.closest('div.iweb-radio').classList.add('checked');
-								} else {
-									related_radio.checked = false;
-									related_radio.closest('div.iweb-radio').classList.remove('checked');
-								}
-								related_radio.closest('div.iweb-radio').classList.remove('error');
-							});
+					raido.addEventListener('change', iwebObject.deBounce(function(e) {
+						const target = e.target;
+                        const selectedValue = target.value;
+                        const relatedObject = document.querySelectorAll('input[type="radio"][name="' + (target.name) + '"]');
+                        relatedObject.forEach(function(related_radio) {
+                            if (iwebObject.isMatch(related_radio.value, selectedValue)) {
+                                related_radio.checked = true;
+                                related_radio.closest('div.iweb-radio').classList.add('checked');
+                            } else {
+                                related_radio.checked = false;
+                                related_radio.closest('div.iweb-radio').classList.remove('checked');
+                            }
+                            related_radio.closest('div.iweb-radio').classList.remove('error');
+                        });
 
-							// Remove any tips element if it exists
-							target.closest('div.iweb-radio-set').querySelector('small.tips')?.remove();
-						});
-					});
+                        // Remove tips
+                        target.closest('div.iweb-radio-set').querySelector('small.tips')?.remove();
+					}));
 				}
 			});
 		}
 
 		// Callback if need
-		if ((typeof callback) === 'function') {
-			callback();
+		if ((typeof callBack) === 'function') {
+			callBack();
 		}
 	}
 
-	iframe(element = 'div.iweb-editor', callback) {
-		const iweb_object = this;
+	iframe(element = 'div.iweb-editor', callBack) {
+		const iwebObject = this;
 
-		if (iweb_object.isValue(element)) {
+		if (iwebObject.isValue(element)) {
 			// Get all specified tags within the given element
-			['iframe', 'video', 'object', 'embed'].forEach((value) => {
+			['iframe', 'video', 'object', 'embed'].forEach(function(value) {
 				const elements = document.querySelectorAll(element + ' ' + value);
-				elements.forEach((el) => {
+				elements.forEach(function(e) {
 					// Check if the parent does not have the class 'iweb-responsive'
-					if (!el.closest('div.iweb-responsive')) {
+					if (!e.closest('div.iweb-responsive')) {
 						// Wrap the element in a div with 'iweb-responsive' class
 						const wrapper = document.createElement('div');
 						wrapper.className = 'iweb-responsive';
-						wrapper.setAttribute('data-width', el.offsetWidth);
-						wrapper.setAttribute('data-height', el.offsetHeight);
+						wrapper.setAttribute('data-width', e.offsetWidth);
+						wrapper.setAttribute('data-height', e.offsetHeight);
 
-						el.classList.add('vframe');
-						el.parentNode.insertBefore(wrapper, el);
-						wrapper.appendChild(el);
+						e.classList.add('vframe');
+						e.parentNode.insertBefore(wrapper, e);
+						wrapper.appendChild(e);
 					}
 				});
 			});
 
-			if ((typeof callback) === 'function') {
-				callback();
+			if ((typeof callBack) === 'function') {
+				callBack();
 			}
 		}
 	}
 
 	responsive() {
-		const iweb_object = this;
+		const iwebObject = this;
 		const responsiveElements = document.querySelectorAll('div.iweb-responsive');
 		if (responsiveElements.length > 0) {
-			responsiveElements.forEach((element) => {
-				let currentWidth = element.clientWidth;
+			responsiveElements.forEach(function(e) {
+				let currentWidth = e.clientWidth;
 				let newHeight = 0;
-				let defineRatioWidth = element.getAttribute('data-width');
-				let defineRatioHeight = element.getAttribute('data-height');
+				let defineRatioWidth = e.getAttribute('data-width');
+				let defineRatioHeight = e.getAttribute('data-height');
 
-				if (iweb_object.isValue(defineRatioWidth) && iweb_object.isValue(defineRatioHeight)) {
+				if (iwebObject.isValue(defineRatioWidth) && iwebObject.isValue(defineRatioHeight)) {
 					if (defineRatioHeight > 0 && defineRatioWidth > 0) {
 						newHeight = parseInt((currentWidth * defineRatioHeight) / defineRatioWidth);
 					}
 				}
 
 				if (newHeight > 0) {
-					element.style.height = newHeight + 'px';
+					e.style.height = newHeight + 'px';
 				} else {
-					element.style.height = 'auto';
+					e.style.height = 'auto';
 				}
 			});
 		}
 	}
 
 	pagination(element) {
-		document.querySelectorAll(element).forEach((el) => {
-			new iPagination(el, {
-				mode: el.getAttribute('data-mode') || 1,
-				size: el.getAttribute('data-size') || 5,
-				total: el.getAttribute('data-totalpage') || 1,
-				placeholder: el.getAttribute('data-placeholder') || '',
+		document.querySelectorAll(element).forEach(function(e) {
+			new iPagination(e, 
+            {
+				mode: (e.getAttribute('data-mode') || 1),
+				size: (e.getAttribute('data-size') || 5),
+				total: (e.getAttribute('data-totalpage') || 1),
+				placeholder: (e.getAttribute('data-placeholder') || '')
 			});
 		});
 	}
 
 	initForm(form_object) {
-		const iweb_object = this;
+		const iwebObject = this;
 
 		// Default to selecting all relevant elements if none provided
-		if (!iweb_object.isValue(form_object)) {
+		if (!iwebObject.isValue(form_object)) {
 			form_object = document.querySelectorAll('form[data-ajax="1"]');
 		}
 
 		if (form_object.length > 0) {
-			form_object.forEach((form) => {
-				const showTips = ((!iweb_object.isMatch(form.getAttribute('data-showtips'), false)) && (!iweb_object.isMatch(form.getAttribute('data-showtips'), 0)));
+			form_object.forEach(function(form) {
+				const showTips = ((!iwebObject.isMatch(form.getAttribute('data-showtips'), false)) && (!iwebObject.isMatch(form.getAttribute('data-showtips'), 0)));
 				form.removeAttribute('data-ajax');
 				form.removeAttribute('data-showtips');
 				form.method = 'post';
 				form.autocomplete = 'off';
+                
+                // Bind event for form submit
+				form.addEventListener('submit', iwebObject.deBounce(function(e) {
+                    // Remove error & tips
+                    const errorElements = form.querySelectorAll('.error');
+                    errorElements.forEach(function(e) {
+                        if (!e.closest('div.iweb-tips-message')) {
+                            e.classList.remove('error');
+                        }
+                    });
 
-				form.addEventListener('submit', (e) => {
-					e.preventDefault();
-					iweb_object.delayTimer(() => {
-						// Remove any error & tips element if it exists
-						const errorElements = form.querySelectorAll('.error');
-						errorElements.forEach((el) => {
-							if (!el.closest('div.iweb-tips-message')) {
-								el.classList.remove('error');
-							}
-						});
+                    const tipsElements = form.querySelectorAll('small.tips');
+                    tipsElements.forEach(function(tips) {
+                        tips.remove();
+                    });
 
-						const tipsElements = form.querySelectorAll('small.tips');
-						tipsElements.forEach((tips) => {
-							tips.remove();
-						});
+                    // Do checking before submit
+                    let can_submit = true;
+                    const requiredInputs = form.querySelectorAll('input[data-validation]:not(:disabled), select[data-validation]:not(:disabled), textarea[data-validation]:not(:disabled)');
+                    if (requiredInputs.length > 0) {
+                        requiredInputs.forEach(function(input) {
+                            const validationArray = (input.getAttribute('data-validation').toString().split('|'));
+                            if (iwebObject.isMatch(input.type, 'checkbox')) {
+                                if (validationArray.includes('required') && !input.closest('div.iweb-checkbox-set').querySelector('input[type="checkbox"]:checked')) {
+                                    if (showTips && !input.closest('div.iweb-checkbox-set').querySelector('small.tips')) {
+                                        const errorTips = document.createElement('small');
+                                        errorTips.classList.add('tips');
+                                        errorTips.textContent = iwebObject.language[iwebObject.current_language]['required_error'];
+                                        input.closest('div.iweb-checkbox-set').appendChild(errorTips);
+                                    }
+                                    input.closest('div.iweb-checkbox').classList.add('error');
+                                    can_submit = false;
+                                }
+                            } else if (iwebObject.isMatch(input.type, 'radio')) {
+                                if ((validationArray.includes('required')) && !input.closest('div.iweb-radio-set').querySelector('input[type="radio"]:checked')) {
+                                    if (showTips && !input.closest('div.iweb-radio-set').querySelector('small.tips')) {
+                                        const errorTips = document.createElement('small');
+                                        errorTips.classList.add('tips');
+                                        errorTips.textContent = iwebObject.language[iwebObject.current_language]['required_error'];
+                                        input.closest('div.iweb-radio-set').appendChild(errorTips);
+                                    }
+                                    input.closest('div.iweb-radio').classList.add('error');
+                                    can_submit = false;
+                                }
+                            } else if (iwebObject.isMatch(input.type, 'select-one') || iwebObject.isMatch(input.type, 'select-multiple')) {
+                                if ((validationArray.includes('required')) && !iwebObject.isValue(input.value)) {
+                                    if (showTips && !input.closest('div.iweb-select').querySelector('small.tips')) {
+                                        const errorTips = document.createElement('small');
+                                        errorTips.classList.add('tips');
+                                        errorTips.textContent = iwebObject.language[iwebObject.current_language]['required_error'];
+                                        input.closest('div.iweb-select').appendChild(errorTips);
+                                    }
+                                    input.closest('div.iweb-select').classList.add('error');
+                                    can_submit = false;
+                                }
+                            } else {
+                                if ((validationArray.includes('required')) && !iwebObject.isValue(input.value)) {
+                                    if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                        const errorTips = document.createElement('small');
+                                        errorTips.classList.add('tips');
+                                        errorTips.textContent = iwebObject.language[iwebObject.current_language]['required_error'];
+                                        input.closest('div.iweb-input').appendChild(errorTips);
+                                    }
+                                    input.closest('div.iweb-input').classList.add('error');
+                                    can_submit = false;
+                                } else {
+                                    if ((validationArray.includes('number')) && !iwebObject.isNumber(input.value)) {
+                                        if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                            const errorTips = document.createElement('small');
+                                            errorTips.classList.add('tips');
+                                            errorTips.textContent = iwebObject.language[iwebObject.current_language]['number_error'];
+                                            input.closest('div.iweb-input').appendChild(errorTips);
+                                        }
+                                        input.closest('div.iweb-input').classList.add('error');
+                                        can_submit = false;
+                                    } else if ((validationArray.includes('email')) && !iwebObject.isEmail(input.value)) {
+                                        if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                            const errorTips = document.createElement('small');
+                                            errorTips.classList.add('tips');
+                                            errorTips.textContent = iwebObject.language[iwebObject.current_language]['email_error'];
+                                            input.closest('div.iweb-input').appendChild(errorTips);
+                                        }
+                                        input.closest('div.iweb-input').classList.add('error');
+                                        can_submit = false;
+                                    } else if ((validationArray.includes('password')) && !iwebObject.isPassword(input.value)) {
+                                        if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                            const errorTips = document.createElement('small');
+                                            errorTips.classList.add('tips');
+                                            errorTips.textContent = iwebObject.language[iwebObject.current_language]['password_error'];
+                                            input.closest('div.iweb-input').appendChild(errorTips);
+                                        }
+                                        input.closest('div.iweb-input').classList.add('error');
+                                        can_submit = false;
+                                    } else if ((validationArray.includes('date')) && !iwebObject.isDate(input.value)) {
+                                        if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                            const errorTips = document.createElement('small');
+                                            errorTips.classList.add('tips');
+                                            errorTips.textContent = iwebObject.language[iwebObject.current_language]['date_error'];
+                                            input.closest('div.iweb-input').appendChild(errorTips);
+                                        }
+                                        input.closest('div.iweb-input').classList.add('error');
+                                        can_submit = false;
+                                    }
+                                }
+                            }
+                        });
+                    }
 
-						// Do checking before submit
-						let can_submit = true;
-						const requiredInputs = form.querySelectorAll('input[data-validation]:not(:disabled), select[data-validation]:not(:disabled), textarea[data-validation]:not(:disabled)');
-						if (requiredInputs.length > 0) {
-							requiredInputs.forEach((input) => {
-								const validationArray = (input.getAttribute('data-validation').toString().split('|'));
-								if (iweb_object.isMatch(input.type, 'checkbox')) {
-									if (validationArray.includes('required') && !input.closest('div.iweb-checkbox-set').querySelector('input[type="checkbox"]:checked')) {
-										if (showTips && !input.closest('div.iweb-checkbox-set').querySelector('small.tips')) {
-											const errorTips = document.createElement('small');
-											errorTips.classList.add('tips');
-											errorTips.textContent = iweb_object.language[iweb_object.current_language]['required_error'];
-											input.closest('div.iweb-checkbox-set').appendChild(errorTips);
-										}
-										input.closest('div.iweb-checkbox').classList.add('error');
-										can_submit = false;
-									}
-								} else if (iweb_object.isMatch(input.type, 'radio')) {
-									if ((validationArray.includes('required')) && !input.closest('div.iweb-radio-set').querySelector('input[type="radio"]:checked')) {
-										if (showTips && !input.closest('div.iweb-radio-set').querySelector('small.tips')) {
-											const errorTips = document.createElement('small');
-											errorTips.classList.add('tips');
-											errorTips.textContent = iweb_object.language[iweb_object.current_language]['required_error'];
-											input.closest('div.iweb-radio-set').appendChild(errorTips);
-										}
-										input.closest('div.iweb-radio').classList.add('error');
-										can_submit = false;
-									}
-								} else if (iweb_object.isMatch(input.type, 'select-one') || iweb_object.isMatch(input.type, 'select-multiple')) {
-									if ((validationArray.includes('required')) && !iweb_object.isValue(input.value)) {
-										if (showTips && !input.closest('div.iweb-select').querySelector('small.tips')) {
-											const errorTips = document.createElement('small');
-											errorTips.classList.add('tips');
-											errorTips.textContent = iweb_object.language[iweb_object.current_language]['required_error'];
-											input.closest('div.iweb-select').appendChild(errorTips);
-										}
-										input.closest('div.iweb-select').classList.add('error');
-										can_submit = false;
-									}
-								} else {
-									if ((validationArray.includes('required')) && !iweb_object.isValue(input.value)) {
-										if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
-											const errorTips = document.createElement('small');
-											errorTips.classList.add('tips');
-											errorTips.textContent = iweb_object.language[iweb_object.current_language]['required_error'];
-											input.closest('div.iweb-input').appendChild(errorTips);
-										}
-										input.closest('div.iweb-input').classList.add('error');
-										can_submit = false;
-									} else {
-										if ((validationArray.includes('number')) && !iweb_object.isNumber(input.value)) {
-											if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
-												const errorTips = document.createElement('small');
-												errorTips.classList.add('tips');
-												errorTips.textContent = iweb_object.language[iweb_object.current_language]['number_error'];
-												input.closest('div.iweb-input').appendChild(errorTips);
-											}
-											input.closest('div.iweb-input').classList.add('error');
-											can_submit = false;
-										} else if ((validationArray.includes('email')) && !iweb_object.isEmail(input.value)) {
-											if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
-												const errorTips = document.createElement('small');
-												errorTips.classList.add('tips');
-												errorTips.textContent = iweb_object.language[iweb_object.current_language]['email_error'];
-												input.closest('div.iweb-input').appendChild(errorTips);
-											}
-											input.closest('div.iweb-input').classList.add('error');
-											can_submit = false;
-										} else if ((validationArray.includes('password')) && !iweb_object.isPassword(input.value)) {
-											if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
-												const errorTips = document.createElement('small');
-												errorTips.classList.add('tips');
-												errorTips.textContent = iweb_object.language[iweb_object.current_language]['password_error'];
-												input.closest('div.iweb-input').appendChild(errorTips);
-											}
-											input.closest('div.iweb-input').classList.add('error');
-											can_submit = false;
-										} else if ((validationArray.includes('date')) && !iweb_object.isDate(input.value)) {
-											if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
-												const errorTips = document.createElement('small');
-												errorTips.classList.add('tips');
-												errorTips.textContent = iweb_object.language[iweb_object.current_language]['date_error'];
-												input.closest('div.iweb-input').appendChild(errorTips);
-											}
-											input.closest('div.iweb-input').classList.add('error');
-											can_submit = false;
-										}
-									}
-								}
-							});
-						}
+                    // Extra checking if need
+                    const validation_func = form.getAttribute('data-vfunc');
+                    if ((typeof window[validation_func]) === 'function') {
+                        can_submit = (can_submit && window[validation_func]());
+                    }
 
-						// Extra checking if need
-						const validation_func = form.getAttribute('data-vfunc');
-						if ((typeof window[validation_func]) === 'function') {
-							can_submit = (can_submit && window[validation_func]());
-						}
+                    if (can_submit) {
+                        let post_data = {
+                            dataType: 'json',
+                            showBusy: true,
+                            url: form.action,
+                            values: {}
+                        };
 
-						if (can_submit) {
-							let post_data = {
-								dataType: 'json',
-								showBusy: true,
-								url: form.action,
-								values: {}
-							};
+                        const tipsMessageArea = form.querySelector('div.iweb-tips-message');
+                        const formData = new FormData(form);
+                        
+                        // Iterate over form data
+                        formData.forEach(function(value, key) {
+                            const regex = /(.*)((\[)(.*)(\]))$/i; // Regular expression
+                            const match = key.match(regex);
+                            if (match) {
+                                let baseName = match[1];
+                                let childIndex = match[4]
+                                if (!post_data.values[baseName]) {
+                                    post_data.values[baseName] = {};
+                                }
+                                if (!iwebObject.isValue(childIndex)) {
+                                    childIndex = Object.keys(post_data.values[baseName]).length + 1;
+                                }
+                                post_data.values[baseName][childIndex] = value;
+                            } else {
+                                post_data.values[key] = value;
+                            }
+                        });
 
-							const tipsMessageArea = form.querySelector('div.iweb-tips-message');
-							const formData = new FormData(form);
-							// Iterate over form data
-							formData.forEach((value, key) => {
-								const regex = /(.*)((\[)(.*)(\]))$/i; // Regular expression
-								const match = key.match(regex);
-								if (match) {
-									let baseName = match[1];
-									let childIndex = match[4]
-									if (!post_data.values[baseName]) {
-										post_data.values[baseName] = {};
-									}
-									if (!iweb_object.isValue(childIndex)) {
-										childIndex = Object.keys(post_data.values[baseName]).length + 1;
-									}
-									post_data.values[baseName][childIndex] = value;
-								} else {
-									post_data.values[key] = value;
-								}
-							});
+                        iwebObject.ajaxPost(post_data, function(responseData) {
+                            // Callback if need
+                            const complete_func = form.getAttribute('data-cfunc');
+                            if ((typeof window[complete_func]) === 'function') {
+                                window[complete_func](responseData);
+                            } else {
+                                if (iwebObject.isValue(responseData.status) && iwebObject.isMatch(responseData.status, 200)) {
+                                    if (iwebObject.isValue(responseData.url)) {
+                                        window.location.href = responseData.url;
+                                    } else {
+                                        window.location.reload();
+                                    }
+                                } else {
+                                    if (iwebObject.isValue(tipsMessageArea)) {
+                                        tipsMessageArea.classList.add('error');
+                                        tipsMessageArea.innerHTML = '';
+                                        const divElement = document.createElement('div');
+                                        const closeButton = document.createElement('a');
+                                        closeButton.className = 'close';
+                                        closeButton.textContent = '×';
+                                        const messageSpan = document.createElement('span');
+                                        messageSpan.textContent = responseData.message;
+                                        divElement.appendChild(closeButton);
+                                        divElement.appendChild(messageSpan);
+                                        tipsMessageArea.appendChild(divElement);
+                                        iwebObject.scrollTo('.iweb-tips-message', 40);
+                                    } else {
+                                        iwebObject.alert(responseData.message);
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        iwebObject.scrollTo('.error', 40);
+                    }
+				}));
 
-							iweb_object.ajaxPost(post_data, function(responseData) {
-								// Callback if need
-								const complete_func = form.getAttribute('data-cfunc');
-								if ((typeof window[complete_func]) === 'function') {
-									window[complete_func](responseData);
-								} else {
-									if (iweb_object.isValue(responseData.status) && iweb_object.isMatch(responseData.status, 200)) {
-										if (iweb_object.isValue(responseData.url)) {
-											window.location.href = responseData.url;
-										} else {
-											window.location.reload();
-										}
-									} else {
-										if (iweb_object.isValue(tipsMessageArea)) {
-											tipsMessageArea.classList.add('error');
-											tipsMessageArea.innerHTML = '';
-											const divElement = document.createElement('div');
-											const closeButton = document.createElement('a');
-											closeButton.className = 'close';
-											closeButton.textContent = '×';
-											const messageSpan = document.createElement('span');
-											messageSpan.textContent = responseData.message;
-											divElement.appendChild(closeButton);
-											divElement.appendChild(messageSpan);
-											tipsMessageArea.appendChild(divElement);
-											iweb_object.scrollTo('.iweb-tips-message', 40);
-										} else {
-											iweb_object.alert(responseData.message);
-										}
-									}
-								}
-							});
-						} else {
-							iweb_object.scrollTo('.error', 40);
-						}
-					});
-				});
+                // Bind event for form reset
+				form.addEventListener('reset', iwebObject.deBounce(function() {
+                    const resetElements = form.querySelectorAll('input, select, textarea');
+                    if (resetElements.length > 0) {
+                        resetElements.forEach(function(element) {
+                            if (iwebObject.isMatch(element.type, 'checkbox') ||
+                                iwebObject.isMatch(element.type, 'radio') ||
+                                iwebObject.isMatch(element.type, 'select-one') ||
+                                iwebObject.isMatch(element.type, 'select-multiple')) {
+                                element.dispatchEvent(new Event('change'));
+                            } else {
+                                if (element.closest('div.iweb-input-autocomplete')) {
+                                    // Remove error & tips
+                                    element.closest('div.iweb-input-autocomplete').classList.remove('error');
+                                    element.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
 
-				form.addEventListener('reset', () => {
-					iweb_object.delayTimer(() => {
-						const resetElements = form.querySelectorAll('input, select, textarea');
-						if (resetElements.length > 0) {
-							resetElements.forEach((element) => {
-								if (iweb_object.isMatch(element.type, 'checkbox') ||
-									iweb_object.isMatch(element.type, 'radio') ||
-									iweb_object.isMatch(element.type, 'select-one') ||
-									iweb_object.isMatch(element.type, 'select-multiple')) {
-									element.dispatchEvent(new Event('change'));
-								} else {
-									if (element.closest('div.iweb-input-autocomplete')) {
-										// Remove any error & tips element if it exists
-										element.closest('div.iweb-input-autocomplete').classList.remove('error');
-										element.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
+                                    const fillId = element.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
+                                    const fillText = element.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
+                                    element.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset')?.remove();
 
-										const fillId = element.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
-										const fillText = element.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
-										element.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset')?.remove();
+                                    if (iwebObject.isValue(fillText.getAttribute('data-value')) && iwebObject.isValue(fillText.getAttribute('data-default'))) {
+                                        fillId.value = fillText.getAttribute('data-value');
+                                        fillText.value = fillText.getAttribute('data-default');
+                                        fillText.readOnly = false;
 
-										if (iweb_object.isValue(fillText.getAttribute('data-value')) && iweb_object.isValue(fillText.getAttribute('data-default'))) {
-											fillId.value = fillText.getAttribute('data-value');
-											fillText.value = fillText.getAttribute('data-default');
-											fillText.readOnly = false;
+                                        // Create reset button
+                                        const fillReset = document.createElement('a');
+                                        fillReset.classList.add('fill-reset');
+                                        fillReset.addEventListener('click', iwebObject.deBounce(function(e) {
+                                            const target = e.target;
+                                            
+                                            // Reset id input & search input
+                                            const fillId = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
+                                            const fillText = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
+                                            const fillReset = target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset');
+                                            fillId.value = '';
+                                            fillText.value = '';
+                                            fillText.readOnly = false;
+                                            fillReset.remove();
 
-											// Append reset button
-											const fillReset = document.createElement('a');
-											fillReset.classList.add('fill-reset');
-											fillReset.addEventListener('click', (e) => {
-												e.preventDefault();
-												iweb_object.delayTimer(() => {
-													const target = e.target;
-													const fillId = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
-													const fillText = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
-													const fillReset = target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset');
-													fillId.value = '';
-													fillText.value = '';
-													fillText.readOnly = false;
-													fillReset.remove();
+                                            // Callback if need
+                                            const remove_callBack = fillId.getAttribute('data-rfunc');
+                                            if ((typeof window[remove_callBack]) === 'function') {
+                                                window[remove_callBack]();
+                                            }
+                                        }));
 
-													// Callback if need
-													const remove_callback = fillId.getAttribute('data-rfunc');
-													if ((typeof window[remove_callback]) === 'function') {
-														window[remove_callback]();
-													}
-												});
-											});
+                                        // Create Reset icon
+                                        const fillResetIcon = document.createElement('i');
+                                        fillResetIcon.classList.add('fa');
+                                        fillResetIcon.classList.add('fa-times');
+                                        fillResetIcon.style.color = '#d73d32';
 
-											const fillResetIcon = document.createElement('i');
-											fillResetIcon.classList.add('fa');
-											fillResetIcon.classList.add('fa-times');
-											fillResetIcon.style.color = '#d73d32';
-
-											fillReset.appendChild(fillResetIcon);
-											element.closest('div.iweb-input-autocomplete').appendChild(fillReset);
-										}
-									} else {
-										element.dispatchEvent(new Event('input'));
-									}
-								}
-							});
-						}
-					});
-				});
+                                        // Append elements
+                                        fillReset.appendChild(fillResetIcon);
+                                        element.closest('div.iweb-input-autocomplete').appendChild(fillReset);
+                                    }
+                                } else {
+                                    element.dispatchEvent(new Event('input'));
+                                }
+                            }
+                        });
+                    }
+				}, 100, false));
 			});
 		}
 	}
 
-	uploader(options, callback) {
-		const iweb_object = this;
+	uploader(options, callBack) {
+		const iwebObject = this;
 
-		// Create a input file
+		// Create input file
 		const fileInput = document.createElement('input');
 		fileInput.type = 'file';
 		fileInput.multiple = true;
-
-		// Bind event for file change
-		fileInput.onchange = function() {
-			// Limit up to 7 files
+		fileInput.addEventListener('change', iwebObject.deBounce(function(e) {
+            const fileInput = this;
+            const target = e.target;
+            
+			// Max 7 files
 			const maxFiles = 7;
 			let selectedFiles = fileInput.files;
 			if (selectedFiles.length > maxFiles) {
 				selectedFiles = Array.from(selectedFiles).slice(0, maxFiles);
 			}
-
-			iweb_object.uploader_files['selected_files'] = selectedFiles;
-			iweb_object.uploader_files_skip['selected_files'] = [-1];
-			iweb_object.uploader_options['selected_files'] = {
+			iwebObject.uploader_files['selected_files'] = selectedFiles;
+			iwebObject.uploader_files_skip['selected_files'] = [-1];
+			iwebObject.uploader_options['selected_files'] = {
 				dataType: 'json',
 				url: '',
 				values: {},
 				allowed_types: '',
 				max_filesize: 64,
-				type_error_message: iweb_object.language[iweb_object.current_language]['type_error'],
-				max_error_message: iweb_object.language[iweb_object.current_language]['max_error'],
+				type_error_message: iwebObject.language[iwebObject.current_language]['type_error'],
+				max_error_message: iwebObject.language[iwebObject.current_language]['max_error'],
 				btnStartAll: '<i class="fa fa-cloud-upload"></i>',
 				btnClose: '<i class="fa fa-close"></i>',
 				btnStart: '<i class="fa fa-cloud-upload"></i>',
 				btnRemove: '<i class="fa fa-trash"></i>',
 				auto_close: false
 			};
-
-			if (iweb_object.isValue(options)) {
-				Object.assign(iweb_object.uploader_options['selected_files'], options);
+			if (iwebObject.isValue(options)) {
+				Object.assign(iwebObject.uploader_options['selected_files'], options);
 			}
-			if (iweb_object.isValue(iweb_object.uploader_options['selected_files'].allowed_types)) {
-				iweb_object.uploader_options['selected_files'].allowed_types = iweb_object.uploader_options['selected_files'].allowed_types.split('|');
+			if (iwebObject.isValue(iwebObject.uploader_options['selected_files'].allowed_types)) {
+				iwebObject.uploader_options['selected_files'].allowed_types = iwebObject.uploader_options['selected_files'].allowed_types.split('|');
 			}
-			iweb_object.uploader_options['selected_files'].max_error_message = iweb_object.uploader_options['selected_files'].max_error_message.replace('{num}', iweb_object.uploader_options['selected_files'].max_filesize);
+			iwebObject.uploader_options['selected_files'].max_error_message = iwebObject.uploader_options['selected_files'].max_error_message.replace('{num}', iwebObject.uploader_options['selected_files'].max_filesize);
 
-			// Create upload list
-			if (iweb_object.isValue(iweb_object.uploader_options['selected_files'].url) && iweb_object.uploader_files['selected_files'].length > 0) {
-
-				// Create the wrapper div for button
+			// Create upload panel
+			if (iwebObject.isValue(iwebObject.uploader_options['selected_files'].url) && iwebObject.uploader_files['selected_files'].length > 0) {
+				// Create div for button
 				const uploaderDiv = document.createElement('div');
 				uploaderDiv.classList.add('action');
 
 				const startAllButton = document.createElement('button');
 				startAllButton.type = 'button';
 				startAllButton.classList.add('start-all');
-				startAllButton.innerHTML = iweb_object.uploader_options['selected_files'].btnStartAll;
+				startAllButton.innerHTML = iwebObject.uploader_options['selected_files'].btnStartAll;
 
 				const closeAllButton = document.createElement('button');
 				closeAllButton.type = 'button';
 				closeAllButton.classList.add('close');
-				closeAllButton.innerHTML = iweb_object.uploader_options['selected_files'].btnClose;
+				closeAllButton.innerHTML = iwebObject.uploader_options['selected_files'].btnClose;
 
 				uploaderDiv.appendChild(startAllButton);
 				uploaderDiv.appendChild(closeAllButton);
 
-				// Create the wrapper div for list
+				// Create div for list
 				const listContainer = document.createElement('div');
 				listContainer.classList.add('list');
 
-				// Move the button & list into the wrapper div
+				// Append elements
 				const dialogContent = document.createElement('div');
 				dialogContent.appendChild(uploaderDiv);
 				dialogContent.appendChild(listContainer);
 
-				// Show popup dialog
-				iweb_object.dialog(dialogContent.innerHTML, () => {
-					iweb_object.uploaderPreview(iweb_object.uploader_files['selected_files']);
+				// Preview list
+				iwebObject.dialog(dialogContent.innerHTML, function() {
+					iwebObject.uploaderPreview(iwebObject.uploader_files['selected_files']);
 
 					// Event handlers
 					const startAllButton = document.querySelector('div.iweb-info-dialog.uploader > div > div.content > div > div.action > button.start-all');
 					const closeAllButton = document.querySelector('div.iweb-info-dialog.uploader > div > div.content > div > div.action > button.close');
 					const listContainer = document.querySelector('div.iweb-info-dialog.uploader > div > div.content > div > div.list');
 
-					startAllButton.addEventListener('click', (e) => {
-						e.preventDefault();
-						iweb_object.delayTimer(() => {
-							const items = listContainer.querySelectorAll('div.item');
-							let loop_upload_index = [];
-							items.forEach(function(item) {
-								loop_upload_index.push(item.getAttribute('data-index').toString());
-							});
-							iweb_object.uploaderStart(-1, loop_upload_index, loop_upload_index[loop_upload_index.length - 1]);
-						});
-					});
+					startAllButton.addEventListener('click', iwebObject.deBounce(function() {
+                        const items = listContainer.querySelectorAll('div.item');
+                        let loop_upload_index = [];
+                        items.forEach(function(item) {
+                            loop_upload_index.push(item.getAttribute('data-index').toString());
+                        });
+                        iwebObject.uploaderStart(-1, loop_upload_index, loop_upload_index[loop_upload_index.length - 1]);
+					}));
 
-					closeAllButton.addEventListener('click', (e) => {
-						e.preventDefault();
-						iweb_object.delayTimer(() => {
-							document.querySelector('div.iweb-info-dialog.uploader > div > div.content > a.btn-close').dispatchEvent(new Event('click'));
-						});
-					});
+					closeAllButton.addEventListener('click', iwebObject.deBounce(function() {
+						document.querySelector('div.iweb-info-dialog.uploader > div > div.content > a.btn-close').dispatchEvent(new Event('click'));
+					}));
 
 					listContainer.querySelectorAll('div.item > button.start').forEach(function(button) {
-						button.addEventListener('click', (e) => {
-							e.preventDefault();
-							iweb_object.delayTimer(() => {
-								const target = e.target;
-								iweb_object.uploaderStart(target.closest('div.item').getAttribute('data-index'));
-							});
-						});
+						button.addEventListener('click', iwebObject.deBounce(function(e1) {
+							const target = e1.target;
+                            iwebObject.uploaderStart(target.closest('div.item').getAttribute('data-index'));
+						}));
 					});
 
 					listContainer.querySelectorAll('div.item > button.remove').forEach(function(button) {
-						button.addEventListener('click', (e) => {
-							e.preventDefault();
-							iweb_object.delayTimer(() => {
-								const target = e.target;
-								iweb_object.uploader_files_skip['selected_files'].push(target.closest('div.item').getAttribute('data-index').toString());
-								target.closest('div.item').remove();
-								if (listContainer.querySelectorAll('div.item').length === 0) {
-									document.querySelector('div.iweb-info-dialog.uploader > div > div.content > a.btn-close').dispatchEvent(new Event('click'));
-								}
-							});
-						});
+						button.addEventListener('click', iwebObject.deBounce(function(e2) {
+							const target = e2.target;
+                            iwebObject.uploader_files_skip['selected_files'].push(target.closest('div.item').getAttribute('data-index').toString());
+                            target.closest('div.item').remove();
+                            if (listContainer.querySelectorAll('div.item').length === 0) {
+                                document.querySelector('div.iweb-info-dialog.uploader > div > div.content > a.btn-close').dispatchEvent(new Event('click'));
+                            }
+						}));
 					});
 				}, function() {
 					// Callback if need
-					if ((typeof callback) === 'function') {
-						callback();
+					if ((typeof callBack) === 'function') {
+						callBack();
 					}
 				}, 'uploader');
 			}
-		};
-
+		}));
+        
+        // Auto click
 		fileInput.click();
 	}
 
-	uploaderArea(file_input_id, options, callback) {
-		const iweb_object = this;
+	uploaderArea(file_input_id, options, callBack) {
+		const iwebObject = this;
 
-		// Set up the dropzone
+		// Create input file
 		const fileInput = document.getElementById(file_input_id);
+        fileInput.removeAttribute('name');
+		fileInput.multiple = true;
+		fileInput.addEventListener('change', iwebObject.deBounce(function(e) {
+            const fileInput = this;
+            const target = e.target;
+            
+            // Max 7 files
+			const maxFiles = 7;
+			let selectedFiles = fileInput.files;
+			if (selectedFiles.length > maxFiles) {
+				selectedFiles = Array.from(selectedFiles).slice(0, maxFiles);
+			}
+			iwebObject.uploader_files['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)] = selectedFiles;
+			iwebObject.uploader_files_skip['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)] = [-1];
+			iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)] = {
+				dataType: 'json',
+				url: '',
+				values: {},
+				allowed_types: '',
+				max_filesize: 64,
+				type_error_message: iwebObject.language[iwebObject.current_language]['type_error'],
+				max_error_message: iwebObject.language[iwebObject.current_language]['max_error'],
+				btnStartAll: '<i class="fa fa-cloud-upload"></i>',
+				btnClose: '<i class="fa fa-close"></i>',
+				btnStart: '<i class="fa fa-cloud-upload"></i>',
+				btnRemove: '<i class="fa fa-trash"></i>',
+				auto_close: true
+			};
+			if (iwebObject.isValue(options)) {
+				iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)] = Object.assign(
+					iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)],
+					options
+				);
+			}
+			if (iwebObject.isValue(iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].allowed_types)) {
+				iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].allowed_types = iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].allowed_types.split('|');
+			}
+			iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].max_error_message = iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].max_error_message.replace('{num}', iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].max_filesize);
+
+			if (iwebObject.isValue(iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].url) && fileInput.files.length > 0) {
+                const uploaderAreDiv = target.closest('div.iweb-files-dropzone').querySelector('div.iweb-files-uploader');
+                
+				// Create div for button
+				const uploaderDiv = document.createElement('div');
+				uploaderDiv.className = 'action';
+
+				const startAllButton = document.createElement('button');
+				startAllButton.className = 'start-all';
+				startAllButton.type = 'button';
+				startAllButton.title = 'Start All';
+				startAllButton.innerHTML = '<i class="fa fa-cloud-upload"></i>';
+
+				const closeAllButton = document.createElement('button');
+				closeAllButton.className = 'close';
+				closeAllButton.type = 'button';
+				closeAllButton.innerHTML = '<i class="fa fa-close"></i>';
+
+				const listContainer = document.createElement('div');
+				listContainer.classList.add('list');
+
+                // Append elements
+                uploaderDiv.appendChild(startAllButton);
+                uploaderDiv.appendChild(closeAllButton);
+				uploaderAreDiv.appendChild(uploaderDiv);
+				uploaderAreDiv.appendChild(listContainer);
+
+				// Preview list
+				iwebObject.uploaderPreview(iwebObject.uploader_files['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)], 0, file_input_id);
+
+                // Event handlers
+                startAllButton.addEventListener('click', iwebObject.deBounce(function() {
+					const items = listContainer.querySelectorAll('div.item');
+                    let loop_upload_index = [];
+                    items.forEach(function(item) {
+                        loop_upload_index.push(item.getAttribute('data-index').toString());
+                    });
+                    iwebObject.uploaderStart(-1, loop_upload_index, loop_upload_index[loop_upload_index.length - 1], file_input_id);
+				}));
+                
+                closeAllButton.addEventListener('click', iwebObject.deBounce(function() {
+					uploaderAreDiv.innerHTML = '';
+                    fileInput.value = '';
+                    // Callback if need
+                    if ((typeof callBack) === 'function') {
+                        callBack();
+                    }
+				}));
+                
+				listContainer.querySelectorAll('div.item > button.start').forEach(function(button) {
+					button.addEventListener('click', iwebObject.deBounce(function(e1) {
+						const target = e1.target;
+                        iwebObject.uploaderStart(target.closest('div.item').getAttribute('data-index'), null, null, file_input_id);
+					}));
+				});
+
+				listContainer.querySelectorAll('div.item > button.remove').forEach(function(button) {
+					button.addEventListener('click', iwebObject.deBounce(function(e2) {
+						const target = e2.target;
+                        iwebObject.uploader_files_skip['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].push(target.closest('div.item').getAttribute('data-index').toString());
+                        target.closest('div.item').remove();
+                        if (listContainer.querySelectorAll('div.item').length === 0) {
+                            uploaderAreDiv.innerHTML = '';
+                            fileInput.value = '';
+                        }
+					}));
+				});
+			}
+		}));
+        
+        // Append elements
 		const parent = fileInput.parentElement;
 		parent.id = file_input_id + '-iweb-files-dropzone';
 		parent.classList.add('iweb-files-dropzone');
@@ -1482,134 +1552,10 @@ class iweb {
 		const uploaderDiv = document.createElement('div');
 		uploaderDiv.className = 'iweb-files-uploader';
 		parent.appendChild(uploaderDiv);
-
-		fileInput.removeAttribute('name');
-		fileInput.multiple = true;
-
-		fileInput.onchange = function() {
-            // Limit up to 7 files
-			const maxFiles = 7;
-			let selectedFiles = fileInput.files;
-			if (selectedFiles.length > maxFiles) {
-				selectedFiles = Array.from(selectedFiles).slice(0, maxFiles);
-			}
-            
-			iweb_object.uploader_files['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)] = selectedFiles;
-			iweb_object.uploader_files_skip['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)] = [-1];
-			iweb_object.uploader_options['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)] = {
-				dataType: 'json',
-				url: '',
-				values: {},
-				allowed_types: '',
-				max_filesize: 64,
-				type_error_message: iweb_object.language[iweb_object.current_language]['type_error'],
-				max_error_message: iweb_object.language[iweb_object.current_language]['max_error'],
-				btnStartAll: '<i class="fa fa-cloud-upload"></i>',
-				btnClose: '<i class="fa fa-close"></i>',
-				btnStart: '<i class="fa fa-cloud-upload"></i>',
-				btnRemove: '<i class="fa fa-trash"></i>',
-				auto_close: true
-			};
-
-			if (iweb_object.isValue(options)) {
-				iweb_object.uploader_options['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)] = Object.assign(
-					iweb_object.uploader_options['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)],
-					options
-				);
-			}
-
-			if (iweb_object.isValue(iweb_object.uploader_options['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)].allowed_types)) {
-				iweb_object.uploader_options['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)].allowed_types = iweb_object.uploader_options['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)].allowed_types.split('|');
-			}
-
-			iweb_object.uploader_options['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)].max_error_message =
-				iweb_object.uploader_options['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)].max_error_message.replace('{num}', iweb_object.uploader_options['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)].max_filesize);
-
-
-			if (iweb_object.isValue(iweb_object.uploader_options['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)].url) && fileInput.files.length > 0) {
-
-				// Create the wrapper div for button
-				const uploader = document.createElement('div');
-				uploader.className = 'action';
-
-				const startAllButton = document.createElement('button');
-				startAllButton.className = 'start-all';
-				startAllButton.type = 'button';
-				startAllButton.title = 'Start All';
-				startAllButton.innerHTML = '<i class="fa fa-cloud-upload"></i>';
-				uploader.appendChild(startAllButton);
-
-				const closeAllButton = document.createElement('button');
-				closeAllButton.className = 'close';
-				closeAllButton.type = 'button';
-				closeAllButton.innerHTML = '<i class="fa fa-close"></i>';
-				uploader.appendChild(closeAllButton);
-
-				uploaderDiv.appendChild(uploader);
-
-				// Create the wrapper div for list
-				const listContainer = document.createElement('div');
-				listContainer.classList.add('list');
-				uploaderDiv.appendChild(listContainer);
-
-				// Show upload list
-				iweb_object.uploaderPreview(iweb_object.uploader_files['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)], 0, file_input_id);
-
-				// Event handlers
-				startAllButton.addEventListener('click', (e) => {
-					e.preventDefault();
-					iweb_object.delayTimer(() => {
-						const items = listContainer.querySelectorAll('div.item');
-						let loop_upload_index = [];
-						items.forEach(function(item) {
-							loop_upload_index.push(item.getAttribute('data-index').toString());
-						});
-						iweb_object.uploaderStart(-1, loop_upload_index, loop_upload_index[loop_upload_index.length - 1], file_input_id);
-					});
-				});
-
-				closeAllButton.addEventListener('click', (e) => {
-					e.preventDefault();
-					iweb_object.delayTimer(() => {
-						uploaderDiv.innerHTML = '';
-						fileInput.value = '';
-						// Callback if need
-						if ((typeof callback) === 'function') {
-							callback();
-						}
-					});
-				});
-
-				listContainer.querySelectorAll('div.item > button.start').forEach(function(button) {
-					button.addEventListener('click', (e) => {
-						e.preventDefault();
-						iweb_object.delayTimer(() => {
-							const target = e.target;
-							iweb_object.uploaderStart(target.closest('div.item').getAttribute('data-index'), null, null, file_input_id);
-						});
-					});
-				});
-
-				listContainer.querySelectorAll('div.item > button.remove').forEach(function(button) {
-					button.addEventListener('click', (e) => {
-						e.preventDefault();
-						iweb_object.delayTimer(() => {
-							const target = e.target;
-							iweb_object.uploader_files_skip['inline_selected_files_' + iweb_object.imd5.hash(file_input_id)].push(target.closest('div.item').getAttribute('data-index').toString());
-							target.closest('div.item').remove();
-							if (listContainer.querySelectorAll('div.item').length === 0) {
-								uploaderDiv.innerHTML = '';
-								fileInput.value = '';
-							}
-						});
-					});
-				});
-			}
-		};
 	}
 
 	uploaderPreview(selectingFiles, key = 0, file_input_id) {
-		const iweb_object = this;
+		const iwebObject = this;
 		const regex = /^(.*)(.jpg|.jpeg|.gif|.png|.bmp)$/;
 
 		if (key >= selectingFiles.length) return; // Exit if there are no more files
@@ -1631,7 +1577,7 @@ class iweb {
 			reader.onload = function(e) {
 				imgElement.src = e.target.result;
 				photoDiv.appendChild(imgElement);
-			}
+			};
 			reader.readAsDataURL(file);
 		} else {
 			const fileIcons = {
@@ -1654,7 +1600,6 @@ class iweb {
 				rar: '<i class="fa fa-file-zip-o" style="color:#f7b002;"></i>',
 				zip: '<i class="fa fa-file-zip-o" style="color:#f7b002;"></i>'
 			};
-
 			photoDiv.innerHTML = fileIcons[extension] || '<i class="fa fa-file-code-o"></i>';
 		}
 
@@ -1670,14 +1615,14 @@ class iweb {
 
 		const sizeDiv = document.createElement('div');
 		sizeDiv.classList.add('size');
-		sizeDiv.textContent = iweb_object.formatBytes(file.size, 0);
+		sizeDiv.textContent = iwebObject.formatBytes(file.size, 0);
 		infoDiv.appendChild(sizeDiv);
 
-		const hashKey = iweb_object.isValue(file_input_id) ?
-			'inline_selected_files_' + iweb_object.imd5.hash(file_input_id) :
+		const hashKey = iwebObject.isValue(file_input_id) ?
+			'inline_selected_files_' + iwebObject.imd5.hash(file_input_id) :
 			'selected_files';
 
-		const options = iweb_object.uploader_options[hashKey];
+		const options = iwebObject.uploader_options[hashKey];
 		const allowedTypes = options.allowed_types || [];
 		const maxFileSize = options.max_filesize * 1024 * 1024;
 
@@ -1716,32 +1661,32 @@ class iweb {
 		removeButton.innerHTML = '<i class="fa fa-trash"></i>';
 		itemDiv.appendChild(removeButton);
 
-		const dropzone = iweb_object.isValue(file_input_id) ?
+		const dropzone = iwebObject.isValue(file_input_id) ?
 			'#' + file_input_id + '-iweb-files-dropzone > div.iweb-files-uploader > div.list' :
 			'div.iweb-info-dialog.uploader > div > div.content > div > div.list';
 
 		document.querySelector(dropzone).appendChild(itemDiv);
 
 		// Continue to preview the next file
-		iweb_object.uploaderPreview(selectingFiles, key + 1, file_input_id);
+		iwebObject.uploaderPreview(selectingFiles, key + 1, file_input_id);
 	}
 
 	uploaderStart(index, loop_upload_index, last_upload_index, file_input_id) {
-		const iweb_object = this;
+		const iwebObject = this;
 
 		let mainIndex = 'selected_files';
-		if (iweb_object.isValue(file_input_id)) {
-			mainIndex = 'inline_selected_files_' + iweb_object.imd5.hash(file_input_id);
+		if (iwebObject.isValue(file_input_id)) {
+			mainIndex = 'inline_selected_files_' + iwebObject.imd5.hash(file_input_id);
 		}
 
 		// Helper function to safely call if the function is defined
 		const safeEndFunction = () => {
-			const uploaderDialog = (iweb_object.isValue(file_input_id)) ? document.querySelector('#' + file_input_id + '-iweb-files-dropzone') : document.querySelector('div.iweb-info-dialog.uploader');
+			const uploaderDialog = (iwebObject.isValue(file_input_id)) ? document.querySelector('#' + file_input_id + '-iweb-files-dropzone') : document.querySelector('div.iweb-info-dialog.uploader');
 			if (uploaderDialog) {
 				const startCount = uploaderDialog.querySelectorAll('div.list > div.item > button.start').length;
-				if (startCount == 0) {
+				if (parseInt(startCount) === 0) {
 					uploaderDialog.querySelector('div.action > button.start-all')?.remove();
-					if (iweb_object.uploader_options[mainIndex].auto_close) {
+					if (iwebObject.uploader_options[mainIndex].auto_close) {
 						uploaderDialog.querySelector('div.action > button.close').dispatchEvent(new Event('click'));
 					}
 				}
@@ -1749,12 +1694,12 @@ class iweb {
 			}
 		};
 
-		const uploaderDialog = (iweb_object.isValue(file_input_id)) ? document.querySelector('#' + file_input_id + '-iweb-files-dropzone') : document.querySelector('div.iweb-info-dialog.uploader');
+		const uploaderDialog = (iwebObject.isValue(file_input_id)) ? document.querySelector('#' + file_input_id + '-iweb-files-dropzone') : document.querySelector('div.iweb-info-dialog.uploader');
 		uploaderDialog.classList.add('busy');
 
 		// Init
 		let isBatch = true;
-		if (!iweb_object.isValue(loop_upload_index)) {
+		if (!iwebObject.isValue(loop_upload_index)) {
 			loop_upload_index = [index];
 			last_upload_index = index;
 			isBatch = false;
@@ -1766,20 +1711,20 @@ class iweb {
 		if (parseInt(index) <= parseInt(last_upload_index)) {
 			if (!loop_upload_index.includes(index.toString())) {
 				if (isBatch) {
-					iweb_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
+					iwebObject.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
 				} else {
 					safeEndFunction();
 				}
 			} else {
-				if (iweb_object.isValue(iweb_object.uploader_files[mainIndex]) && !iweb_object.uploader_files_skip[mainIndex].includes(index.toString())) {
-					iweb_object.uploader_files_skip[mainIndex].push(index.toString());
+				if (iwebObject.isValue(iwebObject.uploader_files[mainIndex]) && !iwebObject.uploader_files_skip[mainIndex].includes(index.toString())) {
+					iwebObject.uploader_files_skip[mainIndex].push(index.toString());
 
-					const selectingFiles = iweb_object.uploader_files[mainIndex];
+					const selectingFiles = iwebObject.uploader_files[mainIndex];
 					const extension = selectingFiles[index].name.split('.').pop().toLowerCase();
 					let checking = true;
-					if (iweb_object.isValue(iweb_object.uploader_options[mainIndex].allowed_types) && !iweb_object.uploader_options[mainIndex].allowed_types.includes(extension.toString())) {
+					if (iwebObject.isValue(iwebObject.uploader_options[mainIndex].allowed_types) && !iwebObject.uploader_options[mainIndex].allowed_types.includes(extension.toString())) {
 						checking = false;
-					} else if (selectingFiles[index].size > iweb_object.uploader_options[mainIndex].max_filesize * 1024 * 1024) {
+					} else if (selectingFiles[index].size > iwebObject.uploader_options[mainIndex].max_filesize * 1024 * 1024) {
 						checking = false;
 					}
 
@@ -1787,27 +1732,27 @@ class iweb {
 						let post_data = {
 							dataType: 'json',
 							showBusy: false,
-							url: iweb_object.uploader_options[mainIndex].url,
+							url: iwebObject.uploader_options[mainIndex].url,
 							values: {}
 						};
 
 						const formData = new FormData();
 						formData.append('page_action', 'file_upload');
-						if (iweb_object.isValue(iweb_object.uploader_options[mainIndex].values)) {
-							Object.entries(iweb_object.uploader_options[mainIndex].values).forEach(([key, value]) => {
+						if (iwebObject.isValue(iwebObject.uploader_options[mainIndex].values)) {
+							Object.entries(iwebObject.uploader_options[mainIndex].values).forEach(function(key, value) {
 								formData.append(key, value);
 							});
 						}
 						formData.append('myfile', selectingFiles[index], selectingFiles[index].name);
-						formData.forEach((value, key) => {
+						formData.forEach(function(value, key) {
 							post_data.values[key] = value;
 						});
 
-						iweb_object.ajaxPost(post_data, function(responseData) {
+						iwebObject.ajaxPost(post_data, function(responseData) {
 							const itemDiv = uploaderDialog.querySelector('div.list > div.item[data-index="' + index + '"]');
 							itemDiv.querySelector('div.info > div.progress-bar')?.remove();
 
-							const message = responseData.message || responseData;
+							const message = (responseData.message || responseData);
 							const infoDiv = itemDiv.querySelector('div.info');
 							const tipsDiv = document.createElement('div');
 							tipsDiv.classList.add('tips');
@@ -1816,7 +1761,7 @@ class iweb {
 
 							// Next
 							if (isBatch) {
-								iweb_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
+								iwebObject.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
 							} else {
 								safeEndFunction();
 							}
@@ -1837,14 +1782,14 @@ class iweb {
 
 						// Next
 						if (isBatch) {
-							iweb_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
+							iwebObject.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
 						} else {
 							safeEndFunction();
 						}
 					}
 				} else {
 					if (isBatch) {
-						iweb_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
+						iwebObject.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
 					} else {
 						safeEndFunction();
 					}
@@ -1856,18 +1801,18 @@ class iweb {
 	}
 
 	// dialog
-	alert(message = '', callback, customizeClassName) {
-		// Prevent duplicate alert dialogs
+	alert(message = '', callBack, customizeClassName) {
+		// Prevent duplicate dialogs
 		if (document.querySelectorAll('div.iweb-alert-dialog').length > 0) {
 			return;
 		}
 
-		const iweb_object = this;
+		const iwebObject = this;
 
-		// Create a alert dialog div
+		// Create div
 		const alertDialog = document.createElement('div');
 		alertDialog.classList.add('iweb-alert-dialog');
-		if (iweb_object.isValue(customizeClassName)) {
+		if (iwebObject.isValue(customizeClassName)) {
 			alertDialog.classList.add(customizeClassName);
 		}
 
@@ -1881,30 +1826,29 @@ class iweb {
 		const detailsDiv = document.createElement('div');
 		detailsDiv.innerHTML = message;
 
-		// Create the close button
+		// Create close button
 		const closeButton = document.createElement('button');
 		closeButton.classList.add('btn');
 		closeButton.classList.add('btn-close');
-		closeButton.textContent = iweb_object.language[iweb_object.current_language]['btn_confirm'];
-		closeButton.addEventListener('click', (e) => {
-			e.preventDefault();
+		closeButton.textContent = iwebObject.language[iwebObject.current_language]['btn_confirm'];
+		closeButton.addEventListener('click', iwebObject.deBounce(function(e) {
 			const target = e.target;
 			contentDiv.style.transform = 'translateY(-320%)';
 			contentDiv.style.transform = '0';
-			contentDiv.addEventListener('transitionend', () => {
+			contentDiv.addEventListener('transitionend', function() {
 				target.closest('div.iweb-alert-dialog').remove();
 				if (document.querySelectorAll('div.iweb-alert-dialog').length === 0 && document.querySelectorAll('div.iweb-info-dialog').length === 0) {
 					document.body.classList.remove('iweb-disable-scroll');
 				}
 
 				// Callback if need
-				if ((typeof callback) === 'function') {
-					callback();
+				if ((typeof callBack) === 'function') {
+					callBack();
 				}
 			}, {
 				once: true
 			});
-		});
+		}));
 
 		// Append to body
 		const viewer = document.querySelector('div.iweb-viewer');
@@ -1916,24 +1860,24 @@ class iweb {
 		document.body.classList.add('iweb-disable-scroll');
 
 		// Show dialog
-		iweb_object.delayTimer(() => {
+		setTimeout(function() {
 			contentDiv.style.transform = 'translateY(0)';
 			contentDiv.style.opacity = '1';
-		});
+		}, 100);
 	}
 
-	confirm(message = '', callback, customizeClassName) {
-		// Prevent duplicate alert dialogs
+	confirm(message = '', callBack, customizeClassName) {
+		// Prevent duplicate dialogs
 		if (document.querySelectorAll('div.iweb-alert-dialog').length > 0) {
 			return;
 		}
 
-		const iweb_object = this;
+		const iwebObject = this;
 
-		// Create a alert dialog div
+		// Create div
 		const alertDialog = document.createElement('div');
 		alertDialog.classList.add('iweb-alert-dialog');
-		if (iweb_object.isValue(customizeClassName)) {
+		if (iwebObject.isValue(customizeClassName)) {
 			alertDialog.classList.add(customizeClassName);
 		}
 
@@ -1951,48 +1895,48 @@ class iweb {
 		const yesButton = document.createElement('button');
 		yesButton.classList.add('btn');
 		yesButton.classList.add('btn-yes');
-		yesButton.textContent = iweb_object.language[iweb_object.current_language]['btn_yes'];
-		yesButton.addEventListener('click', (e) => {
-			const target = e.target;
+		yesButton.textContent = iwebObject.language[iwebObject.current_language]['btn_yes'];
+		yesButton.addEventListener('click', iwebObject.deBounce(function(e) {
+            const target = e.target;
 			contentDiv.style.transform = 'translateY(-320%)';
 			contentDiv.style.transform = '0';
-			contentDiv.addEventListener('transitionend', () => {
+			contentDiv.addEventListener('transitionend', function() {
 				target.closest('div.iweb-alert-dialog').remove();
 				if (document.querySelectorAll('div.iweb-alert-dialog').length === 0 && document.querySelectorAll('div.iweb-info-dialog').length === 0) {
 					document.body.classList.remove('iweb-disable-scroll');
 				}
 
 				// Callback if need
-				if ((typeof callback) === 'function') {
-					callback(true);
+				if ((typeof callBack) === 'function') {
+					callBack(true);
 				}
 			}, {
 				once: true
 			});
-		});
+		}));
 
 		const noButton = document.createElement('button');
 		noButton.classList.add('btn');
 		noButton.classList.add('btn-no');
-		noButton.textContent = iweb_object.language[iweb_object.current_language]['btn_no'];
-		noButton.addEventListener('click', (e) => {
-			const target = e.target;
+		noButton.textContent = iwebObject.language[iwebObject.current_language]['btn_no'];
+		noButton.addEventListener('click', iwebObject.deBounce(function(e) {
+            const target = e.target;
 			contentDiv.style.transform = 'translateY(-320%)';
 			contentDiv.style.transform = '0';
-			contentDiv.addEventListener('transitionend', () => {
+			contentDiv.addEventListener('transitionend', function() {
 				target.closest('div.iweb-alert-dialog').remove();
 				if (document.querySelectorAll('div.iweb-alert-dialog').length === 0 && document.querySelectorAll('div.iweb-info-dialog').length === 0) {
 					document.body.classList.remove('iweb-disable-scroll');
 				}
 
 				// Callback if need
-				if ((typeof callback) === 'function') {
-					callback(false);
+				if ((typeof callBack) === 'function') {
+					callBack(false);
 				}
 			}, {
 				once: true
 			});
-		});
+		}));
 
 		// Append to body
 		const viewer = document.querySelector('div.iweb-viewer');
@@ -2004,34 +1948,34 @@ class iweb {
 		viewer.insertBefore(alertDialog, viewer.firstChild);
 		document.body.classList.add('iweb-disable-scroll');
 
-		iweb_object.delayTimer(() => {
+		setTimeout(function() {
 			contentDiv.style.transform = 'translateY(0)';
 			contentDiv.style.opacity = '1';
-		});
+		}, 100);
 	}
 
-	dialog(htmlCode, initFunc, callback, customizeClassName) {
-		// Prevent duplicate alert dialogs
+	dialog(htmlCode, initFunc, callBack, customizeClassName) {
+		// Prevent duplicate dialogs
 		if (document.querySelector('div.iweb-info-dialog')) {
 			return;
 		}
 
-		const iweb_object = this;
+		const iwebObject = this;
 
-		// Create the info dialog div
+		// Create div
 		const infoDialog = document.createElement('div');
 		infoDialog.classList.add('iweb-info-dialog');
-		if (iweb_object.isValue(customizeClassName)) {
+		if (iwebObject.isValue(customizeClassName)) {
 			infoDialog.classList.add(customizeClassName);
 		}
 
 		const innerDiv = document.createElement('div');
-		innerDiv.addEventListener('click', (e) => {
+		innerDiv.addEventListener('click', iwebObject.deBounce(function(e) {
 			const target = e.target;
 			if (target.closest('div.iweb-info-dialog') && !target.closest('div.content')) {
 				target.closest('div.iweb-info-dialog').querySelector('a.btn-close').dispatchEvent(new Event('click'));
 			}
-		});
+		}));
 
 		const contentDiv = document.createElement('div');
 		contentDiv.classList.add('content');
@@ -2050,24 +1994,24 @@ class iweb {
 		const closeButton = document.createElement('a');
 		closeButton.classList.add('btn');
 		closeButton.classList.add('btn-close');
-		closeButton.addEventListener('click', (e) => {
+		closeButton.addEventListener('click', iwebObject.deBounce(function(e) {
 			const target = e.target;
 			contentDiv.style.transform = 'translateY(-320%)';
 			contentDiv.style.transform = '0';
-			contentDiv.addEventListener('transitionend', () => {
+			contentDiv.addEventListener('transitionend', function() {
 				target.closest('div.iweb-info-dialog').remove();
 				if (document.querySelectorAll('div.iweb-alert-dialog').length === 0 && document.querySelectorAll('div.iweb-info-dialog').length === 0) {
 					document.body.classList.remove('iweb-disable-scroll');
 				}
 
 				// Callback if need
-				if ((typeof callback) === 'function') {
-					callback();
+				if ((typeof callBack) === 'function') {
+					callBack();
 				}
 			}, {
 				once: true
 			});
-		});
+		}));
 
 		// Append to body
 		const viewer = document.querySelector('div.iweb-viewer');
@@ -2079,10 +2023,10 @@ class iweb {
 		document.body.classList.add('iweb-disable-scroll');
 
 		// init component
-		iweb_object.initComponent();
+		iwebObject.initComponent();
 
 		// init form
-		iweb_object.initForm();
+		iwebObject.initForm();
 
 		// Callback if need
 		if ((typeof initFunc) === 'function') {
@@ -2090,15 +2034,15 @@ class iweb {
 		}
 
 		// Show dialog
-		iweb_object.delayTimer(() => {
+		setTimeout(function() {
 			contentDiv.style.transform = 'translateY(0)';
 			contentDiv.style.opacity = '1';
-		});
+		}, 100);
 	}
 
 	// ajax post
-	ajaxPost(post_data, callback, final_callback, progress_callback) {
-		const iweb_object = this;
+	ajaxPost(post_data, callBack, final_callBack, progress_callBack) {
+		const iwebObject = this;
 
 		// Merge post data
 		post_data = Object.assign({
@@ -2108,11 +2052,11 @@ class iweb {
 			values: {}
 		}, post_data);
 
-		if (!iweb_object.is_busy && iweb_object.isValue(post_data.url)) {
-			const local_time = iweb_object.toDateTime();
+		if (!iwebObject.is_busy && iwebObject.isValue(post_data.url)) {
+			const local_time = iwebObject.toDateTime();
 			let formData = new FormData();
 
-			formData.append('itoken', window.btoa(iweb_object.imd5.hash(iweb_object.csrf_token + '#dt' + local_time) + '%' + local_time));
+			formData.append('itoken', window.btoa(iwebObject.imd5.hash(iwebObject.csrf_token + '#dt' + local_time) + '%' + local_time));
 			if (post_data.values) {
 				for (let key in post_data.values) {
 					const value = post_data.values[key];
@@ -2129,25 +2073,25 @@ class iweb {
 
 			// Helper function to safely call if the function is defined
 			const safeFinalFunction = () => {
-				iweb_object.is_busy = false;
-				if (iweb_object.isMatch(post_data.showBusy, true) || iweb_object.isMatch(post_data.showBusy, 1) || iweb_object.isMatch(post_data.showBusy, 2)) {
-					if (!iweb_object.isMatch(post_data.showBusy, 2)) {
-						iweb_object.showBusy(false);
+				iwebObject.is_busy = false;
+				if (iwebObject.isMatch(post_data.showBusy, true) || iwebObject.isMatch(post_data.showBusy, 1) || iwebObject.isMatch(post_data.showBusy, 2)) {
+					if (!iwebObject.isMatch(post_data.showBusy, 2)) {
+						iwebObject.showBusy(false);
 					}
 				}
 
-				// Final callback if needed
-				if ((typeof final_callback) === 'function') {
-					final_callback();
+				// Final callBack if needed
+				if ((typeof final_callBack) === 'function') {
+					final_callBack();
 				}
 			};
 
 			// Try to send data with progress tracking using XMLHttpRequest
 			try {
-				if (iweb_object.isMatch(post_data.showBusy, true) || iweb_object.isMatch(post_data.showBusy, 1) || iweb_object.isMatch(post_data.showBusy, 2)) {
-					iweb_object.showBusy(true, 70);
+				if (iwebObject.isMatch(post_data.showBusy, true) || iwebObject.isMatch(post_data.showBusy, 1) || iwebObject.isMatch(post_data.showBusy, 2)) {
+					iwebObject.showBusy(true, 70);
 				}
-				iweb_object.is_busy = true;
+				iwebObject.is_busy = true;
 
 				// Use XMLHttpRequest for progress tracking
 				const xhr = new XMLHttpRequest();
@@ -2157,9 +2101,9 @@ class iweb {
 				xhr.upload.onprogress = function(event) {
 					if (event.lengthComputable) {
 						const percentComplete = Math.ceil((event.loaded / event.total) * 100);
-						// Progress callback if needed
-						if ((typeof progress_callback) === 'function') {
-							progress_callback(percentComplete);
+						// Progress callBack if needed
+						if ((typeof progress_callBack) === 'function') {
+							progress_callBack(percentComplete);
 						}
 					}
 				};
@@ -2182,8 +2126,8 @@ class iweb {
 						}
 
 						// Callback if needed
-						if ((typeof callback) === 'function') {
-							callback(responseData);
+						if ((typeof callBack) === 'function') {
+							callBack(responseData);
 						}
 					} else {
 						throw new Error(xhr.statusText);
@@ -2239,9 +2183,9 @@ class iweb {
 	}
 
 	isMatch(value1, value2, sensitive = false) {
-		const iweb_object = this;
+		const iwebObject = this;
 
-		if (iweb_object.isValue(value1) && iweb_object.isValue(value2)) {
+		if (iwebObject.isValue(value1) && iwebObject.isValue(value2)) {
 			const trimmedValue1 = (value1.toString().trim());
 			const trimmedValue2 = (value2.toString().trim());
 			return (sensitive) ? (trimmedValue1 === trimmedValue2) : (trimmedValue1.toLowerCase() === trimmedValue2.toLowerCase());
@@ -2251,10 +2195,10 @@ class iweb {
 	}
 
 	isNumber(value, digital_mode = false) {
-		const iweb_object = this;
+		const iwebObject = this;
 		const reg = ((digital_mode) ? /^[0-9]+$/ : /(^((-)?[1-9]{1}\d{0,2}|0\.|0$))(((\d)+)?)(((\.)(\d+))?)$/);
 
-		if (iweb_object.isValue(value)) {
+		if (iwebObject.isValue(value)) {
 			return reg.test(value);
 		}
 
@@ -2262,10 +2206,10 @@ class iweb {
 	}
 
 	isEmail(value) {
-		const iweb_object = this;
+		const iwebObject = this;
 		const reg = /^([A-Za-z0-9_\-\.])+@([A-Za-z0-9_\-\.])+\.[A-Za-z]{2,}$/;
 
-		if (iweb_object.isValue(value)) {
+		if (iwebObject.isValue(value)) {
 			return reg.test(value);
 		}
 
@@ -2273,10 +2217,10 @@ class iweb {
 	}
 
 	isPassword(value) {
-		const iweb_object = this;
+		const iwebObject = this;
 		const reg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 
-		if (iweb_object.isValue(value)) {
+		if (iwebObject.isValue(value)) {
 			return reg.test(value);
 		}
 
@@ -2284,11 +2228,11 @@ class iweb {
 	}
 
 	isDate(value, format = 'Y-m-d') {
-		const iweb_object = this;
+		const iwebObject = this;
 		const reg = /^(\d{4})(\-)(\d{2})(\-)(\d{2})$/;
 
-		if (iweb_object.isValue(value)) {
-			if (!iweb_object.isMatch(format, 'Y-m-d')) {
+		if (iwebObject.isValue(value)) {
+			if (!iwebObject.isMatch(format, 'Y-m-d')) {
 				value = value.split('/').reverse().join('-');
 			}
 			if (reg.test(value)) {
@@ -2323,11 +2267,11 @@ class iweb {
 
 	// convert
 	toNumber(value, currency_mode, decimal) {
-		const iweb_object = this;
+		const iwebObject = this;
 
 		value = value.toString().replace(/[^\d|\-|\.]/g, '');
-		if (iweb_object.isNumber(value)) {
-			if (iweb_object.isNumber(decimal) && parseInt(decimal) > 0) {
+		if (iwebObject.isNumber(value)) {
+			if (iwebObject.isNumber(decimal) && parseInt(decimal) > 0) {
 				let power10 = Math.pow(10, decimal);
 				value = value * power10;
 				value = (Math.round(value) / power10).toString();
@@ -2340,7 +2284,7 @@ class iweb {
 					value += '0';
 				}
 			}
-			if (iweb_object.isMatch(currency_mode, true)) {
+			if (iwebObject.isMatch(currency_mode, true)) {
 				return value.toString().replace(/(\d)(?=(\d{3})+\b)/g, '$1,');
 			} else {
 				return value;
@@ -2350,9 +2294,9 @@ class iweb {
 	}
 
 	toDateTime(value, format = 'Y-m-d H:i:s') {
-		const iweb_object = this;
+		const iwebObject = this;
 
-		let now = ((iweb_object.isValue(value)) ? new Date(value) : new Date());
+		let now = ((iwebObject.isValue(value)) ? new Date(value) : new Date());
 		let year = now.getFullYear();
 		let month = now.getMonth() + 1;
 		let day = now.getDate();
@@ -2425,10 +2369,10 @@ class iweb {
 
 	// cookie
 	setCookie(cname, cvalue, exdays = 14) {
-		const iweb_object = this;
+		const iwebObject = this;
 
 		if (navigator.cookieEnabled) {
-			if (iweb_object.isValue(cname)) {
+			if (iwebObject.isValue(cname)) {
 				const d = new Date();
 				d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
 				const expires = 'expires=' + d.toUTCString();
@@ -2440,10 +2384,10 @@ class iweb {
 	}
 
 	getCookie(cname) {
-		const iweb_object = this;
+		const iwebObject = this;
 
 		if (navigator.cookieEnabled) {
-			if (iweb_object.isValue(cname)) {
+			if (iwebObject.isValue(cname)) {
 				const name = cname + '=';
 				const ca = document.cookie.split(';');
 				for (let i = 0; i < ca.length; i++) {
@@ -2459,30 +2403,39 @@ class iweb {
 		return '';
 	}
 
-	// others
-	delayTimer(callback, sec = 100) {
-		if ((typeof callback) === 'function') {
-			setTimeout(() => {
-				callback();
-			}, sec);
-		}
-	}
+    deBounce(callBack, delay = 100, prevent = true) {
+        let timeout;
+        return function(e) {
+            // Prevent default behavior
+            if(prevent) {
+                if (e && typeof e.preventDefault === 'function') {
+                    e.preventDefault();
+                }
+            }
+            
+            //Clear the previous timer
+            clearTimeout(timeout);
+            
+            //Set a new timer
+            timeout = setTimeout(() => callBack.apply(this, arguments), delay);
+        };
+    }
 
 	showBusy(status, value) {
-		const iweb_object = this;
+		const iwebObject = this;
 
-		if (iweb_object.isMatch(status, 1) || iweb_object.isMatch(status, true)) {
+		if (iwebObject.isMatch(status, 1) || iwebObject.isMatch(status, true)) {
 			if (document.querySelectorAll('div.iweb-processing').length === 0) {
-				// Initialize opacity based on value
+				// Init opacity based on value
 				let opacity = 1;
-				if (iweb_object.isNumber(value, true)) {
+				if (iwebObject.isNumber(value, true)) {
 					opacity = (Math.round(parseInt(value) / 100 * 100) / 100);
 				}
 
 				// Create the main div
 				const processingDiv = document.createElement('div');
 				processingDiv.className = 'iweb-processing';
-				if (iweb_object.isNumber(value, true)) {
+				if (iwebObject.isNumber(value, true)) {
 					processingDiv.style.background = 'rgba(255,255,255,' + opacity + ')';
 				}
 
@@ -2533,23 +2486,23 @@ class iweb {
 			}
 		} else {
 			let microsecond = 0;
-			if (iweb_object.isNumber(value, true)) {
+			if (iwebObject.isNumber(value, true)) {
 				microsecond = parseInt(value);
 			}
-			iweb_object.delayTimer(() => {
+			setTimeout(function() {
 				const processingDivs = document.querySelectorAll('div.iweb-processing');
-				processingDivs.forEach((div) => {
+				processingDivs.forEach(function(div) {
 					div.remove();
 				});
 			}, microsecond);
 		}
 	}
 
-	scrollTo(element, adjustment_value, callback) {
-		const iweb_object = this;
+	scrollTo(element, adjustment_value, callBack) {
+		const iwebObject = this;
 
 		let element_scroll_top_value = 0;
-		adjustment_value = (iweb_object.isValue(adjustment_value)) ? parseInt(adjustment_value) : 0;
+		adjustment_value = (iwebObject.isValue(adjustment_value)) ? parseInt(adjustment_value) : 0;
 
 		const targetElement = document.querySelector(element);
 		if (targetElement) {
@@ -2563,13 +2516,13 @@ class iweb {
 		});
 
 		// Callback if need
-		iweb_object.delayTimer(() => {
+		setTimeout(function() {
 			if (Math.abs(window.pageYOffset - element_scroll_top_value) <= 1) {
-				if ((typeof callback) === 'function') {
-					callback();
+				if ((typeof callBack) === 'function') {
+					callBack();
 				}
 			}
-		});
+		}, 100);
 	}
 
 	formatBytes(bytes, decimals) {
@@ -2795,12 +2748,13 @@ class iMD5 {
 
 class iDatePicker {
 	constructor(lang = 'en', dateFormat = 'YYYY-MM-DD') {
-		this.lang = lang; // Language setting, defaulting to English
-		this.dateFormat = dateFormat; // Date format, defaulting to 'YYYY-MM-DD'
-		this.calendarElement; // Reference to the calendar element
-		this.currentDate = new Date(); // Current displayed date in the calendar
-		this.selectedDate; // Currently selected date
-		this.activeInputElement; // Currently focused input element
+		this.lang = lang;
+		this.dateFormat = dateFormat;
+		this.calendarElement;
+		this.currentDate = new Date();
+		this.selectedDate;
+		this.activeInputElement;
+        
 		document.body.addEventListener('click', (e) => {
 			if (this.calendarElement &&
 				!e.target.closest('.idatepicker') &&
