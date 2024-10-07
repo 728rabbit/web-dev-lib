@@ -59,37 +59,37 @@ class iweb {
 	init() {
 		const iwebObject = this;
 
-		// Set current language
-		const htmlLang = document.documentElement.lang?.toLowerCase().replace('-', '_');
-		if (iwebObject.isValue(htmlLang) && iwebObject.isValue(iwebObject.language[htmlLang])) {
-			iwebObject.current_language = htmlLang;
-		}
-
-		// Set CSRF token
-		const csrfTokenContent = document.querySelector('meta[name="csrf-token"]')?.content;
-		if (iwebObject.isValue(csrfTokenContent)) {
-			const hostname = (location.hostname || '/');
-			iwebObject.csrf_token = iwebObject.imd5.hash(iwebObject.imd5.hash('iweb@' + hostname) + '@' + csrfTokenContent);
-		}
-        
-        // Helper function to safely call if the function is defined
-		const safeCallFunction = (func, value) => {
-			if ((typeof window[func]) === 'function') {
-				window[func](value);
-			}
-		};
-
-		// Init body, component and form
-		iwebObject.initBody();
-		iwebObject.initComponent();
-		iwebObject.initForm();
-
-		// Get iweb-viewer width
-		iwebObject.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
+		// Helper function to safely call if the function is defined
+        const safeCallFunction = (func, value) => {
+            if ((typeof window[func]) === 'function') {
+                window[func](value);
+            }
+        };
         
 		// Call optional layout and extra functions if they are defined
 		document.addEventListener('DOMContentLoaded', function() {
+            // Set current language
+            const htmlLang = document.documentElement.lang?.toLowerCase().replace('-', '_');
+            if (iwebObject.isValue(htmlLang) && iwebObject.isValue(iwebObject.language[htmlLang])) {
+                iwebObject.current_language = htmlLang;
+            }
+
+            // Set CSRF token
+            const csrfTokenContent = document.querySelector('meta[name="csrf-token"]')?.content;
+            if (iwebObject.isValue(csrfTokenContent)) {
+                const hostname = (location.hostname || '/');
+                iwebObject.csrf_token = iwebObject.imd5.hash(iwebObject.imd5.hash('iweb@' + hostname) + '@' + csrfTokenContent);
+            }
+
+            // Init body, component and form
+            iwebObject.initBody();
+            iwebObject.initComponent();
+            iwebObject.initForm();
+            
+            // Get iweb-viewer width
+            iwebObject.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
 			iwebObject.responsive();
+
 			safeCallFunction('iweb_common_layout', iwebObject.win_width);
 			safeCallFunction('iweb_layout', iwebObject.win_width);
 			safeCallFunction('iweb_extra_layout', iwebObject.win_width);
@@ -180,7 +180,7 @@ class iweb {
 
 		// Init default font size
 		const fontSizeClasses = ['small-font', 'middle-font', 'large-font'];
-		const defaultFontSize = iwebObject.getCookie('iweb_font_size');
+		const defaultFontSize = (iwebObject.getCookie('iweb_font_size'));
 		const fontButtons = document.querySelectorAll('a.font-switch');
 		if (iwebObject.isValue(defaultFontSize)) {
 			document.documentElement.classList.remove(...fontSizeClasses);
@@ -2376,7 +2376,9 @@ class iweb {
 				const d = new Date();
 				d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
 				const expires = 'expires=' + d.toUTCString();
-				document.cookie = cname + '=' + cvalue + ';' + expires + ';path=/';
+                const pathParts = window.location.pathname.split('/');
+                const projectFolder = ((pathParts.length > 1 && pathParts[1] !== '') ? '/' + pathParts[1] + '/' : '/');
+				document.cookie = cname + '=' + cvalue + ';' + expires + ';path=' + projectFolder;
 			}
 		} else {
 			alert('Cookies Blocked or not supported by your browser.');
@@ -2385,7 +2387,7 @@ class iweb {
 
 	getCookie(cname) {
 		const iwebObject = this;
-
+        
 		if (navigator.cookieEnabled) {
 			if (iwebObject.isValue(cname)) {
 				const name = cname + '=';
