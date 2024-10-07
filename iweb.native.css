@@ -931,6 +931,7 @@ div.iweb-alert-dialog > div > div.content > button.btn-close {
     display: block;
     font-weight: bold;
     width: 100%;
+    color: var(--color-black);
     border-top: 2px solid var(--color-lightgray);
 }
 
@@ -940,6 +941,7 @@ div.iweb-alert-dialog > div > div.content > button.btn-yes {
     display: inline-block;
     font-weight: bold;
     width: 50%;
+    color: var(--color-black);
     border-top: 2px solid var(--color-lightgray);
     border-right: 2px solid var(--color-lightgray);
     border-radius: 0px;
@@ -951,6 +953,7 @@ div.iweb-alert-dialog > div > div.content > button.btn-no {
     display: inline-block;
     font-weight: bold;
     width: 50%;
+    color: var(--color-black);
     border-top: 2px solid var(--color-lightgray);
     border-radius: 0px;
 }
@@ -1016,6 +1019,7 @@ div.iweb-info-dialog > div > div.content > a.btn-close {
     border-radius: 50%;
     line-height: 30px;
     text-align: center;
+    color: var(--color-black);
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
