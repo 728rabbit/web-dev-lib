@@ -1,14 +1,14 @@
 :root {
     --background-color: #fff8f2;
-    --color-primary: #7ac943;
-    --color-green: #53a93f;
-    --color-red: #d73d32;
-    --color-yellow: #fda525;
-    --color-blue: #2ca4e9;
-    --color-white: #fff;
-    --color-black: #000;
-    --color-lightgray: #e6e6e6;
-    --color-lightpink: #ffb6c1;
+    --icolor-main: #4682b4;
+    --icolor-green: #7ac943;
+    --icolor-red: #d73d32;
+    --icolor-yellow: #fda525;
+    --icolor-blue: #2ca4e9;
+    --icolor-white: #ffffff;
+    --icolor-black: #222222;
+    --icolor-lightgray: #e6e6e6;
+    --icolor-lightpink: #ffb6c1;
 }
 
 * {
@@ -49,7 +49,7 @@ html.large-font {
 
 body {
     font-size: 1rem;
-    color: var(--color-black);
+    color: var(--icolor-black);
     min-width: 320px;
     width: 100%;
     opacity: 0;
@@ -66,7 +66,7 @@ table.list td {
 }
 
 a {
-    color: var(--color-black);
+    color: var(--icolor-black);
     cursor: pointer;
     text-decoration: none;
     -webkit-touch-callout: none;
@@ -80,7 +80,7 @@ a.font-switch {
     height: 36px;
     text-align: center;
     line-height: 32px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     margin: 0px 4px;
     border-radius: 4px;
     vertical-align: top;
@@ -95,7 +95,7 @@ a.font-switch.large {
 }
 
 a.font-switch.current {
-    background: var(--color-primary);
+    background: var(--icolor-main);
 }
 
 img,
@@ -118,13 +118,13 @@ input[type="number"]{
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-color: var(--color-white);
+    background-color: var(--icolor-white);
     font-size: 1rem;
-    color: var(--color-black);
+    color: var(--icolor-black);
     max-width: 100%;
     height: 36px;
     padding: 4px 12px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 4px;
     resize: none;
 }
@@ -153,14 +153,14 @@ textarea {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-color: var(--color-white);
+    background-color: var(--icolor-white);
     font-size: 1rem;
-    color: var(--color-black);
+    color: var(--icolor-black);
     max-width: 100%;
     min-height: 180px;
     padding: 4px 12px;
     line-height: 1.5;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 4px;
     resize: none;
 }
@@ -173,17 +173,17 @@ input[type="tel"].error,
 input[type="email"].error,
 input[type="number"].error,
 textarea.error {
-    border-color: var(--color-lightpink)!important;
+    border-color: var(--icolor-lightpink)!important;
 }
 
 select {
-    background-color: var(--color-white);
+    background-color: var(--icolor-white);
     font-size: 1rem;
-    color: var(--color-black);
+    color: var(--icolor-black);
 }
 
 select.error {
-    border-color: var(--color-lightpink)!important;
+    border-color: var(--icolor-lightpink)!important;
 }
 
 button {
@@ -216,7 +216,7 @@ button.switch-pwd-type:focus {
 }
 
 button.switch-pwd-type > i {
-    color: var(--color-black)!important;
+    color: var(--icolor-black)!important;
 }
 
 div.clearboth {
@@ -252,12 +252,12 @@ body.iweb > div.iweb-viewer {
     height: auto;
     padding: 0px;
     margin: 0px;
-    box-shadow: 0px -10px 10px var(--color-lightgray);
+    box-shadow: 0px -10px 10px var(--icolor-lightgray);
 }
 
 div.iweb-processing {
     position: fixed;
-    background-color: var(--color-white);
+    background-color: var(--icolor-white);
     top: 0px;
     left: 0px;
     width: 100%;
@@ -281,7 +281,7 @@ div.iweb-processing > div.loading > svg {
 }
 
 div.iweb-processing > div.loading > svg > circle {
-    stroke: var(--color-primary);
+    stroke: var(--icolor-main);
 }
 
 div.iweb-tips-message {
@@ -348,7 +348,7 @@ div.iweb-editor img.right {
 
 div.iweb-editor hr {
     border: 0px;
-    border-top: 1px solid var(--color-lightgray);
+    border-top: 1px solid var(--icolor-lightgray);
 }
 
 div.iweb-editor:before,
@@ -389,7 +389,7 @@ div.iweb-input-autocomplete small.tips,
 div.iweb-input small.tips {
     position: relative;
     display: block;
-    color: var(--color-red);
+    color: var(--icolor-red);
     padding-top: 4px;
 }
 
@@ -401,7 +401,7 @@ div.iweb-input.error input[type="tel"],
 div.iweb-input.error input[type="email"],
 div.iweb-input.error input[type="number"],
 div.iweb-input.error textarea {
-    border-color: var(--color-lightpink)!important;
+    border-color: var(--icolor-lightpink)!important;
 }
 
 div.iweb-select {
@@ -412,7 +412,7 @@ div.iweb-select {
 div.iweb-select small.tips {
     position: relative;
     display: block;
-    color: var(--color-red);
+    color: var(--icolor-red);
     padding-top: 4px;
 }
 
@@ -426,7 +426,7 @@ div.iweb-select > div.virtual:before {
     right: 13px;
     padding: 3px;
     margin-top: -6px;
-    border-color: var(--color-black);
+    border-color: var(--icolor-black);
     border-style: solid;
     border-width: 0px 2px 2px 0px;
     -webkit-transform: rotate(45deg);
@@ -452,7 +452,7 @@ div.iweb-select * {
 
 div.iweb-select > div.real {
     position: relative;
-    background: var(--color-white);
+    background: var(--icolor-white);
     display: block;
 }
 
@@ -466,7 +466,7 @@ div.iweb-select > div.real:before {
     right: 13px;
     padding: 3px;
     margin-top: -6px;
-    border-color: var(--color-black);
+    border-color: var(--icolor-black);
     border-style: solid;
     border-width: 0px 2px 2px 0px;
     -webkit-transform: rotate(45deg);
@@ -491,7 +491,7 @@ div.iweb-select > div.real > select {
     padding-left: 12px;
     padding-right: 28px;
     padding-bottom: 6px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 4px;
     text-overflow: ellipsis;
     -webkit-appearance: none;
@@ -501,7 +501,7 @@ div.iweb-select > div.real > select {
 }
 
 div.iweb-select.error > div.real > select {
-    border-color: var(--color-lightpink)!important;
+    border-color: var(--icolor-lightpink)!important;
 }
 
 div.iweb-select > div.real > select::-ms-expand {
@@ -510,7 +510,7 @@ div.iweb-select > div.real > select::-ms-expand {
 
 div.iweb-select > div.virtual {
     position: relative;
-    background-color: var(--color-white);
+    background-color: var(--icolor-white);
 }
 
 div.iweb-select > div.virtual > a.result {
@@ -524,7 +524,7 @@ div.iweb-select > div.virtual > a.result {
     padding-left: 12px;
     padding-right: 36px;
     padding-bottom: 6px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 4px;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -532,19 +532,19 @@ div.iweb-select > div.virtual > a.result {
 }
 
 div.iweb-select.error > div.virtual > a.result {
-    border-color: var(--color-lightpink)!important;
+    border-color: var(--icolor-lightpink)!important;
 }
 
 div.iweb-select > div.virtual > div.options {
     position: absolute;
-    background-color: var(--color-white);
+    background-color: var(--icolor-white);
     display: none;
     list-style: none;
     top: 100%;
     left: 0px;
     right: 0px;
     margin-top: 2px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 4px;
     overflow: hidden;
     z-index: 1;
@@ -608,13 +608,13 @@ div.iweb-select-multiple > div.virtual > div.options ul > li.node-parent > a {
 
 div.iweb-select-multiple > div.virtual > div.options ul > li > a:before {
     position: absolute;
-    background-color: var(--color-white);
+    background-color: var(--icolor-white);
     content: '';
     top: 50%;
     left: 10px;
     width: 18px;
     height: 18px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 4px;
     margin-top: -9px;
 }
@@ -627,20 +627,20 @@ div.iweb-select-multiple > div.virtual > div.options ul > li.node-parent > a:bef
     width: 15px;
     height: 0px;
     left: 12px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     margin-top: -1px;
 }
 
 div.iweb-select > div.virtual > div.options ul > li > a:hover {
-    background: var(--color-primary);
-    color: var(--color-white);
+    background: var(--icolor-main);
+    color: var(--icolor-white);
 }
 
 div.iweb-select-multiple > div.virtual > div.options ul > li.node-selected > a:after {
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
     content: "✔";
-    color: var(--color-primary);
+    color: var(--icolor-main);
     font-size: 16px;
     font-weight: bold;
     height: 18px;
@@ -681,7 +681,7 @@ div.iweb-checkbox * {
 
 div.iweb-checkbox:before {
     position: absolute;
-    background-color: var(--color-white);
+    background-color: var(--icolor-white);
     display: inline-block;
     content: '';
     width: 20px;
@@ -689,20 +689,20 @@ div.iweb-checkbox:before {
     top: 50%;
     left: 0px;
     margin-top: -10px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 4px;
     vertical-align: middle;
 }
 
 div.iweb-checkbox.error:before {
-    border-color: var(--color-lightpink) !important;
+    border-color: var(--icolor-lightpink) !important;
 }
 
 div.iweb-checkbox.checked:after {
     position: absolute;
     display: block;
     content: "✔";
-    color: var(--color-primary);
+    color: var(--icolor-main);
     font-family: Arial, Helvetica, sans-serif;
     font-size: 18px;
     font-weight: bold;
@@ -757,7 +757,7 @@ div.iweb-radio * {
 
 div.iweb-radio:before {
     position: absolute;
-    background-color: var(--color-white);
+    background-color: var(--icolor-white);
     display: inline-block;
     content: '';
     width: 20px;
@@ -765,18 +765,18 @@ div.iweb-radio:before {
     top: 50%;
     left: 0px;
     margin-top: -10px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 10px;
     vertical-align: middle;
 }
 
 div.iweb-radio.error:before {
-    border-color: var(--color-lightpink) !important;
+    border-color: var(--icolor-lightpink) !important;
 }
 
 div.iweb-radio.checked:after {
 position: absolute;
-    background: var(--color-primary);
+    background: var(--icolor-main);
     display: block;
     content: "";
     width: 12px;
@@ -820,7 +820,7 @@ div.iweb-checkbox-set small.tips,
 div.iweb-radio-set small.tips {
     position: relative;
     display: block;
-    color: var(--color-red);
+    color: var(--icolor-red);
     padding-top: 4px;
 }
 
@@ -834,12 +834,12 @@ div.iweb-input-autocomplete input[type="text"] {
 
 div.iweb-input-autocomplete ul {
     position: absolute;
-    background: var(--color-white);
+    background: var(--icolor-white);
     top: 100%;
     left: 0px;
     right: 0px;
     margin-top: 2px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 4px;
     z-index: 1;
 }
@@ -851,7 +851,7 @@ div.iweb-input-autocomplete.top ul {
 
 div.iweb-input-autocomplete ul > li {
     display: block;
-    border-top: 1px dotted var(--color-lightgray);
+    border-top: 1px dotted var(--icolor-lightgray);
 }
 
 div.iweb-input-autocomplete ul > li > a {
@@ -860,7 +860,7 @@ div.iweb-input-autocomplete ul > li > a {
 }
 
 div.iweb-input-autocomplete ul > li > a:hover {
-    color: var(--color-primary);
+    color: var(--icolor-main);
 }
 
 div.iweb-input-autocomplete a.fill-reset {
@@ -881,7 +881,7 @@ div.iweb-alert-dialog {
     right: 0px;
     bottom: 0px;
     overflow: hidden;
-    z-index: 10;
+    z-index: 100;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -907,13 +907,13 @@ div.iweb-alert-dialog > div:before {
 
 div.iweb-alert-dialog > div > div.content {
     position: relative;
-    background-color: var(--color-white);
+    background-color: var(--icolor-white);
     display: inline-block;
     width: 100%;
     max-width: 360px;
     text-align: unset;
     border-radius: 4px;
-    border-top: 4px solid var(--color-primary);
+    border-top: 4px solid var(--icolor-main);
     vertical-align: middle;
 }
 
@@ -931,8 +931,8 @@ div.iweb-alert-dialog > div > div.content > button.btn-close {
     display: block;
     font-weight: bold;
     width: 100%;
-    color: var(--color-black);
-    border-top: 2px solid var(--color-lightgray);
+    color: var(--icolor-black);
+    border-top: 2px solid var(--icolor-lightgray);
 }
 
 div.iweb-alert-dialog > div > div.content > button.btn-yes {
@@ -941,9 +941,9 @@ div.iweb-alert-dialog > div > div.content > button.btn-yes {
     display: inline-block;
     font-weight: bold;
     width: 50%;
-    color: var(--color-black);
-    border-top: 2px solid var(--color-lightgray);
-    border-right: 2px solid var(--color-lightgray);
+    color: var(--icolor-black);
+    border-top: 2px solid var(--icolor-lightgray);
+    border-right: 2px solid var(--icolor-lightgray);
     border-radius: 0px;
 }
 
@@ -953,8 +953,8 @@ div.iweb-alert-dialog > div > div.content > button.btn-no {
     display: inline-block;
     font-weight: bold;
     width: 50%;
-    color: var(--color-black);
-    border-top: 2px solid var(--color-lightgray);
+    color: var(--icolor-black);
+    border-top: 2px solid var(--icolor-lightgray);
     border-radius: 0px;
 }
 
@@ -972,7 +972,7 @@ div.iweb-info-dialog {
     right: 0px;
     bottom: 0px;
     overflow: hidden;
-    z-index: 10;
+    z-index: 100;
     -webkit-overflow-scrolling: touch;
 }
 
@@ -1008,7 +1008,7 @@ div.iweb-info-dialog.min > div > div.content {
 
 div.iweb-info-dialog > div > div.content > a.btn-close {
     position: absolute;
-    background-color: var(--color-white);
+    background-color: var(--icolor-white);
     display: inline-block;
     width: 30px;
     height: 30px;
@@ -1019,14 +1019,14 @@ div.iweb-info-dialog > div > div.content > a.btn-close {
     border-radius: 50%;
     line-height: 30px;
     text-align: center;
-    color: var(--color-black);
+    color: var(--icolor-black);
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
 div.iweb-info-dialog > div > div.content > a.btn-close:before {
     position: absolute;
-    background: var(--color-black);
+    background: var(--icolor-black);
     content: '';
     width: 16px;
     height: 2px;
@@ -1038,7 +1038,7 @@ div.iweb-info-dialog > div > div.content > a.btn-close:before {
 
 div.iweb-info-dialog > div > div.content > a.btn-close:after {
     position: absolute;
-    background: var(--color-black);
+    background: var(--icolor-black);
     content: '';
     width: 16px;
     height: 2px;
@@ -1050,7 +1050,7 @@ div.iweb-info-dialog > div > div.content > a.btn-close:after {
 
 div.iweb-info-dialog > div > div.content > div {
     position: relative;
-    background-color: var(--color-white);
+    background-color: var(--icolor-white);
     min-height: 360px;
     border-radius: 4px;
     padding: 20px;
@@ -1096,13 +1096,13 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.action {
     text-align: right;
     padding-bottom: 10px;
     margin-bottom: 10px;
-    border-bottom: 1px solid var(--color-lightgray);
+    border-bottom: 1px solid var(--icolor-lightgray);
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.action > button {
     display: inline-block;
-    background: var(--color-primary);
-    color: var(--color-white);
+    background: var(--icolor-green);
+    color: var(--icolor-white);
     width: 32px;
     height: 32px;
     padding: 6px;
@@ -1111,12 +1111,12 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.action > button {
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.action > button.close {
-    background: var(--color-red);
+    background: var(--icolor-red);
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.action > button > i {
     display: inline-block;
-    color: var(--color-white);
+    color: var(--icolor-white);
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list {
@@ -1129,7 +1129,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item {
     display: block;
     padding: 8px;
     margin-top: 10px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 4px;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
 }
@@ -1149,7 +1149,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > 
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > button.start > i {
-    color: var(--color-primary);
+    color: var(--icolor-green);
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > button.remove {
@@ -1163,15 +1163,15 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > 
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > button.remove > i {
-    color: var(--color-red);
+    color: var(--icolor-red);
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > div.photo {
     display: inline-block;
-    background: var(--color-white);
+    background: var(--icolor-white);
     width: 70px;
     height: 70px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 4px;
     vertical-align: middle;
     text-align: center;
@@ -1215,7 +1215,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > 
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > div.info > div.tips > small {
-    color: var(--color-red);
+    color: var(--icolor-red);
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > div.info > div.progress-bar {
@@ -1224,14 +1224,14 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > 
     width: 100%;
     height: 8px;
     margin-top: 4px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 4px;
     overflow: hidden;
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > div.info > div.progress-bar > div.percent {
     position: absolute;
-    background: var(--color-primary);
+    background: var(--icolor-main);
     top: 0px;
     left: 0px;
     width: 0px;
@@ -1242,7 +1242,7 @@ div.iweb-files-dropzone {
     position: relative;
     width: 100%;
     min-height: 180px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 4px;
 }
 
@@ -1269,7 +1269,7 @@ div.iweb-files-dropzone input[type="file"] {
 
 div.iweb-files-uploader {
     position: relative;
-    background: var(--color-white);
+    background: var(--icolor-white);
     padding: 10px;
 }
 
@@ -1288,13 +1288,13 @@ div.iweb-files-uploader > div.action {
     text-align: right;
     padding-bottom: 10px;
     margin-bottom: 10px;
-    border-bottom: 1px solid var(--color-lightgray);
+    border-bottom: 1px solid var(--icolor-lightgray);
 }
 
 div.iweb-files-uploader > div.action > button {
     display: inline-block;
-    background: var(--color-primary);
-    color: var(--color-white);
+    background: var(--icolor-green);
+    color: var(--icolor-white);
     width: 32px;
     height: 32px;
     padding: 6px;
@@ -1303,12 +1303,12 @@ div.iweb-files-uploader > div.action > button {
 }
 
 div.iweb-files-uploader > div.action > button.close {
-    background: var(--color-red);
+    background: var(--icolor-red);
 }
 
 div.iweb-files-uploader > div.action > button > i {
     display: inline-block;
-    color: var(--color-white);
+    color: var(--icolor-white);
 }
 
 div.iweb-files-uploader > div.list {
@@ -1321,7 +1321,7 @@ div.iweb-files-uploader > div.list > div.item {
     display: block;
     padding: 8px;
     margin-top: 10px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 4px;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
 }
@@ -1341,7 +1341,7 @@ div.iweb-files-uploader > div.list > div.item > button.start {
 }
 
 div.iweb-files-uploader > div.list > div.item > button.start > i {
-    color: var(--color-primary);
+    color: var(--icolor-green);
 }
 
 div.iweb-files-uploader > div.list > div.item > button.remove {
@@ -1355,15 +1355,15 @@ div.iweb-files-uploader > div.list > div.item > button.remove {
 }
 
 div.iweb-files-uploader > div.list > div.item > button.remove > i {
-    color: var(--color-red);
+    color: var(--icolor-red);
 }
 
 div.iweb-files-uploader > div.list > div.item > div.photo {
     display: inline-block;
-    background: var(--color-white);
+    background: var(--icolor-white);
     width: 70px;
     height: 70px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 4px;
     vertical-align: middle;
     text-align: center;
@@ -1407,7 +1407,7 @@ div.iweb-files-uploader > div.list > div.item > div.info > div.title {
 }
 
 div.iweb-files-uploader > div.list > div.item > div.info > div.tips > small {
-    color: var(--color-red);
+    color: var(--icolor-red);
 }
 
 div.iweb-files-uploader > div.list > div.item > div.info > div.progress-bar {
@@ -1416,14 +1416,14 @@ div.iweb-files-uploader > div.list > div.item > div.info > div.progress-bar {
     width: 100%;
     height: 8px;
     margin-top: 4px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     border-radius: 4px;
     overflow: hidden;
 }
 
 div.iweb-files-uploader > div.list > div.item > div.info > div.progress-bar > div.percent {
     position: absolute;
-    background: var(--color-primary);
+    background: var(--icolor-main);
     top: 0px;
     left: 0px;
     width: 0px;
@@ -1451,17 +1451,17 @@ div.iweb-pagination > ul > li > a {
     position: relative;
     display: block;
     text-align: center;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     padding: 4px;
-    color: var(--color-black);
+    color: var(--icolor-black);
     min-width: 28px;
     height: 28px;
     border-radius: 4px;
 }
 
 div.iweb-pagination > ul > li > a.current {
-    background: var(--color-primary);
-    color: var(--color-white);
+    background: var(--icolor-main);
+    color: var(--icolor-white);
 }
 
 div.iweb-pagination > ul > li > a > span {
@@ -1471,7 +1471,7 @@ div.iweb-pagination > ul > li > a > span {
 
 div.iweb-pagination > ul > li > a > i {
     position: absolute;
-    border-color: var(--color-black);
+    border-color: var(--icolor-black);
     border-style: solid;
     border-width: 0px 1px 1px 0px;
     display: inline-block;
@@ -1526,7 +1526,7 @@ div.iweb-pagination > ul > li > a:hover {
 div.iweb-pagination input[type="text"] {
     width: 46px;
     height: 28px;
-    border: 2px solid var(--color-lightgray);
+    border: 2px solid var(--icolor-lightgray);
     padding: 3px 6px;
     text-align: center;
 }

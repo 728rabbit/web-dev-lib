@@ -1,4 +1,4 @@
-class iweb {
+class iwebApp {
 	constructor() {
 		this.current_language = 'en';
 		this.language = {
@@ -57,7 +57,7 @@ class iweb {
 	}
 
 	init() {
-		const iwebObject = this;
+		const this_object = this;
 
 		// Helper function to safely call if the function is defined
         const safeCallFunction = (func, value) => {
@@ -70,50 +70,50 @@ class iweb {
 		document.addEventListener('DOMContentLoaded', function() {
             // Set current language
             const htmlLang = document.documentElement.lang?.toLowerCase().replace('-', '_');
-            if (iwebObject.isValue(htmlLang) && iwebObject.isValue(iwebObject.language[htmlLang])) {
-                iwebObject.current_language = htmlLang;
+            if (this_object.isValue(htmlLang) && this_object.isValue(this_object.language[htmlLang])) {
+                this_object.current_language = htmlLang;
             }
 
             // Set CSRF token
             const csrfTokenContent = document.querySelector('meta[name="csrf-token"]')?.content;
-            if (iwebObject.isValue(csrfTokenContent)) {
+            if (this_object.isValue(csrfTokenContent)) {
                 const hostname = (location.hostname || '/');
-                iwebObject.csrf_token = iwebObject.imd5.hash(iwebObject.imd5.hash('iweb@' + hostname) + '@' + csrfTokenContent);
+                this_object.csrf_token = this_object.imd5.hash(this_object.imd5.hash('iweb@' + hostname) + '@' + csrfTokenContent);
             }
 
             // Init body, component and form
-            iwebObject.initBody();
-            iwebObject.initComponent();
-            iwebObject.initForm();
+            this_object.initBody();
+            this_object.initComponent();
+            this_object.initForm();
             
             // Get iweb-viewer width
-            iwebObject.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
-			iwebObject.responsive();
+            this_object.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
+			this_object.responsive();
 
-			safeCallFunction('iweb_common_layout', iwebObject.win_width);
-			safeCallFunction('iweb_layout', iwebObject.win_width);
-			safeCallFunction('iweb_extra_layout', iwebObject.win_width);
+			safeCallFunction('iweb_common_layout', this_object.win_width);
+			safeCallFunction('iweb_layout', this_object.win_width);
+			safeCallFunction('iweb_extra_layout', this_object.win_width);
 			safeCallFunction('iweb_common_func');
 			safeCallFunction('iweb_func');
 			safeCallFunction('iweb_extra_func');
 		});
 
 		window.onload = function() {
-			safeCallFunction('iweb_common_layout_done', iwebObject.win_width);
-			safeCallFunction('iweb_layout_done', iwebObject.win_width);
-			safeCallFunction('iweb_extra_layout_done', iwebObject.win_width);
+			safeCallFunction('iweb_common_layout_done', this_object.win_width);
+			safeCallFunction('iweb_layout_done', this_object.win_width);
+			safeCallFunction('iweb_extra_layout_done', this_object.win_width);
 			safeCallFunction('iweb_common_func_done');
 			safeCallFunction('iweb_func_done');
 			safeCallFunction('iweb_extra_func_done');
 		};
 
 		window.addEventListener('resize', function() {
-			if (iwebObject.win_width !== parseInt(document.querySelector('div.iweb-viewer').offsetWidth)) {
-				iwebObject.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
-				iwebObject.responsive();
-				safeCallFunction('iweb_common_layout', iwebObject.win_width);
-				safeCallFunction('iweb_layout', iwebObject.win_width);
-				safeCallFunction('iweb_extra_layout', iwebObject.win_width);
+			if (this_object.win_width !== parseInt(document.querySelector('div.iweb-viewer').offsetWidth)) {
+				this_object.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
+				this_object.responsive();
+				safeCallFunction('iweb_common_layout', this_object.win_width);
+				safeCallFunction('iweb_layout', this_object.win_width);
+				safeCallFunction('iweb_extra_layout', this_object.win_width);
 			}
 		});
 
@@ -125,11 +125,11 @@ class iweb {
 	}
 
 	initBody() {
-		const iwebObject = this;
+		const this_object = this;
 
 		// Add class to body based on device type
 		document.body.classList.add('iweb');
-		if (iwebObject.detectDevice()) {
+		if (this_object.detectDevice()) {
 			document.body.classList.add('iweb-mobile');
 		}
 
@@ -147,13 +147,13 @@ class iweb {
 		}
 
 		// Bind event for global click
-		document.body.addEventListener('click', iwebObject.deBounce(function(e) {
+		document.body.addEventListener('click', this_object.deBounce(function(e) {
 			const target = e.target;
 
 			// Handle anchor click
 			if ((target.tagName.toLowerCase()) === 'a') {
 				const href = target.getAttribute('href');
-				if (!iwebObject.isValue(href) || iwebObject.isMatch(href, '#')) {
+				if (!this_object.isValue(href) || this_object.isMatch(href, '#')) {
 					e.preventDefault();
 					if (target.closest('div.iweb-tips-message')) {
 						target.closest('div.iweb-tips-message').innerHTML = '';
@@ -180,27 +180,27 @@ class iweb {
 
 		// Init default font size
 		const fontSizeClasses = ['small-font', 'middle-font', 'large-font'];
-		const defaultFontSize = (iwebObject.getCookie('iweb_font_size'));
+		const defaultFontSize = (this_object.getCookie('iweb_font_size'));
 		const fontButtons = document.querySelectorAll('a.font-switch');
-		if (iwebObject.isValue(defaultFontSize)) {
+		if (this_object.isValue(defaultFontSize)) {
 			document.documentElement.classList.remove(...fontSizeClasses);
 			document.documentElement.classList.add(defaultFontSize + '-font');
 			fontButtons.forEach(function(btn) {
-				btn.classList.toggle('current', iwebObject.isMatch(btn.getAttribute('data-size'), defaultFontSize));
+				btn.classList.toggle('current', this_object.isMatch(btn.getAttribute('data-size'), defaultFontSize));
 			});
 		}
 
 		// Bind event for change font size
 		fontButtons.forEach(function(btn) {
-			btn.addEventListener('click', iwebObject.deBounce(function(e) {
+			btn.addEventListener('click', this_object.deBounce(function(e) {
                 const target = e.target;
                 const newFontSize = target.getAttribute('data-size');
-                if (iwebObject.isValue(newFontSize)) {
-                    iwebObject.setCookie('iweb_font_size', newFontSize);
+                if (this_object.isValue(newFontSize)) {
+                    this_object.setCookie('iweb_font_size', newFontSize);
                     document.documentElement.classList.remove(...fontSizeClasses);
                     document.documentElement.classList.add(newFontSize + '-font');
                     fontButtons.forEach(function(e) {
-                        e.classList.toggle('current', iwebObject.isMatch(e.getAttribute('data-size'), newFontSize));
+                        e.classList.toggle('current', this_object.isMatch(e.getAttribute('data-size'), newFontSize));
                     });
                 }
 			}));
@@ -208,19 +208,19 @@ class iweb {
 	}
 
 	initComponent() {
-		const iwebObject = this;
-		iwebObject.inputBox();
-		iwebObject.selectBox();
-		iwebObject.checkBox();
-		iwebObject.radioBox();
-		iwebObject.iframe();
+		const this_object = this;
+		this_object.inputBox();
+		this_object.selectBox();
+		this_object.checkBox();
+		this_object.radioBox();
+		this_object.iframe();
 	}
 
 	inputBox(inputObject, callBack) {
-		const iwebObject = this;
+		const this_object = this;
 
 		// Default to selecting all relevant elements if none provided
-		if (!iwebObject.isValue(inputObject)) {
+		if (!this_object.isValue(inputObject)) {
             const default_input = 
             [
                 'input[type="text"]',
@@ -241,26 +241,26 @@ class iweb {
 				if (!input.closest('div.iweb-input')) {
 					// Create div and move the input into it
                     const inputType = input.type;
-					const isAutocomplete = (iwebObject.isMatch(input.getAttribute('data-autocomplete'), 1) || iwebObject.isMatch(input.getAttribute('data-autocomplete'), true));
+					const isAutocomplete = (this_object.isMatch(input.getAttribute('data-autocomplete'), 1) || this_object.isMatch(input.getAttribute('data-autocomplete'), true));
 					const wrapperDiv = document.createElement('div');
 					wrapperDiv.classList.add('iweb-input');
-					wrapperDiv.classList.add((isAutocomplete ? 'iweb-input-autocomplete' : 'iweb-input-' + (iwebObject.isValue(input.type) ? input.type : 'text')));
+					wrapperDiv.classList.add((isAutocomplete ? 'iweb-input-autocomplete' : 'iweb-input-' + (this_object.isValue(input.type) ? input.type : 'text')));
 					input.parentNode.insertBefore(wrapperDiv, input);
 					wrapperDiv.appendChild(input);
 
                     // Add additional elements to the input
 					if (!isAutocomplete) {
-						if (iwebObject.isMatch(inputType, 'password')) {
+						if (this_object.isMatch(inputType, 'password')) {
                             // Create password switch type button
 							const BtnSwitchType = document.createElement('button');
 							BtnSwitchType.type = 'button';
 							BtnSwitchType.classList.add('switch-pwd-type');
-                            BtnSwitchType.addEventListener('click', iwebObject.deBounce(function(e) {
+                            BtnSwitchType.addEventListener('click', this_object.deBounce(function(e) {
                                 const target = e.target;
                                 const InputPwd = target.closest('div.iweb-input').querySelector('input');
                                 const ShowIconPwd = target.closest('div.iweb-input').querySelector('i.show');
                                 const HideIconPwd = target.closest('div.iweb-input').querySelector('i.hide');
-                                if (iwebObject.isMatch(input.type, 'password')) {
+                                if (this_object.isMatch(input.type, 'password')) {
                                     InputPwd.type = 'text';
                                     ShowIconPwd.style.display = 'block';
                                     HideIconPwd.style.display = 'none';
@@ -283,11 +283,11 @@ class iweb {
 							BtnSwitchType.appendChild(eyeIcon);
 							wrapperDiv.appendChild(BtnSwitchType);
 						}
-						else if (iwebObject.isMatch(inputType, 'color')) {
+						else if (this_object.isMatch(inputType, 'color')) {
                             // Set color input
 							input.style.position = 'relative';
 							input.style.zIndex = 1;
-                            input.addEventListener('input', iwebObject.deBounce(function(e) {
+                            input.addEventListener('input', this_object.deBounce(function(e) {
                                 const target = e.target;
                                 const inputColorCode = target.closest('div.iweb-input-color').querySelector('input[type="text"]');
                                 if (/^#[0-9A-F]{6}$/i.test(target.value)) {
@@ -306,7 +306,7 @@ class iweb {
 							inputColorCode.style.right = '0px';
 							inputColorCode.style.bottom = '0px';
 							inputColorCode.style.paddingLeft = '42px';
-							inputColorCode.addEventListener('input', iwebObject.deBounce(function(e) {
+							inputColorCode.addEventListener('input', this_object.deBounce(function(e) {
                                 const target = e.target;
 								const input = target.closest('div.iweb-input-color').querySelector('input[type="color"]');
                                 if (!target.value.startsWith('#')) {
@@ -334,7 +334,7 @@ class iweb {
 						fillText.style.display = 'block';
 						fillText.style.width = '100%';
 						fillText.autocomplete = 'off';
-						fillText.addEventListener('input', iwebObject.deBounce(function(e) {
+						fillText.addEventListener('input', this_object.deBounce(function(e) {
                             const target = e.target;
                             
                             // Remove error, tips & options list
@@ -346,7 +346,7 @@ class iweb {
                             let extraValues = {};
                             for (let i = 1; i <= 5; i++) {
                                 let param = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id').getAttribute('data-param' + i);
-                                if (iwebObject.isValue(param)) {
+                                if (this_object.isValue(param)) {
                                     let [key, value] = param.split(':');
                                     extraValues[key] = value;
                                 }
@@ -363,9 +363,9 @@ class iweb {
                             };
 
                             // Search result handling
-                            if (iwebObject.isValue(keywords)) {
-                                iwebObject.ajaxPost(postData, function(responseData) {
-                                    if (iwebObject.isValue(responseData)) {
+                            if (this_object.isValue(keywords)) {
+                                this_object.ajaxPost(postData, function(responseData) {
+                                    if (this_object.isValue(responseData)) {
                                         responseData = Object.values(responseData);
                                         
                                         // Create options list
@@ -376,7 +376,7 @@ class iweb {
                                             const a = document.createElement('a');
                                             a.setAttribute('data-id', value.id);
                                             a.textContent = value.name;
-                                            a.addEventListener('click', iwebObject.deBounce(function(e1) {
+                                            a.addEventListener('click', this_object.deBounce(function(e1) {
                                                 const target = e1.target;
                                                 target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset')?.remove();
                                                 
@@ -390,7 +390,7 @@ class iweb {
                                                 // Create reset button
                                                 const fillReset = document.createElement('a');
                                                 fillReset.classList.add('fill-reset');
-                                                fillReset.addEventListener('click', iwebObject.deBounce(function(e2) {
+                                                fillReset.addEventListener('click', this_object.deBounce(function(e2) {
                                                     const target = e2.target;
                                                     
                                                     // Reset id input & search input
@@ -446,7 +446,7 @@ class iweb {
 						// Create reset button
 						const defaultText = input.getAttribute('data-default');
 						input.removeAttribute('data-default');
-						if (iwebObject.isValue(defaultText)) {
+						if (this_object.isValue(defaultText)) {
 							fillText.setAttribute('data-value', input.value);
 							fillText.setAttribute('data-default', defaultText);
 							fillText.value = defaultText;
@@ -454,7 +454,7 @@ class iweb {
 
 							const fillReset = document.createElement('a');
 							fillReset.classList.add('fill-reset');
-                            fillReset.addEventListener('click', iwebObject.deBounce(function(e) {
+                            fillReset.addEventListener('click', this_object.deBounce(function(e) {
                                 const target = e.target;
                                 
                                 // Reset id input & search input
@@ -485,13 +485,13 @@ class iweb {
 					}
                     
 					// Set input styles
-					input.style.display = (iwebObject.isMatch(inputType, 'color') ? 'inline-block' : 'block');
-					input.style.width = (iwebObject.isMatch(inputType, 'color') ? '36px' : '100%');
+					input.style.display = (this_object.isMatch(inputType, 'color') ? 'inline-block' : 'block');
+					input.style.width = (this_object.isMatch(inputType, 'color') ? '36px' : '100%');
 					input.autocomplete = 'off';
 
 					// Bind event for others input
-                    if(!iwebObject.isMatch(inputType, 'color')) {
-                        input.addEventListener('input', iwebObject.deBounce(function(e) {
+                    if(!this_object.isMatch(inputType, 'color')) {
+                        input.addEventListener('input', this_object.deBounce(function(e) {
                             const target = e.target;
                             target.closest('div.iweb-input').classList.remove('error');
                             target.closest('div.iweb-input').querySelector('small.tips')?.remove();
@@ -502,10 +502,10 @@ class iweb {
 		}
 
 		// Init date picker
-		if (!iwebObject.isValue(iwebObject.idatepicker)) {
-			iwebObject.idatepicker = new iDatePicker(iwebObject.current_language);
+		if (!this_object.isValue(this_object.idatepicker)) {
+			this_object.idatepicker = new iDatePicker(this_object.current_language);
 		}
-		iwebObject.idatepicker.render('input[type="date"]');
+		this_object.idatepicker.render('input[type="date"]');
 
 		// Callback if need
 		if ((typeof callBack) === 'function') {
@@ -514,10 +514,10 @@ class iweb {
 	}
 
 	selectBox(select_object, callBack) {
-		const iwebObject = this;
+		const this_object = this;
 
 		// Default to selecting all relevant elements if none provided
-		if (!iwebObject.isValue(select_object)) {
+		if (!this_object.isValue(select_object)) {
 			select_object = document.querySelectorAll('select');
 		}
 
@@ -525,10 +525,10 @@ class iweb {
 			select_object.forEach(function(select, select_index) {
                 if (!select.closest('div.iweb-select')) {
                     // Get config
-                    const isMultiple = ((iwebObject.isMatch(select.multiple, 1) || iwebObject.isMatch(select.multiple, true)) ? true : false);
-                    const isVirtual = ((iwebObject.isMatch(select.getAttribute('data-virtual'), 1) || iwebObject.isMatch(select.getAttribute('data-virtual'), true)) ? true : false);
-                    const isFilter = ((iwebObject.isMatch(select.getAttribute('data-filter'), 1) || iwebObject.isMatch(select.getAttribute('data-filter'), true)) ? true : false);
-                    const isPositionTop = ((iwebObject.isMatch(select.getAttribute('data-top'), 1) || iwebObject.isMatch(select.getAttribute('data-top'), true)) ? true : false);
+                    const isMultiple = ((this_object.isMatch(select.multiple, 1) || this_object.isMatch(select.multiple, true)) ? true : false);
+                    const isVirtual = ((this_object.isMatch(select.getAttribute('data-virtual'), 1) || this_object.isMatch(select.getAttribute('data-virtual'), true)) ? true : false);
+                    const isFilter = ((this_object.isMatch(select.getAttribute('data-filter'), 1) || this_object.isMatch(select.getAttribute('data-filter'), true)) ? true : false);
+                    const isPositionTop = ((this_object.isMatch(select.getAttribute('data-top'), 1) || this_object.isMatch(select.getAttribute('data-top'), true)) ? true : false);
 
 					if (isVirtual) {
 						// Create div & move the select into div
@@ -555,7 +555,7 @@ class iweb {
 						const resultLink = document.createElement('a');
 						resultLink.classList.add('result');
 						resultLink.textContent = virtualSelect;
-						resultLink.addEventListener('click', iwebObject.deBounce(function(e) {
+						resultLink.addEventListener('click', this_object.deBounce(function(e) {
                             const target = e.target;
                             
                             const virtualOptions = target.closest('div.iweb-select').querySelector('div.virtual > div.options > ul');
@@ -568,7 +568,7 @@ class iweb {
                             document.querySelectorAll('div.iweb-select').forEach(function(otherSelector) {
                                 const otherOptions = otherSelector.querySelector('div.virtual > div.options > ul');
                                 if (otherOptions) {
-                                    if (!iwebObject.isMatch(otherOptions.getAttribute('data-index'), virtualOptions.getAttribute('data-index'))) {
+                                    if (!this_object.isMatch(otherOptions.getAttribute('data-index'), virtualOptions.getAttribute('data-index'))) {
                                         otherSelector.classList.remove('show');
                                     }
                                 }
@@ -595,10 +595,10 @@ class iweb {
 							filterInput.id = 'fkw_' + select_index;
 							filterInput.type = 'text';
 							filterInput.placeholder = placeholderText.trim();
-							filterInput.addEventListener('input', iwebObject.deBounce(function(e) {
+							filterInput.addEventListener('input', this_object.deBounce(function(e) {
                                 const target = e.target;
                                 const fkw = target.value;
-                                if (iwebObject.isValue(fkw)) {
+                                if (this_object.isValue(fkw)) {
                                     // Find all node elements
                                     target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li.node > a').forEach(function(anchor) {
                                         const textContent = anchor.textContent || anchor.innerText;
@@ -638,7 +638,7 @@ class iweb {
 
 									const childUl = document.createElement('ul');
 									Array.from(optionGroup.children).forEach(function(option) {
-										if (iwebObject.isValue(option.value)) {
+										if (this_object.isValue(option.value)) {
 											const childLi = document.createElement('li');
 											childLi.classList.add('node');
                                             if (option.selected) {
@@ -651,7 +651,7 @@ class iweb {
 											const childLink = document.createElement('a');
 											childLink.setAttribute('data-value', option.value);
 											childLink.textContent = option.textContent;
-											childLink.addEventListener('click', iwebObject.deBounce(function(e) {
+											childLink.addEventListener('click', this_object.deBounce(function(e) {
                                                 const target = e.target;
                                                 const isMultiple = target.closest('div.iweb-select').classList.contains('iweb-select-multiple');
                                                 const selectElement = target.closest('div.iweb-select').querySelector('div.real > select');
@@ -719,7 +719,7 @@ class iweb {
 										virtualSelect += (virtualSelect ? ', ' : '');
 										virtualSelect += optionGroup.textContent;
 									}
-                                    singleLink.addEventListener('click', iwebObject.deBounce(function(e) {
+                                    singleLink.addEventListener('click', this_object.deBounce(function(e) {
                                         const target = e.target;
                                         const isMultiple = target.closest('div.iweb-select').classList.contains('iweb-select-multiple');
                                         const selectElement = target.closest('div.iweb-select').querySelector('div.real > select');
@@ -775,8 +775,8 @@ class iweb {
 						}
 
 						// Set the default select text if nothing is selected
-						if (!iwebObject.isValue(virtualSelect)) {
-							virtualSelect = (iwebObject.isValue(select.getAttribute('data-default')) ? select.getAttribute('data-default') : iwebObject.language[iwebObject.current_language]['please_select']);
+						if (!this_object.isValue(virtualSelect)) {
+							virtualSelect = (this_object.isValue(select.getAttribute('data-default')) ? select.getAttribute('data-default') : this_object.language[this_object.current_language]['please_select']);
 						}
 						resultLink.textContent = virtualSelect;
 
@@ -803,13 +803,13 @@ class iweb {
                     select.removeAttribute('data-filter');
 
                     // Bind event for select focus/change
-                    select.addEventListener('focus', iwebObject.deBounce(function() {
+                    select.addEventListener('focus', this_object.deBounce(function() {
                         document.querySelectorAll('div.iweb-select').forEach(function(otherSelect) {
                             otherSelect.classList.remove('show');
                         });
                     }));
 
-                    select.addEventListener('change', iwebObject.deBounce(function(e) {
+                    select.addEventListener('change', this_object.deBounce(function(e) {
                         let selectedOptions = [];
                         let selectedOptionLabel = '';
                         const target = e.target;
@@ -837,10 +837,10 @@ class iweb {
                         if (target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li > a').length > 0) {
                             target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li > a').forEach(function(anchor) {
                                 const optionValue = anchor.getAttribute('data-value');
-                                if (iwebObject.isValue(optionValue)) {
-                                    if (!iwebObject.isMatch(selectedOptions.indexOf(optionValue), -1)) {
+                                if (this_object.isValue(optionValue)) {
+                                    if (!this_object.isMatch(selectedOptions.indexOf(optionValue), -1)) {
                                         anchor.parentElement.classList.add('node-selected');
-                                        if (iwebObject.isValue(selectedOptionLabel)) {
+                                        if (this_object.isValue(selectedOptionLabel)) {
                                             selectedOptionLabel += ', ';
                                         }
                                         selectedOptionLabel += anchor.textContent;
@@ -851,8 +851,8 @@ class iweb {
                             });
 
                             // Set the default option label if none selected
-                            if (!iwebObject.isValue(selectedOptionLabel)) {
-                                selectedOptionLabel = ((iwebObject.isValue(target.getAttribute('data-default'))) ? target.getAttribute('data-default') : iwebObject.language[iwebObject.current_language]['please_select']);
+                            if (!this_object.isValue(selectedOptionLabel)) {
+                                selectedOptionLabel = ((this_object.isValue(target.getAttribute('data-default'))) ? target.getAttribute('data-default') : this_object.language[this_object.current_language]['please_select']);
                             }
 
                             // Update the virtual result label
@@ -870,10 +870,10 @@ class iweb {
 	}
 
 	checkBox(checkbox_object, callBack) {
-		const iwebObject = this;
+		const this_object = this;
 
 		// Default to selecting all relevant elements if none provided
-		if (!iwebObject.isValue(checkbox_object)) {
+		if (!this_object.isValue(checkbox_object)) {
 			checkbox_object = document.querySelectorAll('input[type="checkbox"]');
 		}
 
@@ -898,7 +898,7 @@ class iweb {
 					}
 
 					// Bind event for checkbox change
-					checkbox.addEventListener('change', iwebObject.deBounce(function(e) {
+					checkbox.addEventListener('change', this_object.deBounce(function(e) {
                         const target = e.target;
                         const relatedObject = document.querySelectorAll('input[type="checkbox"][name="' + (target.name) + '"]');
                         relatedObject.forEach(function(related_checkbox) {
@@ -923,10 +923,10 @@ class iweb {
 	}
 
 	radioBox(raido_object, callBack) {
-		var iwebObject = this;
+		var this_object = this;
 
 		// Default to selecting all relevant elements if none provided
-		if (!iwebObject.isValue(raido_object)) {
+		if (!this_object.isValue(raido_object)) {
 			raido_object = document.querySelectorAll('input[type="radio"]');
 		}
 
@@ -951,12 +951,12 @@ class iweb {
 					}
 
 					// Bind event for radio change
-					raido.addEventListener('change', iwebObject.deBounce(function(e) {
+					raido.addEventListener('change', this_object.deBounce(function(e) {
 						const target = e.target;
                         const selectedValue = target.value;
                         const relatedObject = document.querySelectorAll('input[type="radio"][name="' + (target.name) + '"]');
                         relatedObject.forEach(function(related_radio) {
-                            if (iwebObject.isMatch(related_radio.value, selectedValue)) {
+                            if (this_object.isMatch(related_radio.value, selectedValue)) {
                                 related_radio.checked = true;
                                 related_radio.closest('div.iweb-radio').classList.add('checked');
                             } else {
@@ -980,9 +980,9 @@ class iweb {
 	}
 
 	iframe(element = 'div.iweb-editor', callBack) {
-		const iwebObject = this;
+		const this_object = this;
 
-		if (iwebObject.isValue(element)) {
+		if (this_object.isValue(element)) {
 			// Get all specified tags within the given element
 			['iframe', 'video', 'object', 'embed'].forEach(function(value) {
 				const elements = document.querySelectorAll(element + ' ' + value);
@@ -1009,7 +1009,7 @@ class iweb {
 	}
 
 	responsive() {
-		const iwebObject = this;
+		const this_object = this;
 		const responsiveElements = document.querySelectorAll('div.iweb-responsive');
 		if (responsiveElements.length > 0) {
 			responsiveElements.forEach(function(e) {
@@ -1018,7 +1018,7 @@ class iweb {
 				let defineRatioWidth = e.getAttribute('data-width');
 				let defineRatioHeight = e.getAttribute('data-height');
 
-				if (iwebObject.isValue(defineRatioWidth) && iwebObject.isValue(defineRatioHeight)) {
+				if (this_object.isValue(defineRatioWidth) && this_object.isValue(defineRatioHeight)) {
 					if (defineRatioHeight > 0 && defineRatioWidth > 0) {
 						newHeight = parseInt((currentWidth * defineRatioHeight) / defineRatioWidth);
 					}
@@ -1044,1005 +1044,10 @@ class iweb {
 			});
 		});
 	}
-
-	initForm(form_object) {
-		const iwebObject = this;
-
-		// Default to selecting all relevant elements if none provided
-		if (!iwebObject.isValue(form_object)) {
-			form_object = document.querySelectorAll('form[data-ajax="1"]');
-		}
-
-		if (form_object.length > 0) {
-			form_object.forEach(function(form) {
-				const showTips = ((!iwebObject.isMatch(form.getAttribute('data-showtips'), false)) && (!iwebObject.isMatch(form.getAttribute('data-showtips'), 0)));
-				form.removeAttribute('data-ajax');
-				form.removeAttribute('data-showtips');
-				form.method = 'post';
-				form.autocomplete = 'off';
-                
-                // Bind event for form submit
-				form.addEventListener('submit', iwebObject.deBounce(function(e) {
-                    // Remove error & tips
-                    const errorElements = form.querySelectorAll('.error');
-                    errorElements.forEach(function(e) {
-                        if (!e.closest('div.iweb-tips-message')) {
-                            e.classList.remove('error');
-                        }
-                    });
-
-                    const tipsElements = form.querySelectorAll('small.tips');
-                    tipsElements.forEach(function(tips) {
-                        tips.remove();
-                    });
-
-                    // Do checking before submit
-                    let can_submit = true;
-                    const requiredInputs = form.querySelectorAll('input[data-validation]:not(:disabled), select[data-validation]:not(:disabled), textarea[data-validation]:not(:disabled)');
-                    if (requiredInputs.length > 0) {
-                        requiredInputs.forEach(function(input) {
-                            const validationArray = (input.getAttribute('data-validation').toString().split('|'));
-                            if (iwebObject.isMatch(input.type, 'checkbox')) {
-                                if (validationArray.includes('required') && !input.closest('div.iweb-checkbox-set').querySelector('input[type="checkbox"]:checked')) {
-                                    if (showTips && !input.closest('div.iweb-checkbox-set').querySelector('small.tips')) {
-                                        const errorTips = document.createElement('small');
-                                        errorTips.classList.add('tips');
-                                        errorTips.textContent = iwebObject.language[iwebObject.current_language]['required_error'];
-                                        input.closest('div.iweb-checkbox-set').appendChild(errorTips);
-                                    }
-                                    input.closest('div.iweb-checkbox').classList.add('error');
-                                    can_submit = false;
-                                }
-                            } else if (iwebObject.isMatch(input.type, 'radio')) {
-                                if ((validationArray.includes('required')) && !input.closest('div.iweb-radio-set').querySelector('input[type="radio"]:checked')) {
-                                    if (showTips && !input.closest('div.iweb-radio-set').querySelector('small.tips')) {
-                                        const errorTips = document.createElement('small');
-                                        errorTips.classList.add('tips');
-                                        errorTips.textContent = iwebObject.language[iwebObject.current_language]['required_error'];
-                                        input.closest('div.iweb-radio-set').appendChild(errorTips);
-                                    }
-                                    input.closest('div.iweb-radio').classList.add('error');
-                                    can_submit = false;
-                                }
-                            } else if (iwebObject.isMatch(input.type, 'select-one') || iwebObject.isMatch(input.type, 'select-multiple')) {
-                                if ((validationArray.includes('required')) && !iwebObject.isValue(input.value)) {
-                                    if (showTips && !input.closest('div.iweb-select').querySelector('small.tips')) {
-                                        const errorTips = document.createElement('small');
-                                        errorTips.classList.add('tips');
-                                        errorTips.textContent = iwebObject.language[iwebObject.current_language]['required_error'];
-                                        input.closest('div.iweb-select').appendChild(errorTips);
-                                    }
-                                    input.closest('div.iweb-select').classList.add('error');
-                                    can_submit = false;
-                                }
-                            } else {
-                                if ((validationArray.includes('required')) && !iwebObject.isValue(input.value)) {
-                                    if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
-                                        const errorTips = document.createElement('small');
-                                        errorTips.classList.add('tips');
-                                        errorTips.textContent = iwebObject.language[iwebObject.current_language]['required_error'];
-                                        input.closest('div.iweb-input').appendChild(errorTips);
-                                    }
-                                    input.closest('div.iweb-input').classList.add('error');
-                                    can_submit = false;
-                                } else {
-                                    if ((validationArray.includes('number')) && !iwebObject.isNumber(input.value)) {
-                                        if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
-                                            const errorTips = document.createElement('small');
-                                            errorTips.classList.add('tips');
-                                            errorTips.textContent = iwebObject.language[iwebObject.current_language]['number_error'];
-                                            input.closest('div.iweb-input').appendChild(errorTips);
-                                        }
-                                        input.closest('div.iweb-input').classList.add('error');
-                                        can_submit = false;
-                                    } else if ((validationArray.includes('email')) && !iwebObject.isEmail(input.value)) {
-                                        if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
-                                            const errorTips = document.createElement('small');
-                                            errorTips.classList.add('tips');
-                                            errorTips.textContent = iwebObject.language[iwebObject.current_language]['email_error'];
-                                            input.closest('div.iweb-input').appendChild(errorTips);
-                                        }
-                                        input.closest('div.iweb-input').classList.add('error');
-                                        can_submit = false;
-                                    } else if ((validationArray.includes('password')) && !iwebObject.isPassword(input.value)) {
-                                        if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
-                                            const errorTips = document.createElement('small');
-                                            errorTips.classList.add('tips');
-                                            errorTips.textContent = iwebObject.language[iwebObject.current_language]['password_error'];
-                                            input.closest('div.iweb-input').appendChild(errorTips);
-                                        }
-                                        input.closest('div.iweb-input').classList.add('error');
-                                        can_submit = false;
-                                    } else if ((validationArray.includes('date')) && !iwebObject.isDate(input.value)) {
-                                        if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
-                                            const errorTips = document.createElement('small');
-                                            errorTips.classList.add('tips');
-                                            errorTips.textContent = iwebObject.language[iwebObject.current_language]['date_error'];
-                                            input.closest('div.iweb-input').appendChild(errorTips);
-                                        }
-                                        input.closest('div.iweb-input').classList.add('error');
-                                        can_submit = false;
-                                    }
-                                }
-                            }
-                        });
-                    }
-
-                    // Extra checking if need
-                    const validation_func = form.getAttribute('data-vfunc');
-                    if ((typeof window[validation_func]) === 'function') {
-                        can_submit = (can_submit && window[validation_func]());
-                    }
-
-                    if (can_submit) {
-                        let post_data = {
-                            dataType: 'json',
-                            showBusy: true,
-                            url: form.action,
-                            values: {}
-                        };
-
-                        const tipsMessageArea = form.querySelector('div.iweb-tips-message');
-                        const formData = new FormData(form);
-                        
-                        // Iterate over form data
-                        formData.forEach(function(value, key) {
-                            const regex = /(.*)((\[)(.*)(\]))$/i; // Regular expression
-                            const match = key.match(regex);
-                            if (match) {
-                                let baseName = match[1];
-                                let childIndex = match[4]
-                                if (!post_data.values[baseName]) {
-                                    post_data.values[baseName] = {};
-                                }
-                                if (!iwebObject.isValue(childIndex)) {
-                                    childIndex = Object.keys(post_data.values[baseName]).length + 1;
-                                }
-                                post_data.values[baseName][childIndex] = value;
-                            } else {
-                                post_data.values[key] = value;
-                            }
-                        });
-
-                        iwebObject.ajaxPost(post_data, function(responseData) {
-                            // Callback if need
-                            const complete_func = form.getAttribute('data-cfunc');
-                            if ((typeof window[complete_func]) === 'function') {
-                                window[complete_func](responseData);
-                            } else {
-                                if (iwebObject.isValue(responseData.status) && iwebObject.isMatch(responseData.status, 200)) {
-                                    if (iwebObject.isValue(responseData.url)) {
-                                        window.location.href = responseData.url;
-                                    } else {
-                                        window.location.reload();
-                                    }
-                                } else {
-                                    if (iwebObject.isValue(tipsMessageArea)) {
-                                        tipsMessageArea.classList.add('error');
-                                        tipsMessageArea.innerHTML = '';
-                                        const divElement = document.createElement('div');
-                                        const closeButton = document.createElement('a');
-                                        closeButton.className = 'close';
-                                        closeButton.textContent = '×';
-                                        const messageSpan = document.createElement('span');
-                                        messageSpan.textContent = responseData.message;
-                                        divElement.appendChild(closeButton);
-                                        divElement.appendChild(messageSpan);
-                                        tipsMessageArea.appendChild(divElement);
-                                        iwebObject.scrollTo('.iweb-tips-message', 40);
-                                    } else {
-                                        iwebObject.alert(responseData.message);
-                                    }
-                                }
-                            }
-                        });
-                    } else {
-                        iwebObject.scrollTo('.error', 40);
-                    }
-				}));
-
-                // Bind event for form reset
-				form.addEventListener('reset', iwebObject.deBounce(function() {
-                    const resetElements = form.querySelectorAll('input, select, textarea');
-                    if (resetElements.length > 0) {
-                        resetElements.forEach(function(element) {
-                            if (iwebObject.isMatch(element.type, 'checkbox') ||
-                                iwebObject.isMatch(element.type, 'radio') ||
-                                iwebObject.isMatch(element.type, 'select-one') ||
-                                iwebObject.isMatch(element.type, 'select-multiple')) {
-                                element.dispatchEvent(new Event('change'));
-                            } else {
-                                if (element.closest('div.iweb-input-autocomplete')) {
-                                    // Remove error & tips
-                                    element.closest('div.iweb-input-autocomplete').classList.remove('error');
-                                    element.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
-
-                                    const fillId = element.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
-                                    const fillText = element.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
-                                    element.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset')?.remove();
-
-                                    if (iwebObject.isValue(fillText.getAttribute('data-value')) && iwebObject.isValue(fillText.getAttribute('data-default'))) {
-                                        fillId.value = fillText.getAttribute('data-value');
-                                        fillText.value = fillText.getAttribute('data-default');
-                                        fillText.readOnly = false;
-
-                                        // Create reset button
-                                        const fillReset = document.createElement('a');
-                                        fillReset.classList.add('fill-reset');
-                                        fillReset.addEventListener('click', iwebObject.deBounce(function(e) {
-                                            const target = e.target;
-                                            
-                                            // Reset id input & search input
-                                            const fillId = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
-                                            const fillText = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
-                                            const fillReset = target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset');
-                                            fillId.value = '';
-                                            fillText.value = '';
-                                            fillText.readOnly = false;
-                                            fillReset.remove();
-
-                                            // Callback if need
-                                            const remove_callBack = fillId.getAttribute('data-rfunc');
-                                            if ((typeof window[remove_callBack]) === 'function') {
-                                                window[remove_callBack]();
-                                            }
-                                        }));
-
-                                        // Create Reset icon
-                                        const fillResetIcon = document.createElement('i');
-                                        fillResetIcon.classList.add('fa');
-                                        fillResetIcon.classList.add('fa-times');
-                                        fillResetIcon.style.color = '#d73d32';
-
-                                        // Append elements
-                                        fillReset.appendChild(fillResetIcon);
-                                        element.closest('div.iweb-input-autocomplete').appendChild(fillReset);
-                                    }
-                                } else {
-                                    element.dispatchEvent(new Event('input'));
-                                }
-                            }
-                        });
-                    }
-				}, 100, false));
-			});
-		}
-	}
-
-	uploader(options, callBack) {
-		const iwebObject = this;
-
-		// Create input file
-		const fileInput = document.createElement('input');
-		fileInput.type = 'file';
-		fileInput.multiple = true;
-		fileInput.addEventListener('change', iwebObject.deBounce(function(e) {
-            const fileInput = this;
-            const target = e.target;
-            
-			// Max 7 files
-			const maxFiles = 7;
-			let selectedFiles = fileInput.files;
-			if (selectedFiles.length > maxFiles) {
-				selectedFiles = Array.from(selectedFiles).slice(0, maxFiles);
-			}
-			iwebObject.uploader_files['selected_files'] = selectedFiles;
-			iwebObject.uploader_files_skip['selected_files'] = [-1];
-			iwebObject.uploader_options['selected_files'] = {
-				dataType: 'json',
-				url: '',
-				values: {},
-				allowed_types: '',
-				max_filesize: 64,
-				type_error_message: iwebObject.language[iwebObject.current_language]['type_error'],
-				max_error_message: iwebObject.language[iwebObject.current_language]['max_error'],
-				btnStartAll: '<i class="fa fa-cloud-upload"></i>',
-				btnClose: '<i class="fa fa-close"></i>',
-				btnStart: '<i class="fa fa-cloud-upload"></i>',
-				btnRemove: '<i class="fa fa-trash"></i>',
-				auto_close: false
-			};
-			if (iwebObject.isValue(options)) {
-				Object.assign(iwebObject.uploader_options['selected_files'], options);
-			}
-			if (iwebObject.isValue(iwebObject.uploader_options['selected_files'].allowed_types)) {
-				iwebObject.uploader_options['selected_files'].allowed_types = iwebObject.uploader_options['selected_files'].allowed_types.split('|');
-			}
-			iwebObject.uploader_options['selected_files'].max_error_message = iwebObject.uploader_options['selected_files'].max_error_message.replace('{num}', iwebObject.uploader_options['selected_files'].max_filesize);
-
-			// Create upload panel
-			if (iwebObject.isValue(iwebObject.uploader_options['selected_files'].url) && iwebObject.uploader_files['selected_files'].length > 0) {
-				// Create div for button
-				const uploaderDiv = document.createElement('div');
-				uploaderDiv.classList.add('action');
-
-				const startAllButton = document.createElement('button');
-				startAllButton.type = 'button';
-				startAllButton.classList.add('start-all');
-				startAllButton.innerHTML = iwebObject.uploader_options['selected_files'].btnStartAll;
-
-				const closeAllButton = document.createElement('button');
-				closeAllButton.type = 'button';
-				closeAllButton.classList.add('close');
-				closeAllButton.innerHTML = iwebObject.uploader_options['selected_files'].btnClose;
-
-				uploaderDiv.appendChild(startAllButton);
-				uploaderDiv.appendChild(closeAllButton);
-
-				// Create div for list
-				const listContainer = document.createElement('div');
-				listContainer.classList.add('list');
-
-				// Append elements
-				const dialogContent = document.createElement('div');
-				dialogContent.appendChild(uploaderDiv);
-				dialogContent.appendChild(listContainer);
-
-				// Preview list
-				iwebObject.dialog(dialogContent.innerHTML, function() {
-					iwebObject.uploaderPreview(iwebObject.uploader_files['selected_files']);
-
-					// Event handlers
-					const startAllButton = document.querySelector('div.iweb-info-dialog.uploader > div > div.content > div > div.action > button.start-all');
-					const closeAllButton = document.querySelector('div.iweb-info-dialog.uploader > div > div.content > div > div.action > button.close');
-					const listContainer = document.querySelector('div.iweb-info-dialog.uploader > div > div.content > div > div.list');
-
-					startAllButton.addEventListener('click', iwebObject.deBounce(function() {
-                        const items = listContainer.querySelectorAll('div.item');
-                        let loop_upload_index = [];
-                        items.forEach(function(item) {
-                            loop_upload_index.push(item.getAttribute('data-index').toString());
-                        });
-                        iwebObject.uploaderStart(-1, loop_upload_index, loop_upload_index[loop_upload_index.length - 1]);
-					}));
-
-					closeAllButton.addEventListener('click', iwebObject.deBounce(function() {
-						document.querySelector('div.iweb-info-dialog.uploader > div > div.content > a.btn-close').dispatchEvent(new Event('click'));
-					}));
-
-					listContainer.querySelectorAll('div.item > button.start').forEach(function(button) {
-						button.addEventListener('click', iwebObject.deBounce(function(e1) {
-							const target = e1.target;
-                            iwebObject.uploaderStart(target.closest('div.item').getAttribute('data-index'));
-						}));
-					});
-
-					listContainer.querySelectorAll('div.item > button.remove').forEach(function(button) {
-						button.addEventListener('click', iwebObject.deBounce(function(e2) {
-							const target = e2.target;
-                            iwebObject.uploader_files_skip['selected_files'].push(target.closest('div.item').getAttribute('data-index').toString());
-                            target.closest('div.item').remove();
-                            if (listContainer.querySelectorAll('div.item').length === 0) {
-                                document.querySelector('div.iweb-info-dialog.uploader > div > div.content > a.btn-close').dispatchEvent(new Event('click'));
-                            }
-						}));
-					});
-				}, function() {
-					// Callback if need
-					if ((typeof callBack) === 'function') {
-						callBack();
-					}
-				}, 'uploader');
-			}
-		}));
-        
-        // Auto click
-		fileInput.click();
-	}
-
-	uploaderArea(file_input_id, options, callBack) {
-		const iwebObject = this;
-
-		// Create input file
-		const fileInput = document.getElementById(file_input_id);
-        fileInput.removeAttribute('name');
-		fileInput.multiple = true;
-		fileInput.addEventListener('change', iwebObject.deBounce(function(e) {
-            const fileInput = this;
-            const target = e.target;
-            
-            // Max 7 files
-			const maxFiles = 7;
-			let selectedFiles = fileInput.files;
-			if (selectedFiles.length > maxFiles) {
-				selectedFiles = Array.from(selectedFiles).slice(0, maxFiles);
-			}
-			iwebObject.uploader_files['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)] = selectedFiles;
-			iwebObject.uploader_files_skip['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)] = [-1];
-			iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)] = {
-				dataType: 'json',
-				url: '',
-				values: {},
-				allowed_types: '',
-				max_filesize: 64,
-				type_error_message: iwebObject.language[iwebObject.current_language]['type_error'],
-				max_error_message: iwebObject.language[iwebObject.current_language]['max_error'],
-				btnStartAll: '<i class="fa fa-cloud-upload"></i>',
-				btnClose: '<i class="fa fa-close"></i>',
-				btnStart: '<i class="fa fa-cloud-upload"></i>',
-				btnRemove: '<i class="fa fa-trash"></i>',
-				auto_close: true
-			};
-			if (iwebObject.isValue(options)) {
-				iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)] = Object.assign(
-					iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)],
-					options
-				);
-			}
-			if (iwebObject.isValue(iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].allowed_types)) {
-				iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].allowed_types = iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].allowed_types.split('|');
-			}
-			iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].max_error_message = iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].max_error_message.replace('{num}', iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].max_filesize);
-
-			if (iwebObject.isValue(iwebObject.uploader_options['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].url) && fileInput.files.length > 0) {
-                const uploaderAreDiv = target.closest('div.iweb-files-dropzone').querySelector('div.iweb-files-uploader');
-                
-				// Create div for button
-				const uploaderDiv = document.createElement('div');
-				uploaderDiv.className = 'action';
-
-				const startAllButton = document.createElement('button');
-				startAllButton.className = 'start-all';
-				startAllButton.type = 'button';
-				startAllButton.title = 'Start All';
-				startAllButton.innerHTML = '<i class="fa fa-cloud-upload"></i>';
-
-				const closeAllButton = document.createElement('button');
-				closeAllButton.className = 'close';
-				closeAllButton.type = 'button';
-				closeAllButton.innerHTML = '<i class="fa fa-close"></i>';
-
-				const listContainer = document.createElement('div');
-				listContainer.classList.add('list');
-
-                // Append elements
-                uploaderDiv.appendChild(startAllButton);
-                uploaderDiv.appendChild(closeAllButton);
-				uploaderAreDiv.appendChild(uploaderDiv);
-				uploaderAreDiv.appendChild(listContainer);
-
-				// Preview list
-				iwebObject.uploaderPreview(iwebObject.uploader_files['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)], 0, file_input_id);
-
-                // Event handlers
-                startAllButton.addEventListener('click', iwebObject.deBounce(function() {
-					const items = listContainer.querySelectorAll('div.item');
-                    let loop_upload_index = [];
-                    items.forEach(function(item) {
-                        loop_upload_index.push(item.getAttribute('data-index').toString());
-                    });
-                    iwebObject.uploaderStart(-1, loop_upload_index, loop_upload_index[loop_upload_index.length - 1], file_input_id);
-				}));
-                
-                closeAllButton.addEventListener('click', iwebObject.deBounce(function() {
-					uploaderAreDiv.innerHTML = '';
-                    fileInput.value = '';
-                    // Callback if need
-                    if ((typeof callBack) === 'function') {
-                        callBack();
-                    }
-				}));
-                
-				listContainer.querySelectorAll('div.item > button.start').forEach(function(button) {
-					button.addEventListener('click', iwebObject.deBounce(function(e1) {
-						const target = e1.target;
-                        iwebObject.uploaderStart(target.closest('div.item').getAttribute('data-index'), null, null, file_input_id);
-					}));
-				});
-
-				listContainer.querySelectorAll('div.item > button.remove').forEach(function(button) {
-					button.addEventListener('click', iwebObject.deBounce(function(e2) {
-						const target = e2.target;
-                        iwebObject.uploader_files_skip['inline_selected_files_' + iwebObject.imd5.hash(file_input_id)].push(target.closest('div.item').getAttribute('data-index').toString());
-                        target.closest('div.item').remove();
-                        if (listContainer.querySelectorAll('div.item').length === 0) {
-                            uploaderAreDiv.innerHTML = '';
-                            fileInput.value = '';
-                        }
-					}));
-				});
-			}
-		}));
-        
-        // Append elements
-		const parent = fileInput.parentElement;
-		parent.id = file_input_id + '-iweb-files-dropzone';
-		parent.classList.add('iweb-files-dropzone');
-
-		const uploaderDiv = document.createElement('div');
-		uploaderDiv.className = 'iweb-files-uploader';
-		parent.appendChild(uploaderDiv);
-	}
-
-	uploaderPreview(selectingFiles, key = 0, file_input_id) {
-		const iwebObject = this;
-		const regex = /^(.*)(.jpg|.jpeg|.gif|.png|.bmp)$/;
-
-		if (key >= selectingFiles.length) return; // Exit if there are no more files
-
-		let file = selectingFiles[key];
-		let extension = file.name.split('.').pop().toLowerCase();
-		let checking = true;
-
-		const itemDiv = document.createElement('div');
-		itemDiv.classList.add('item');
-		itemDiv.setAttribute('data-index', key);
-
-		const photoDiv = document.createElement('div');
-		photoDiv.classList.add('photo');
-		const imgElement = document.createElement('img');
-
-		if (regex.test(file.name.toLowerCase()) && (typeof(FileReader) !== 'undefined')) {
-			const reader = new FileReader();
-			reader.onload = function(e) {
-				imgElement.src = e.target.result;
-				photoDiv.appendChild(imgElement);
-			};
-			reader.readAsDataURL(file);
-		} else {
-			const fileIcons = {
-				pdf: '<i class="fa fa-file-pdf-o" style="color:#ef4130;"></i>',
-				doc: '<i class="fa fa-file-word-o" style="color:#5091cd;"></i>',
-				docx: '<i class="fa fa-file-word-o" style="color:#5091cd;"></i>',
-				xls: '<i class="fa fa-file-excel-o" style="color:#66cdaa;"></i>',
-				xlsx: '<i class="fa fa-file-excel-o" style="color:#66cdaa;"></i>',
-				ppt: '<i class="fa fa-file-powerpoint-o" style="color:#f7b002;"></i>',
-				pptx: '<i class="fa fa-file-powerpoint-o" style="color:#f7b002;"></i>',
-				txt: '<i class="fa fa-file-text-o"></i>',
-				avi: '<i class="fa fa-file-video-o" style="color:#5091cd;"></i>',
-				mov: '<i class="fa fa-file-video-o" style="color:#5091cd;"></i>',
-				mp4: '<i class="fa fa-file-video-o" style="color:#5091cd;"></i>',
-				ogg: '<i class="fa fa-file-video-o" style="color:#5091cd;"></i>',
-				wmv: '<i class="fa fa-file-video-o" style="color:#5091cd;"></i>',
-				webm: '<i class="fa fa-file-video-o" style="color:#5091cd;"></i>',
-				mp3: '<i class="fa fa-file-audio-o" style="color:#66cdaa;"></i>',
-				wav: '<i class="fa fa-file-audio-o" style="color:#66cdaa;"></i>',
-				rar: '<i class="fa fa-file-zip-o" style="color:#f7b002;"></i>',
-				zip: '<i class="fa fa-file-zip-o" style="color:#f7b002;"></i>'
-			};
-			photoDiv.innerHTML = fileIcons[extension] || '<i class="fa fa-file-code-o"></i>';
-		}
-
-		itemDiv.appendChild(photoDiv);
-
-		const infoDiv = document.createElement('div');
-		infoDiv.classList.add('info');
-
-		const titleDiv = document.createElement('div');
-		titleDiv.classList.add('title');
-		titleDiv.textContent = file.name;
-		infoDiv.appendChild(titleDiv);
-
-		const sizeDiv = document.createElement('div');
-		sizeDiv.classList.add('size');
-		sizeDiv.textContent = iwebObject.formatBytes(file.size, 0);
-		infoDiv.appendChild(sizeDiv);
-
-		const hashKey = iwebObject.isValue(file_input_id) ?
-			'inline_selected_files_' + iwebObject.imd5.hash(file_input_id) :
-			'selected_files';
-
-		const options = iwebObject.uploader_options[hashKey];
-		const allowedTypes = options.allowed_types || [];
-		const maxFileSize = options.max_filesize * 1024 * 1024;
-
-		if (allowedTypes.length && allowedTypes.indexOf(extension) < 0) {
-			const tipsDiv = document.createElement('div');
-			tipsDiv.classList.add('tips');
-			tipsDiv.innerHTML = '<small>' + options.type_error_message + '</small>';
-			infoDiv.appendChild(tipsDiv);
-			checking = false;
-		} else if (file.size > maxFileSize) {
-			const tipsDiv = document.createElement('div');
-			tipsDiv.classList.add('tips');
-			tipsDiv.innerHTML = '<small>' + options.max_error_message + '</small>';
-			infoDiv.appendChild(tipsDiv);
-			checking = false;
-		} else {
-			const progressBar = document.createElement('div');
-			progressBar.classList.add('progress-bar');
-			progressBar.innerHTML = '<div class="percent"></div>';
-			infoDiv.appendChild(progressBar);
-		}
-
-		itemDiv.appendChild(infoDiv);
-
-		if (checking) {
-			const startButton = document.createElement('button');
-			startButton.type = 'button';
-			startButton.classList.add('start');
-			startButton.innerHTML = '<i class="fa fa-cloud-upload"></i>';
-			itemDiv.appendChild(startButton);
-		}
-
-		const removeButton = document.createElement('button');
-		removeButton.type = 'button';
-		removeButton.classList.add('remove');
-		removeButton.innerHTML = '<i class="fa fa-trash"></i>';
-		itemDiv.appendChild(removeButton);
-
-		const dropzone = iwebObject.isValue(file_input_id) ?
-			'#' + file_input_id + '-iweb-files-dropzone > div.iweb-files-uploader > div.list' :
-			'div.iweb-info-dialog.uploader > div > div.content > div > div.list';
-
-		document.querySelector(dropzone).appendChild(itemDiv);
-
-		// Continue to preview the next file
-		iwebObject.uploaderPreview(selectingFiles, key + 1, file_input_id);
-	}
-
-	uploaderStart(index, loop_upload_index, last_upload_index, file_input_id) {
-		const iwebObject = this;
-
-		let mainIndex = 'selected_files';
-		if (iwebObject.isValue(file_input_id)) {
-			mainIndex = 'inline_selected_files_' + iwebObject.imd5.hash(file_input_id);
-		}
-
-		// Helper function to safely call if the function is defined
-		const safeEndFunction = () => {
-			const uploaderDialog = (iwebObject.isValue(file_input_id)) ? document.querySelector('#' + file_input_id + '-iweb-files-dropzone') : document.querySelector('div.iweb-info-dialog.uploader');
-			if (uploaderDialog) {
-				const startCount = uploaderDialog.querySelectorAll('div.list > div.item > button.start').length;
-				if (parseInt(startCount) === 0) {
-					uploaderDialog.querySelector('div.action > button.start-all')?.remove();
-					if (iwebObject.uploader_options[mainIndex].auto_close) {
-						uploaderDialog.querySelector('div.action > button.close').dispatchEvent(new Event('click'));
-					}
-				}
-				uploaderDialog.classList.remove('busy');
-			}
-		};
-
-		const uploaderDialog = (iwebObject.isValue(file_input_id)) ? document.querySelector('#' + file_input_id + '-iweb-files-dropzone') : document.querySelector('div.iweb-info-dialog.uploader');
-		uploaderDialog.classList.add('busy');
-
-		// Init
-		let isBatch = true;
-		if (!iwebObject.isValue(loop_upload_index)) {
-			loop_upload_index = [index];
-			last_upload_index = index;
-			isBatch = false;
-		} else {
-			index = index + 1;
-		}
-
-		// Upload one by one
-		if (parseInt(index) <= parseInt(last_upload_index)) {
-			if (!loop_upload_index.includes(index.toString())) {
-				if (isBatch) {
-					iwebObject.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
-				} else {
-					safeEndFunction();
-				}
-			} else {
-				if (iwebObject.isValue(iwebObject.uploader_files[mainIndex]) && !iwebObject.uploader_files_skip[mainIndex].includes(index.toString())) {
-					iwebObject.uploader_files_skip[mainIndex].push(index.toString());
-
-					const selectingFiles = iwebObject.uploader_files[mainIndex];
-					const extension = selectingFiles[index].name.split('.').pop().toLowerCase();
-					let checking = true;
-					if (iwebObject.isValue(iwebObject.uploader_options[mainIndex].allowed_types) && !iwebObject.uploader_options[mainIndex].allowed_types.includes(extension.toString())) {
-						checking = false;
-					} else if (selectingFiles[index].size > iwebObject.uploader_options[mainIndex].max_filesize * 1024 * 1024) {
-						checking = false;
-					}
-
-					if (checking) {
-						let post_data = {
-							dataType: 'json',
-							showBusy: false,
-							url: iwebObject.uploader_options[mainIndex].url,
-							values: {}
-						};
-
-						const formData = new FormData();
-						formData.append('page_action', 'file_upload');
-						if (iwebObject.isValue(iwebObject.uploader_options[mainIndex].values)) {
-							Object.entries(iwebObject.uploader_options[mainIndex].values).forEach(function(key, value) {
-								formData.append(key, value);
-							});
-						}
-						formData.append('myfile', selectingFiles[index], selectingFiles[index].name);
-						formData.forEach(function(value, key) {
-							post_data.values[key] = value;
-						});
-
-						iwebObject.ajaxPost(post_data, function(responseData) {
-							const itemDiv = uploaderDialog.querySelector('div.list > div.item[data-index="' + index + '"]');
-							itemDiv.querySelector('div.info > div.progress-bar')?.remove();
-
-							const message = (responseData.message || responseData);
-							const infoDiv = itemDiv.querySelector('div.info');
-							const tipsDiv = document.createElement('div');
-							tipsDiv.classList.add('tips');
-							tipsDiv.innerHTML = '<small>' + message + '</small>';
-							infoDiv.appendChild(tipsDiv);
-
-							// Next
-							if (isBatch) {
-								iwebObject.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
-							} else {
-								safeEndFunction();
-							}
-						}, null, function(percentage) {
-							const itemDiv = uploaderDialog.querySelector('div.list > div.item[data-index="' + index + '"]');
-							itemDiv.querySelector('button.start')?.remove();
-							itemDiv.querySelector('button.remove')?.remove();
-
-							const progressBarPercent = itemDiv.querySelector('div.info > div.progress-bar > div.percent');
-							if (progressBarPercent) {
-								progressBarPercent.style.width = percentage + '%';
-							}
-						});
-					} else {
-						const itemDiv = uploaderDialog.querySelector('div.list > div.item[data-index="' + index + '"]');
-						itemDiv.querySelector('button.start')?.remove();
-						itemDiv.querySelector('button.remove')?.remove();
-
-						// Next
-						if (isBatch) {
-							iwebObject.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
-						} else {
-							safeEndFunction();
-						}
-					}
-				} else {
-					if (isBatch) {
-						iwebObject.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
-					} else {
-						safeEndFunction();
-					}
-				}
-			}
-		} else {
-			safeEndFunction();
-		}
-	}
-
-	// dialog
-	alert(message = '', callBack, customizeClassName) {
-		// Prevent duplicate dialogs
-		if (document.querySelectorAll('div.iweb-alert-dialog').length > 0) {
-			return;
-		}
-
-		const iwebObject = this;
-
-		// Create div
-		const alertDialog = document.createElement('div');
-		alertDialog.classList.add('iweb-alert-dialog');
-		if (iwebObject.isValue(customizeClassName)) {
-			alertDialog.classList.add(customizeClassName);
-		}
-
-		const innerDiv = document.createElement('div');
-		const contentDiv = document.createElement('div');
-		contentDiv.classList.add('content');
-		contentDiv.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
-		contentDiv.style.transform = 'translateY(-320%)';
-		contentDiv.style.opacity = '0';
-
-		const detailsDiv = document.createElement('div');
-		detailsDiv.innerHTML = message;
-
-		// Create close button
-		const closeButton = document.createElement('button');
-		closeButton.classList.add('btn');
-		closeButton.classList.add('btn-close');
-		closeButton.textContent = iwebObject.language[iwebObject.current_language]['btn_confirm'];
-		closeButton.addEventListener('click', iwebObject.deBounce(function(e) {
-			const target = e.target;
-			contentDiv.style.transform = 'translateY(-320%)';
-			contentDiv.style.transform = '0';
-			contentDiv.addEventListener('transitionend', function() {
-				target.closest('div.iweb-alert-dialog').remove();
-				if (document.querySelectorAll('div.iweb-alert-dialog').length === 0 && document.querySelectorAll('div.iweb-info-dialog').length === 0) {
-					document.body.classList.remove('iweb-disable-scroll');
-				}
-
-				// Callback if need
-				if ((typeof callBack) === 'function') {
-					callBack();
-				}
-			}, {
-				once: true
-			});
-		}));
-
-		// Append to body
-		const viewer = document.querySelector('div.iweb-viewer');
-		innerDiv.appendChild(contentDiv);
-		contentDiv.appendChild(detailsDiv);
-		contentDiv.appendChild(closeButton);
-		alertDialog.appendChild(innerDiv);
-		viewer.insertBefore(alertDialog, viewer.firstChild);
-		document.body.classList.add('iweb-disable-scroll');
-
-		// Show dialog
-		setTimeout(function() {
-			contentDiv.style.transform = 'translateY(0)';
-			contentDiv.style.opacity = '1';
-		}, 100);
-	}
-
-	confirm(message = '', callBack, customizeClassName) {
-		// Prevent duplicate dialogs
-		if (document.querySelectorAll('div.iweb-alert-dialog').length > 0) {
-			return;
-		}
-
-		const iwebObject = this;
-
-		// Create div
-		const alertDialog = document.createElement('div');
-		alertDialog.classList.add('iweb-alert-dialog');
-		if (iwebObject.isValue(customizeClassName)) {
-			alertDialog.classList.add(customizeClassName);
-		}
-
-		const innerDiv = document.createElement('div');
-		const contentDiv = document.createElement('div');
-		contentDiv.classList.add('content');
-		contentDiv.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
-		contentDiv.style.transform = 'translateY(-320%)';
-		contentDiv.style.opacity = '0';
-
-		const detailsDiv = document.createElement('div');
-		detailsDiv.innerHTML = message;
-
-		// Create the yes/no button
-		const yesButton = document.createElement('button');
-		yesButton.classList.add('btn');
-		yesButton.classList.add('btn-yes');
-		yesButton.textContent = iwebObject.language[iwebObject.current_language]['btn_yes'];
-		yesButton.addEventListener('click', iwebObject.deBounce(function(e) {
-            const target = e.target;
-			contentDiv.style.transform = 'translateY(-320%)';
-			contentDiv.style.transform = '0';
-			contentDiv.addEventListener('transitionend', function() {
-				target.closest('div.iweb-alert-dialog').remove();
-				if (document.querySelectorAll('div.iweb-alert-dialog').length === 0 && document.querySelectorAll('div.iweb-info-dialog').length === 0) {
-					document.body.classList.remove('iweb-disable-scroll');
-				}
-
-				// Callback if need
-				if ((typeof callBack) === 'function') {
-					callBack(true);
-				}
-			}, {
-				once: true
-			});
-		}));
-
-		const noButton = document.createElement('button');
-		noButton.classList.add('btn');
-		noButton.classList.add('btn-no');
-		noButton.textContent = iwebObject.language[iwebObject.current_language]['btn_no'];
-		noButton.addEventListener('click', iwebObject.deBounce(function(e) {
-            const target = e.target;
-			contentDiv.style.transform = 'translateY(-320%)';
-			contentDiv.style.transform = '0';
-			contentDiv.addEventListener('transitionend', function() {
-				target.closest('div.iweb-alert-dialog').remove();
-				if (document.querySelectorAll('div.iweb-alert-dialog').length === 0 && document.querySelectorAll('div.iweb-info-dialog').length === 0) {
-					document.body.classList.remove('iweb-disable-scroll');
-				}
-
-				// Callback if need
-				if ((typeof callBack) === 'function') {
-					callBack(false);
-				}
-			}, {
-				once: true
-			});
-		}));
-
-		// Append to body
-		const viewer = document.querySelector('div.iweb-viewer');
-		innerDiv.appendChild(contentDiv);
-		contentDiv.appendChild(detailsDiv);
-		contentDiv.appendChild(yesButton);
-		contentDiv.appendChild(noButton);
-		alertDialog.appendChild(innerDiv);
-		viewer.insertBefore(alertDialog, viewer.firstChild);
-		document.body.classList.add('iweb-disable-scroll');
-
-		setTimeout(function() {
-			contentDiv.style.transform = 'translateY(0)';
-			contentDiv.style.opacity = '1';
-		}, 100);
-	}
-
-	dialog(htmlCode, initFunc, callBack, customizeClassName) {
-		// Prevent duplicate dialogs
-		if (document.querySelector('div.iweb-info-dialog')) {
-			return;
-		}
-
-		const iwebObject = this;
-
-		// Create div
-		const infoDialog = document.createElement('div');
-		infoDialog.classList.add('iweb-info-dialog');
-		if (iwebObject.isValue(customizeClassName)) {
-			infoDialog.classList.add(customizeClassName);
-		}
-
-		const innerDiv = document.createElement('div');
-		innerDiv.addEventListener('click', iwebObject.deBounce(function(e) {
-			const target = e.target;
-			if (target.closest('div.iweb-info-dialog') && !target.closest('div.content')) {
-				target.closest('div.iweb-info-dialog').querySelector('a.btn-close').dispatchEvent(new Event('click'));
-			}
-		}));
-
-		const contentDiv = document.createElement('div');
-		contentDiv.classList.add('content');
-		contentDiv.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
-		contentDiv.style.transform = 'translateY(-320%)';
-		contentDiv.style.opacity = '0';
-
-		const detailsDiv = document.createElement('div');
-		if ((typeof htmlCode) === 'string') {
-			detailsDiv.innerHTML = htmlCode;
-		} else {
-			detailsDiv.appendChild(htmlCode);
-		}
-
-		// Create the close button
-		const closeButton = document.createElement('a');
-		closeButton.classList.add('btn');
-		closeButton.classList.add('btn-close');
-		closeButton.addEventListener('click', iwebObject.deBounce(function(e) {
-			const target = e.target;
-			contentDiv.style.transform = 'translateY(-320%)';
-			contentDiv.style.transform = '0';
-			contentDiv.addEventListener('transitionend', function() {
-				target.closest('div.iweb-info-dialog').remove();
-				if (document.querySelectorAll('div.iweb-alert-dialog').length === 0 && document.querySelectorAll('div.iweb-info-dialog').length === 0) {
-					document.body.classList.remove('iweb-disable-scroll');
-				}
-
-				// Callback if need
-				if ((typeof callBack) === 'function') {
-					callBack();
-				}
-			}, {
-				once: true
-			});
-		}));
-
-		// Append to body
-		const viewer = document.querySelector('div.iweb-viewer');
-		innerDiv.appendChild(contentDiv);
-		contentDiv.appendChild(detailsDiv);
-		contentDiv.appendChild(closeButton);
-		infoDialog.appendChild(innerDiv);
-		viewer.insertBefore(infoDialog, viewer.firstChild);
-		document.body.classList.add('iweb-disable-scroll');
-
-		// init component
-		iwebObject.initComponent();
-
-		// init form
-		iwebObject.initForm();
-
-		// Callback if need
-		if ((typeof initFunc) === 'function') {
-			initFunc();
-		}
-
-		// Show dialog
-		setTimeout(function() {
-			contentDiv.style.transform = 'translateY(0)';
-			contentDiv.style.opacity = '1';
-		}, 100);
-	}
-
-	// ajax post
+    
+    // ajax post
 	ajaxPost(post_data, callBack, final_callBack, progress_callBack) {
-		const iwebObject = this;
+		const this_object = this;
 
 		// Merge post data
 		post_data = Object.assign({
@@ -2052,11 +1057,11 @@ class iweb {
 			values: {}
 		}, post_data);
 
-		if (!iwebObject.is_busy && iwebObject.isValue(post_data.url)) {
-			const local_time = iwebObject.toDateTime();
+		if (!this_object.is_busy && this_object.isValue(post_data.url)) {
+			const local_time = this_object.toDateTime();
 			let formData = new FormData();
 
-			formData.append('itoken', window.btoa(iwebObject.imd5.hash(iwebObject.csrf_token + '#dt' + local_time) + '%' + local_time));
+			formData.append('itoken', window.btoa(this_object.imd5.hash(this_object.csrf_token + '#dt' + local_time) + '%' + local_time));
 			if (post_data.values) {
 				for (let key in post_data.values) {
 					const value = post_data.values[key];
@@ -2073,10 +1078,10 @@ class iweb {
 
 			// Helper function to safely call if the function is defined
 			const safeFinalFunction = () => {
-				iwebObject.is_busy = false;
-				if (iwebObject.isMatch(post_data.showBusy, true) || iwebObject.isMatch(post_data.showBusy, 1) || iwebObject.isMatch(post_data.showBusy, 2)) {
-					if (!iwebObject.isMatch(post_data.showBusy, 2)) {
-						iwebObject.showBusy(false);
+				this_object.is_busy = false;
+				if (this_object.isMatch(post_data.showBusy, true) || this_object.isMatch(post_data.showBusy, 1) || this_object.isMatch(post_data.showBusy, 2)) {
+					if (!this_object.isMatch(post_data.showBusy, 2)) {
+						this_object.showBusy(false);
 					}
 				}
 
@@ -2088,10 +1093,10 @@ class iweb {
 
 			// Try to send data with progress tracking using XMLHttpRequest
 			try {
-				if (iwebObject.isMatch(post_data.showBusy, true) || iwebObject.isMatch(post_data.showBusy, 1) || iwebObject.isMatch(post_data.showBusy, 2)) {
-					iwebObject.showBusy(true, 70);
+				if (this_object.isMatch(post_data.showBusy, true) || this_object.isMatch(post_data.showBusy, 1) || this_object.isMatch(post_data.showBusy, 2)) {
+					this_object.showBusy(true, 70);
 				}
-				iwebObject.is_busy = true;
+				this_object.is_busy = true;
 
 				// Use XMLHttpRequest for progress tracking
 				const xhr = new XMLHttpRequest();
@@ -2169,6 +1174,1041 @@ class iweb {
 		}
 	}
 
+	initForm(form_object) {
+		const this_object = this;
+
+		// Default to selecting all relevant elements if none provided
+		if (!this_object.isValue(form_object)) {
+			form_object = document.querySelectorAll('form[data-ajax="1"]');
+		}
+
+		if (form_object.length > 0) {
+			form_object.forEach(function(form) {
+				const showTips = ((!this_object.isMatch(form.getAttribute('data-showtips'), false)) && (!this_object.isMatch(form.getAttribute('data-showtips'), 0)));
+				form.removeAttribute('data-ajax');
+				form.removeAttribute('data-showtips');
+				form.method = 'post';
+				form.autocomplete = 'off';
+                
+                // Bind event for form submit
+				form.addEventListener('submit', this_object.deBounce(function(e) {
+                    // Remove error & tips
+                    const errorElements = form.querySelectorAll('.error');
+                    errorElements.forEach(function(e) {
+                        if (!e.closest('div.iweb-tips-message')) {
+                            e.classList.remove('error');
+                        }
+                    });
+
+                    const tipsElements = form.querySelectorAll('small.tips');
+                    tipsElements.forEach(function(tips) {
+                        tips.remove();
+                    });
+
+                    // Do checking before submit
+                    let can_submit = true;
+                    const requiredInputs = form.querySelectorAll('input[data-validation]:not(:disabled), select[data-validation]:not(:disabled), textarea[data-validation]:not(:disabled)');
+                    if (requiredInputs.length > 0) {
+                        requiredInputs.forEach(function(input) {
+                            const validationArray = (input.getAttribute('data-validation').toString().split('|'));
+                            if (this_object.isMatch(input.type, 'checkbox')) {
+                                if (validationArray.includes('required') && !input.closest('div.iweb-checkbox-set').querySelector('input[type="checkbox"]:checked')) {
+                                    if (showTips && !input.closest('div.iweb-checkbox-set').querySelector('small.tips')) {
+                                        const errorTips = document.createElement('small');
+                                        errorTips.classList.add('tips');
+                                        errorTips.textContent = this_object.language[this_object.current_language]['required_error'];
+                                        input.closest('div.iweb-checkbox-set').appendChild(errorTips);
+                                    }
+                                    input.closest('div.iweb-checkbox').classList.add('error');
+                                    can_submit = false;
+                                }
+                            } else if (this_object.isMatch(input.type, 'radio')) {
+                                if ((validationArray.includes('required')) && !input.closest('div.iweb-radio-set').querySelector('input[type="radio"]:checked')) {
+                                    if (showTips && !input.closest('div.iweb-radio-set').querySelector('small.tips')) {
+                                        const errorTips = document.createElement('small');
+                                        errorTips.classList.add('tips');
+                                        errorTips.textContent = this_object.language[this_object.current_language]['required_error'];
+                                        input.closest('div.iweb-radio-set').appendChild(errorTips);
+                                    }
+                                    input.closest('div.iweb-radio').classList.add('error');
+                                    can_submit = false;
+                                }
+                            } else if (this_object.isMatch(input.type, 'select-one') || this_object.isMatch(input.type, 'select-multiple')) {
+                                if ((validationArray.includes('required')) && !this_object.isValue(input.value)) {
+                                    if (showTips && !input.closest('div.iweb-select').querySelector('small.tips')) {
+                                        const errorTips = document.createElement('small');
+                                        errorTips.classList.add('tips');
+                                        errorTips.textContent = this_object.language[this_object.current_language]['required_error'];
+                                        input.closest('div.iweb-select').appendChild(errorTips);
+                                    }
+                                    input.closest('div.iweb-select').classList.add('error');
+                                    can_submit = false;
+                                }
+                            } else {
+                                if ((validationArray.includes('required')) && !this_object.isValue(input.value)) {
+                                    if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                        const errorTips = document.createElement('small');
+                                        errorTips.classList.add('tips');
+                                        errorTips.textContent = this_object.language[this_object.current_language]['required_error'];
+                                        input.closest('div.iweb-input').appendChild(errorTips);
+                                    }
+                                    input.closest('div.iweb-input').classList.add('error');
+                                    can_submit = false;
+                                } else {
+                                    if ((validationArray.includes('number')) && !this_object.isNumber(input.value)) {
+                                        if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                            const errorTips = document.createElement('small');
+                                            errorTips.classList.add('tips');
+                                            errorTips.textContent = this_object.language[this_object.current_language]['number_error'];
+                                            input.closest('div.iweb-input').appendChild(errorTips);
+                                        }
+                                        input.closest('div.iweb-input').classList.add('error');
+                                        can_submit = false;
+                                    } else if ((validationArray.includes('email')) && !this_object.isEmail(input.value)) {
+                                        if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                            const errorTips = document.createElement('small');
+                                            errorTips.classList.add('tips');
+                                            errorTips.textContent = this_object.language[this_object.current_language]['email_error'];
+                                            input.closest('div.iweb-input').appendChild(errorTips);
+                                        }
+                                        input.closest('div.iweb-input').classList.add('error');
+                                        can_submit = false;
+                                    } else if ((validationArray.includes('password')) && !this_object.isPassword(input.value)) {
+                                        if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                            const errorTips = document.createElement('small');
+                                            errorTips.classList.add('tips');
+                                            errorTips.textContent = this_object.language[this_object.current_language]['password_error'];
+                                            input.closest('div.iweb-input').appendChild(errorTips);
+                                        }
+                                        input.closest('div.iweb-input').classList.add('error');
+                                        can_submit = false;
+                                    } else if ((validationArray.includes('date')) && !this_object.isDate(input.value)) {
+                                        if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                            const errorTips = document.createElement('small');
+                                            errorTips.classList.add('tips');
+                                            errorTips.textContent = this_object.language[this_object.current_language]['date_error'];
+                                            input.closest('div.iweb-input').appendChild(errorTips);
+                                        }
+                                        input.closest('div.iweb-input').classList.add('error');
+                                        can_submit = false;
+                                    }
+                                    else if (validationArray.includes('regex')) {
+                                        const regex = new RegExp(input.getAttribute('data-regex'));
+                                        const regex_error = input.getAttribute('data-error');
+                                        if (!regex.test(input.value.toString().toLowerCase())) {
+                                            if (showTips && !input.closest('div.iweb-input').querySelector('small.tips') && this_object.isValue(regex_error)) {
+                                                const errorTips = document.createElement('small');
+                                                errorTips.classList.add('tips');
+                                                errorTips.textContent = regex_error.toString();
+                                                input.closest('div.iweb-input').appendChild(errorTips);
+                                            }
+                                            input.closest('div.iweb-input').classList.add('error');
+                                            can_submit = false;
+                                         }
+                                    }
+                                }
+                            }
+                        });
+                    }
+
+                    // Extra checking if need
+                    const validation_func = form.getAttribute('data-vfunc');
+                    if ((typeof window[validation_func]) === 'function') {
+                        const extra_can_submit = window[validation_func](can_submit);
+                        can_submit = (can_submit && extra_can_submit);
+                    }
+
+                    if (can_submit) {
+                        let post_data = {
+                            dataType: 'json',
+                            showBusy: true,
+                            url: form.action,
+                            values: {}
+                        };
+
+                        const tipsMessageArea = form.querySelector('div.iweb-tips-message');
+                        const formData = new FormData(form);
+                        
+                        // Iterate over form data
+                        formData.forEach(function(value, key) {
+                            const regex = /(.*)((\[)(.*)(\]))$/i; // Regular expression
+                            const match = key.match(regex);
+                            if (match) {
+                                let baseName = match[1];
+                                let childIndex = match[4]
+                                if (!post_data.values[baseName]) {
+                                    post_data.values[baseName] = {};
+                                }
+                                if (!this_object.isValue(childIndex)) {
+                                    childIndex = Object.keys(post_data.values[baseName]).length + 1;
+                                }
+                                post_data.values[baseName][childIndex] = value;
+                            } else {
+                                post_data.values[key] = value;
+                            }
+                        });
+
+                        this_object.ajaxPost(post_data, function(responseData) {
+                            // Callback if need
+                            const complete_func = form.getAttribute('data-cfunc');
+                            if ((typeof window[complete_func]) === 'function') {
+                                window[complete_func](responseData);
+                            } else {
+                                if (this_object.isValue(responseData.status) && this_object.isMatch(responseData.status, 200)) {
+                                    if (this_object.isValue(responseData.url)) {
+                                        window.location.href = responseData.url;
+                                    } else {
+                                        window.location.reload();
+                                    }
+                                } else {
+                                    if (this_object.isValue(tipsMessageArea)) {
+                                        tipsMessageArea.classList.add('error');
+                                        tipsMessageArea.innerHTML = '';
+                                        const divElement = document.createElement('div');
+                                        const closeButton = document.createElement('a');
+                                        closeButton.className = 'close';
+                                        closeButton.textContent = '×';
+                                        const messageSpan = document.createElement('span');
+                                        messageSpan.textContent = responseData.message;
+                                        divElement.appendChild(closeButton);
+                                        divElement.appendChild(messageSpan);
+                                        tipsMessageArea.appendChild(divElement);
+                                        this_object.scrollTo('.iweb-tips-message', 40);
+                                    } else {
+                                        this_object.alert(responseData.message);
+                                    }
+                                }
+                            }
+                        });
+                    } else {
+                        this_object.scrollTo('.error', 40);
+                    }
+				}));
+
+                // Bind event for form reset
+				form.addEventListener('reset', this_object.deBounce(function() {
+                    const resetElements = form.querySelectorAll('input, select, textarea');
+                    if (resetElements.length > 0) {
+                        resetElements.forEach(function(element) {
+                            if (this_object.isMatch(element.type, 'checkbox') ||
+                                this_object.isMatch(element.type, 'radio') ||
+                                this_object.isMatch(element.type, 'select-one') ||
+                                this_object.isMatch(element.type, 'select-multiple')) {
+                                element.dispatchEvent(new Event('change'));
+                            } else {
+                                if (element.closest('div.iweb-input-autocomplete')) {
+                                    // Remove error & tips
+                                    element.closest('div.iweb-input-autocomplete').classList.remove('error');
+                                    element.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
+
+                                    const fillId = element.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
+                                    const fillText = element.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
+                                    element.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset')?.remove();
+
+                                    if (this_object.isValue(fillText.getAttribute('data-value')) && this_object.isValue(fillText.getAttribute('data-default'))) {
+                                        fillId.value = fillText.getAttribute('data-value');
+                                        fillText.value = fillText.getAttribute('data-default');
+                                        fillText.readOnly = false;
+
+                                        // Create reset button
+                                        const fillReset = document.createElement('a');
+                                        fillReset.classList.add('fill-reset');
+                                        fillReset.addEventListener('click', this_object.deBounce(function(e) {
+                                            const target = e.target;
+                                            
+                                            // Reset id input & search input
+                                            const fillId = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
+                                            const fillText = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
+                                            const fillReset = target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset');
+                                            fillId.value = '';
+                                            fillText.value = '';
+                                            fillText.readOnly = false;
+                                            fillReset.remove();
+
+                                            // Callback if need
+                                            const remove_callBack = fillId.getAttribute('data-rfunc');
+                                            if ((typeof window[remove_callBack]) === 'function') {
+                                                window[remove_callBack]();
+                                            }
+                                        }));
+
+                                        // Create Reset icon
+                                        const fillResetIcon = document.createElement('i');
+                                        fillResetIcon.classList.add('fa');
+                                        fillResetIcon.classList.add('fa-times');
+                                        fillResetIcon.style.color = '#d73d32';
+
+                                        // Append elements
+                                        fillReset.appendChild(fillResetIcon);
+                                        element.closest('div.iweb-input-autocomplete').appendChild(fillReset);
+                                    }
+                                } else {
+                                    element.dispatchEvent(new Event('input'));
+                                }
+                            }
+                        });
+                    }
+				}, 100, false));
+			});
+		}
+	}
+
+	uploader(options, callBack) {
+		const this_object = this;
+
+		// Create input file
+		const fileInput = document.createElement('input');
+		fileInput.type = 'file';
+		fileInput.multiple = true;
+		fileInput.addEventListener('change', this_object.deBounce(function(e) {
+            const fileInput = this;
+            const target = e.target;
+            
+			// Max 7 files
+			const maxFiles = 7;
+			let selectedFiles = fileInput.files;
+			if (selectedFiles.length > maxFiles) {
+				selectedFiles = Array.from(selectedFiles).slice(0, maxFiles);
+			}
+			this_object.uploader_files['selected_files'] = selectedFiles;
+			this_object.uploader_files_skip['selected_files'] = [-1];
+			this_object.uploader_options['selected_files'] = {
+				dataType: 'json',
+				url: '',
+				values: {},
+				allowed_types: '',
+				max_filesize: 64,
+				type_error_message: this_object.language[this_object.current_language]['type_error'],
+				max_error_message: this_object.language[this_object.current_language]['max_error'],
+				btnStartAll: '<i class="fa fa-cloud-upload"></i>',
+				btnClose: '<i class="fa fa-close"></i>',
+				btnStart: '<i class="fa fa-cloud-upload"></i>',
+				btnRemove: '<i class="fa fa-trash"></i>',
+				auto_close: false
+			};
+			if (this_object.isValue(options)) {
+				Object.assign(this_object.uploader_options['selected_files'], options);
+			}
+			if (this_object.isValue(this_object.uploader_options['selected_files'].allowed_types)) {
+				this_object.uploader_options['selected_files'].allowed_types = this_object.uploader_options['selected_files'].allowed_types.split('|');
+			}
+			this_object.uploader_options['selected_files'].max_error_message = this_object.uploader_options['selected_files'].max_error_message.replace('{num}', this_object.uploader_options['selected_files'].max_filesize);
+
+			// Create upload panel
+			if (this_object.isValue(this_object.uploader_options['selected_files'].url) && this_object.uploader_files['selected_files'].length > 0) {
+				// Create div for button
+				const uploaderDiv = document.createElement('div');
+				uploaderDiv.classList.add('action');
+
+				const startAllButton = document.createElement('button');
+				startAllButton.type = 'button';
+				startAllButton.classList.add('start-all');
+				startAllButton.innerHTML = this_object.uploader_options['selected_files'].btnStartAll;
+
+				const closeAllButton = document.createElement('button');
+				closeAllButton.type = 'button';
+				closeAllButton.classList.add('close');
+				closeAllButton.innerHTML = this_object.uploader_options['selected_files'].btnClose;
+
+				uploaderDiv.appendChild(startAllButton);
+				uploaderDiv.appendChild(closeAllButton);
+
+				// Create div for list
+				const listContainer = document.createElement('div');
+				listContainer.classList.add('list');
+
+				// Append elements
+				const dialogContent = document.createElement('div');
+				dialogContent.appendChild(uploaderDiv);
+				dialogContent.appendChild(listContainer);
+
+				// Preview list
+				this_object.dialog(dialogContent.innerHTML, function() {
+					this_object.uploaderPreview(this_object.uploader_files['selected_files']);
+
+					// Event handlers
+					const startAllButton = document.querySelector('div.iweb-info-dialog.uploader > div > div.content > div > div.action > button.start-all');
+					const closeAllButton = document.querySelector('div.iweb-info-dialog.uploader > div > div.content > div > div.action > button.close');
+					const listContainer = document.querySelector('div.iweb-info-dialog.uploader > div > div.content > div > div.list');
+
+					startAllButton.addEventListener('click', this_object.deBounce(function() {
+                        const items = listContainer.querySelectorAll('div.item');
+                        let loop_upload_index = [];
+                        items.forEach(function(item) {
+                            loop_upload_index.push(item.getAttribute('data-index').toString());
+                        });
+                        this_object.uploaderStart(-1, loop_upload_index, loop_upload_index[loop_upload_index.length - 1]);
+					}));
+
+					closeAllButton.addEventListener('click', this_object.deBounce(function() {
+						document.querySelector('div.iweb-info-dialog.uploader > div > div.content > a.btn-close').dispatchEvent(new Event('click'));
+					}));
+
+					listContainer.querySelectorAll('div.item > button.start').forEach(function(button) {
+						button.addEventListener('click', this_object.deBounce(function(e1) {
+							const target = e1.target;
+                            this_object.uploaderStart(target.closest('div.item').getAttribute('data-index'));
+						}));
+					});
+
+					listContainer.querySelectorAll('div.item > button.remove').forEach(function(button) {
+						button.addEventListener('click', this_object.deBounce(function(e2) {
+							const target = e2.target;
+                            this_object.uploader_files_skip['selected_files'].push(target.closest('div.item').getAttribute('data-index').toString());
+                            target.closest('div.item').remove();
+                            if (listContainer.querySelectorAll('div.item').length === 0) {
+                                document.querySelector('div.iweb-info-dialog.uploader > div > div.content > a.btn-close').dispatchEvent(new Event('click'));
+                            }
+						}));
+					});
+				}, function() {
+					// Callback if need
+					if ((typeof callBack) === 'function') {
+						callBack();
+					}
+				}, 'uploader');
+			}
+		}));
+        
+        // Auto click
+		fileInput.click();
+	}
+
+	uploaderArea(file_input_id, options, callBack) {
+		const this_object = this;
+
+		// Create input file
+		const fileInput = document.getElementById(file_input_id);
+        fileInput.removeAttribute('name');
+		fileInput.multiple = true;
+		fileInput.addEventListener('change', this_object.deBounce(function(e) {
+            const fileInput = this;
+            const target = e.target;
+            
+            // Max 7 files
+			const maxFiles = 7;
+			let selectedFiles = fileInput.files;
+			if (selectedFiles.length > maxFiles) {
+				selectedFiles = Array.from(selectedFiles).slice(0, maxFiles);
+			}
+			this_object.uploader_files['inline_selected_files_' + this_object.imd5.hash(file_input_id)] = selectedFiles;
+			this_object.uploader_files_skip['inline_selected_files_' + this_object.imd5.hash(file_input_id)] = [-1];
+			this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)] = {
+				dataType: 'json',
+				url: '',
+				values: {},
+				allowed_types: '',
+				max_filesize: 64,
+				type_error_message: this_object.language[this_object.current_language]['type_error'],
+				max_error_message: this_object.language[this_object.current_language]['max_error'],
+				btnStartAll: '<i class="fa fa-cloud-upload"></i>',
+				btnClose: '<i class="fa fa-close"></i>',
+				btnStart: '<i class="fa fa-cloud-upload"></i>',
+				btnRemove: '<i class="fa fa-trash"></i>',
+				auto_close: true
+			};
+			if (this_object.isValue(options)) {
+				this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)] = Object.assign(
+					this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)],
+					options
+				);
+			}
+			if (this_object.isValue(this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)].allowed_types)) {
+				this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)].allowed_types = this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)].allowed_types.split('|');
+			}
+			this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)].max_error_message = this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)].max_error_message.replace('{num}', this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)].max_filesize);
+
+			if (this_object.isValue(this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)].url) && fileInput.files.length > 0) {
+                const uploaderAreDiv = target.closest('div.iweb-files-dropzone').querySelector('div.iweb-files-uploader');
+                
+				// Create div for button
+				const uploaderDiv = document.createElement('div');
+				uploaderDiv.className = 'action';
+
+				const startAllButton = document.createElement('button');
+				startAllButton.className = 'start-all';
+				startAllButton.type = 'button';
+				startAllButton.title = 'Start All';
+				startAllButton.innerHTML = '<i class="fa fa-cloud-upload"></i>';
+
+				const closeAllButton = document.createElement('button');
+				closeAllButton.className = 'close';
+				closeAllButton.type = 'button';
+				closeAllButton.innerHTML = '<i class="fa fa-close"></i>';
+
+				const listContainer = document.createElement('div');
+				listContainer.classList.add('list');
+
+                // Append elements
+                uploaderDiv.appendChild(startAllButton);
+                uploaderDiv.appendChild(closeAllButton);
+				uploaderAreDiv.appendChild(uploaderDiv);
+				uploaderAreDiv.appendChild(listContainer);
+
+				// Preview list
+				this_object.uploaderPreview(this_object.uploader_files['inline_selected_files_' + this_object.imd5.hash(file_input_id)], 0, file_input_id);
+
+                // Event handlers
+                startAllButton.addEventListener('click', this_object.deBounce(function() {
+					const items = listContainer.querySelectorAll('div.item');
+                    let loop_upload_index = [];
+                    items.forEach(function(item) {
+                        loop_upload_index.push(item.getAttribute('data-index').toString());
+                    });
+                    this_object.uploaderStart(-1, loop_upload_index, loop_upload_index[loop_upload_index.length - 1], file_input_id);
+				}));
+                
+                closeAllButton.addEventListener('click', this_object.deBounce(function() {
+					uploaderAreDiv.innerHTML = '';
+                    fileInput.value = '';
+                    // Callback if need
+                    if ((typeof callBack) === 'function') {
+                        callBack();
+                    }
+				}));
+                
+				listContainer.querySelectorAll('div.item > button.start').forEach(function(button) {
+					button.addEventListener('click', this_object.deBounce(function(e1) {
+						const target = e1.target;
+                        this_object.uploaderStart(target.closest('div.item').getAttribute('data-index'), null, null, file_input_id);
+					}));
+				});
+
+				listContainer.querySelectorAll('div.item > button.remove').forEach(function(button) {
+					button.addEventListener('click', this_object.deBounce(function(e2) {
+						const target = e2.target;
+                        this_object.uploader_files_skip['inline_selected_files_' + this_object.imd5.hash(file_input_id)].push(target.closest('div.item').getAttribute('data-index').toString());
+                        target.closest('div.item').remove();
+                        if (listContainer.querySelectorAll('div.item').length === 0) {
+                            uploaderAreDiv.innerHTML = '';
+                            fileInput.value = '';
+                        }
+					}));
+				});
+			}
+		}));
+        
+        // Append elements
+		const parent = fileInput.parentElement;
+		parent.id = file_input_id + '-iweb-files-dropzone';
+		parent.classList.add('iweb-files-dropzone');
+
+		const uploaderDiv = document.createElement('div');
+		uploaderDiv.className = 'iweb-files-uploader';
+		parent.appendChild(uploaderDiv);
+	}
+
+	uploaderPreview(selectingFiles, key = 0, file_input_id) {
+		const this_object = this;
+		const regex = /^(.*)(.jpg|.jpeg|.gif|.png|.bmp)$/;
+
+		if (key >= selectingFiles.length) return; // Exit if there are no more files
+
+		let file = selectingFiles[key];
+		let extension = file.name.split('.').pop().toLowerCase();
+		let checking = true;
+
+		const itemDiv = document.createElement('div');
+		itemDiv.classList.add('item');
+		itemDiv.setAttribute('data-index', key);
+
+		const photoDiv = document.createElement('div');
+		photoDiv.classList.add('photo');
+		const imgElement = document.createElement('img');
+
+		if (regex.test(file.name.toLowerCase()) && (typeof(FileReader) !== 'undefined')) {
+			const reader = new FileReader();
+			reader.onload = function(e) {
+				imgElement.src = e.target.result;
+				photoDiv.appendChild(imgElement);
+			};
+			reader.readAsDataURL(file);
+		} else {
+			const fileIcons = {
+				pdf: '<i class="fa fa-file-pdf-o" style="color:#ef4130;"></i>',
+				doc: '<i class="fa fa-file-word-o" style="color:#5091cd;"></i>',
+				docx: '<i class="fa fa-file-word-o" style="color:#5091cd;"></i>',
+				xls: '<i class="fa fa-file-excel-o" style="color:#66cdaa;"></i>',
+				xlsx: '<i class="fa fa-file-excel-o" style="color:#66cdaa;"></i>',
+				ppt: '<i class="fa fa-file-powerpoint-o" style="color:#f7b002;"></i>',
+				pptx: '<i class="fa fa-file-powerpoint-o" style="color:#f7b002;"></i>',
+				txt: '<i class="fa fa-file-text-o"></i>',
+				avi: '<i class="fa fa-file-video-o" style="color:#5091cd;"></i>',
+				mov: '<i class="fa fa-file-video-o" style="color:#5091cd;"></i>',
+				mp4: '<i class="fa fa-file-video-o" style="color:#5091cd;"></i>',
+				ogg: '<i class="fa fa-file-video-o" style="color:#5091cd;"></i>',
+				wmv: '<i class="fa fa-file-video-o" style="color:#5091cd;"></i>',
+				webm: '<i class="fa fa-file-video-o" style="color:#5091cd;"></i>',
+				mp3: '<i class="fa fa-file-audio-o" style="color:#66cdaa;"></i>',
+				wav: '<i class="fa fa-file-audio-o" style="color:#66cdaa;"></i>',
+				rar: '<i class="fa fa-file-zip-o" style="color:#f7b002;"></i>',
+				zip: '<i class="fa fa-file-zip-o" style="color:#f7b002;"></i>'
+			};
+			photoDiv.innerHTML = fileIcons[extension] || '<i class="fa fa-file-code-o"></i>';
+		}
+
+		itemDiv.appendChild(photoDiv);
+
+		const infoDiv = document.createElement('div');
+		infoDiv.classList.add('info');
+
+		const titleDiv = document.createElement('div');
+		titleDiv.classList.add('title');
+		titleDiv.textContent = file.name;
+		infoDiv.appendChild(titleDiv);
+
+		const sizeDiv = document.createElement('div');
+		sizeDiv.classList.add('size');
+		sizeDiv.textContent = this_object.formatBytes(file.size, 0);
+		infoDiv.appendChild(sizeDiv);
+
+		const hashKey = this_object.isValue(file_input_id) ?
+			'inline_selected_files_' + this_object.imd5.hash(file_input_id) :
+			'selected_files';
+
+		const options = this_object.uploader_options[hashKey];
+		const allowedTypes = options.allowed_types || [];
+		const maxFileSize = options.max_filesize * 1024 * 1024;
+
+		if (allowedTypes.length && allowedTypes.indexOf(extension) < 0) {
+			const tipsDiv = document.createElement('div');
+			tipsDiv.classList.add('tips');
+			tipsDiv.innerHTML = '<small>' + options.type_error_message + '</small>';
+			infoDiv.appendChild(tipsDiv);
+			checking = false;
+		} else if (file.size > maxFileSize) {
+			const tipsDiv = document.createElement('div');
+			tipsDiv.classList.add('tips');
+			tipsDiv.innerHTML = '<small>' + options.max_error_message + '</small>';
+			infoDiv.appendChild(tipsDiv);
+			checking = false;
+		} else {
+			const progressBar = document.createElement('div');
+			progressBar.classList.add('progress-bar');
+			progressBar.innerHTML = '<div class="percent"></div>';
+			infoDiv.appendChild(progressBar);
+		}
+
+		itemDiv.appendChild(infoDiv);
+
+		if (checking) {
+			const startButton = document.createElement('button');
+			startButton.type = 'button';
+			startButton.classList.add('start');
+			startButton.innerHTML = '<i class="fa fa-cloud-upload"></i>';
+			itemDiv.appendChild(startButton);
+		}
+
+		const removeButton = document.createElement('button');
+		removeButton.type = 'button';
+		removeButton.classList.add('remove');
+		removeButton.innerHTML = '<i class="fa fa-trash"></i>';
+		itemDiv.appendChild(removeButton);
+
+		const dropzone = this_object.isValue(file_input_id) ?
+			'#' + file_input_id + '-iweb-files-dropzone > div.iweb-files-uploader > div.list' :
+			'div.iweb-info-dialog.uploader > div > div.content > div > div.list';
+
+		document.querySelector(dropzone).appendChild(itemDiv);
+
+		// Continue to preview the next file
+		this_object.uploaderPreview(selectingFiles, key + 1, file_input_id);
+	}
+
+	uploaderStart(index, loop_upload_index, last_upload_index, file_input_id) {
+		const this_object = this;
+
+		let mainIndex = 'selected_files';
+		if (this_object.isValue(file_input_id)) {
+			mainIndex = 'inline_selected_files_' + this_object.imd5.hash(file_input_id);
+		}
+
+		// Helper function to safely call if the function is defined
+		const safeEndFunction = () => {
+			const uploaderDialog = (this_object.isValue(file_input_id)) ? document.querySelector('#' + file_input_id + '-iweb-files-dropzone') : document.querySelector('div.iweb-info-dialog.uploader');
+			if (uploaderDialog) {
+				const startCount = uploaderDialog.querySelectorAll('div.list > div.item > button.start').length;
+				if (parseInt(startCount) === 0) {
+					uploaderDialog.querySelector('div.action > button.start-all')?.remove();
+					if (this_object.uploader_options[mainIndex].auto_close) {
+						uploaderDialog.querySelector('div.action > button.close').dispatchEvent(new Event('click'));
+					}
+				}
+				uploaderDialog.classList.remove('busy');
+			}
+		};
+
+		const uploaderDialog = (this_object.isValue(file_input_id)) ? document.querySelector('#' + file_input_id + '-iweb-files-dropzone') : document.querySelector('div.iweb-info-dialog.uploader');
+		uploaderDialog.classList.add('busy');
+
+		// Init
+		let isBatch = true;
+		if (!this_object.isValue(loop_upload_index)) {
+			loop_upload_index = [index];
+			last_upload_index = index;
+			isBatch = false;
+		} else {
+			index = index + 1;
+		}
+
+		// Upload one by one
+		if (parseInt(index) <= parseInt(last_upload_index)) {
+			if (!loop_upload_index.includes(index.toString())) {
+				if (isBatch) {
+					this_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
+				} else {
+					safeEndFunction();
+				}
+			} else {
+				if (this_object.isValue(this_object.uploader_files[mainIndex]) && !this_object.uploader_files_skip[mainIndex].includes(index.toString())) {
+					this_object.uploader_files_skip[mainIndex].push(index.toString());
+
+					const selectingFiles = this_object.uploader_files[mainIndex];
+					const extension = selectingFiles[index].name.split('.').pop().toLowerCase();
+					let checking = true;
+					if (this_object.isValue(this_object.uploader_options[mainIndex].allowed_types) && !this_object.uploader_options[mainIndex].allowed_types.includes(extension.toString())) {
+						checking = false;
+					} else if (selectingFiles[index].size > this_object.uploader_options[mainIndex].max_filesize * 1024 * 1024) {
+						checking = false;
+					}
+
+					if (checking) {
+						let post_data = {
+							dataType: 'json',
+							showBusy: false,
+							url: this_object.uploader_options[mainIndex].url,
+							values: {}
+						};
+
+						const formData = new FormData();
+						formData.append('page_action', 'file_upload');
+						if (this_object.isValue(this_object.uploader_options[mainIndex].values)) {
+							Object.entries(this_object.uploader_options[mainIndex].values).forEach(function(key, value) {
+								formData.append(key, value);
+							});
+						}
+						formData.append('myfile', selectingFiles[index], selectingFiles[index].name);
+						formData.forEach(function(value, key) {
+							post_data.values[key] = value;
+						});
+
+						this_object.ajaxPost(post_data, function(responseData) {
+							const itemDiv = uploaderDialog.querySelector('div.list > div.item[data-index="' + index + '"]');
+							itemDiv.querySelector('div.info > div.progress-bar')?.remove();
+
+							const message = (responseData.message || responseData);
+							const infoDiv = itemDiv.querySelector('div.info');
+							const tipsDiv = document.createElement('div');
+							tipsDiv.classList.add('tips');
+							tipsDiv.innerHTML = '<small>' + message + '</small>';
+							infoDiv.appendChild(tipsDiv);
+
+							// Next
+							if (isBatch) {
+								this_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
+							} else {
+								safeEndFunction();
+							}
+						}, null, function(percentage) {
+							const itemDiv = uploaderDialog.querySelector('div.list > div.item[data-index="' + index + '"]');
+							itemDiv.querySelector('button.start')?.remove();
+							itemDiv.querySelector('button.remove')?.remove();
+
+							const progressBarPercent = itemDiv.querySelector('div.info > div.progress-bar > div.percent');
+							if (progressBarPercent) {
+								progressBarPercent.style.width = percentage + '%';
+							}
+						});
+					} else {
+						const itemDiv = uploaderDialog.querySelector('div.list > div.item[data-index="' + index + '"]');
+						itemDiv.querySelector('button.start')?.remove();
+						itemDiv.querySelector('button.remove')?.remove();
+
+						// Next
+						if (isBatch) {
+							this_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
+						} else {
+							safeEndFunction();
+						}
+					}
+				} else {
+					if (isBatch) {
+						this_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
+					} else {
+						safeEndFunction();
+					}
+				}
+			}
+		} else {
+			safeEndFunction();
+		}
+	}
+
+	// dialog
+	alert(message = '', callBack, customizeClassName) {
+		// Prevent duplicate dialogs
+		if (document.querySelectorAll('div.iweb-alert-dialog').length > 0) {
+			return;
+		}
+
+		const this_object = this;
+
+		// Create div
+		const alertDialog = document.createElement('div');
+		alertDialog.classList.add('iweb-alert-dialog');
+		if (this_object.isValue(customizeClassName)) {
+			alertDialog.classList.add(customizeClassName);
+		}
+
+		const innerDiv = document.createElement('div');
+		const contentDiv = document.createElement('div');
+		contentDiv.classList.add('content');
+		contentDiv.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+		contentDiv.style.transform = 'translateY(-320%)';
+		contentDiv.style.opacity = '0';
+
+		const detailsDiv = document.createElement('div');
+		detailsDiv.innerHTML = message;
+
+		// Create close button
+		const closeButton = document.createElement('button');
+		closeButton.classList.add('btn');
+		closeButton.classList.add('btn-close');
+		closeButton.textContent = this_object.language[this_object.current_language]['btn_confirm'];
+		closeButton.addEventListener('click', this_object.deBounce(function(e) {
+			const target = e.target;
+			contentDiv.style.transform = 'translateY(-320%)';
+			contentDiv.style.transform = '0';
+			contentDiv.addEventListener('transitionend', function() {
+				target.closest('div.iweb-alert-dialog').remove();
+				if (document.querySelectorAll('div.iweb-alert-dialog').length === 0 && document.querySelectorAll('div.iweb-info-dialog').length === 0) {
+					document.body.classList.remove('iweb-disable-scroll');
+				}
+
+				// Callback if need
+				if ((typeof callBack) === 'function') {
+					callBack();
+				}
+			}, {
+				once: true
+			});
+		}));
+
+		// Append to body
+		const viewer = document.querySelector('div.iweb-viewer');
+		innerDiv.appendChild(contentDiv);
+		contentDiv.appendChild(detailsDiv);
+		contentDiv.appendChild(closeButton);
+		alertDialog.appendChild(innerDiv);
+		viewer.insertBefore(alertDialog, viewer.firstChild);
+		document.body.classList.add('iweb-disable-scroll');
+
+		// Show dialog
+		setTimeout(function() {
+			contentDiv.style.transform = 'translateY(0)';
+			contentDiv.style.opacity = '1';
+		}, 100);
+	}
+
+	confirm(message = '', callBack, customizeClassName) {
+		// Prevent duplicate dialogs
+		if (document.querySelectorAll('div.iweb-alert-dialog').length > 0) {
+			return;
+		}
+
+		const this_object = this;
+
+		// Create div
+		const alertDialog = document.createElement('div');
+		alertDialog.classList.add('iweb-alert-dialog');
+		if (this_object.isValue(customizeClassName)) {
+			alertDialog.classList.add(customizeClassName);
+		}
+
+		const innerDiv = document.createElement('div');
+		const contentDiv = document.createElement('div');
+		contentDiv.classList.add('content');
+		contentDiv.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+		contentDiv.style.transform = 'translateY(-320%)';
+		contentDiv.style.opacity = '0';
+
+		const detailsDiv = document.createElement('div');
+		detailsDiv.innerHTML = message;
+
+		// Create the yes/no button
+		const yesButton = document.createElement('button');
+		yesButton.classList.add('btn');
+		yesButton.classList.add('btn-yes');
+		yesButton.textContent = this_object.language[this_object.current_language]['btn_yes'];
+		yesButton.addEventListener('click', this_object.deBounce(function(e) {
+            const target = e.target;
+			contentDiv.style.transform = 'translateY(-320%)';
+			contentDiv.style.transform = '0';
+			contentDiv.addEventListener('transitionend', function() {
+				target.closest('div.iweb-alert-dialog').remove();
+				if (document.querySelectorAll('div.iweb-alert-dialog').length === 0 && document.querySelectorAll('div.iweb-info-dialog').length === 0) {
+					document.body.classList.remove('iweb-disable-scroll');
+				}
+
+				// Callback if need
+				if ((typeof callBack) === 'function') {
+					callBack(true);
+				}
+			}, {
+				once: true
+			});
+		}));
+
+		const noButton = document.createElement('button');
+		noButton.classList.add('btn');
+		noButton.classList.add('btn-no');
+		noButton.textContent = this_object.language[this_object.current_language]['btn_no'];
+		noButton.addEventListener('click', this_object.deBounce(function(e) {
+            const target = e.target;
+			contentDiv.style.transform = 'translateY(-320%)';
+			contentDiv.style.transform = '0';
+			contentDiv.addEventListener('transitionend', function() {
+				target.closest('div.iweb-alert-dialog').remove();
+				if (document.querySelectorAll('div.iweb-alert-dialog').length === 0 && document.querySelectorAll('div.iweb-info-dialog').length === 0) {
+					document.body.classList.remove('iweb-disable-scroll');
+				}
+
+				// Callback if need
+				if ((typeof callBack) === 'function') {
+					callBack(false);
+				}
+			}, {
+				once: true
+			});
+		}));
+
+		// Append to body
+		const viewer = document.querySelector('div.iweb-viewer');
+		innerDiv.appendChild(contentDiv);
+		contentDiv.appendChild(detailsDiv);
+		contentDiv.appendChild(yesButton);
+		contentDiv.appendChild(noButton);
+		alertDialog.appendChild(innerDiv);
+		viewer.insertBefore(alertDialog, viewer.firstChild);
+		document.body.classList.add('iweb-disable-scroll');
+
+		setTimeout(function() {
+			contentDiv.style.transform = 'translateY(0)';
+			contentDiv.style.opacity = '1';
+		}, 100);
+	}
+
+	dialog(htmlCode, initFunc, callBack, customizeClassName) {
+		// Prevent duplicate dialogs
+		if (document.querySelector('div.iweb-info-dialog')) {
+			return;
+		}
+
+		const this_object = this;
+
+		// Create div
+		const infoDialog = document.createElement('div');
+		infoDialog.classList.add('iweb-info-dialog');
+		if (this_object.isValue(customizeClassName)) {
+			infoDialog.classList.add(customizeClassName);
+		}
+
+		const innerDiv = document.createElement('div');
+		innerDiv.addEventListener('click', this_object.deBounce(function(e) {
+			const target = e.target;
+			if (target.closest('div.iweb-info-dialog') && !target.closest('div.content')) {
+				target.closest('div.iweb-info-dialog').querySelector('a.btn-close').dispatchEvent(new Event('click'));
+			}
+		}));
+
+		const contentDiv = document.createElement('div');
+		contentDiv.classList.add('content');
+		contentDiv.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
+		contentDiv.style.transform = 'translateY(-320%)';
+		contentDiv.style.opacity = '0';
+
+		const detailsDiv = document.createElement('div');
+		if ((typeof htmlCode) === 'string') {
+			detailsDiv.innerHTML = htmlCode;
+		} else {
+			detailsDiv.appendChild(htmlCode);
+		}
+
+		// Create the close button
+		const closeButton = document.createElement('a');
+		closeButton.classList.add('btn');
+		closeButton.classList.add('btn-close');
+		closeButton.addEventListener('click', this_object.deBounce(function(e) {
+			const target = e.target;
+			contentDiv.style.transform = 'translateY(-320%)';
+			contentDiv.style.transform = '0';
+			contentDiv.addEventListener('transitionend', function() {
+				target.closest('div.iweb-info-dialog').remove();
+				if (document.querySelectorAll('div.iweb-alert-dialog').length === 0 && document.querySelectorAll('div.iweb-info-dialog').length === 0) {
+					document.body.classList.remove('iweb-disable-scroll');
+				}
+
+				// Callback if need
+				if ((typeof callBack) === 'function') {
+					callBack();
+				}
+			}, {
+				once: true
+			});
+		}));
+
+		// Append to body
+		const viewer = document.querySelector('div.iweb-viewer');
+		innerDiv.appendChild(contentDiv);
+		contentDiv.appendChild(detailsDiv);
+		contentDiv.appendChild(closeButton);
+		infoDialog.appendChild(innerDiv);
+		viewer.insertBefore(infoDialog, viewer.firstChild);
+		document.body.classList.add('iweb-disable-scroll');
+
+		// init component
+		this_object.initComponent();
+
+		// init form
+		this_object.initForm();
+
+		// Callback if need
+		if ((typeof initFunc) === 'function') {
+			initFunc();
+		}
+
+		// Show dialog
+		setTimeout(function() {
+			contentDiv.style.transform = 'translateY(0)';
+			contentDiv.style.opacity = '1';
+		}, 100);
+	}
+
+	// bind event
+    bindEvent(eventType, selector, callBack) {
+        const this_object = this;
+		document.addEventListener(eventType, this_object.deBounce(function(e) {
+            // Check if the clicked element matches the selector
+            const target = e.target.closest(selector);
+            if (target) {
+                // Pass the matched target and the event
+                callBack($(target), e);
+            }
+        }, 10, false));
+    }
+    
+    triggerEvent(eventType, selector) {
+        const target = document.querySelector(selector);
+        if (target) {
+            // Create a new event with the specified type
+            const customEvent = new Event(eventType, { 
+                bubbles: true, // Allow the event to bubble up
+                cancelable: true // Allow the event to be canceled
+            });
+            target.dispatchEvent(customEvent);
+        }
+    }
+
 	// validation
 	isValue(value) {
 		if ((typeof value) === 'undefined' || value === null) {
@@ -2183,9 +2223,9 @@ class iweb {
 	}
 
 	isMatch(value1, value2, sensitive = false) {
-		const iwebObject = this;
+		const this_object = this;
 
-		if (iwebObject.isValue(value1) && iwebObject.isValue(value2)) {
+		if (this_object.isValue(value1) && this_object.isValue(value2)) {
 			const trimmedValue1 = (value1.toString().trim());
 			const trimmedValue2 = (value2.toString().trim());
 			return (sensitive) ? (trimmedValue1 === trimmedValue2) : (trimmedValue1.toLowerCase() === trimmedValue2.toLowerCase());
@@ -2195,10 +2235,10 @@ class iweb {
 	}
 
 	isNumber(value, digital_mode = false) {
-		const iwebObject = this;
+		const this_object = this;
 		const reg = ((digital_mode) ? /^[0-9]+$/ : /(^((-)?[1-9]{1}\d{0,2}|0\.|0$))(((\d)+)?)(((\.)(\d+))?)$/);
 
-		if (iwebObject.isValue(value)) {
+		if (this_object.isValue(value)) {
 			return reg.test(value);
 		}
 
@@ -2206,10 +2246,10 @@ class iweb {
 	}
 
 	isEmail(value) {
-		const iwebObject = this;
+		const this_object = this;
 		const reg = /^([A-Za-z0-9_\-\.])+@([A-Za-z0-9_\-\.])+\.[A-Za-z]{2,}$/;
 
-		if (iwebObject.isValue(value)) {
+		if (this_object.isValue(value)) {
 			return reg.test(value);
 		}
 
@@ -2217,10 +2257,10 @@ class iweb {
 	}
 
 	isPassword(value) {
-		const iwebObject = this;
+		const this_object = this;
 		const reg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 
-		if (iwebObject.isValue(value)) {
+		if (this_object.isValue(value)) {
 			return reg.test(value);
 		}
 
@@ -2228,11 +2268,11 @@ class iweb {
 	}
 
 	isDate(value, format = 'Y-m-d') {
-		const iwebObject = this;
+		const this_object = this;
 		const reg = /^(\d{4})(\-)(\d{2})(\-)(\d{2})$/;
 
-		if (iwebObject.isValue(value)) {
-			if (!iwebObject.isMatch(format, 'Y-m-d')) {
+		if (this_object.isValue(value)) {
+			if (!this_object.isMatch(format, 'Y-m-d')) {
 				value = value.split('/').reverse().join('-');
 			}
 			if (reg.test(value)) {
@@ -2267,11 +2307,11 @@ class iweb {
 
 	// convert
 	toNumber(value, currency_mode, decimal) {
-		const iwebObject = this;
+		const this_object = this;
 
 		value = value.toString().replace(/[^\d|\-|\.]/g, '');
-		if (iwebObject.isNumber(value)) {
-			if (iwebObject.isNumber(decimal) && parseInt(decimal) > 0) {
+		if (this_object.isNumber(value)) {
+			if (this_object.isNumber(decimal) && parseInt(decimal) > 0) {
 				let power10 = Math.pow(10, decimal);
 				value = value * power10;
 				value = (Math.round(value) / power10).toString();
@@ -2284,7 +2324,7 @@ class iweb {
 					value += '0';
 				}
 			}
-			if (iwebObject.isMatch(currency_mode, true)) {
+			if (this_object.isMatch(currency_mode, true)) {
 				return value.toString().replace(/(\d)(?=(\d{3})+\b)/g, '$1,');
 			} else {
 				return value;
@@ -2294,9 +2334,9 @@ class iweb {
 	}
 
 	toDateTime(value, format = 'Y-m-d H:i:s') {
-		const iwebObject = this;
+		const this_object = this;
 
-		let now = ((iwebObject.isValue(value)) ? new Date(value) : new Date());
+		let now = ((this_object.isValue(value)) ? new Date(value) : new Date());
 		let year = now.getFullYear();
 		let month = now.getMonth() + 1;
 		let day = now.getDate();
@@ -2369,10 +2409,10 @@ class iweb {
 
 	// cookie
 	setCookie(cname, cvalue, exdays = 14) {
-		const iwebObject = this;
+		const this_object = this;
 
 		if (navigator.cookieEnabled) {
-			if (iwebObject.isValue(cname)) {
+			if (this_object.isValue(cname)) {
 				const d = new Date();
 				d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
 				const expires = 'expires=' + d.toUTCString();
@@ -2386,10 +2426,10 @@ class iweb {
 	}
 
 	getCookie(cname) {
-		const iwebObject = this;
+		const this_object = this;
         
 		if (navigator.cookieEnabled) {
-			if (iwebObject.isValue(cname)) {
+			if (this_object.isValue(cname)) {
 				const name = cname + '=';
 				const ca = document.cookie.split(';');
 				for (let i = 0; i < ca.length; i++) {
@@ -2407,6 +2447,7 @@ class iweb {
 
     deBounce(callBack, delay = 100, prevent = true) {
         let timeout;
+        
         return function(e) {
             // Prevent default behavior
             if(prevent) {
@@ -2418,26 +2459,30 @@ class iweb {
             //Clear the previous timer
             clearTimeout(timeout);
             
+            // Capture `this` for the setTimeout callback
+            const context = this;
+            const args = arguments;
+            
             //Set a new timer
-            timeout = setTimeout(() => callBack.apply(this, arguments), delay);
+            timeout = setTimeout(() => callBack.apply(context, args), delay);
         };
     }
 
 	showBusy(status, value) {
-		const iwebObject = this;
+		const this_object = this;
 
-		if (iwebObject.isMatch(status, 1) || iwebObject.isMatch(status, true)) {
+		if (this_object.isMatch(status, 1) || this_object.isMatch(status, true)) {
 			if (document.querySelectorAll('div.iweb-processing').length === 0) {
 				// Init opacity based on value
 				let opacity = 1;
-				if (iwebObject.isNumber(value, true)) {
+				if (this_object.isNumber(value, true)) {
 					opacity = (Math.round(parseInt(value) / 100 * 100) / 100);
 				}
 
 				// Create the main div
 				const processingDiv = document.createElement('div');
 				processingDiv.className = 'iweb-processing';
-				if (iwebObject.isNumber(value, true)) {
+				if (this_object.isNumber(value, true)) {
 					processingDiv.style.background = 'rgba(255,255,255,' + opacity + ')';
 				}
 
@@ -2488,7 +2533,7 @@ class iweb {
 			}
 		} else {
 			let microsecond = 0;
-			if (iwebObject.isNumber(value, true)) {
+			if (this_object.isNumber(value, true)) {
 				microsecond = parseInt(value);
 			}
 			setTimeout(function() {
@@ -2501,10 +2546,10 @@ class iweb {
 	}
 
 	scrollTo(element, adjustment_value, callBack) {
-		const iwebObject = this;
+		const this_object = this;
 
 		let element_scroll_top_value = 0;
-		adjustment_value = (iwebObject.isValue(adjustment_value)) ? parseInt(adjustment_value) : 0;
+		adjustment_value = (this_object.isValue(adjustment_value)) ? parseInt(adjustment_value) : 0;
 
 		const targetElement = document.querySelector(element);
 		if (targetElement) {
