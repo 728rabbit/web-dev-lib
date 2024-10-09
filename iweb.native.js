@@ -1232,7 +1232,7 @@ class iwebApp {
                                     can_submit = false;
                                 }
                             } else if (this_object.isMatch(input.type, 'radio')) {
-                                if ((validationArray.includes('required')) && input.closest('div.iweb-radio-set') && !input.closest('div.iweb-radio-set').querySelector('input[type="radio"]:checked')) {
+                                if (validationArray.includes('required') && input.closest('div.iweb-radio-set') && !input.closest('div.iweb-radio-set').querySelector('input[type="radio"]:checked')) {
                                     if (showTips && !input.closest('div.iweb-radio-set').querySelector('small.tips')) {
                                         const errorTips = document.createElement('small');
                                         errorTips.classList.add('tips');
@@ -1243,7 +1243,7 @@ class iwebApp {
                                     can_submit = false;
                                 }
                             } else if (this_object.isMatch(input.type, 'select-one') || this_object.isMatch(input.type, 'select-multiple')) {
-                                if ((validationArray.includes('required')) && !this_object.isValue(input.value)) {
+                                if (validationArray.includes('required') && !this_object.isValue(input.value)) {
                                     if (showTips && !input.closest('div.iweb-select').querySelector('small.tips')) {
                                         const errorTips = document.createElement('small');
                                         errorTips.classList.add('tips');
@@ -1254,7 +1254,7 @@ class iwebApp {
                                     can_submit = false;
                                 }
                             } else {
-                                if ((validationArray.includes('required')) && !this_object.isValue(input.value)) {
+                                if (validationArray.includes('required') && !this_object.isValue(input.value)) {
                                     if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                         const errorTips = document.createElement('small');
                                         errorTips.classList.add('tips');
@@ -1263,7 +1263,7 @@ class iwebApp {
                                     }
                                     input.closest('div.iweb-input').classList.add('error');
                                     can_submit = false;
-                                } else {
+                                } else if (this_object.isValue(input.value)){
                                     if ((validationArray.includes('number')) && !this_object.isNumber(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
@@ -2592,7 +2592,7 @@ class iwebApp {
 		return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 	};
     
-    getURL(extra){
+    getURL(extra) {
 		const this_object = this;
 		return (window.location.href.split('?')[0]).toString() + ((this_object.isValue(extra)) ? ('/' + extra) : '');
 	}
