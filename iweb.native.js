@@ -910,7 +910,9 @@ class iwebApp {
                         });
 
                         // Remove tips
-                        target.closest('div.iweb-checkbox-set').querySelector('small.tips')?.remove();
+                        if(target.closest('div.iweb-checkbox-set')) {
+                            target.closest('div.iweb-checkbox-set').querySelector('small.tips')?.remove();
+                        }
 					}));
 				}
 			});
@@ -967,7 +969,9 @@ class iwebApp {
                         });
 
                         // Remove tips
-                        target.closest('div.iweb-radio-set').querySelector('small.tips')?.remove();
+                        if(target.closest('div.iweb-radio-set')) {
+                            target.closest('div.iweb-radio-set').querySelector('small.tips')?.remove();
+                        }
 					}));
 				}
 			});
@@ -1056,6 +1060,9 @@ class iwebApp {
 			url: '',
 			values: {}
 		}, post_data);
+        if(!post_data.showBusy) {
+            this_object.is_busy = false;
+        }
 
 		if (!this_object.is_busy && this_object.isValue(post_data.url)) {
 			const local_time = this_object.toDateTime();
@@ -1063,16 +1070,18 @@ class iwebApp {
 
 			formData.append('itoken', window.btoa(this_object.imd5.hash(this_object.csrf_token + '#dt' + local_time) + '%' + local_time));
 			if (post_data.values) {
-				for (let key in post_data.values) {
-					const value = post_data.values[key];
-					// Check if the value is an object or array and stringify it
-					if (typeof value === 'object' && !(value instanceof File || value instanceof FileList)) {
-						for (let sub_key in value) {
-							formData.append((key + '[' + sub_key + ']'), value[sub_key]);
-						}
-					} else {
-						formData.append(key, value);
-					}
+				for (let key in (post_data.values)) {
+                    if ((post_data.values).hasOwnProperty(key)) {
+                        const value = post_data.values[key];
+                        // Check if the value is an object or array and stringify it
+                        if (typeof value === 'object' && !(value instanceof File || value instanceof FileList)) {
+                            for (let sub_key in value) {
+                                formData.append((key + '[' + sub_key + ']'), value[sub_key]);
+                            }
+                        } else {
+                            formData.append(key, value);
+                        }
+                    }
 				}
 			}
 
@@ -1191,7 +1200,7 @@ class iwebApp {
 				form.autocomplete = 'off';
                 
                 // Bind event for form submit
-				form.addEventListener('submit', this_object.deBounce(function(e) {
+				form.addEventListener('submit', this_object.deBounce(function() {
                     // Remove error & tips
                     const errorElements = form.querySelectorAll('.error');
                     errorElements.forEach(function(e) {
@@ -1212,7 +1221,7 @@ class iwebApp {
                         requiredInputs.forEach(function(input) {
                             const validationArray = (input.getAttribute('data-validation').toString().split('|'));
                             if (this_object.isMatch(input.type, 'checkbox')) {
-                                if (validationArray.includes('required') && !input.closest('div.iweb-checkbox-set').querySelector('input[type="checkbox"]:checked')) {
+                                if (validationArray.includes('required') && input.closest('div.iweb-checkbox-set') && !input.closest('div.iweb-checkbox-set').querySelector('input[type="checkbox"]:checked')) {
                                     if (showTips && !input.closest('div.iweb-checkbox-set').querySelector('small.tips')) {
                                         const errorTips = document.createElement('small');
                                         errorTips.classList.add('tips');
@@ -1223,7 +1232,7 @@ class iwebApp {
                                     can_submit = false;
                                 }
                             } else if (this_object.isMatch(input.type, 'radio')) {
-                                if ((validationArray.includes('required')) && !input.closest('div.iweb-radio-set').querySelector('input[type="radio"]:checked')) {
+                                if ((validationArray.includes('required')) && input.closest('div.iweb-radio-set') && !input.closest('div.iweb-radio-set').querySelector('input[type="radio"]:checked')) {
                                     if (showTips && !input.closest('div.iweb-radio-set').querySelector('small.tips')) {
                                         const errorTips = document.createElement('small');
                                         errorTips.classList.add('tips');
@@ -1381,7 +1390,9 @@ class iwebApp {
                             }
                         });
                     } else {
-                        this_object.scrollTo('.error', 40);
+                        if (!((typeof window[validation_func]) === 'function')) {
+                            this_object.scrollTo('.error', 40);
+                        }
                     }
 				}));
 
@@ -1883,15 +1894,18 @@ class iwebApp {
 						const formData = new FormData();
 						formData.append('page_action', 'file_upload');
 						if (this_object.isValue(this_object.uploader_options[mainIndex].values)) {
-							Object.entries(this_object.uploader_options[mainIndex].values).forEach(function(key, value) {
-								formData.append(key, value);
-							});
+                            const extra_values = this_object.uploader_options[mainIndex].values;
+                            for (let key in extra_values) {
+                                if (extra_values.hasOwnProperty(key)) {
+                                    formData.append(key, extra_values[key]);
+                                }
+                            }
 						}
 						formData.append('myfile', selectingFiles[index], selectingFiles[index].name);
 						formData.forEach(function(value, key) {
 							post_data.values[key] = value;
 						});
-
+                        
 						this_object.ajaxPost(post_data, function(responseData) {
 							const itemDiv = uploaderDialog.querySelector('div.list > div.item[data-index="' + index + '"]');
 							itemDiv.querySelector('div.info > div.progress-bar')?.remove();
@@ -2114,13 +2128,6 @@ class iwebApp {
 		}
 
 		const innerDiv = document.createElement('div');
-		innerDiv.addEventListener('click', this_object.deBounce(function(e) {
-			const target = e.target;
-			if (target.closest('div.iweb-info-dialog') && !target.closest('div.content')) {
-				target.closest('div.iweb-info-dialog').querySelector('a.btn-close').dispatchEvent(new Event('click'));
-			}
-		}));
-
 		const contentDiv = document.createElement('div');
 		contentDiv.classList.add('content');
 		contentDiv.style.transition = 'transform 0.5s ease, opacity 0.5s ease';
@@ -2129,7 +2136,7 @@ class iwebApp {
 
 		const detailsDiv = document.createElement('div');
 		if ((typeof htmlCode) === 'string') {
-			detailsDiv.innerHTML = htmlCode;
+			detailsDiv.insertAdjacentHTML('beforeend', htmlCode);
 		} else {
 			detailsDiv.appendChild(htmlCode);
 		}
@@ -2165,20 +2172,18 @@ class iwebApp {
 		infoDialog.appendChild(innerDiv);
 		viewer.insertBefore(infoDialog, viewer.firstChild);
 		document.body.classList.add('iweb-disable-scroll');
-
-		// init component
-		this_object.initComponent();
-
-		// init form
-		this_object.initForm();
-
-		// Callback if need
-		if ((typeof initFunc) === 'function') {
-			initFunc();
-		}
-
+        
 		// Show dialog
 		setTimeout(function() {
+            // init component & form
+            this_object.initComponent();
+            this_object.initForm();
+            
+            // Callback if need
+            if ((typeof initFunc) === 'function') {
+                initFunc();
+            }
+            
 			contentDiv.style.transform = 'translateY(0)';
 			contentDiv.style.opacity = '1';
 		}, 100);
@@ -2192,7 +2197,7 @@ class iwebApp {
             const target = e.target.closest(selector);
             if (target) {
                 // Pass the matched target and the event
-                callBack($(target), e);
+                callBack(target, e);
             }
         }, 10, false));
     }
@@ -2406,7 +2411,7 @@ class iwebApp {
 		}
 		return dateTime;
 	}
-
+    
 	// cookie
 	setCookie(cname, cvalue, exdays = 14) {
 		const this_object = this;
@@ -2445,9 +2450,9 @@ class iwebApp {
 		return '';
 	}
 
+    // others
     deBounce(callBack, delay = 100, prevent = true) {
         let timeout;
-        
         return function(e) {
             // Prevent default behavior
             if(prevent) {
@@ -2586,6 +2591,66 @@ class iwebApp {
 		// Format the bytes and append the appropriate size unit
 		return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
 	};
+    
+    getURL(extra){
+		const this_object = this;
+		return (window.location.href.split('?')[0]).toString() + ((this_object.isValue(extra)) ? ('/' + extra) : '');
+	}
+    
+	getURLParameter(name) {
+		const this_object = this;
+
+		let parameter_value = '';
+		if (this_object.isValue(name)) {
+			let urlParameters = window.location.search.substring(1).split('&');
+			for (let i = 0; i < parseInt(urlParameters.length); i++) {
+				let currentParameter = urlParameters[i].split('=');
+				let currentParameter_index = currentParameter[0];
+				let currentParameter_value = currentParameter[1];
+				if (this_object.isValue(currentParameter_index) && this_object.isValue(currentParameter_value)) {
+					if (this_object.isMatch(currentParameter_index, name)) {
+						parameter_value = currentParameter_value;
+						break;
+					}
+				}
+			}
+		}
+		return parameter_value;
+	}
+    
+	randomNum(min, max) {
+		const this_object = this;
+
+		if (!this_object.isValue(min) || parseInt(min) < 0) {
+			min = 0;
+		}
+		if (!this_object.isValue(max) || parseInt(max) < 1) {
+			max = 1;
+		}
+		min = parseInt(min);
+		max = parseInt(max);
+		if (parseInt(min) > parseInt(max)) {
+			min = 0;
+			max = 1;
+		}
+		return parseInt(Math.random() * (max + 1 - min) + min);
+	}
+    
+	randomString(length) {
+		const this_object = this;
+
+		const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
+		if (!this_object.isNumber(length)) {
+			length = 12;
+		}
+        
+		let result = '';
+		for (let i = 0; i < length; i++) {
+			let rnum = Math.floor(Math.random() * chars.length);
+			result += chars.substring(rnum, rnum + 1);
+		}
+		return result;
+	}
 
 	detectDevice(index) {
 		var isMobile = {

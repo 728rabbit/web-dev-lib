@@ -7,8 +7,7 @@
         <meta name="csrf-token" content="96ca6fd5cc5283000910785ba2344044"/>
         <link href="dist/icon/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <link href="dist/iweb.native.css" rel="stylesheet" type="text/css"/>
-        <script src="dist/jquery.min.js" type="text/javascript"></script>
-        <script src="dist/iweb.native.min.js" type="text/javascript"></script>
+        <script src="dist/iweb.native.js" type="text/javascript"></script>
         <style>
             div.row {
                 margin-top: 10px;
@@ -207,17 +206,17 @@
         </div>
         
         
-        <script>const myiweb = (new iweb()); myiweb.init();</script>
+        <script>const iweb = (new iwebApp()); iweb.init();</script>
         <script>
             function iweb_common_func() { 
                 console.log('init common func');
             }
-            
+
             function iweb_func() { 
                 console.log('init func');
-                myiweb.pagination('div.mypage');
-                
-                myiweb.uploaderArea('myfiles1', {
+                iweb.pagination('div.mypage');
+
+                iweb.uploaderArea('myfiles1', {
                     url: 'http://localhost/mylib/upload.php',
                     dataType: 'text',
                     values: {
@@ -227,8 +226,8 @@
                 }, function() {
                     alert('end upload 1');
                 });
-                
-                myiweb.uploaderArea('myfiles2', {
+
+                iweb.uploaderArea('myfiles2', {
                     url: 'http://localhost/mylib/upload.php',
                     dataType: 'text',
                     values: {
@@ -237,9 +236,10 @@
                 }, function() {
                     alert('end upload 2');
                 });
-                
-                $(document).on('click', '#btn-select-files', function() {
-                    myiweb.uploader({
+
+                // Handle file selection button
+                iweb.bindEvent('click', '#btn-select-files', function(target, e) {
+                    iweb.uploader({
                         url: 'http://localhost/mylib/upload.php',
                         dataType: 'text',
                         values: {
@@ -248,66 +248,67 @@
                         allowed_types: '',
                         auto_close: true
                     });
+                    
                 });
             }
-            
+
             function iweb_extra_func() { 
                 console.log('init extra func');
             }
+
             function select_autoc(id) {
                 console.log('select auto value:' + id);
             }
-            
+
             function remove_autoc() {
                 console.log('remove auto value');
             }
-            
+
             function formchecking() {
                 console.log('extra formchecking');
                 return true;
             }
-            
+
             function donefunc() {
                 console.log('ajax form done');
             }
-            
-            
-            $('#btn-alert-dialog').click(function() {
-                
-               myiweb.alert('Hello World'); 
+
+            // Alert dialog button
+            document.getElementById('btn-alert-dialog').addEventListener('click', function() {
+                iweb.alert('Hello World'); 
             });
-    
-    
-            $('#btn-confirm-dialog').click(function() { 
-               myiweb.confirm('Hello World', function(result) { 
-                   console.log(result);
-               }); 
+
+            // Confirm dialog button
+            document.getElementById('btn-confirm-dialog').addEventListener('click', function() { 
+                iweb.confirm('Hello World', function(result) { 
+                    console.log(result);
+                }); 
             });
-            
-            $('#btn-content-dialog').click(function() { 
-               myiweb.dialog('<h1>Hello World</h1><input type="date">', function() { 
-                   console.log('init info dialog');
-               }, function() {
-                   console.log('close info dialog');
-                   
-               }, 'max'); 
+
+            // Content dialog button
+            document.getElementById('btn-content-dialog').addEventListener('click', function() { 
+                iweb.dialog('<h1>Hello World</h1><input type="date">', function() { 
+                    console.log('init info dialog');
+                }, function() {
+                    console.log('close info dialog');
+                }, 'max'); 
             });
-            
-            $(document).on('click','#btn-post',function(){
-                myiweb.ajaxPost({
+
+            // POST request button
+            document.getElementById('btn-post').addEventListener('click', function() {
+                iweb.ajaxPost({
                     dataType: 'text',
                     url: 'http://localhost/mylib/test.php',
                     values: {
                         name_1: 1,
                         name_2: 2
                     }
-                },function(responseData) {
+                }, function(responseData) {
                     console.log(responseData);
                     alert('post done');
                 });
             });
         </script>
-        
-        
+
     </body>
 </html>

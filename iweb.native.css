@@ -869,6 +869,7 @@ div.iweb-input-autocomplete a.fill-reset {
     top: 0px;
     right: 2px;
     height: 36px;
+    line-height: 20px;
     padding: 8px 6px;
     vertical-align: top;
 }
@@ -1012,6 +1013,8 @@ div.iweb-info-dialog > div > div.content > a.btn-close {
     display: inline-block;
     width: 30px;
     height: 30px;
+    min-width: 30px;
+    min-height: 30px;
     top: -15px;
     right: -15px;
     padding: 8px;
