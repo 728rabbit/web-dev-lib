@@ -11,11 +11,13 @@
     --icolor-blue: #2175c3;
     --icolor-white: #ffffff;
     --icolor-black: #222222;
-    --icolor-lightgray: #e6e6e6;
+    --icolor-darkgray: #63666a;
+    --icolor-gray: #c8c8c8;
     --icolor-lightgreen: #e1f7d2;
     --icolor-lightred: #ffb6c1;
-    --icolor-lightblue: #90d5ff;
     --icolor-lightyellow: #ffffc5;
+    --icolor-lightblue: #90d5ff;
+    --icolor-lightgray: #e6e6e6;
     --icolor-lightpink: #ffecec;
 }
 
@@ -1103,7 +1105,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.action {
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.action > button {
     display: inline-block;
-    background: var(--icolor-green);
+    background: var(--icolor-main);
     color: var(--icolor-white);
     width: 32px;
     height: 32px;
@@ -1113,7 +1115,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.action > button {
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.action > button.close {
-    background: var(--icolor-red);
+    background: var(--icolor-darkred);
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.action > button > i {
@@ -1151,7 +1153,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > 
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > button.start > i {
-    color: var(--icolor-green);
+    color: var(--icolor-main);
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > button.remove {
@@ -1165,7 +1167,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > 
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > button.remove > i {
-    color: var(--icolor-red);
+    color: var(--icolor-darkred);
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > div.photo {
@@ -1217,7 +1219,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > 
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > div.info > div.tips > small {
-    color: var(--icolor-red);
+    color: var(--icolor-darkred);
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > div.info > div.progress-bar {
@@ -1295,7 +1297,7 @@ div.iweb-files-uploader > div.action {
 
 div.iweb-files-uploader > div.action > button {
     display: inline-block;
-    background: var(--icolor-green);
+    background: var(--icolor-main);
     color: var(--icolor-white);
     width: 32px;
     height: 32px;
@@ -1305,7 +1307,7 @@ div.iweb-files-uploader > div.action > button {
 }
 
 div.iweb-files-uploader > div.action > button.close {
-    background: var(--icolor-red);
+    background: var(--icolor-darkred);
 }
 
 div.iweb-files-uploader > div.action > button > i {
@@ -1343,7 +1345,7 @@ div.iweb-files-uploader > div.list > div.item > button.start {
 }
 
 div.iweb-files-uploader > div.list > div.item > button.start > i {
-    color: var(--icolor-green);
+    color: var(--icolor-main);
 }
 
 div.iweb-files-uploader > div.list > div.item > button.remove {
@@ -1357,7 +1359,7 @@ div.iweb-files-uploader > div.list > div.item > button.remove {
 }
 
 div.iweb-files-uploader > div.list > div.item > button.remove > i {
-    color: var(--icolor-red);
+    color: var(--icolor-darkred);
 }
 
 div.iweb-files-uploader > div.list > div.item > div.photo {
@@ -1409,7 +1411,7 @@ div.iweb-files-uploader > div.list > div.item > div.info > div.title {
 }
 
 div.iweb-files-uploader > div.list > div.item > div.info > div.tips > small {
-    color: var(--icolor-red);
+    color: var(--icolor-darkred);
 }
 
 div.iweb-files-uploader > div.list > div.item > div.info > div.progress-bar {
