@@ -303,19 +303,16 @@ div.iweb-tips-message > div {
     position: relative;
     padding: 6px 30px 6px 15px;
     margin-bottom: 20px;
-    border-left: 4px solid transparent;
     border-radius: 4px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
 
 div.iweb-tips-message.error > div {
     background: var(--icolor-lightpink);
-    border-color: var(--icolor-red);
 }
 
 div.iweb-tips-message.success > div {
     background: var(--icolor-lightgreen);
-    border-color: var(--icolor-green);
 }
 
 div.iweb-tips-message > div > a.close {
