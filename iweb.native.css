@@ -1,14 +1,22 @@
 :root {
     --background-color: #fff8f2;
-    --icolor-main: #4682b4;
-    --icolor-green: #7ac943;
-    --icolor-red: #d73d32;
-    --icolor-yellow: #fda525;
-    --icolor-blue: #2ca4e9;
+    --icolor-main: #8e4585;
+    --icolor-darkgreen: #2489a2;
+    --icolor-green: #9dd864;
+    --icolor-darkred: #d73d32;
+    --icolor-red: #f93a37;
+    --icolor-darkyellow: #fda525;
+    --icolor-yellow: #ffd700;
+    --icolor-darkblue: #325096;
+    --icolor-blue: #2175c3;
     --icolor-white: #ffffff;
     --icolor-black: #222222;
     --icolor-lightgray: #e6e6e6;
-    --icolor-lightpink: #ffb6c1;
+    --icolor-lightgreen: #e1f7d2;
+    --icolor-lightred: #ffb6c1;
+    --icolor-lightblue: #90d5ff;
+    --icolor-lightyellow: #ffffc5;
+    --icolor-lightpink: #ffecec;
 }
 
 * {
@@ -185,7 +193,7 @@ input[type="tel"].error,
 input[type="email"].error,
 input[type="number"].error,
 textarea.error {
-    border-color: var(--icolor-lightpink)!important;
+    border-color: var(--icolor-lightred)!important;
 }
 
 select {
@@ -195,7 +203,7 @@ select {
 }
 
 select.error {
-    border-color: var(--icolor-lightpink)!important;
+    border-color: var(--icolor-lightred)!important;
 }
 
 button {
@@ -301,13 +309,13 @@ div.iweb-tips-message > div {
 }
 
 div.iweb-tips-message.error > div {
-    background: #ffecec;
-    border-color: #f5aca6;
+    background: var(--icolor-lightpink);
+    border-color: var(--icolor-red);
 }
 
 div.iweb-tips-message.success > div {
-    background-color: #e1f7d2;
-    border-color: #9dd864;
+    background: var(--icolor-lightgreen);
+    border-color: var(--icolor-green);
 }
 
 div.iweb-tips-message > div > a.close {
@@ -393,7 +401,7 @@ div.iweb-input.error input[type="tel"],
 div.iweb-input.error input[type="email"],
 div.iweb-input.error input[type="number"],
 div.iweb-input.error textarea {
-    border-color: var(--icolor-lightpink)!important;
+    border-color: var(--icolor-lightred)!important;
 }
 
 div.iweb-select {
@@ -493,7 +501,7 @@ div.iweb-select > div.real > select {
 }
 
 div.iweb-select.error > div.real > select {
-    border-color: var(--icolor-lightpink)!important;
+    border-color: var(--icolor-lightred)!important;
 }
 
 div.iweb-select > div.real > select::-ms-expand {
@@ -524,7 +532,7 @@ div.iweb-select > div.virtual > a.result {
 }
 
 div.iweb-select.error > div.virtual > a.result {
-    border-color: var(--icolor-lightpink)!important;
+    border-color: var(--icolor-lightred)!important;
 }
 
 div.iweb-select > div.virtual > div.options {
@@ -687,7 +695,7 @@ div.iweb-checkbox:before {
 }
 
 div.iweb-checkbox.error:before {
-    border-color: var(--icolor-lightpink) !important;
+    border-color: var(--icolor-lightred) !important;
 }
 
 div.iweb-checkbox.checked:after {
@@ -725,6 +733,7 @@ div.iweb-checkbox > label {
     position: relative;
     display: block;
     padding: 2px 10px 2px 30px;
+    margin: 0px!important;
     vertical-align: middle;
     word-break: break-all;
     line-height: 1.25;
@@ -763,7 +772,7 @@ div.iweb-radio:before {
 }
 
 div.iweb-radio.error:before {
-    border-color: var(--icolor-lightpink) !important;
+    border-color: var(--icolor-lightred) !important;
 }
 
 div.iweb-radio.checked:after {
@@ -797,6 +806,7 @@ div.iweb-radio > label {
     position: relative;
     display: block;
     padding: 2px 10px 2px 30px;
+    margin: 0px!important;
     vertical-align: middle;
     word-break: break-all;
     line-height: 1.25;

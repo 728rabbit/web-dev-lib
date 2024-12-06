@@ -22,10 +22,49 @@
                 font-weight: bold;
                 margin-bottom: 5px;
             }
+            
+            div.color-list {
+                position: relative;
+            }
+            
+            div.color-list > div {
+                display: inline-block;
+                border: 2px solid #ccc;
+                width: 40px;
+                height: 40px;
+            }
         </style>
     </head>
     <body>
         <div style="padding:20px; padding-bottom: 240px;">
+            <div class="color-list">
+                <div style="background-color:var(--background-color);"></div>
+                <div style="background-color:var(--icolor-main);"></div>
+                <div style="background-color:var(--icolor-darkgreen);"></div>
+                <div style="background-color:var(--icolor-green);"></div>
+                <div style="background-color:var(--icolor-darkred);"></div>
+                <div style="background-color:var(--icolor-red);"></div>
+                <div style="background-color:var(--icolor-darkyellow);"></div>
+                <div style="background-color:var(--icolor-yellow);"></div>
+                <div style="background-color:var(--icolor-darkblue);"></div>
+                <div style="background-color:var(--icolor-blue);"></div>
+                <div style="background-color:var(--icolor-white);"></div>
+                <div style="background-color:var(--icolor-black);"></div>
+                <div style="background-color:var(--icolor-lightgray);"></div>
+                <div style="background-color:var(--icolor-lightgreen);"></div>
+                <div style="background-color:var(--icolor-lightred);"></div>
+                <div style="background-color:var(--icolor-lightblue);"></div>
+                <div style="background-color:var(--icolor-lightyellow);"></div>
+                <div style="background-color:var(--icolor-lightpink);"></div>
+            </div>
+            
+            <div>&nbsp;</div>
+            
+            <div class="iweb-tips-message success"><div><a class="close">×</a><span>項目資料成功更新。</span></div></div>
+            
+            <div class="iweb-tips-message error"><div><a class="close">×</a><span>項目資料更新失敗。</span></div></div>
+            
+            
             <div style="text-align:right;">
                 <div class="font">
                    <a class="font-switch small" href="#" data-size="small">A-</a><!--
@@ -106,8 +145,23 @@
                 </div>
                 
                 <div class="row">
-                    <label>日期</label>
+                    <label>開始日期</label>
                     <input type="date" name="start_date" data-validation="required|date" value="2024-10-10">
+                </div>
+                
+                <div class="row">
+                    <label>結束日期</label>
+                    <input type="date" name="end_date" data-validation="required|date" value="2024-10-31">
+                </div>
+                
+                <div class="row">
+                    <label>開始時間</label>
+                    <input type="time" name="start_time" data-validation="required|time" value="" data-start="800" data-end="2200" data-interval="10">
+                </div>
+                
+                <div class="row">
+                    <label>結束時間</label>
+                    <input type="time" name="end_time" data-validation="required|time" value="">
                 </div>
                 
                 
@@ -118,7 +172,8 @@
                 
                 <div class="row">
                     <label>推薦人</label>
-                    <input type="text" class="fill-id" name="member_id" value="1" data-validation="required"
+                    <input type="text" class="fill-id" name="member_id" value="1" 
+                        data-required="0"
                         data-autocomplete="1"
                         data-default="陳大文"
                         data-url="http://localhost/mylib/fetch.php"
@@ -245,8 +300,7 @@
                         values: {
                             name: 'abc'
                         },
-                        allowed_types: '',
-                        auto_close: true
+                        allowed_types: ''
                     });
                     
                 });
