@@ -1055,7 +1055,6 @@ div.iweb-info-dialog > div > div.content > a.btn-close:after {
 div.iweb-info-dialog > div > div.content > div {
     position: relative;
     background-color: var(--icolor-white);
-    min-height: 360px;
     border-radius: 4px;
     padding: 20px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
@@ -1105,7 +1104,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.action {
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.action > button {
     display: inline-block;
-    background: var(--icolor-main);
+    background: var(--icolor-darkgreen);
     color: var(--icolor-white);
     width: 32px;
     height: 32px;
@@ -1153,7 +1152,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > 
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > button.start > i {
-    color: var(--icolor-main);
+    color: var(--icolor-darkgreen);
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > button.remove {
@@ -1297,7 +1296,7 @@ div.iweb-files-uploader > div.action {
 
 div.iweb-files-uploader > div.action > button {
     display: inline-block;
-    background: var(--icolor-main);
+    background: var(--icolor-darkgreen);
     color: var(--icolor-white);
     width: 32px;
     height: 32px;
@@ -1345,7 +1344,7 @@ div.iweb-files-uploader > div.list > div.item > button.start {
 }
 
 div.iweb-files-uploader > div.list > div.item > button.start > i {
-    color: var(--icolor-main);
+    color: var(--icolor-darkgreen);
 }
 
 div.iweb-files-uploader > div.list > div.item > button.remove {

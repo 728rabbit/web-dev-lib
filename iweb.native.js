@@ -1293,6 +1293,7 @@ class iwebApp {
                                     input.closest('div.iweb-input').classList.add('error');
                                     can_submit = false;
                                 } else if (this_object.isValue(input.value)){
+                                    let next_regex = true;
                                     if ((validationArray.includes('number')) && !this_object.isNumber(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
@@ -1302,6 +1303,7 @@ class iwebApp {
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
                                         can_submit = false;
+                                        next_regex = false;
                                     } else if ((validationArray.includes('email')) && !this_object.isEmail(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
@@ -1311,6 +1313,7 @@ class iwebApp {
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
                                         can_submit = false;
+                                        next_regex = false;
                                     } else if ((validationArray.includes('password')) && !this_object.isPassword(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
@@ -1320,6 +1323,7 @@ class iwebApp {
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
                                         can_submit = false;
+                                        next_regex = false;
                                     } else if ((validationArray.includes('date')) && !this_object.isDate(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
@@ -1329,6 +1333,7 @@ class iwebApp {
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
                                         can_submit = false;
+                                        next_regex = false;
                                     }
                                     else if ((validationArray.includes('time')) && !this_object.isTime(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
@@ -1339,8 +1344,10 @@ class iwebApp {
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
                                         can_submit = false;
+                                        next_regex = false;
                                     }
-                                    else if (validationArray.includes('regex')) {
+                                    
+                                    if (next_regex && validationArray.includes('regex')) {
                                         const regex = new RegExp(input.getAttribute('data-regex'));
                                         const regex_error = input.getAttribute('data-error');
                                         if (!regex.test(input.value.toString().toLowerCase())) {
