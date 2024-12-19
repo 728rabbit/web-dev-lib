@@ -334,6 +334,7 @@ div.iweb-tips-message > div > span {
 div.iweb-editor {
     position: relative;
     font-size: 1rem;
+    line-height: 2;
     overflow: auto;
     -webkit-overflow-scrolling: touch;
 }
