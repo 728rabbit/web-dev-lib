@@ -14,7 +14,9 @@ class iwebApp {
 				email_error: 'Invalid email address format.',
 				number_error: 'Invalid number format.',
 				date_error: 'Invalid date format.',
-                time_error: 'Invalid time format.'
+                time_error: 'Invalid time format.',
+                currency_error: 'Value must be greater than or equal to 0.',
+                gt0_error: 'Value must be greater than 0.'
 			},
 			zh_hant: {
 				btn_confirm: '確定',
@@ -28,7 +30,9 @@ class iwebApp {
 				email_error: '無效的郵件地址格式。',
 				number_error: '無效的數字格式。',
 				date_error: '無效的日期格式。',
-                time_error: '無效的時間格式。'
+                time_error: '無效的時間格式。',
+                currency_error: '數值必須大於或等於 0。',
+                gt0_error: '數值必須大於 0。'
 			},
 			zh_hans: {
 				btn_confirm: '确定',
@@ -42,7 +46,9 @@ class iwebApp {
 				email_error: '无效的邮件地址格式。',
 				number_error: '无效的数字格式。',
 				date_error: '无效的日期格式。',
-                time_error: '无效的时间格式。'
+                time_error: '无效的时间格式。',
+                currency_error: '数值必须大於或等於 0。',
+                gt0_error: '数值必须大於 0。'
 			}
 		};
 
@@ -187,7 +193,7 @@ class iwebApp {
                         // Callback if need
                         const remove_callBack = fillId.getAttribute('data-rfunc');
                         if ((typeof window[remove_callBack]) === 'function') {
-                            window[remove_callBack]();
+                            window[remove_callBack](fillId);
                         }
                     }
 				}
@@ -456,7 +462,7 @@ class iwebApp {
                                                 // Callback if need
                                                 const select_callBack = fillId.getAttribute('data-sfunc');
                                                 if ((typeof window[select_callBack]) === 'function') {
-                                                    window[select_callBack](fillId.value);
+                                                    window[select_callBack](fillId.value, fillId);
                                                 }
                                             }));
                                             
@@ -1345,6 +1351,57 @@ class iwebApp {
                                         input.closest('div.iweb-input').classList.add('error');
                                         can_submit = false;
                                         next_regex = false;
+                                    }
+                                    else if ((validationArray.includes('currency'))) {
+                                        if(!this_object.isNumber(input.value)) {
+                                            if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                                const errorTips = document.createElement('small');
+                                                errorTips.classList.add('tips');
+                                                errorTips.textContent = this_object.language[this_object.current_language]['number_error'];
+                                                input.closest('div.iweb-input').appendChild(errorTips);
+                                            }
+                                            input.closest('div.iweb-input').classList.add('error');
+                                            can_submit = false;
+                                            next_regex = false;
+                                        }
+                                        else {
+                                            const regex = /^(?:0|[1-9]\d*)(?:\.\d+)?$/;
+                                            if (!regex.test(input.value)) {
+                                                if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                                    const errorTips = document.createElement('small');
+                                                    errorTips.classList.add('tips');
+                                                    errorTips.textContent = this_object.language[this_object.current_language]['currency_error'];
+                                                    input.closest('div.iweb-input').appendChild(errorTips);
+                                                }
+                                                input.closest('div.iweb-input').classList.add('error');
+                                                can_submit = false;
+                                                next_regex = false;
+                                            }
+                                        }
+                                    }
+                                    else if ((validationArray.includes('gt0'))) {
+                                        if(!this_object.isNumber(input.value)) {
+                                            if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                                const errorTips = document.createElement('small');
+                                                errorTips.classList.add('tips');
+                                                errorTips.textContent = this_object.language[this_object.current_language]['number_error'];
+                                                input.closest('div.iweb-input').appendChild(errorTips);
+                                            }
+                                            input.closest('div.iweb-input').classList.add('error');
+                                            can_submit = false;
+                                            next_regex = false;
+                                        }
+                                        else if (parseFloat(input.value) <= 0) {
+                                            if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
+                                                const errorTips = document.createElement('small');
+                                                errorTips.classList.add('tips');
+                                                errorTips.textContent = this_object.language[this_object.current_language]['gt0_error'];
+                                                input.closest('div.iweb-input').appendChild(errorTips);
+                                            }
+                                            input.closest('div.iweb-input').classList.add('error');
+                                            can_submit = false;
+                                            next_regex = false;
+                                        }
                                     }
                                     
                                     if (next_regex && validationArray.includes('regex')) {

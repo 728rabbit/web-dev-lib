@@ -164,6 +164,10 @@
                     <input type="time" name="end_time" data-validation="required|time" value="">
                 </div>
                 
+                <div class="row">
+                    <label>貨幣</label>
+                    <input type="text" name="currency" data-validation="required|currency" value="">
+                </div>
                 
                 <div class="row">
                     <label>代表顔色</label>
@@ -179,7 +183,8 @@
                         data-url="http://localhost/mylib/fetch.php"
                         data-param2="type:123"
                         data-sfunc="select_autoc"
-                        data-rfunc="remove_autoc">
+                        data-rfunc="remove_autoc"
+                        data-validation="required">
                 </div>
                 
                 <div class="row">
@@ -256,6 +261,33 @@
             
             <div class="iweb-editor">
                 <iframe width="1268" height="713" src="https://www.youtube.com/embed/lHhRhPV--G0" title="Flutter in 100 seconds" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+            
+
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            <div id="tinymce">
+                <div class="iweb-grid">
+                    <div class="col-half">Col - 1</div>
+                    <div class="col-half">Col - 2</div>
+                </div>
+                
+                <p>&nbsp;</p>
+                
+                <div class="iweb-grid">
+                    <div class="col-onethird">Col - 1</div>
+                    <div class="col-onethird">Col - 2</div>
+                    <div class="col-onethird">Col - 3</div>
+                </div>
+                
+                <p>&nbsp;</p>
+                
+                <div class="iweb-grid">
+                    <div class="col-quarter">Col - 1</div>
+                    <div class="col-quarter">Col - 2</div>
+                    <div class="col-quarter">Col - 3</div>
+                    <div class="col-quarter">Col - 4</div>
+                </div>
             </div>
             
         </div>
