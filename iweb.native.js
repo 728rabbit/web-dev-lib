@@ -54,6 +54,7 @@ class iwebApp {
 
 		this.imd5 = (new iMD5());
 		this.csrf_token = '';
+        this.timer = null;
 		this.is_busy = false;
    
 		this.idatepicker;
@@ -166,8 +167,8 @@ class iwebApp {
 			document.body.prepend(wrapper);
 		}
 
-		// Bind event for global click
-		document.body.addEventListener('click', function(e) {
+		// Handle click
+		document.addEventListener('click', function(e) {
 			const target = e.target;
      
 			// Handle anchor click
@@ -196,8 +197,34 @@ class iwebApp {
                             window[remove_callBack](fillId);
                         }
                     }
+                    else if(target.closest('a.font-switch')) {
+                        const newFontSize = target.getAttribute('data-size');
+                        if (this_object.isValue(newFontSize)) {
+                            this_object.setCookie('iweb_font_size', newFontSize);
+                            document.documentElement.classList.remove(...fontSizeClasses);
+                            document.documentElement.classList.add(newFontSize + '-font');
+                            fontButtons.forEach(function(e) {
+                                e.classList.toggle('current', this_object.isMatch(e.getAttribute('data-size'), newFontSize));
+                            });
+                        }
+                    }
 				}
 			}
+            
+            if (target.closest('button.switch-pwd-type')) {
+                const InputPwd = target.closest('div.iweb-input').querySelector('input');
+                const ShowIconPwd = target.closest('div.iweb-input').querySelector('i.show');
+                const HideIconPwd = target.closest('div.iweb-input').querySelector('i.hide');
+                if (this_object.isMatch(InputPwd.type, 'password')) {
+                    InputPwd.type = 'text';
+                    ShowIconPwd.style.display = 'block';
+                    HideIconPwd.style.display = 'none';
+                } else {
+                    InputPwd.type = 'password';
+                    ShowIconPwd.style.display = 'none';
+                    HideIconPwd.style.display = 'block';
+                }
+            }
 
 			// Hide autocomplete options
 			if (!target.closest('div.iweb-input-autocomplete')) {
@@ -212,8 +239,307 @@ class iwebApp {
                     e1.classList.remove('show'); 
                 });
 			}
-		});
+            else {
+                const virtualOptions = target.closest('div.iweb-select').querySelector('div.virtual > div.options > ul');
+                if(this_object.isValue(virtualOptions)) {
+                    if (target.closest('a.result')) {
+                        if(target.closest('div.iweb-select').classList.contains('show')) {
+                            target.closest('div.iweb-select').classList.remove('show');
+                        }
+                        else {
+                            target.closest('div.iweb-select').classList.add('show');
+                        }
+                    }
+                    document.querySelectorAll('div.iweb-select').forEach(function(otherSelector) {
+                        const otherOptions = otherSelector.querySelector('div.virtual > div.options > ul');
+                        if (otherOptions) {
+                            if (!this_object.isMatch(otherOptions.getAttribute('data-index'), virtualOptions.getAttribute('data-index'))) {
+                                otherSelector.classList.remove('show');
+                            }
+                        }
+                    });
 
+                    if (target.closest('a') && target.closest('li.node')) {
+                        const isMultiple = target.closest('div.iweb-select').classList.contains('iweb-select-multiple');
+                        const selectElement = target.closest('div.iweb-select').querySelector('div.real > select');
+
+                        let selectedOptions = [];
+                        if (isMultiple) {
+                            // Handle multiple selection
+                            selectElement.querySelectorAll('option').forEach(function(optionGroup) {
+                                if (optionGroup.children.length > 0) {
+                                    Array.from(optionGroup.children).forEach(function(option) {
+                                        if (option.selected) {
+                                            selectedOptions.push(option.value.toString());
+                                        }
+                                    });
+                                } else if (optionGroup.selected) {
+                                    selectedOptions.push(optionGroup.value.toString());
+                                }
+                            });
+
+                            const selectedValue = target.getAttribute('data-value').toString();
+                            if (!selectedOptions.includes(selectedValue)) {
+                                selectedOptions.push(selectedValue);
+                            } else {
+                                selectedOptions = selectedOptions.filter(function(value) {
+                                    return value !== selectedValue;
+                                });
+                            }
+
+                            // Update the select element with selected options
+                            selectElement.querySelectorAll('option').forEach(function(option) {
+                                if (selectedOptions.includes(option.value.toString())) {
+                                    option.selected = true;
+                                } else {
+                                    option.selected = false;
+                                }
+                            });
+                            selectElement.dispatchEvent(new Event('change', { bubbles: true }));
+
+                        } else {
+                            // Handle single selection
+                            target.closest('div.iweb-select').classList.remove('show');
+                            selectElement.value = target.getAttribute('data-value');
+                            selectElement.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    }
+                }
+                else {
+                    document.querySelectorAll('div.iweb-select').forEach(function(otherSelect) {
+                        otherSelect.classList.remove('show');
+                    });
+                }
+            }
+		});
+        
+        // Handle input
+        document.addEventListener('input', function(e) {
+            const target = e.target;
+            target.closest('div.iweb-input').classList.remove('error');
+            target.closest('div.iweb-input').querySelector('small.tips')?.remove();
+
+            if(target.closest('div.iweb-input-color')) {
+                if(this_object.isMatch(target.type, 'color')) {
+                    const inputColorCode = target.closest('div.iweb-input-color').querySelector('input[type="text"]');
+                    if (/^#[0-9A-F]{6}$/i.test(target.value)) {
+                        inputColorCode.value = target.value;
+                    }
+                }
+                else {
+                    const input = target.closest('div.iweb-input-color').querySelector('input[type="color"]');
+                    if (!target.value.startsWith('#')) {
+                        target.value = '#' + target.value;
+                    }
+                    if (/^#[0-9A-F]{6}$/i.test(target.value)) {
+                        input.value = target.value;
+                    }
+                }
+            }
+            else if(target.closest('div.iweb-input-autocomplete') && target.closest('input.fill-text')) {
+                clearTimeout(this_object.timer);
+                this_object.timer = setTimeout(() => {
+                    // Remove error, tips & options list
+                    target.closest('div.iweb-input-autocomplete').classList.remove('error');
+                    target.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
+                    target.closest('div.iweb-input-autocomplete').querySelector('ul.fill-options')?.remove();
+
+                    // Gather extra parameters
+                    let extraValues = {};
+                    for (let i = 1; i <= 5; i++) {
+                        let param = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id').getAttribute('data-param' + i);
+                        if (this_object.isValue(param)) {
+                            let [key, value] = param.split(':');
+                            extraValues[key] = value;
+                        }
+                    }
+
+                    // Merge post data
+                    const keywords = target.value;
+                    const url = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id').getAttribute('data-url');
+                    const postData = {
+                        dataType: 'json',
+                        showBusy: false,
+                        url: url,
+                        values: Object.assign({ keywords: keywords }, extraValues)
+                    };
+
+                    // Search result handling
+                    if (this_object.isValue(keywords)) {
+                        this_object.ajaxPost(postData, function(responseData) {
+                            if (this_object.isValue(responseData)) {
+                                responseData = Object.values(responseData);
+
+                                // Create options list
+                                const fillOptions = document.createElement('ul');
+                                fillOptions.classList.add('fill-options');
+                                responseData.forEach(function(value) {
+                                    const li = document.createElement('li');
+                                    const a = document.createElement('a');
+                                    a.setAttribute('data-id', value.id);
+                                    a.textContent = value.name;
+                                    a.addEventListener('click', this_object.deBounce(function(e1) {
+                                        const target = e1.target;
+                                        target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset')?.remove();
+
+                                        // Set id input & search input
+                                        const fillId = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
+                                        const fillText = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
+                                        fillId.value = target.getAttribute('data-id');
+                                        fillText.value = target.textContent;
+                                        fillText.readOnly = true;
+
+                                        // Create reset button
+                                        const fillReset = document.createElement('a');
+                                        fillReset.classList.add('fill-reset');
+
+                                        // Create Reset icon
+                                        const fillResetIcon = document.createElement('i');
+                                        fillResetIcon.classList.add('fa', 'fa-times');
+                                        fillResetIcon.style.color = '#d73d32';
+
+                                        // Append elements
+                                        fillReset.appendChild(fillResetIcon);
+                                        fillId.closest('div.iweb-input-autocomplete').appendChild(fillReset);
+
+                                        // Remove error, tips & options list
+                                        fillId.closest('div.iweb-input-autocomplete').classList.remove('error');
+                                        fillId.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
+                                        fillId.closest('div.iweb-input-autocomplete').querySelector('ul.fill-options')?.remove();
+
+                                        // Callback if need
+                                        const select_callBack = fillId.getAttribute('data-sfunc');
+                                        if ((typeof window[select_callBack]) === 'function') {
+                                            window[select_callBack](fillId.value, fillId);
+                                        }
+                                    }));
+
+                                    // Append elements
+                                    li.appendChild(a);
+                                    fillOptions.appendChild(li);
+                                });
+
+                                // Append elements
+                                target.closest('div.iweb-input-autocomplete').appendChild(fillOptions);
+                            }
+                        });
+                    }
+                }, 1000);
+            }
+            else if(target.closest('div.iweb-select') && target.closest('li.filter')) {
+                const fkw = target.value;
+                if (this_object.isValue(fkw)) {
+                    // Find all node elements
+                    target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li.node > a').forEach(function(anchor) {
+                        const textContent = anchor.textContent || anchor.innerText;
+                        if (textContent.toLowerCase().indexOf(fkw.toLowerCase()) > -1) {
+                            anchor.parentElement.classList.remove('hide');
+                            const parentNode = anchor.closest('li.node-parent');
+                            if (parentNode) {
+                                parentNode.classList.remove('hide');
+                            }
+                        } else {
+                            anchor.parentElement.classList.add('hide');
+                        }
+                    });
+                } else {
+                    // If filter is empty, remove 'hide' class from all node elements
+                    target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li.node').forEach(function(nodeElement) {
+                        nodeElement.classList.remove('hide');
+                    });
+                }
+            }
+        });
+        
+        // Handle change
+        document.addEventListener('change', function(e) {
+            const target = e.target;
+
+            if(target.closest('div.iweb-select')) {
+                let selectedOptions = [];
+                let selectedOptionLabel = '';
+            
+                // Remove error & tips
+                target.closest('div.iweb-select').classList.remove('error');
+                target.closest('div.iweb-select').querySelector('small.tips')?.remove();
+
+                // Traverse through the options
+                Array.from(target.querySelectorAll('option')).forEach(function(option) {
+                    if (option.children.length > 0) {
+                        Array.from(option.children).forEach(function(childOption) {
+                            if (childOption.selected) {
+                                selectedOptions.push(childOption.value.toString());
+                            }
+                        });
+                    } else {
+                        if (option.selected) {
+                            selectedOptions.push(option.value.toString());
+                        }
+                    }
+                });
+
+                // Find and update the corresponding virtual options
+                if (target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li > a').length > 0) {
+                    target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li > a').forEach(function(anchor) {
+                        const optionValue = anchor.getAttribute('data-value');
+                        if (this_object.isValue(optionValue)) {
+                            if (!this_object.isMatch(selectedOptions.indexOf(optionValue), -1)) {
+                                anchor.parentElement.classList.add('node-selected');
+                                if (this_object.isValue(selectedOptionLabel)) {
+                                    selectedOptionLabel += ', ';
+                                }
+                                selectedOptionLabel += anchor.textContent;
+                            } else {
+                                anchor.parentElement.classList.remove('node-selected');
+                            }
+                        }
+                    });
+
+                    // Set the default option label if none selected
+                    if (!this_object.isValue(selectedOptionLabel)) {
+                        selectedOptionLabel = ((this_object.isValue(target.getAttribute('data-default'))) ? target.getAttribute('data-default') : this_object.language[this_object.current_language]['please_select']);
+                    }
+
+                    // Update the virtual result label
+                    target.closest('div.iweb-select').querySelector('div.virtual > a.result').innerHTML = selectedOptionLabel;
+                }
+            }
+            else if(target.closest('div.iweb-checkbox')) {
+                const relatedObject = document.querySelectorAll('input[type="checkbox"][name="' + (target.name) + '"]');
+                relatedObject.forEach(function(related_checkbox) {
+                    related_checkbox.closest('div.iweb-checkbox').classList.remove('checked');
+                    if (related_checkbox.checked) {
+                        related_checkbox.closest('div.iweb-checkbox').classList.add('checked');
+                    }
+                    related_checkbox.closest('div.iweb-checkbox').classList.remove('error');
+                });
+
+                // Remove tips
+                if(target.closest('div.iweb-checkbox-set')) {
+                    target.closest('div.iweb-checkbox-set').querySelector('small.tips')?.remove();
+                }
+            }
+            else if(target.closest('div.iweb-radio')) {
+                const selectedValue = target.value;
+                const relatedObject = document.querySelectorAll('input[type="radio"][name="' + (target.name) + '"]');
+                relatedObject.forEach(function(related_radio) {
+                    if (this_object.isMatch(related_radio.value, selectedValue)) {
+                        related_radio.checked = true;
+                        related_radio.closest('div.iweb-radio').classList.add('checked');
+                    } else {
+                        related_radio.checked = false;
+                        related_radio.closest('div.iweb-radio').classList.remove('checked');
+                    }
+                    related_radio.closest('div.iweb-radio').classList.remove('error');
+                });
+
+                // Remove tips
+                if(target.closest('div.iweb-radio-set')) {
+                    target.closest('div.iweb-radio-set').querySelector('small.tips')?.remove();
+                }
+            }
+        });
+        
 		// Init default font size
 		const fontSizeClasses = ['small-font', 'middle-font', 'large-font'];
 		const defaultFontSize = (this_object.getCookie('iweb_font_size'));
@@ -225,22 +551,6 @@ class iwebApp {
 				btn.classList.toggle('current', this_object.isMatch(btn.getAttribute('data-size'), defaultFontSize));
 			});
 		}
-
-		// Bind event for change font size
-		fontButtons.forEach(function(btn) {
-			btn.addEventListener('click', this_object.deBounce(function(e) {
-                const target = e.target;
-                const newFontSize = target.getAttribute('data-size');
-                if (this_object.isValue(newFontSize)) {
-                    this_object.setCookie('iweb_font_size', newFontSize);
-                    document.documentElement.classList.remove(...fontSizeClasses);
-                    document.documentElement.classList.add(newFontSize + '-font');
-                    fontButtons.forEach(function(e) {
-                        e.classList.toggle('current', this_object.isMatch(e.getAttribute('data-size'), newFontSize));
-                    });
-                }
-			}));
-		});
 	}
 
 	initComponent() {
@@ -304,21 +614,6 @@ class iwebApp {
 							const BtnSwitchType = document.createElement('button');
 							BtnSwitchType.type = 'button';
 							BtnSwitchType.classList.add('switch-pwd-type');
-                            BtnSwitchType.addEventListener('click', this_object.deBounce(function(e) {
-                                const target = e.target;
-                                const InputPwd = target.closest('div.iweb-input').querySelector('input');
-                                const ShowIconPwd = target.closest('div.iweb-input').querySelector('i.show');
-                                const HideIconPwd = target.closest('div.iweb-input').querySelector('i.hide');
-                                if (this_object.isMatch(input.type, 'password')) {
-                                    InputPwd.type = 'text';
-                                    ShowIconPwd.style.display = 'block';
-                                    HideIconPwd.style.display = 'none';
-                                } else {
-                                    InputPwd.type = 'password';
-                                    ShowIconPwd.style.display = 'none';
-                                    HideIconPwd.style.display = 'block';
-                                }
-							}));
                             
 							const eyeSlashIcon = document.createElement('i');
 							eyeSlashIcon.classList.add('fa', 'fa-eye-slash', 'hide');
@@ -336,14 +631,7 @@ class iwebApp {
                             // Set color input
 							input.style.position = 'relative';
 							input.style.zIndex = 1;
-                            input.addEventListener('input', this_object.deBounce(function(e) {
-                                const target = e.target;
-                                const inputColorCode = target.closest('div.iweb-input-color').querySelector('input[type="text"]');
-                                if (/^#[0-9A-F]{6}$/i.test(target.value)) {
-                                    inputColorCode.value = target.value;
-                                }
-							}));
-						
+                            
                             // Create color code input
 							const inputColorCode = document.createElement('input');
 							inputColorCode.type = 'text';
@@ -355,23 +643,13 @@ class iwebApp {
 							inputColorCode.style.right = '0px';
 							inputColorCode.style.bottom = '0px';
 							inputColorCode.style.paddingLeft = '42px';
-							inputColorCode.addEventListener('input', this_object.deBounce(function(e) {
-                                const target = e.target;
-								const input = target.closest('div.iweb-input-color').querySelector('input[type="color"]');
-                                if (!target.value.startsWith('#')) {
-                                    target.value = '#' + target.value;
-                                }
-                                if (/^#[0-9A-F]{6}$/i.test(target.value)) {
-                                    input.value = target.value;
-                                }
-							}));
                             
                             // Append elements
                             wrapperDiv.appendChild(inputColorCode);
 						}
                     }
                     else {
-						// Create seach input
+						// Create search input
                         const mustRequired = (this_object.isMatch(input.getAttribute('data-required'), 1)) ? true : false;
                         const canNew = (this_object.isMatch(input.getAttribute('data-cannew'), 1)) ? true : false;
 
@@ -388,95 +666,6 @@ class iwebApp {
                         if(mustRequired && canNew) {
                             fillText.setAttribute('data-validation', 'required');
                         }
-						fillText.addEventListener('input', this_object.deBounce(function(e) {
-                            const target = e.target;
-                            
-                            // Remove error, tips & options list
-                            target.closest('div.iweb-input-autocomplete').classList.remove('error');
-                            target.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
-                            target.closest('div.iweb-input-autocomplete').querySelector('ul.fill-options')?.remove();
-
-                            // Gather extra parameters
-                            let extraValues = {};
-                            for (let i = 1; i <= 5; i++) {
-                                let param = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id').getAttribute('data-param' + i);
-                                if (this_object.isValue(param)) {
-                                    let [key, value] = param.split(':');
-                                    extraValues[key] = value;
-                                }
-                            }
-
-                            // Merge post data
-                            const keywords = target.value;
-                            const url = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id').getAttribute('data-url');
-                            const postData = {
-                                dataType: 'json',
-                                showBusy: false,
-                                url: url,
-                                values: Object.assign({ keywords: keywords }, extraValues)
-                            };
-
-                            // Search result handling
-                            if (this_object.isValue(keywords)) {
-                                this_object.ajaxPost(postData, function(responseData) {
-                                    if (this_object.isValue(responseData)) {
-                                        responseData = Object.values(responseData);
-                                        
-                                        // Create options list
-                                        const fillOptions = document.createElement('ul');
-                                        fillOptions.classList.add('fill-options');
-                                        responseData.forEach(function(value) {
-                                            const li = document.createElement('li');
-                                            const a = document.createElement('a');
-                                            a.setAttribute('data-id', value.id);
-                                            a.textContent = value.name;
-                                            a.addEventListener('click', this_object.deBounce(function(e1) {
-                                                const target = e1.target;
-                                                target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset')?.remove();
-                                                
-                                                // Set id input & search input
-                                                const fillId = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
-                                                const fillText = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
-                                                fillId.value = target.getAttribute('data-id');
-                                                fillText.value = target.textContent;
-                                                fillText.readOnly = true;
-
-                                                // Create reset button
-                                                const fillReset = document.createElement('a');
-                                                fillReset.classList.add('fill-reset');
-                                                
-                                                // Create Reset icon
-                                                const fillResetIcon = document.createElement('i');
-                                                fillResetIcon.classList.add('fa', 'fa-times');
-                                                fillResetIcon.style.color = '#d73d32';
-                                                
-                                                // Append elements
-                                                fillReset.appendChild(fillResetIcon);
-                                                fillId.closest('div.iweb-input-autocomplete').appendChild(fillReset);
-
-                                                // Remove error, tips & options list
-                                                fillId.closest('div.iweb-input-autocomplete').classList.remove('error');
-                                                fillId.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
-                                                fillId.closest('div.iweb-input-autocomplete').querySelector('ul.fill-options')?.remove();
-
-                                                // Callback if need
-                                                const select_callBack = fillId.getAttribute('data-sfunc');
-                                                if ((typeof window[select_callBack]) === 'function') {
-                                                    window[select_callBack](fillId.value, fillId);
-                                                }
-                                            }));
-                                            
-                                            // Append elements
-                                            li.appendChild(a);
-                                            fillOptions.appendChild(li);
-                                        });
-
-                                        // Append elements
-                                        wrapperDiv.appendChild(fillOptions);
-                                    }
-                                });
-                            }
-						}, 1000));
                         wrapperDiv.appendChild(fillText);
 
 						// Create reset button
@@ -521,15 +710,6 @@ class iwebApp {
 					input.style.display = (this_object.isMatch(inputType, 'color') ? 'inline-block' : 'block');
 					input.style.width = (this_object.isMatch(inputType, 'color') ? '36px' : '100%');
 					input.autocomplete = 'off';
-
-					// Bind event for others input
-                    if(!this_object.isMatch(inputType, 'color')) {
-                        input.addEventListener('input', this_object.deBounce(function(e) {
-                            const target = e.target;
-                            target.closest('div.iweb-input').classList.remove('error');
-                            target.closest('div.iweb-input').querySelector('small.tips')?.remove();
-                        }));
-                    }
 				}
 			});
 		}
@@ -594,25 +774,6 @@ class iwebApp {
 						const resultLink = document.createElement('a');
 						resultLink.classList.add('result');
 						resultLink.textContent = virtualSelect;
-						resultLink.addEventListener('click', this_object.deBounce(function(e) {
-                            const target = e.target;
-                            
-                            const virtualOptions = target.closest('div.iweb-select').querySelector('div.virtual > div.options > ul');
-                            if (virtualOptions.offsetWidth > 0 || virtualOptions.offsetHeight > 0) {
-                                target.closest('div.iweb-select').classList.remove('show');
-                            } else {
-                                target.closest('div.iweb-select').classList.add('show');
-                            }
-
-                            document.querySelectorAll('div.iweb-select').forEach(function(otherSelector) {
-                                const otherOptions = otherSelector.querySelector('div.virtual > div.options > ul');
-                                if (otherOptions) {
-                                    if (!this_object.isMatch(otherOptions.getAttribute('data-index'), virtualOptions.getAttribute('data-index'))) {
-                                        otherSelector.classList.remove('show');
-                                    }
-                                }
-                            });
-						}));
                         virtualDiv.appendChild(resultLink);
                         
 						// Create options list
@@ -634,31 +795,7 @@ class iwebApp {
 							filterInput.id = 'fkw_' + select_index;
 							filterInput.type = 'text';
 							filterInput.placeholder = placeholderText.trim();
-							filterInput.addEventListener('input', this_object.deBounce(function(e) {
-                                const target = e.target;
-                                const fkw = target.value;
-                                if (this_object.isValue(fkw)) {
-                                    // Find all node elements
-                                    target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li.node > a').forEach(function(anchor) {
-                                        const textContent = anchor.textContent || anchor.innerText;
-                                        if (textContent.toLowerCase().indexOf(fkw.toLowerCase()) > -1) {
-                                            anchor.parentElement.classList.remove('hide');
-                                            const parentNode = anchor.closest('li.node-parent');
-                                            if (parentNode) {
-                                                parentNode.classList.remove('hide');
-                                            }
-                                        } else {
-                                            anchor.parentElement.classList.add('hide');
-                                        }
-                                    });
-                                } else {
-                                    // If filter is empty, remove 'hide' class from all node elements
-                                    target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li.node').forEach(function(nodeElement) {
-                                        nodeElement.classList.remove('hide');
-                                    });
-                                }
-							}));
-                            
+
                             // Append elements
                             filterLi.appendChild(filterInput);
 							optionsList.appendChild(filterLi);
@@ -690,53 +827,7 @@ class iwebApp {
 											const childLink = document.createElement('a');
 											childLink.setAttribute('data-value', option.value);
 											childLink.textContent = option.textContent;
-											childLink.addEventListener('click', this_object.deBounce(function(e) {
-                                                const target = e.target;
-                                                const isMultiple = target.closest('div.iweb-select').classList.contains('iweb-select-multiple');
-                                                const selectElement = target.closest('div.iweb-select').querySelector('div.real > select');
-                                                
-                                                let selectedOptions = [];
-                                                if (isMultiple) {
-                                                    // Handle multiple selection
-                                                    selectElement.querySelectorAll('option').forEach(function(optionGroup) {
-                                                        if (optionGroup.children.length > 0) {
-                                                            Array.from(optionGroup.children).forEach(function(option) {
-                                                                if (option.selected) {
-                                                                    selectedOptions.push(option.value.toString());
-                                                                }
-                                                            });
-                                                        } else if (optionGroup.selected) {
-                                                            selectedOptions.push(optionGroup.value.toString());
-                                                        }
-                                                    });
 
-                                                    const selectedValue = target.getAttribute('data-value').toString();
-                                                    if (!selectedOptions.includes(selectedValue)) {
-                                                        selectedOptions.push(selectedValue);
-                                                    } else {
-                                                        selectedOptions = selectedOptions.filter(function(value) {
-                                                            return value !== selectedValue;
-                                                        });
-                                                    }
-
-                                                    // Update the select element with selected options
-                                                    selectElement.querySelectorAll('option').forEach(function(option) {
-                                                        if (selectedOptions.includes(option.value.toString())) {
-                                                            option.selected = true;
-                                                        } else {
-                                                            option.selected = false;
-                                                        }
-                                                    });
-                                                    selectElement.dispatchEvent(new Event('change', { bubbles: true }));
-
-                                                } else {
-                                                    // Handle single selection
-                                                    target.closest('div.iweb-select').classList.remove('show');
-                                                    selectElement.value = target.getAttribute('data-value');
-                                                    selectElement.dispatchEvent(new Event('change', { bubbles: true }));
-                                                }
-											}));
-                                            
                                             // Append elements
 											childLi.appendChild(childLink);
 											childUl.appendChild(childLi);
@@ -758,53 +849,6 @@ class iwebApp {
 										virtualSelect += (virtualSelect ? ', ' : '');
 										virtualSelect += optionGroup.textContent;
 									}
-                                    singleLink.addEventListener('click', this_object.deBounce(function(e) {
-                                        const target = e.target;
-                                        const isMultiple = target.closest('div.iweb-select').classList.contains('iweb-select-multiple');
-                                        const selectElement = target.closest('div.iweb-select').querySelector('div.real > select');
-                                        
-                                        let selectedOptions = [];
-                                        if (isMultiple) {
-                                            // Multiple selection
-                                            selectElement.querySelectorAll('option').forEach(function(optionGroup) {
-                                                if (optionGroup.children.length > 0) {
-                                                    Array.from(optionGroup.children).forEach(function(option) {
-                                                        if (option.selected) {
-                                                            selectedOptions.push(option.value.toString());
-                                                        }
-                                                    });
-                                                } else if (optionGroup.selected) {
-                                                    selectedOptions.push(optionGroup.value.toString());
-                                                }
-                                            });
-
-                                            const selectedValue = target.getAttribute('data-value').toString();
-                                            if (!selectedOptions.includes(selectedValue)) {
-                                                selectedOptions.push(selectedValue);
-                                            } else {
-                                                selectedOptions = selectedOptions.filter(function(value) {
-                                                    return value !== selectedValue;
-                                                });
-                                            }
-
-                                            // Update the select element with selected options
-                                            selectElement.querySelectorAll('option').forEach(function(option) {
-                                                if (selectedOptions.includes(option.value.toString())) {
-                                                    option.selected = true;
-                                                } else {
-                                                    option.selected = false;
-                                                }
-                                            });
-                                            selectElement.dispatchEvent(new Event('change', { bubbles: true }));
-
-                                        }
-                                        else {
-                                            // Single selection
-                                            target.closest('div.iweb-select').classList.remove('show');
-                                            selectElement.value = target.getAttribute('data-value');
-                                            selectElement.dispatchEvent(new Event('change', { bubbles: true }));
-                                        }
-									}));
                                     
                                     // Append elements
 									singleLi.appendChild(singleLink);
@@ -840,64 +884,6 @@ class iwebApp {
                     // Remove select Attribute
                     select.removeAttribute('data-virtual');
                     select.removeAttribute('data-filter');
-
-                    // Bind event for select focus/change
-                    select.addEventListener('focus', this_object.deBounce(function() {
-                        document.querySelectorAll('div.iweb-select').forEach(function(otherSelect) {
-                            otherSelect.classList.remove('show');
-                        });
-                    }));
-
-                    select.addEventListener('change', this_object.deBounce(function(e) {
-                        let selectedOptions = [];
-                        let selectedOptionLabel = '';
-                        const target = e.target;
-
-                        // Remove error & tips
-                        target.closest('div.iweb-select').classList.remove('error');
-                        target.closest('div.iweb-select').querySelector('small.tips')?.remove();
-
-                        // Traverse through the options
-                        Array.from(target.querySelectorAll('option')).forEach(function(option) {
-                            if (option.children.length > 0) {
-                                Array.from(option.children).forEach(function(childOption) {
-                                    if (childOption.selected) {
-                                        selectedOptions.push(childOption.value.toString());
-                                    }
-                                });
-                            } else {
-                                if (option.selected) {
-                                    selectedOptions.push(option.value.toString());
-                                }
-                            }
-                        });
-
-                        // Find and update the corresponding virtual options
-                        if (target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li > a').length > 0) {
-                            target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li > a').forEach(function(anchor) {
-                                const optionValue = anchor.getAttribute('data-value');
-                                if (this_object.isValue(optionValue)) {
-                                    if (!this_object.isMatch(selectedOptions.indexOf(optionValue), -1)) {
-                                        anchor.parentElement.classList.add('node-selected');
-                                        if (this_object.isValue(selectedOptionLabel)) {
-                                            selectedOptionLabel += ', ';
-                                        }
-                                        selectedOptionLabel += anchor.textContent;
-                                    } else {
-                                        anchor.parentElement.classList.remove('node-selected');
-                                    }
-                                }
-                            });
-
-                            // Set the default option label if none selected
-                            if (!this_object.isValue(selectedOptionLabel)) {
-                                selectedOptionLabel = ((this_object.isValue(target.getAttribute('data-default'))) ? target.getAttribute('data-default') : this_object.language[this_object.current_language]['please_select']);
-                            }
-
-                            // Update the virtual result label
-                            target.closest('div.iweb-select').querySelector('div.virtual > a.result').innerHTML = selectedOptionLabel;
-                        }
-                    }));
                 }
 			});
 		}
@@ -935,24 +921,6 @@ class iwebApp {
 						findCheckboxLabel.parentNode.insertBefore(wrapperDiv, findCheckboxLabel);
 						wrapperDiv.appendChild(findCheckboxLabel);
 					}
-
-					// Bind event for checkbox change
-					checkbox.addEventListener('change', this_object.deBounce(function(e) {
-                        const target = e.target;
-                        const relatedObject = document.querySelectorAll('input[type="checkbox"][name="' + (target.name) + '"]');
-                        relatedObject.forEach(function(related_checkbox) {
-                            related_checkbox.closest('div.iweb-checkbox').classList.remove('checked');
-                            if (related_checkbox.checked) {
-                                related_checkbox.closest('div.iweb-checkbox').classList.add('checked');
-                            }
-                            related_checkbox.closest('div.iweb-checkbox').classList.remove('error');
-                        });
-
-                        // Remove tips
-                        if(target.closest('div.iweb-checkbox-set')) {
-                            target.closest('div.iweb-checkbox-set').querySelector('small.tips')?.remove();
-                        }
-					}));
 				}
 			});
 		}
@@ -963,55 +931,33 @@ class iwebApp {
 		}
 	}
 
-	radioBox(raido_object, callBack) {
+	radioBox(radio_object, callBack) {
 		const this_object = this;
 
 		// Default to selecting all relevant elements if none provided
-		if (!this_object.isValue(raido_object)) {
-			raido_object = document.querySelectorAll('input[type="radio"]');
+		if (!this_object.isValue(radio_object)) {
+			radio_object = document.querySelectorAll('input[type="radio"]');
 		}
 
-		if (raido_object.length > 0) {
-			raido_object.forEach(function(raido) {
-				if (!raido.closest('div.iweb-raido')) {
-					const findRadioLabel = raido.nextElementSibling;
+		if (radio_object.length > 0) {
+			radio_object.forEach(function(radio) {
+				if (!radio.closest('div.iweb-radio')) {
+					const findRadioLabel = radio.nextElementSibling;
 
 					// Create div
 					const wrapperDiv = document.createElement('div');
 					wrapperDiv.classList.add('iweb-radio');
-					if (raido.checked) {
+					if (radio.checked) {
 						wrapperDiv.classList.add('checked');
 					}
 
 					// Move the radio into div and then append label next to it
-					raido.parentNode.insertBefore(wrapperDiv, raido);
-					wrapperDiv.appendChild(raido);
+					radio.parentNode.insertBefore(wrapperDiv, radio);
+					wrapperDiv.appendChild(radio);
 					if (findRadioLabel && this_object.isMatch(findRadioLabel.tagName, 'label')) {
 						findRadioLabel.parentNode.insertBefore(wrapperDiv, findRadioLabel);
 						wrapperDiv.appendChild(findRadioLabel);
 					}
-
-					// Bind event for radio change
-					raido.addEventListener('change', this_object.deBounce(function(e) {
-						const target = e.target;
-                        const selectedValue = target.value;
-                        const relatedObject = document.querySelectorAll('input[type="radio"][name="' + (target.name) + '"]');
-                        relatedObject.forEach(function(related_radio) {
-                            if (this_object.isMatch(related_radio.value, selectedValue)) {
-                                related_radio.checked = true;
-                                related_radio.closest('div.iweb-radio').classList.add('checked');
-                            } else {
-                                related_radio.checked = false;
-                                related_radio.closest('div.iweb-radio').classList.remove('checked');
-                            }
-                            related_radio.closest('div.iweb-radio').classList.remove('error');
-                        });
-
-                        // Remove tips
-                        if(target.closest('div.iweb-radio-set')) {
-                            target.closest('div.iweb-radio-set').querySelector('small.tips')?.remove();
-                        }
-					}));
 				}
 			});
 		}
@@ -3042,7 +2988,7 @@ class iDatePicker {
 		this.selectedDate;
 		this.activeInputElement;
         
-		document.body.addEventListener('click', (e) => {
+		document.addEventListener('click', (e) => {
 			if (this.calendarElement &&
 				!e.target.closest('input.idatepicker') &&
 				!e.target.closest('div.idatepicker-calendar') &&
@@ -3050,6 +2996,9 @@ class iDatePicker {
 				e.target.id !== 'idatepicker-next-month') {
 				this.hideCalendar();
 			}
+            else if(e.target.closest('input.idatepicker')) {
+                this.onFocusInput(e.target);
+            }
 		});
 	}
 
@@ -3061,7 +3010,6 @@ class iDatePicker {
 				if (!inputElement.classList.contains('idatepicker')) {
 					inputElement.type = 'text';
 					inputElement.classList.add('idatepicker');
-					inputElement.addEventListener('focus', () => this.onFocusInput(inputElement));
 				}
 			});
 		}
@@ -3350,11 +3298,15 @@ class iDatePicker {
 class iTimePicker {
     constructor() {
         this.activeInput = null; 
-        document.body.addEventListener('click', (e) => {
+        document.addEventListener('click', (e) => {
 			if (!e.target.closest('input.itimepicker') &&
 				!e.target.closest('div.time-picker-list')) {
 				this.hidePicker();
 			}
+            else if(e.target.closest('input.itimepicker')) {
+                this.showTimePicker(e.target);
+                this.formatInputTime(e.target);
+            }
 		});
     }
     
@@ -3366,8 +3318,6 @@ class iTimePicker {
 				if (!inputElement.classList.contains('itimepicker')) {
 					inputElement.type = 'text';
 					inputElement.classList.add('itimepicker');
-					inputElement.addEventListener('focus', (e) => this.showTimePicker(e.target));
-                    inputElement.addEventListener('input', (e) => this.formatInputTime(e.target));
 				}
 			});
 		}
