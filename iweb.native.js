@@ -316,8 +316,10 @@ class iwebApp {
         // Handle input
         document.addEventListener('input', function(e) {
             const target = e.target;
-            target.closest('div.iweb-input').classList.remove('error');
-            target.closest('div.iweb-input').querySelector('small.tips')?.remove();
+            if(target.closest('div.iweb-input')) {
+                target.closest('div.iweb-input').classList.remove('error');
+                target.closest('div.iweb-input').querySelector('small.tips')?.remove();
+            }
 
             if(target.closest('div.iweb-input-color')) {
                 if(this_object.isMatch(target.type, 'color')) {
