@@ -676,7 +676,7 @@ class iwebApp {
 						if (this_object.isValue(defaultText)) {
 							fillText.setAttribute('data-value', input.value);
 							fillText.setAttribute('data-default', defaultText);
-							fillText.value = defaultText;
+                            fillText.setAttribute('value', defaultText);
 							fillText.readOnly = true;
 
 							const fillReset = document.createElement('a');
