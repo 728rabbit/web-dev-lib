@@ -2453,7 +2453,9 @@ class iwebApp {
                 value = value.toString().replace(/\.?0+$/g, '');
             }
 			if (this_object.isMatch(currency_mode, true)) {
-				return value.toString().replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
+                const [integerPart, decimalPart] = value.toString().split('.');
+                const formattedInteger = integerPart.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
+                return decimalPart?(formattedInteger + '.' + decimalPart):formattedInteger;
 			} else {
 				return value;
 			}
