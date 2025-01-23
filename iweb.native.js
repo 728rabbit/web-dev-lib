@@ -2431,7 +2431,7 @@ class iwebApp {
     }
 
 	// convert
-	toNumber(value, currency_mode, decimal) {
+	toNumber(value, currency_mode, decimal = 2, auto_beauty = true) {
 		const this_object = this;
 
 		value = value.toString().replace(/[^\d|\-|\.]/g, '');
@@ -2449,8 +2449,11 @@ class iwebApp {
 					value += '0';
 				}
 			}
+            if(auto_beauty) {
+                value = value.toString().replace(/\.?0+$/g, '');
+            }
 			if (this_object.isMatch(currency_mode, true)) {
-				return value.toString().replace(/(\d)(?=(\d{3})+\b)/g, '$1,');
+				return value.toString().replace(/(\d)(?=(\d{3})+\.)/g, '$1,');
 			} else {
 				return value;
 			}

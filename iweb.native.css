@@ -1578,13 +1578,3 @@ div.iweb-grid div.col-quarter {
 #tinymce div.iweb-grid div.col-quarter {
     border: 2px dotted var(--icolor-lightgray);
 }
-
-@media only screen and (max-width: 800px) {
-    div.iweb-grid div.col-half,
-    div.iweb-grid div.col-onethird,
-    div.iweb-grid div.col-quarter {
-        -webkit-box-flex: 0;
-            -ms-flex: 0 1 100%;
-                flex: 0 1 100%;
-    }
-}
