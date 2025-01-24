@@ -1088,7 +1088,7 @@ class iwebApp {
 			// Try to send data with progress tracking using XMLHttpRequest
 			try {
                 this_object.is_busy = true;
-                this_object.showBusy(true, ((post_data.showBusy) ? 70 : 0));
+                this_object.showBusy(true, ((post_data.showBusy) ? 20 : 0));
 
 				// Use XMLHttpRequest for progress tracking
 				const xhr = new XMLHttpRequest();
@@ -1177,8 +1177,10 @@ class iwebApp {
 		if (form_object.length > 0) {
 			form_object.forEach(function(form) {
 				const showTips = ((!this_object.isMatch(form.getAttribute('data-showtips'), false)) && (!this_object.isMatch(form.getAttribute('data-showtips'), 0)));
+                const busy_mode = (this_object.isValue(form.getAttribute('data-busy')))?form.getAttribute('data-busy'):true;
 				form.removeAttribute('data-ajax');
 				form.removeAttribute('data-showtips');
+                form.removeAttribute('data-busy');
 				form.method = 'post';
 				form.autocomplete = 'off';
                 
@@ -1381,7 +1383,7 @@ class iwebApp {
                     if (can_submit) {
                         let post_data = {
                             dataType: 'json',
-                            showBusy: true,
+                            showBusy: busy_mode,
                             url: form.action,
                             values: {}
                         };
@@ -2061,6 +2063,7 @@ class iwebApp {
 
             // Show dialog
             setTimeout(function() {
+                this_object.showBusy(false);
                 contentDiv.style.transform = 'translateY(0)';
                 contentDiv.style.opacity = '1';
             }, 100);
@@ -2150,6 +2153,7 @@ class iwebApp {
             document.body.classList.add('iweb-disable-scroll');
 
             setTimeout(function() {
+                this_object.showBusy(false);
                 contentDiv.style.transform = 'translateY(0)';
                 contentDiv.style.opacity = '1';
             }, 100);
@@ -2219,6 +2223,8 @@ class iwebApp {
 
             // Show dialog
             setTimeout(function() {
+                this_object.showBusy(false);
+                
                 // init component & form
                 this_object.initComponent();
                 this_object.initForm();
