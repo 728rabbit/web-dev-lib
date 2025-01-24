@@ -888,7 +888,7 @@ div.iweb-input-autocomplete a.fill-reset {
 
 div.iweb-alert-dialog {
     position: fixed;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(255, 255, 255, 0.2);
     top: 0px;
     left: 0px;
     right: 0px;
@@ -926,7 +926,9 @@ div.iweb-alert-dialog > div > div.content {
     max-width: 360px;
     text-align: unset;
     border-radius: 4px;
+    border: 1px solid var(--icolor-gray);
     border-top: 4px solid var(--icolor-main);
+    box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.2);
     vertical-align: middle;
 }
 
@@ -945,7 +947,8 @@ div.iweb-alert-dialog > div > div.content > button.btn-close {
     font-weight: bold;
     width: 100%;
     color: var(--icolor-black);
-    border-top: 2px solid var(--icolor-lightgray);
+    border-top: 1px solid var(--icolor-gray);
+    border-radius: 0px;
 }
 
 div.iweb-alert-dialog > div > div.content > button.btn-yes {
@@ -955,8 +958,8 @@ div.iweb-alert-dialog > div > div.content > button.btn-yes {
     font-weight: bold;
     width: 50%;
     color: var(--icolor-black);
-    border-top: 2px solid var(--icolor-lightgray);
-    border-right: 2px solid var(--icolor-lightgray);
+    border-top: 1px solid var(--icolor-gray);
+    border-right: 1px solid var(--icolor-gray);
     border-radius: 0px;
 }
 
@@ -967,7 +970,7 @@ div.iweb-alert-dialog > div > div.content > button.btn-no {
     font-weight: bold;
     width: 50%;
     color: var(--icolor-black);
-    border-top: 2px solid var(--icolor-lightgray);
+    border-top: 1px solid var(--icolor-gray);
     border-radius: 0px;
 }
 
@@ -979,7 +982,7 @@ div.iweb-alert-dialog > div > div.content > button.btn:active {
 
 div.iweb-info-dialog {
     position: fixed;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.2);
     top: 0px;
     left: 0px;
     right: 0px;
@@ -1068,7 +1071,7 @@ div.iweb-info-dialog > div > div.content > div {
     background-color: var(--icolor-white);
     border-radius: 4px;
     padding: 20px;
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
 }
 
 div.iweb-info-dialog > div > div.content > div:before,
