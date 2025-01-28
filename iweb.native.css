@@ -9,15 +9,15 @@
     --icolor-yellow: #ffd700;
     --icolor-darkblue: #325096;
     --icolor-blue: #2175c3;
+    --icolor-darkgray: #6a6a6a;
+    --icolor-gray: #dddddd;
     --icolor-white: #ffffff;
     --icolor-black: #222222;
-    --icolor-darkgray: #63666a;
-    --icolor-gray: #c8c8c8;
     --icolor-lightgreen: #e1f7d2;
     --icolor-lightred: #ffb6c1;
     --icolor-lightyellow: #ffffc5;
     --icolor-lightblue: #90d5ff;
-    --icolor-lightgray: #e6e6e6;
+    --icolor-lightgray: #f6f6f6;
     --icolor-lightpink: #ffecec;
 }
 
@@ -95,7 +95,7 @@ a.font-switch {
     height: 36px;
     text-align: center;
     line-height: 32px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     margin: 0px 4px;
     border-radius: 4px;
     vertical-align: top;
@@ -140,7 +140,7 @@ input[type="number"]{
     max-width: 100%;
     height: 36px;
     padding: 4px 12px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 4px;
     resize: none;
 }
@@ -182,7 +182,7 @@ textarea {
     min-height: 180px;
     padding: 4px 12px;
     line-height: 1.5;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 4px;
     resize: none;
 }
@@ -265,7 +265,7 @@ body.iweb > div.iweb-viewer {
     height: auto;
     padding: 0px;
     margin: 0px;
-    box-shadow: 0px -10px 10px var(--icolor-lightgray);
+    box-shadow: 0px -10px 10px var(--icolor-gray);
 }
 
 div.iweb-processing {
@@ -359,7 +359,7 @@ div.iweb-editor img.right {
 
 div.iweb-editor hr {
     border: 0px;
-    border-top: 1px solid var(--icolor-lightgray);
+    border-top: 1px solid var(--icolor-gray);
 }
 
 div.iweb-responsive {
@@ -491,7 +491,7 @@ div.iweb-select > div.real > select {
     padding-left: 12px;
     padding-right: 28px;
     padding-bottom: 6px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 4px;
     text-overflow: ellipsis;
     -webkit-appearance: none;
@@ -524,7 +524,7 @@ div.iweb-select > div.virtual > a.result {
     padding-left: 12px;
     padding-right: 36px;
     padding-bottom: 6px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 4px;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -544,7 +544,7 @@ div.iweb-select > div.virtual > div.options {
     left: 0px;
     right: 0px;
     margin-top: 2px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 4px;
     overflow: hidden;
     z-index: 1;
@@ -614,7 +614,7 @@ div.iweb-select-multiple > div.virtual > div.options ul > li > a:before {
     left: 10px;
     width: 18px;
     height: 18px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 4px;
     margin-top: -9px;
 }
@@ -627,7 +627,7 @@ div.iweb-select-multiple > div.virtual > div.options ul > li.node-parent > a:bef
     width: 15px;
     height: 0px;
     left: 12px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     margin-top: -1px;
 }
 
@@ -699,7 +699,7 @@ div.iweb-checkbox:before {
     top: 50%;
     left: 0px;
     margin-top: -10px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 4px;
     vertical-align: middle;
 }
@@ -776,7 +776,7 @@ div.iweb-radio:before {
     top: 50%;
     left: 0px;
     margin-top: -10px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 10px;
     vertical-align: middle;
 }
@@ -851,7 +851,7 @@ div.iweb-input-autocomplete ul {
     left: 0px;
     right: 0px;
     margin-top: 2px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 4px;
     z-index: 1;
 }
@@ -863,7 +863,7 @@ div.iweb-input-autocomplete.top ul {
 
 div.iweb-input-autocomplete ul > li {
     display: block;
-    border-top: 1px dotted var(--icolor-lightgray);
+    border-top: 1px dotted var(--icolor-gray);
 }
 
 div.iweb-input-autocomplete ul > li > a {
@@ -1113,7 +1113,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.action {
     text-align: right;
     padding-bottom: 10px;
     margin-bottom: 10px;
-    border-bottom: 1px solid var(--icolor-lightgray);
+    border-bottom: 1px solid var(--icolor-gray);
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.action > button {
@@ -1146,7 +1146,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item {
     display: block;
     padding: 8px;
     margin-top: 10px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 4px;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
 }
@@ -1188,7 +1188,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > 
     background: var(--icolor-white);
     width: 70px;
     height: 70px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 4px;
     vertical-align: middle;
     text-align: center;
@@ -1241,7 +1241,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > 
     width: 100%;
     height: 8px;
     margin-top: 4px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 4px;
     overflow: hidden;
 }
@@ -1259,7 +1259,7 @@ div.iweb-files-dropzone {
     position: relative;
     width: 100%;
     min-height: 180px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 4px;
 }
 
@@ -1305,7 +1305,7 @@ div.iweb-files-uploader > div.action {
     text-align: right;
     padding-bottom: 10px;
     margin-bottom: 10px;
-    border-bottom: 1px solid var(--icolor-lightgray);
+    border-bottom: 1px solid var(--icolor-gray);
 }
 
 div.iweb-files-uploader > div.action > button {
@@ -1338,7 +1338,7 @@ div.iweb-files-uploader > div.list > div.item {
     display: block;
     padding: 8px;
     margin-top: 10px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 4px;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
 }
@@ -1380,7 +1380,7 @@ div.iweb-files-uploader > div.list > div.item > div.photo {
     background: var(--icolor-white);
     width: 70px;
     height: 70px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 4px;
     vertical-align: middle;
     text-align: center;
@@ -1433,7 +1433,7 @@ div.iweb-files-uploader > div.list > div.item > div.info > div.progress-bar {
     width: 100%;
     height: 8px;
     margin-top: 4px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     border-radius: 4px;
     overflow: hidden;
 }
@@ -1468,7 +1468,7 @@ div.iweb-pagination > ul > li > a {
     position: relative;
     display: block;
     text-align: center;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     padding: 4px;
     color: var(--icolor-black);
     min-width: 28px;
@@ -1543,7 +1543,7 @@ div.iweb-pagination > ul > li > a:hover {
 div.iweb-pagination input[type="text"] {
     width: 46px;
     height: 28px;
-    border: 2px solid var(--icolor-lightgray);
+    border: 2px solid var(--icolor-gray);
     padding: 3px 6px;
     text-align: center;
 }
@@ -1579,5 +1579,5 @@ div.iweb-grid div.col-quarter {
 #tinymce div.iweb-grid div.col-half,
 #tinymce div.iweb-grid div.col-onethird,
 #tinymce div.iweb-grid div.col-quarter {
-    border: 2px dotted var(--icolor-lightgray);
+    border: 2px dotted var(--icolor-gray);
 }
