@@ -998,28 +998,33 @@ div.iweb-info-dialog > div {
     height: 100%;
     padding: 20px !important;
     margin: auto;
+    text-align: center;
     overflow-x: hidden;
     overflow-y: scroll;
 }
 
 div.iweb-info-dialog > div > div.content {
     position: relative;
-    max-width: 980px;
+    display: inline-block;
+    width: auto;
+    min-width: 120px;
+    max-width: 100%;
     margin-top: 80px;
     margin-left: auto;
     margin-right: auto;
     margin-bottom: 80px;
+    text-align: left;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     z-index: 1;
 }
 
 div.iweb-info-dialog.max > div > div.content {
-    max-width: 100%;
+    width: 100%;
 }
 
 div.iweb-info-dialog.min > div > div.content {
-    max-width: 480px;
+    width: 480px;
 }
 
 div.iweb-info-dialog > div > div.content > a.btn-close {
