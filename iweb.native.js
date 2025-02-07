@@ -658,7 +658,7 @@ class iwebApp {
 						const fillText = document.createElement('input');
 						fillText.type = 'text';
                         if(mustRequired && canNew) {
-                            fillText.name = (input.name + '_txt');
+                            fillText.name = input.name.toString().replace(/(\w+)(\[\])?$/, '$1_txt$2');
                         }
                         fillText.placeholder = (input.getAttribute('data-placeholder') || '');
 						fillText.classList.add('fill-text');
