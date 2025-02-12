@@ -894,7 +894,7 @@ div.iweb-alert-dialog {
     right: 0px;
     bottom: 0px;
     overflow: hidden;
-    z-index: 100;
+    z-index: 120;
     -webkit-overflow-scrolling: touch;
 }
 
