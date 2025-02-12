@@ -15,7 +15,7 @@ class iwebApp {
 				number_error: 'Invalid number format.',
 				date_error: 'Invalid date format.',
                 time_error: 'Invalid time format.',
-                currency_error: 'Value must be greater than or equal to 0.',
+                ge0_error: 'Value must be greater than or equal to 0.',
                 gt0_error: 'Value must be greater than 0.'
 			},
 			zh_hant: {
@@ -31,7 +31,7 @@ class iwebApp {
 				number_error: '無效的數字格式。',
 				date_error: '無效的日期格式。',
                 time_error: '無效的時間格式。',
-                currency_error: '數值必須大於或等於 0。',
+                ge0_error: '數值必須大於或等於 0。',
                 gt0_error: '數值必須大於 0。'
 			},
 			zh_hans: {
@@ -47,7 +47,7 @@ class iwebApp {
 				number_error: '无效的数字格式。',
 				date_error: '无效的日期格式。',
                 time_error: '无效的时间格式。',
-                currency_error: '数值必须大於或等於 0。',
+                ge0_error: '数值必须大於或等於 0。',
                 gt0_error: '数值必须大於 0。'
 			}
 		};
@@ -1302,7 +1302,7 @@ class iwebApp {
                                         can_submit = false;
                                         next_regex = false;
                                     }
-                                    else if ((validationArray.includes('currency'))) {
+                                    else if ((validationArray.includes('ge0'))) {
                                         if(!this_object.isNumber(input.value)) {
                                             if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                                 const errorTips = document.createElement('small');
@@ -1320,7 +1320,7 @@ class iwebApp {
                                                 if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                                     const errorTips = document.createElement('small');
                                                     errorTips.classList.add('tips');
-                                                    errorTips.textContent = this_object.language[this_object.current_language]['currency_error'];
+                                                    errorTips.textContent = this_object.language[this_object.current_language]['ge0_error'];
                                                     input.closest('div.iweb-input').appendChild(errorTips);
                                                 }
                                                 input.closest('div.iweb-input').classList.add('error');
@@ -3030,18 +3030,14 @@ class iDatePicker {
 
 	onFocusInput(inputElement) {
 		// Update the calendar date based on the input value if present
-		const inputValue = inputElement.value;
-
+		let inputValue = inputElement.value;
 		// Check if the input value matches the expected date format
-		if (inputValue && this.isValidDateFormat(inputValue)) {
-			this.currentDate = this.parseDate(inputValue); // Parse the input date
-			this.selectedDate = new Date(this.currentDate);
-		} else {
-			// If the input format is incorrect, use the current date
-			this.currentDate = new Date();
-			this.selectedDate; // Clear the selected date
-		}
-
+		if (!(inputValue && this.isValidDateFormat(inputValue))) {
+            inputValue = this.formatDate(new Date());
+        }
+        
+        this.currentDate = this.parseDate(inputValue); // Parse the input date
+        this.selectedDate = new Date(this.currentDate);
 		this.activeInputElement = inputElement; // Set the active input element
 		this.showCalendar(inputElement); // Display the calendar
 	}

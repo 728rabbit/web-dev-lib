@@ -8,6 +8,7 @@
         <link href="dist/icon/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
         <link href="dist/iweb.native.css" rel="stylesheet" type="text/css"/>
         <script src="dist/iweb.native.js" type="text/javascript"></script>
+        <script src="dist/jquery.min.js" type="text/javascript"></script>
         <style>
             div.row {
                 margin-top: 10px;
@@ -48,14 +49,18 @@
                 <div style="background-color:var(--icolor-yellow);"></div>
                 <div style="background-color:var(--icolor-darkblue);"></div>
                 <div style="background-color:var(--icolor-blue);"></div>
+                <div style="background-color:var(--icolor-darkgray);"></div>
+                <div style="background-color:var(--icolor-gray);"></div>
+ 
                 <div style="background-color:var(--icolor-white);"></div>
                 <div style="background-color:var(--icolor-black);"></div>
-                <div style="background-color:var(--icolor-lightgray);"></div>
+                
                 <div style="background-color:var(--icolor-lightgreen);"></div>
                 <div style="background-color:var(--icolor-lightred);"></div>
                 <div style="background-color:var(--icolor-lightblue);"></div>
                 <div style="background-color:var(--icolor-lightyellow);"></div>
                 <div style="background-color:var(--icolor-lightpink);"></div>
+                <div style="background-color:var(--icolor-lightgray);"></div>
             </div>
             
             <div>&nbsp;</div>
@@ -68,15 +73,16 @@
             <div style="text-align:right;">
                 <div class="font">
                    <a class="font-switch small" href="#" data-size="small">A-</a><!--
-                   --><a class="font-switch normal current" href="#" data-size="normal">A</a><!--
+                   --><a class="font-switch middle current" href="#" data-size="middle">A</a><!--
                    --><a class="font-switch large" href="#" data-size="large">A+</a>
                 </div>
             </div>
             
-            <form action="upload.php" data-ajax="1" >
+            <form action="upload.php" data-ajax="1">
                 <div class="page-message iweb-tips-message">
                 </div>
                 
+                <div id="hideform">
                 <div class="row">
                     <label>專業</label>
                     <select name="professionals[]" data-validation="required" data-virtual="1" data-filter="1" multiple>
@@ -143,6 +149,12 @@
                     <label>密碼</label>
                     <input type="password" name="password" data-validation="required|password" value="Abc123">
                 </div>
+                    
+                    <select name="telephone_code" data-validation="required" data-virtual="0">
+                                    <option value="852" selected>+852</option>
+                                    <option value="853">+853</option>
+                                    <option value="86">+86</option>
+                                </select>
                 
                 <div class="row">
                     <label>開始日期</label>
@@ -151,7 +163,7 @@
                 
                 <div class="row">
                     <label>結束日期</label>
-                    <input type="date" name="end_date" data-validation="required|date" value="2024-10-31">
+                    <input type="date" name="end_date" data-validation="required|date" value="">
                 </div>
                 
                 <div class="row">
@@ -166,7 +178,7 @@
                 
                 <div class="row">
                     <label>貨幣</label>
-                    <input type="text" name="currency" data-validation="required|currency" value="">
+                    <input type="text" name="currency" data-validation="required|ge0" value="">
                 </div>
                 
                 <div class="row">
@@ -180,11 +192,10 @@
                         data-required="0"
                         data-autocomplete="1"
                         data-default="陳大文"
-                        data-url="http://localhost/mylib/fetch.php"
+                        data-url="http://localhost/myprojects/mylib/fetch.php"
                         data-param2="type:123"
                         data-sfunc="select_autoc"
-                        data-rfunc="remove_autoc"
-                        data-validation="required">
+                        data-rfunc="remove_autoc">
                 </div>
                 
                 <div class="row">
@@ -196,6 +207,8 @@
                     <label>備注</label>
                     <textarea name="content" data-validation="required"></textarea>
                 </div>
+                    
+                    
                 
                 <div class="row">
                     <label>接收推廣方式</label>
@@ -209,6 +222,7 @@
                         <input type="checkbox" id="promotional_method_3" name="promotional_method[3000]" value="whatsapp" data-validation="required" checked>
                         <label for="promotional_method_3">Whatsapp</label>
                     </div>
+                </div>
                 </div>
 
                 <div class="row">
@@ -373,11 +387,12 @@
 
             // Content dialog button
             document.getElementById('btn-content-dialog').addEventListener('click', function() { 
-                iweb.dialog('<h1>Hello World</h1><input type="date">', function() { 
+                
+                iweb.dialog('aaaaaaaaaaaaaaaaaa', function() { 
                     console.log('init info dialog');
                 }, function() {
                     console.log('close info dialog');
-                }, 'max'); 
+                }); 
             });
 
             // POST request button
@@ -394,6 +409,9 @@
                     alert('post done');
                 });
             });
+            
+            
+            
         </script>
 
     </body>

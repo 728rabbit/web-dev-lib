@@ -1103,7 +1103,8 @@ div.iweb-info-dialog.uploader > div > div.dialog-mask {
 }
 
 div.iweb-info-dialog.uploader > div > div.content {
-    max-width: 700px;
+    width: 100%;
+    max-width: 640px;
 }
 
 div.iweb-info-dialog.uploader > div > div.content > a.btn-close {
