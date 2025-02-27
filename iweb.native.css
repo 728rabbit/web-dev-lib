@@ -866,6 +866,11 @@ div.iweb-input-autocomplete ul > li {
     border-top: 1px dotted var(--icolor-gray);
 }
 
+div.iweb-input-autocomplete ul > li.empty {
+    padding: 8px;
+    text-align: center;
+}
+
 div.iweb-input-autocomplete ul > li > a {
     display: block;
     padding: 8px;

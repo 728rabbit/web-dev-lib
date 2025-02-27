@@ -7,6 +7,7 @@ class iwebApp {
 				btn_yes: 'Yes',
 				btn_no: 'No',
 				please_select: 'Please Select',
+                no_record_found:  'No record found',
 				type_error: 'File type is not allowed.',
 				max_error: 'Maximum allowed file size {num}M.',
 				required_error: 'This field is required.',
@@ -23,6 +24,7 @@ class iwebApp {
 				btn_yes: '是',
 				btn_no: '否',
 				please_select: '請選擇',
+                no_record_found:  '找不到相關記錄',
 				type_error: '不允許的檔案類型。',
 				max_error: '檔案大小不能超過{num}M。',
 				required_error: '此項目必須填寫。',
@@ -39,6 +41,7 @@ class iwebApp {
 				btn_yes: '是',
 				btn_no: '否',
 				please_select: '请选择',
+                no_record_found:  '找不到相关记录',
 				type_error: '不允许的档案类型。',
 				max_error: '档案大小不能超过{num}M。',
 				required_error: '此项目必须填写。',
@@ -421,6 +424,17 @@ class iwebApp {
                                     fillOptions.appendChild(li);
                                 });
 
+                                // Append elements
+                                target.closest('div.iweb-input-autocomplete').appendChild(fillOptions);
+                            }
+                            else {
+                                const fillOptions = document.createElement('ul');
+                                fillOptions.classList.add('fill-options');
+                                const li = document.createElement('li');
+                                li.classList.add('empty');
+                                li.textContent = this_object.language[this_object.current_language]['no_record_found'];
+                                fillOptions.appendChild(li);
+                                
                                 // Append elements
                                 target.closest('div.iweb-input-autocomplete').appendChild(fillOptions);
                             }
@@ -2456,7 +2470,7 @@ class iwebApp {
 				}
 			}
             if(auto_beauty) {
-                value = value.toString().replace(/\.?0+$/g, '');
+                value = value.toString().replace(/(\.\d+?)0+$/g, '$1');
             }
 			if (this_object.isMatch(currency_mode, true)) {
                 const [integerPart, decimalPart] = value.toString().split('.');
