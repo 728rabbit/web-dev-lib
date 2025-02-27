@@ -2471,6 +2471,7 @@ class iwebApp {
 			}
             if(auto_beauty) {
                 value = value.toString().replace(/(\.\d+?)0+$/g, '$1');
+                value = value.toString().replace(/(\.0)$/g, '');
             }
 			if (this_object.isMatch(currency_mode, true)) {
                 const [integerPart, decimalPart] = value.toString().split('.');
