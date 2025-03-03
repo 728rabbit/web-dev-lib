@@ -109,9 +109,12 @@ class iwebApp {
             setTimeout(function() {
                 safeCallFunction('iweb_common_layout', this_object.win_width);
                 safeCallFunction('iweb_layout', this_object.win_width);
+                safeCallFunction('iweb_chind_layout', this_object.win_width);
                 safeCallFunction('iweb_extra_layout', this_object.win_width);
+                
                 safeCallFunction('iweb_common_func');
                 safeCallFunction('iweb_func');
+                safeCallFunction('iweb_child_func');
                 safeCallFunction('iweb_extra_func');
             }, 100);
 		});
@@ -120,9 +123,12 @@ class iwebApp {
             setTimeout(function() {
                 safeCallFunction('iweb_common_layout_done', this_object.win_width);
                 safeCallFunction('iweb_layout_done', this_object.win_width);
+                safeCallFunction('iweb_child_layout_done', this_object.win_width);
                 safeCallFunction('iweb_extra_layout_done', this_object.win_width);
+                
                 safeCallFunction('iweb_common_func_done');
                 safeCallFunction('iweb_func_done');
+                safeCallFunction('iweb_child_func');
                 safeCallFunction('iweb_extra_func_done');
             }, 100);
 		};
@@ -134,6 +140,7 @@ class iwebApp {
                     this_object.responsive();
                     safeCallFunction('iweb_common_layout', this_object.win_width);
                     safeCallFunction('iweb_layout', this_object.win_width);
+                    safeCallFunction('iweb_child_layout', this_object.win_width);
                     safeCallFunction('iweb_extra_layout', this_object.win_width);
                 }
             }, 100);
@@ -143,6 +150,7 @@ class iwebApp {
             setTimeout(function() {
                 safeCallFunction('iweb_common_scroll', window.scrollY);
                 safeCallFunction('iweb_scroll', window.scrollY);
+                safeCallFunction('iweb_child_scroll', window.scrollY);
                 safeCallFunction('iweb_extra_scroll', window.scrollY);
             }, 100);
 		});
@@ -2595,6 +2603,11 @@ class iwebApp {
 		}
 		return '';
 	}
+    
+    deleteCookie(cname) {
+        const this_object = this;
+        this_object.setCookie(cname, '', -1);
+    }
 
     // others
     deBounce(callBack, delay = 100, prevent = true) {
