@@ -3279,7 +3279,7 @@ class iDatePicker {
 		const selectedDate = this.parseDate(dateObj);
 		if (!isNaN(selectedDate)) {
 			this.activeInputElement.value = this.formatDate(selectedDate); 
-            this.activeInputElement.dispatchEvent(new Event('input', { bubbles: true }));
+            this.activeInputElement.dispatchEvent(new Event('change', { bubbles: true }));
 			this.selectedDate = selectedDate;
 			this.buildCalendar();
 			this.hideCalendar();
@@ -3378,6 +3378,7 @@ class iTimePicker {
         picker.addEventListener('click', (e) => {
             if (e.target.classList.contains('time-option')) {
                 this.activeInput.value = e.target.textContent;
+                this.activeInput.dispatchEvent(new Event('change', { bubbles: true }));
                 this.hidePicker();
             }
         });
