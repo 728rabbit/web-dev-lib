@@ -107,6 +107,8 @@ class iwebApp {
 			this_object.responsive();
             
             setTimeout(function() {
+                console.log('DOM done');
+                
                 safeCallFunction('iweb_common_layout', this_object.win_width);
                 safeCallFunction('iweb_layout', this_object.win_width);
                 safeCallFunction('iweb_chind_layout', this_object.win_width);
@@ -121,6 +123,8 @@ class iwebApp {
 
 		window.onload = function() {
             setTimeout(function() {
+                console.log('window done');
+                
                 safeCallFunction('iweb_common_layout_done', this_object.win_width);
                 safeCallFunction('iweb_layout_done', this_object.win_width);
                 safeCallFunction('iweb_child_layout_done', this_object.win_width);
@@ -134,7 +138,10 @@ class iwebApp {
 		};
 
 		window.addEventListener('resize', function() {
-            setTimeout(function() {
+            clearTimeout(this_object.timer);
+            this_object.timer = setTimeout(() => {
+                console.log('window resize');
+                
                 if (this_object.win_width !== parseInt(document.querySelector('div.iweb-viewer').offsetWidth)) {
                     this_object.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
                     this_object.responsive();
@@ -147,7 +154,10 @@ class iwebApp {
 		});
 
 		window.addEventListener('scroll', function() {
-            setTimeout(function() {
+            clearTimeout(this_object.timer);
+            this_object.timer = setTimeout(() => {
+                console.log('window scroll');
+                
                 safeCallFunction('iweb_common_scroll', window.scrollY);
                 safeCallFunction('iweb_scroll', window.scrollY);
                 safeCallFunction('iweb_child_scroll', window.scrollY);
