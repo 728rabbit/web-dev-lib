@@ -238,8 +238,6 @@ randomNum(min, max)
 
 randomString(length)
 
-detectDevice(index)
-
 --------------------------------------------------------------------------------
 
 16. Callback - DOMContentLoaded
