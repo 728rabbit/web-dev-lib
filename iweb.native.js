@@ -58,6 +58,7 @@ class iwebApp {
 		this.imd5 = (new iMD5());
 		this.csrf_token = '';
         this.timer = null;
+        this.scroll_timer = null;
 		this.is_busy = false;
    
 		this.idatepicker;
@@ -67,7 +68,7 @@ class iwebApp {
 		this.uploader_files = {};
 		this.uploader_files_skip = {};
 
-		this.win_width = 0;
+		this.view_width = 0;
         
         this.eventMap = {};
 	}
@@ -103,16 +104,19 @@ class iwebApp {
             this_object.initForm();
             
             // Get iweb-viewer width
-            this_object.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
-			this_object.responsive();
+            this_object.view_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
             
+            // Call function
             setTimeout(function() {
                 console.log('DOM done');
                 
-                safeCallFunction('iweb_common_layout', this_object.win_width);
-                safeCallFunction('iweb_layout', this_object.win_width);
-                safeCallFunction('iweb_chind_layout', this_object.win_width);
-                safeCallFunction('iweb_extra_layout', this_object.win_width);
+                document.body.style.setProperty('--iscrollbar-width', (window.innerWidth - this_object.view_width) + 'px');
+                
+                this_object.responsive();
+                safeCallFunction('iweb_common_layout', this_object.view_width);
+                safeCallFunction('iweb_layout', this_object.view_width);
+                safeCallFunction('iweb_chind_layout', this_object.view_width);
+                safeCallFunction('iweb_extra_layout', this_object.view_width);
                 
                 safeCallFunction('iweb_common_func');
                 safeCallFunction('iweb_func');
@@ -125,10 +129,10 @@ class iwebApp {
             setTimeout(function() {
                 console.log('window done');
                 
-                safeCallFunction('iweb_common_layout_done', this_object.win_width);
-                safeCallFunction('iweb_layout_done', this_object.win_width);
-                safeCallFunction('iweb_child_layout_done', this_object.win_width);
-                safeCallFunction('iweb_extra_layout_done', this_object.win_width);
+                safeCallFunction('iweb_common_layout_done', this_object.view_width);
+                safeCallFunction('iweb_layout_done', this_object.view_width);
+                safeCallFunction('iweb_child_layout_done', this_object.view_width);
+                safeCallFunction('iweb_extra_layout_done', this_object.view_width);
                 
                 safeCallFunction('iweb_common_func_done');
                 safeCallFunction('iweb_func_done');
@@ -142,20 +146,21 @@ class iwebApp {
             this_object.timer = setTimeout(() => {
                 console.log('window resize');
                 
-                if (this_object.win_width !== parseInt(document.querySelector('div.iweb-viewer').offsetWidth)) {
-                    this_object.win_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
+                if (this_object.view_width !== parseInt(document.querySelector('div.iweb-viewer').offsetWidth)) {
+                    this_object.view_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
+                    
                     this_object.responsive();
-                    safeCallFunction('iweb_common_layout', this_object.win_width);
-                    safeCallFunction('iweb_layout', this_object.win_width);
-                    safeCallFunction('iweb_child_layout', this_object.win_width);
-                    safeCallFunction('iweb_extra_layout', this_object.win_width);
+                    safeCallFunction('iweb_common_layout', this_object.view_width);
+                    safeCallFunction('iweb_layout', this_object.view_width);
+                    safeCallFunction('iweb_child_layout', this_object.view_width);
+                    safeCallFunction('iweb_extra_layout', this_object.view_width);
                 }
-            }, 100);
+            }, 200);
 		});
 
 		window.addEventListener('scroll', function() {
-            clearTimeout(this_object.timer);
-            this_object.timer = setTimeout(() => {
+            clearTimeout(this_object.scroll_timer);
+            this_object.scroll_timer = setTimeout(() => {
                 console.log('window scroll');
                 
                 safeCallFunction('iweb_common_scroll', window.scrollY);
@@ -171,9 +176,6 @@ class iwebApp {
 
 		// Add class to body based on device type
 		document.body.classList.add('iweb');
-		if (this_object.detectDevice()) {
-			document.body.classList.add('iweb-mobile');
-		}
 
 		// Wrap elements except for <script>, <noscript>, and <style>
 		const elementsToWrap = Array.from(document.body.children).filter(function(e) { 
@@ -227,6 +229,14 @@ class iwebApp {
                             fontButtons.forEach(function(e) {
                                 e.classList.toggle('current', this_object.isMatch(e.getAttribute('data-size'), newFontSize));
                             });
+                        }
+                    }
+                    else if(target.closest('a.control-stretch') && target.closest('div.widget.expand')) {
+                        if(target.closest('div.widget.expand').classList.contains('show')) {
+                            target.closest('div.widget.expand').classList.remove('show');
+                        }
+                        else {
+                            target.closest('div.widget.expand').classList.add('show');
                         }
                     }
 				}
@@ -2062,6 +2072,7 @@ class iwebApp {
 
             // Create close button
             const closeButton = document.createElement('button');
+            closeButton.type = 'button';
             closeButton.classList.add('btn');
             closeButton.classList.add('btn-close');
             closeButton.textContent = this_object.language[this_object.current_language]['btn_confirm'];
@@ -2129,6 +2140,7 @@ class iwebApp {
 
             // Create the yes/no button
             const yesButton = document.createElement('button');
+            yesButton.type = 'button';
             yesButton.classList.add('btn');
             yesButton.classList.add('btn-yes');
             yesButton.textContent = this_object.language[this_object.current_language]['btn_yes'];
@@ -2152,6 +2164,7 @@ class iwebApp {
             }));
 
             const noButton = document.createElement('button');
+            noButton.type = 'button';
             noButton.classList.add('btn');
             noButton.classList.add('btn-no');
             noButton.textContent = this_object.language[this_object.current_language]['btn_no'];
@@ -2822,45 +2835,6 @@ class iwebApp {
 			result += chars.substring(rnum, rnum + 1);
 		}
 		return result;
-	}
-
-	detectDevice(index) {
-		const isMobile = {
-			Android: function() {
-				return navigator.userAgent.match(/Android/i);
-			},
-			BlackBerry: function() {
-				return navigator.userAgent.match(/BlackBerry/i);
-			},
-			iOS: function() {
-				return navigator.userAgent.match(/Mac|iPhone|iPad|iPod/i);
-			},
-			Opera: function() {
-				return navigator.userAgent.match(/Opera Mini/i);
-			},
-			Windows: function() {
-				return navigator.userAgent.match(/IEMobile/i);
-			}
-		};
-		switch (index) {
-			case 'android':
-				return isMobile.Android();
-				break;
-			case 'blackberry':
-				return isMobile.BlackBerry();
-				break;
-			case 'ios':
-				return isMobile.iOS();
-				break;
-			case 'opera':
-				return isMobile.Opera();
-				break;
-			case 'windows':
-				return isMobile.Windows();
-				break;
-			default:
-				return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
-		}
 	}
 }
 

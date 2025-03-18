@@ -78,172 +78,165 @@
                 </div>
             </div>
             
+            <div>&nbsp;</div>
+            
             <form action="upload.php" data-ajax="1">
-                <div class="page-message iweb-tips-message">
-                </div>
+                <div class="page-message iweb-tips-message"></div>
                 
-                <div id="hideform">
-                <div class="row">
-                    <label>專業</label>
-                    <select name="professionals[]" data-validation="required" data-virtual="1" data-filter="1" multiple>
-                         <optgroup label="技術類">
-                            <option value="developer" selected>軟體開發人員</option>
-                            <option value="engineer">工程師</option>
-                            <option value="data_scientist">數據科學家</option>
-                        </optgroup>
-                        <optgroup label="設計類">
-                            <option value="graphic_designer" selected>平面設計師</option>
-                            <option value="ux_designer">用戶體驗設計師</option>
-                            <option value="ui_designer">用戶介面設計師</option>
-                        </optgroup>
-                        <optgroup label="管理類">
-                            <option value="manager">經理</option>
-                            <option value="project_manager">專案經理</option>
-                            <option value="consultant">顧問</option>
-                        </optgroup>
-                        <option value="law">律師</option>
-                    </select>
-                </div>
-                
-                <div class="row">
-                    <label>姓名</label>
-                    <input type="text" name="name" data-validation="required" value="陳大文">
-                </div>
-                
-                <div class="row">
-                    <label>性別</label>
-                    <div class="iweb-radio-set">
-                        <input type="radio" id="male" name="gender" value="male" data-validation="required">
-                        <label for="male">男</label>
+                <div class="widget">
+                    <div class="iweb-row">
+                        <label>專業</label>
+                        <select name="professionals[]" data-validation="required" data-virtual="1" data-filter="1" multiple>
+                             <optgroup label="技術類">
+                                <option value="developer" selected>軟體開發人員</option>
+                                <option value="engineer">工程師</option>
+                                <option value="data_scientist">數據科學家</option>
+                            </optgroup>
+                            <optgroup label="設計類">
+                                <option value="graphic_designer" selected>平面設計師</option>
+                                <option value="ux_designer">用戶體驗設計師</option>
+                                <option value="ui_designer">用戶介面設計師</option>
+                            </optgroup>
+                            <optgroup label="管理類">
+                                <option value="manager">經理</option>
+                                <option value="project_manager">專案經理</option>
+                                <option value="consultant">顧問</option>
+                            </optgroup>
+                            <option value="law">律師</option>
+                        </select>
+                    </div>
 
-                        <input type="radio" id="female" name="gender" value="female" data-validation="required" checked>
-                        <label for="female">女</label>
+                    <div class="iweb-row">
+                        <label>姓名</label>
+                        <input type="text" name="name" data-validation="required" value="陳大文">
+                    </div>
+
+                    <div class="iweb-row">
+                        <label>性別</label>
+                        <div class="iweb-radio-set">
+                            <input type="radio" id="male" name="gender" value="male" data-validation="required">
+                            <label for="male">男</label>
+
+                            <input type="radio" id="female" name="gender" value="female" data-validation="required" checked>
+                            <label for="female">女</label>
+                        </div>
+                    </div>
+
+                    <div class="iweb-row">
+                        <label>電話</label>
+                        <table style="width:100%">
+                            <tr>
+                                <td width="110">
+                                    <select name="telephone_code" data-validation="required" data-virtual="1">
+                                        <option value="852" selected>+852</option>
+                                        <option value="853">+853</option>
+                                        <option value="86">+86</option>
+                                    </select>
+                                </td>
+                                <td width="10">&nbsp;</td>
+                                <td>
+                                    <input type="tel" name="telephone" data-validation="required|number" value="12345678">
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="iweb-row">
+                        <label>電郵</label>
+                        <input type="text" name="email" data-validation="required|email" value="demo@123.com">
+                    </div>
+
+                    <div class="iweb-row">
+                        <label>密碼</label>
+                        <input type="password" name="password" data-validation="required|password" value="Abc123">
+                    </div>
+
+                    <div class="iweb-row">
+                        <label>開始日期</label>
+                        <input type="date" name="start_date" data-validation="required|date" value="2024-10-10">
+                    </div>
+
+                    <div class="iweb-row">
+                        <label>結束日期</label>
+                        <input type="date" name="end_date" data-validation="required|date" value="">
+                    </div>
+
+                    <div class="iweb-row">
+                        <label>開始時間</label>
+                        <input type="time" name="start_time" data-validation="required|time" value="" data-start="800" data-end="2200" data-interval="10">
+                    </div>
+
+                    <div class="iweb-row">
+                        <label>結束時間</label>
+                        <input type="time" name="end_time" data-validation="required|time" value="">
+                    </div>
+
+                    <div class="iweb-row">
+                        <label>貨幣</label>
+                        <input type="text" name="currency" data-validation="required|ge0" value="">
+                    </div>
+
+                    <div class="iweb-row">
+                        <label>代表顔色</label>
+                        <input type="color" name="mycolor" data-validation="required" value="">
+                    </div>
+
+                    <div class="iweb-row">
+                        <label>推薦人</label>
+                        <input type="text" class="fill-id" name="member_id" value="1" 
+                            data-required="0"
+                            data-autocomplete="1"
+                            data-default="陳大文"
+                            data-url="http://localhost:8000/myprojects/mylib/fetch.php"
+                            data-param2="type:123"
+                            data-sfunc="select_autoc"
+                            data-rfunc="remove_autoc">
+                    </div>
+
+                    <div class="iweb-row">
+                        <label>附件</label>
+                        <input type="file" name="myfile">
+                    </div>
+
+                    <div class="iweb-row">
+                        <label>備注</label>
+                        <textarea name="content" data-validation="required"></textarea>
+                    </div>
+
+
+
+                    <div class="iweb-row">
+                        <label>接收推廣方式</label>
+                        <div class="iweb-checkbox-set">
+                            <input type="checkbox" id="promotional_method_1" name="promotional_method[1000]" value="email" data-validation="required" checked>
+                            <label for="promotional_method_1">電郵</label>
+
+                            <input type="checkbox" id="promotional_method_2" name="promotional_method[]" value="mobile" data-validation="required" >
+                            <label for="promotional_method_2">短信</label>
+
+                            <input type="checkbox" id="promotional_method_3" name="promotional_method[3000]" value="whatsapp" data-validation="required" checked>
+                            <label for="promotional_method_3">Whatsapp</label>
+                        </div>
+                    </div>
+                    <div class="iweb-row">
+                        <button type="reset" class="btn">重設</button>
+                        <button type="submit" class="btn">提交</button>
+                        <button type="button" id="btn-post">Post</button>
+                    </div>
+
+                    <div class="iweb-row">
+                        <button type="button" class="btn" id="btn-alert-dialog">Alert Dialog</button>
+                        <button type="button" class="btn" id="btn-confirm-dialog">Confirm Dialog</button>
+                        <button type="button" class="btn" id="btn-content-dialog">Content Dialog</button>
                     </div>
                 </div>
-                
-                <div class="row">
-                    <label>電話</label>
-                    <table style="width:100%">
-                        <tr>
-                            <td width="110">
-                                <select name="telephone_code" data-validation="required" data-virtual="1">
-                                    <option value="852" selected>+852</option>
-                                    <option value="853">+853</option>
-                                    <option value="86">+86</option>
-                                </select>
-                            </td>
-                            <td width="10">&nbsp;</td>
-                            <td>
-                                <input type="tel" name="telephone" data-validation="required|number" value="12345678">
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                
-                <div class="row">
-                    <label>電郵</label>
-                    <input type="text" name="email" data-validation="required|email" value="demo@123.com">
-                </div>
-                
-                <div class="row">
-                    <label>密碼</label>
-                    <input type="password" name="password" data-validation="required|password" value="Abc123">
-                </div>
-                    
-                    <select name="telephone_code" data-validation="required" data-virtual="0">
-                                    <option value="852" selected>+852</option>
-                                    <option value="853">+853</option>
-                                    <option value="86">+86</option>
-                                </select>
-                
-                <div class="row">
-                    <label>開始日期</label>
-                    <input type="date" name="start_date" data-validation="required|date" value="2024-10-10">
-                </div>
-                
-                <div class="row">
-                    <label>結束日期</label>
-                    <input type="date" name="end_date" data-validation="required|date" value="">
-                </div>
-                
-                <div class="row">
-                    <label>開始時間</label>
-                    <input type="time" name="start_time" data-validation="required|time" value="" data-start="800" data-end="2200" data-interval="10">
-                </div>
-                
-                <div class="row">
-                    <label>結束時間</label>
-                    <input type="time" name="end_time" data-validation="required|time" value="">
-                </div>
-                
-                <div class="row">
-                    <label>貨幣</label>
-                    <input type="text" name="currency" data-validation="required|ge0" value="">
-                </div>
-                
-                <div class="row">
-                    <label>代表顔色</label>
-                    <input type="color" name="mycolor" data-validation="required" value="">
-                </div>
-                
-                <div class="row">
-                    <label>推薦人</label>
-                    <input type="text" class="fill-id" name="member_id" value="1" 
-                        data-required="0"
-                        data-autocomplete="1"
-                        data-default="陳大文"
-                        data-url="http://localhost:8000/myprojects/mylib/fetch.php"
-                        data-param2="type:123"
-                        data-sfunc="select_autoc"
-                        data-rfunc="remove_autoc">
-                </div>
-                
-                <div class="row">
-                    <label>附件</label>
-                    <input type="file" name="myfile">
-                </div>
-                
-                <div class="row">
-                    <label>備注</label>
-                    <textarea name="content" data-validation="required"></textarea>
-                </div>
-                    
-                    
-                
-                <div class="row">
-                    <label>接收推廣方式</label>
-                    <div class="iweb-checkbox-set">
-                        <input type="checkbox" id="promotional_method_1" name="promotional_method[1000]" value="email" data-validation="required" checked>
-                        <label for="promotional_method_1">電郵</label>
-                        
-                        <input type="checkbox" id="promotional_method_2" name="promotional_method[]" value="mobile" data-validation="required" >
-                        <label for="promotional_method_2">短信</label>
-                        
-                        <input type="checkbox" id="promotional_method_3" name="promotional_method[3000]" value="whatsapp" data-validation="required" checked>
-                        <label for="promotional_method_3">Whatsapp</label>
-                    </div>
-                </div>
-                </div>
-
-                <div class="row">
-                    <button type="reset" class="btn">重設</button>
-                    <button type="submit" class="btn">提交</button>
-                    <button type="button" id="btn-post">Post</button>
-                </div>
-                
-                <div class="row">
-                    <button type="button" class="btn" id="btn-alert-dialog">Alert Dialog</button>
-                    <button type="button" class="btn" id="btn-confirm-dialog">Confirm Dialog</button>
-                    <button type="button" class="btn" id="btn-content-dialog">Content Dialog</button>
-                </div>
-                
             </form>
             
             <div>&nbsp;</div>
             <div>&nbsp;</div>
             
-            <h3>6. 上載文檔</h3>
-            <div>
+            <div class="widget">
+                <div class="w-title">上載文檔</div>
                 <div>
                     <input type="file" id="myfiles1" class="dropfiles">
                 </div>
@@ -266,6 +259,18 @@
             <div>&nbsp;</div>
             <div>&nbsp;</div>
             
+            <div class="widget expand">
+                <a class="control-stretch" href="#">
+                    <span>圖片集  | 1080*1080</span>
+                    <i class="fa fa-plus"></i>
+                    <i class="fa fa-minus"></i>
+                </a>
+                <div class="hidden">
+                    <textarea name="content" data-validation="required"></textarea>
+                </div>
+                
+            </div>
+            
             
             <h3>分頁</h3>
             <div><div class="mypage" data-totalpage="10"></div></div>
@@ -281,26 +286,43 @@
             <p>&nbsp;</p>
             <p>&nbsp;</p>
             <div id="tinymce">
-                <div class="iweb-grid">
-                    <div class="col-half">Col - 1</div>
-                    <div class="col-half">Col - 2</div>
+                <div class="iweb-row">
+                    <label>1/2</label>
+                    <div class="iweb-grid">
+                        <div class="col-half">Col - 1</div>
+                        <div class="col-half">Col - 2</div>
+                    </div>
                 </div>
                 
-                <p>&nbsp;</p>
+                <div class="iweb-row">
+                    <label>1/3</label>
+                    <div class="iweb-grid">
+                        <div class="col-onethird">Col - 1</div>
+                        <div class="col-onethird">Col - 2</div>
+                        <div class="col-onethird">Col - 3</div>
+                    </div>
+                </div>   
+                    
                 
-                <div class="iweb-grid">
-                    <div class="col-onethird">Col - 1</div>
-                    <div class="col-onethird">Col - 2</div>
-                    <div class="col-onethird">Col - 3</div>
+                <div class="iweb-row">
+                    <label>1/4</label>
+                    <div class="iweb-grid">
+                        <div class="col-quarter">Col - 1</div>
+                        <div class="col-quarter">Col - 2</div>
+                        <div class="col-quarter">Col - 3</div>
+                        <div class="col-quarter">Col - 4</div>
+                    </div>
                 </div>
                 
-                <p>&nbsp;</p>
-                
-                <div class="iweb-grid">
-                    <div class="col-quarter">Col - 1</div>
-                    <div class="col-quarter">Col - 2</div>
-                    <div class="col-quarter">Col - 3</div>
-                    <div class="col-quarter">Col - 4</div>
+                <div class="iweb-row">
+                    <label>1/5</label>
+                    <div class="iweb-grid">
+                        <div class="col-onefifth">Col - 1</div>
+                        <div class="col-onefifth">Col - 2</div>
+                        <div class="col-onefifth">Col - 3</div>
+                        <div class="col-onefifth">Col - 4</div>
+                        <div class="col-onefifth">Col - 5</div>
+                    </div>
                 </div>
             </div>
             
