@@ -56,7 +56,7 @@ html {
 }
 
 html.small-font {
-    font-size: 0.875em;
+    font-size: 0.8125em;
 }
 
 html.large-font {
@@ -70,6 +70,14 @@ body {
     width: 100%;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
+}
+
+hr.line-break {
+    position: relative;
+    border: 0px;
+    border-top: 2px dotted var(--icolor-gray);
+    margin-top: 16px;
+    margin-bottom: 16px;
 }
 
 table {
@@ -222,11 +230,56 @@ button {
     cursor: pointer;
 }
 
-button.btn {
+button.btn,
+a.btn {
+    display: inline-block;
+    font-size: 1rem;
     min-height: 36px;
+    padding: 6px 12px;
+    border: 0px;
+    border-radius: 4px;
+    line-height: 24px;
+    vertical-align: top;
+    cursor: pointer;
+    
+    text-transform: capitalize;
+    text-align: center;
+    
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    -moz-user-select: none;
+         user-select: none; 
 }
 
-button.btn:hover {
+button.btn.full {
+    width: 100%;
+}
+
+button.btn-icon {
+    width: 36px;
+}
+
+button.btn > i {
+    display: inline-block;
+    color: var(--icolor-white);
+    vertical-align: baseline;
+}
+
+button.btn > span {
+    display: inline-block;
+    color: var(--icolor-white);
+    vertical-align: baseline;
+}
+
+button.btn > i + span {
+    margin-left: 2px;
+}
+
+button.btn:hover,
+a.btn:hover {
     box-shadow: 4px 4px 2px rgba(0, 0, 0, 0.2);
 }
 
@@ -310,7 +363,7 @@ div.iweb-tips-message {
 div.iweb-tips-message > div {
     position: relative;
     padding: 6px 30px 6px 12px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
     border-radius: 4px;
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
 }
@@ -1570,11 +1623,28 @@ div.iweb-row.last {
     margin-bottom: 0px;
 }
 
-div.iweb-row > label {
+div.iweb-row > label,
+div.iweb-row label.name {
     position: relative;
     display: block;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-top: 2px;
+    margin-bottom: 6px;
+}
+
+div.iweb-row div.ivalue {
+    display: inline-block;
+    background: var(--icolor-white);
+    width: 100%;
+    font-size: 1rem;
+    max-width: 100%;
+    min-height: 36px;
+    line-height: 24px;
+    padding: 6px 0px;
+    border-radius: 0px;
+    border-top: 2px solid var(--icolor-white);
+    border-bottom: 2px solid var(--icolor-gray);
+    resize: none;
 }
 
 div.iweb-grid {
@@ -1650,7 +1720,7 @@ div.widget div.w-title {
     font-weight: bold;
     color: var(--icolor-main);
     padding-bottom: 8px;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
     border-bottom: 2px dotted var(--icolor-gray);
 }
 
