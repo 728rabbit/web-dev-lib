@@ -6,9 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="csrf-token" content="96ca6fd5cc5283000910785ba2344044"/>
         <link href="dist/icon/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-        <link href="dist/iweb.native.css" rel="stylesheet" type="text/css"/>
-        <script src="dist/iweb.native.js" type="text/javascript"></script>
-        <script src="dist/jquery.min.js" type="text/javascript"></script>
+        <link href="dist/iweb.native.min.css" rel="stylesheet" type="text/css"/>
+        <script src="dist/iweb.native.min.js"></script>
+        <script src="dist/jquery.min.js"></script>
         <style>
             div.row {
                 margin-top: 10px;
@@ -228,6 +228,7 @@
                         <button type="button" class="btn" id="btn-alert-dialog">Alert Dialog</button>
                         <button type="button" class="btn" id="btn-confirm-dialog">Confirm Dialog</button>
                         <button type="button" class="btn" id="btn-content-dialog">Content Dialog</button>
+                        <button type="button" class="btn" id="btn-modal-dialog">Modal Dialog </button>
                     </div>
                 </div>
             </form>
@@ -416,6 +417,10 @@
                     console.log('close info dialog');
                 }); 
             });
+            
+            document.getElementById('btn-modal-dialog').addEventListener('click', function() {
+                new iModalDialog('<h1>"\'Hello World</h1>', {'title': '系統提示', 'width': 800, 'height': 600 });
+            });
 
             // POST request button
             document.getElementById('btn-post').addEventListener('click', function() {
@@ -435,6 +440,5 @@
             
             
         </script>
-
     </body>
 </html>

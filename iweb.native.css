@@ -944,6 +944,62 @@ div.iweb-input-autocomplete a.fill-reset {
     vertical-align: top;
 }
 
+
+div.imodal-dialog {
+    position: fixed;
+    background: white;
+    width: 400px;
+    height: 300px;
+    border: 2px solid var(--icolor-gray);
+    border-radius: 4px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    min-width: 200px;
+    min-height: 150px;
+}
+
+div.imodal-dialog > div.top {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    background: var(--icolor-main);
+    color: white;
+    padding: 10px;
+    cursor: move;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+div.imodal-dialog > div.top > div.actions > button {
+    background: transparent;
+    color: white;
+    font-weight: normal;
+    padding: 0px;
+    margin-left: 12px;
+    border: none!important;
+}
+
+div.imodal-dialog > div.content {
+    position: relative;
+    padding: 16px;
+    overflow: auto;
+}
+
+div.imodal-dialog > div.resize-handle {
+    position: absolute;
+    background: -webkit-linear-gradient(315deg, transparent 55%, var(--icolor-main) 55%, #0078D7 60%, transparent 60%),-webkit-linear-gradient(315deg, transparent 70%, var(--icolor-main) 70%, #0078D7 75%, transparent 75%);
+    background: linear-gradient(135deg, transparent 55%, var(--icolor-main) 55%, #0078D7 60%, transparent 60%),linear-gradient(135deg, transparent 70%, var(--icolor-main) 70%, #0078D7 75%, transparent 75%);
+    width: 12px;
+    height: 12px;
+    bottom: 0px;
+    right: 0px;
+    cursor: nwse-resize;
+}
+
 div.iweb-alert-dialog {
     position: fixed;
     background: rgba(255, 255, 255, 0.2);
