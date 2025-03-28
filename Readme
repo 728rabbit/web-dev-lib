@@ -172,6 +172,8 @@ dialog(htmlContent, initFunc, callBack, customizeClassName)
 
 tipsMsg(message, isSuccess = false, callBack)
 
+modalDialog('<h1>"\'Hello World</h1>', initFunc, {'title': '系統提示', 'ClassName': '', 'width': 800, 'height': 600 });
+
 --------------------------------------------------------------------------------
 
 12. Event

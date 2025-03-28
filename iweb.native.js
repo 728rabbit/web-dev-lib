@@ -2273,6 +2273,23 @@ class iwebApp {
             }, 100);
         }
     }
+    
+    modalDialog(htmlContent, initFunc, options) {
+        const this_object = this;
+        if(this_object.isValue(htmlContent)) {
+            options = Object.assign({
+                title : '',
+                ClassName: '',
+                width: 0,
+                height: 0,
+                init: initFunc
+            }, options);
+            if(!this_object.isValue(options.ClassName)) {
+                options.ClassName = 'default';
+            }
+            new iModalDialog(htmlContent, options);
+        }
+    }
 
     tipsMsg(message, isSuccess = false, callBack) {
         const this_object = this;

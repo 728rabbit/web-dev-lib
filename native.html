@@ -6,8 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta name="csrf-token" content="96ca6fd5cc5283000910785ba2344044"/>
         <link href="dist/icon/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-        <link href="dist/iweb.native.min.css" rel="stylesheet" type="text/css"/>
-        <script src="dist/iweb.native.min.js"></script>
+        <link href="dist/iweb.native.css" rel="stylesheet" type="text/css"/>
+        <script src="dist/iweb.native.js"></script>
         <script src="dist/jquery.min.js"></script>
         <style>
             div.row {
@@ -419,7 +419,7 @@
             });
             
             document.getElementById('btn-modal-dialog').addEventListener('click', function() {
-                new iModalDialog('<h1>"\'Hello World</h1>', {'title': '系統提示', 'width': 800, 'height': 600 });
+                iweb.modalDialog('<h1>"\'Hello World</h1>', function() { alert('aaa') }, {'title': '系統提示', 'ClassName': '', 'width': 800, 'height': 600 });
             });
 
             // POST request button
