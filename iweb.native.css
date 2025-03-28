@@ -964,6 +964,7 @@ div.imodal-dialog > div.top {
     display: flex;
     background: var(--icolor-main);
     color: white;
+    height: 42px;
     padding: 10px;
     cursor: move;
     -webkit-box-pack: justify;
@@ -985,6 +986,8 @@ div.imodal-dialog > div.top > div.actions > button {
 
 div.imodal-dialog > div.content {
     position: relative;
+    width: 100%;
+    height: calc(100% - 42px);
     padding: 16px;
     overflow: auto;
 }
