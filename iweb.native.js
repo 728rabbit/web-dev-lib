@@ -3061,9 +3061,7 @@ class iDatePicker {
         
         this.minDate = (inputElement.getAttribute('data-min')?.trim() || null);
         this.maxDate = (inputElement.getAttribute('data-max')?.trim() || null);
-        console.log(this.minDate);
-        console.log(this.maxDate);
-        
+
         this.activeInputElement = inputElement; // Set the active input element
         this.showCalendar(inputElement); // Display the calendar
     }
