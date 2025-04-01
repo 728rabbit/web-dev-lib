@@ -3018,6 +3018,8 @@ class iDatePicker {
         this.calendarElement;
         this.currentDate = new Date();
         this.selectedDate;
+        this.minDate;
+        this.maxDate;
         this.activeInputElement;
 
         document.addEventListener('click', (e) => {
@@ -3056,6 +3058,12 @@ class iDatePicker {
 
         this.currentDate = this.parseDate(inputValue); // Parse the input date
         this.selectedDate = new Date(this.currentDate);
+        
+        this.minDate = (inputElement.getAttribute('data-min')?.trim() || null);
+        this.maxDate = (inputElement.getAttribute('data-max')?.trim() || null);
+        console.log(this.minDate);
+        console.log(this.maxDate);
+        
         this.activeInputElement = inputElement; // Set the active input element
         this.showCalendar(inputElement); // Display the calendar
     }
@@ -3246,12 +3254,24 @@ class iDatePicker {
 
     createDateCell(day, dateObj, isOtherMonth) {
         // Create a table cell representing a day in the calendar
+        let canSelect = true;
+        if(this.minDate !== null) {
+            if(new Date(this.minDate) - new Date(dateObj) > 0) {
+                canSelect = false;
+            }
+        }
+        if(this.maxDate !== null) {
+            if(new Date(this.maxDate) - new Date(dateObj) < 0) {
+                canSelect = false;
+            }
+        }
+        
         const td = this.createElement('td', {
             backgroundColor: this.selectedDate && dateObj === this.formatDate(this.selectedDate) ? '#2ca4e9' : '',
             width: '36px',
             height: '28px',
             fontSize: '12px',
-            color: isOtherMonth ? '#aaa' : this.selectedDate && dateObj === this.formatDate(this.selectedDate) ? '#fff' : '',
+            color: (!canSelect || isOtherMonth)  ? '#aaa' : this.selectedDate && dateObj === this.formatDate(this.selectedDate) ? '#fff' : '',
             padding: '4px',
             border: '2px solid #e6e6e6',
             boxSizing: 'border-box',
@@ -3260,9 +3280,12 @@ class iDatePicker {
         });
         td.dataset.date = dateObj; // Store the date value in the cell
         td.textContent = day;
-        td.addEventListener('click', () => this.onDateSelect(dateObj)); // Add event listener for date selection
+        if(canSelect) {
+            td.addEventListener('click', () => this.onDateSelect(dateObj)); // Add event listener for date selection
+        }
         return td;
     }
+    
 
     onDateSelect(dateObj) {
         // Parse the date from the formatted string

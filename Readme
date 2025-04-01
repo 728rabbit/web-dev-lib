@@ -17,7 +17,7 @@ More Information: https://github.com/728rabbit/iweb-native-library
 
 <input type="password" name="password" data-validation="required|password" value="Abc123">
 
-<input type="date" name="start_date" data-validation="required|date" value="2024-10-10">
+<input type="date" name="start_date" data-validation="required|date" value="2024-10-10" data-min="2024-01-01" data-max="2024-12-31">
 
 <input type="time" name="start_time" data-validation="required|time" value="10:00" data-start="800" data-end="2200" data-interval="10">
 
