@@ -755,7 +755,7 @@ div.iweb-checkbox:before {
     content: '';
     width: 20px;
     height: 20px;
-    top: 4px;
+    top: 2px;
     left: 0px;
     border: 2px solid var(--icolor-gray);
     border-radius: 4px;
@@ -776,7 +776,7 @@ div.iweb-checkbox.checked:after {
     font-weight: bold;
     width: 20px;
     height: 20px;
-    top: 4px;
+    top: 2px;
     left: 0px;
     text-align: center;
     line-height: 22px !important;
@@ -787,7 +787,7 @@ div.iweb-checkbox > input[type="checkbox"] {
     display: block;
     width: 20px;
     height: 20px;
-    top: 4px;
+    top: 2px;
     left: 0px;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
@@ -829,7 +829,7 @@ div.iweb-radio:before {
     content: '';
     width: 20px;
     height: 20px;
-    top: 4px;
+    top: 2px;
     left: 0px;
     border: 2px solid var(--icolor-gray);
     border-radius: 10px;
@@ -847,7 +847,7 @@ div.iweb-radio.checked:after {
     content: "";
     width: 12px;
     height: 12px;
-    top: 8px;
+    top: 6px;
     left: 4px;
     border-radius: 6px;
 }
@@ -857,7 +857,7 @@ div.iweb-radio > input[type="radio"] {
     display: block;
     width: 20px;
     height: 20px;
-    top: 4px;
+    top: 2px;
     left: 0px;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
