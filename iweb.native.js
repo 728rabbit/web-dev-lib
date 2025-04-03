@@ -407,6 +407,7 @@ class iwebApp {
                                     const li = document.createElement('li');
                                     const a = document.createElement('a');
                                     a.setAttribute('data-id', value.id);
+                                    a.setAttribute('data-value', (this_object.isValue(value.value)?value.value:value.name));
                                     a.textContent = value.name;
                                     a.addEventListener('click', this_object.deBounce(function(e1) {
                                         const target = e1.target;
@@ -416,7 +417,7 @@ class iwebApp {
                                         const fillId = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
                                         const fillText = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
                                         fillId.value = target.getAttribute('data-id');
-                                        fillText.value = target.textContent;
+                                        fillText.value = target.getAttribute('data-value');
                                         fillText.readOnly = true;
 
                                         // Create reset button

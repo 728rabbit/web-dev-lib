@@ -43,6 +43,19 @@ More Information: https://github.com/728rabbit/iweb-native-library
     data-sfunc="select_autoc"
     data-rfunc="remove_autoc">
 
+
+json_encode([
+    1    =>  [
+        'id' => '1',
+        'name' => '陳大文 | 90440554',
+        'value' => '陳大文'
+    ], 
+    2    =>  [
+        'id' => '2',
+        'name' => '方麗麗'
+    ]
+]);
+
 --------------------------------------------------------------------------------
 
 3. Select - iweb.selectBox();
