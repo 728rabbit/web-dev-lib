@@ -951,8 +951,8 @@ div.imodal-dialog {
     width: 400px;
     height: 300px;
     border: 2px solid var(--icolor-gray);
-    border-radius: 4px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.2);
     overflow: hidden;
     min-width: 200px;
     min-height: 150px;
@@ -1005,7 +1005,7 @@ div.imodal-dialog > div.resize-handle {
 
 div.iweb-alert-dialog {
     position: fixed;
-    background: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.5);
     top: 0px;
     left: 0px;
     right: 0px;
@@ -1043,11 +1043,19 @@ div.iweb-alert-dialog > div > div.content {
     max-width: 360px;
     text-align: unset;
     border-radius: 4px;
-    border: 1px solid var(--icolor-gray);
-    border-top: 4px solid var(--icolor-main);
+    border: 2px solid var(--icolor-gray);
     box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.2);
     vertical-align: middle;
     overflow: hidden;
+}
+
+div.iweb-alert-dialog > div > div.content:before {
+    position: absolute;
+    content: '';
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    border-top: 4px solid var(--icolor-main);
 }
 
 div.iweb-alert-dialog > div > div.content > div {
@@ -1065,7 +1073,7 @@ div.iweb-alert-dialog > div > div.content > button.btn-close {
     font-weight: bold;
     width: 100%;
     color: var(--icolor-black);
-    border-top: 1px solid var(--icolor-gray);
+    border-top: 2px solid var(--icolor-gray);
     border-radius: 0px;
 }
 
@@ -1076,8 +1084,8 @@ div.iweb-alert-dialog > div > div.content > button.btn-yes {
     font-weight: bold;
     width: 50%;
     color: var(--icolor-black);
-    border-top: 1px solid var(--icolor-gray);
-    border-right: 1px solid var(--icolor-gray);
+    border-top: 2px solid var(--icolor-gray);
+    border-right: 2px solid var(--icolor-gray);
     border-radius: 0px;
 }
 
@@ -1088,7 +1096,7 @@ div.iweb-alert-dialog > div > div.content > button.btn-no {
     font-weight: bold;
     width: 50%;
     color: var(--icolor-black);
-    border-top: 1px solid var(--icolor-gray);
+    border-top: 2px solid var(--icolor-gray);
     border-radius: 0px;
 }
 
@@ -1100,7 +1108,7 @@ div.iweb-alert-dialog > div > div.content > button.btn:active {
 
 div.iweb-info-dialog {
     position: fixed;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(255, 255, 255, 0.5);
     top: 0px;
     left: 0px;
     right: 0px;
@@ -1132,6 +1140,7 @@ div.iweb-info-dialog > div > div.content {
     margin-right: auto;
     margin-bottom: 80px;
     text-align: left;
+    border-radius: 4px;
     opacity: 0;
     -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=0)";
     z-index: 1;
@@ -1161,30 +1170,31 @@ div.iweb-info-dialog > div > div.content > a.btn-close {
     line-height: 30px;
     text-align: center;
     color: var(--icolor-black);
-    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+    border: 2px solid var(--icolor-gray);
+    box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
 
 div.iweb-info-dialog > div > div.content > a.btn-close:before {
     position: absolute;
-    background: var(--icolor-black);
+    background: var(--icolor-darkgray);
     content: '';
     width: 16px;
     height: 2px;
-    top: 14px;
-    left: 7px;
+    top: 12px;
+    left: 6px;
     -webkit-transform: rotate(45deg);
             transform: rotate(45deg);
 }
 
 div.iweb-info-dialog > div > div.content > a.btn-close:after {
     position: absolute;
-    background: var(--icolor-black);
+    background: var(--icolor-darkgray);
     content: '';
     width: 16px;
     height: 2px;
-    top: 14px;
-    left: 7px;
+    top: 12px;
+    left: 6px;
     -webkit-transform: rotate(135deg);
             transform: rotate(135deg);
 }
@@ -1194,7 +1204,8 @@ div.iweb-info-dialog > div > div.content > div {
     background-color: var(--icolor-white);
     border-radius: 4px;
     padding: 20px;
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+    border: 2px solid var(--icolor-gray);
+    box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.2);
     overflow: hidden;
 }
 
@@ -1238,7 +1249,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.action {
     text-align: right;
     padding-bottom: 10px;
     margin-bottom: 10px;
-    border-bottom: 1px solid var(--icolor-gray);
+    border-bottom: 2px solid var(--icolor-gray);
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.action > button {
@@ -1273,7 +1284,6 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item {
     margin-top: 10px;
     border: 2px solid var(--icolor-gray);
     border-radius: 4px;
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
 }
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item:nth-child(1) {
@@ -1430,7 +1440,7 @@ div.iweb-files-uploader > div.action {
     text-align: right;
     padding-bottom: 10px;
     margin-bottom: 10px;
-    border-bottom: 1px solid var(--icolor-gray);
+    border-bottom: 2px solid var(--icolor-gray);
 }
 
 div.iweb-files-uploader > div.action > button {
@@ -1465,7 +1475,6 @@ div.iweb-files-uploader > div.list > div.item {
     margin-top: 10px;
     border: 2px solid var(--icolor-gray);
     border-radius: 4px;
-    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
 }
 
 div.iweb-files-uploader > div.list > div.item:nth-child(1) {
