@@ -1478,10 +1478,14 @@ class iwebApp {
                             }
                         });
                     } else {
-                        self_object.tipsMsg(self_object.language[self_object.current_language]['required_all_error'], false, null, alertResult);
-                        if (!((typeof window[validation_func]) === 'function') && self_object.isMatch(alertResult, true)) {
-                            self_object.scrollTo('.error');
-                        }
+                        self_object.tipsMsg(self_object.language[self_object.current_language]['required_all_error'], false, function() {
+                            if (!((typeof window[validation_func]) === 'function')) {
+                                const tipsMessageArea = document.querySelector('div.iweb-tips-message');
+                                if (!tipsMessageArea) {
+                                    self_object.scrollTo('.error');
+                                }
+                            }
+                        }, alertResult);
                     }
                 }));
 
