@@ -1,8 +1,10 @@
 class iwebApp {
     constructor() {
         this.current_language = 'en';
-        this.language = {
-            en: {
+        this.language = 
+        {
+            en: 
+            {
                 btn_confirm: 'OK',
                 btn_yes: 'Yes',
                 btn_no: 'No',
@@ -10,7 +12,8 @@ class iwebApp {
                 no_record_found: 'No record found',
                 type_error: 'File type is not allowed.',
                 max_error: 'Maximum allowed file size {num}M.',
-                required_error: 'This field is required.',
+                required_all_error: 'Please fill out all required fields correctly.',
+                required_error: 'Please fill out this field correctly.',
                 password_error: 'Password must contain at least 6 characters, including upper/lowercase and numbers (e.g. Abc123).',
                 email_error: 'Invalid email address format.',
                 number_error: 'Invalid number format.',
@@ -19,7 +22,8 @@ class iwebApp {
                 ge0_error: 'Value must be greater than or equal to 0.',
                 gt0_error: 'Value must be greater than 0.'
             },
-            zh_hant: {
+            zh_hant: 
+            {
                 btn_confirm: '確定',
                 btn_yes: '是',
                 btn_no: '否',
@@ -27,7 +31,8 @@ class iwebApp {
                 no_record_found: '找不到相關記錄',
                 type_error: '不允許的檔案類型。',
                 max_error: '檔案大小不能超過{num}M。',
-                required_error: '此項目必須填寫。',
+                required_all_error: '請正確填寫所有必須欄位。',
+                required_error: '請正確填寫此欄位。',
                 password_error: '密碼必須至少包含6個字符，包括大寫/小寫和數字(例如Abc123)。',
                 email_error: '無效的郵件地址格式。',
                 number_error: '無效的數字格式。',
@@ -36,7 +41,8 @@ class iwebApp {
                 ge0_error: '數值必須大於或等於 0。',
                 gt0_error: '數值必須大於 0。'
             },
-            zh_hans: {
+            zh_hans: 
+            {
                 btn_confirm: '确定',
                 btn_yes: '是',
                 btn_no: '否',
@@ -44,7 +50,8 @@ class iwebApp {
                 no_record_found: '找不到相关记录',
                 type_error: '不允许的档案类型。',
                 max_error: '档案大小不能超过{num}M。',
-                required_error: '此项目必须填写。',
+                required_all_error: '请正确填写所有必须栏位。',
+                required_error: '请正确填写此栏位。',
                 password_error: '密码必须至少包含6个字符，包括大写/小写和数字(例如Abc123)。',
                 email_error: '无效的邮件地址格式。',
                 number_error: '无效的数字格式。',
@@ -57,12 +64,13 @@ class iwebApp {
 
         this.imd5 = (new iMD5());
         this.csrf_token = '';
+        
         this.timer = null;
         this.scroll_timer = null;
         this.is_busy = false;
 
-        this.idatepicker;
-        this.itimepicker;
+        this.idatepicker = null;
+        this.itimepicker = null;
 
         this.uploader_options = {};
         this.uploader_files = {};
@@ -74,7 +82,7 @@ class iwebApp {
     }
 
     init() {
-        const this_object = this;
+        const self_object = this;
 
         // Helper function to safely call if the function is defined
         const safeCallFunction = (func, value) => {
@@ -87,36 +95,36 @@ class iwebApp {
         document.addEventListener('DOMContentLoaded', function() {
             // Set current language
             const htmlLang = document.documentElement.lang?.toLowerCase().replace('-', '_');
-            if (this_object.isValue(htmlLang) && this_object.isValue(this_object.language[htmlLang])) {
-                this_object.current_language = htmlLang;
+            if (self_object.isValue(htmlLang) && self_object.isValue(self_object.language[htmlLang])) {
+                self_object.current_language = htmlLang;
             }
 
             // Set CSRF token
             const csrfTokenContent = document.querySelector('meta[name="csrf-token"]')?.content;
-            if (this_object.isValue(csrfTokenContent)) {
+            if (self_object.isValue(csrfTokenContent)) {
                 const hostname = (location.hostname || '/');
-                this_object.csrf_token = this_object.imd5.hash(this_object.imd5.hash('iweb@' + hostname) + '@' + csrfTokenContent);
+                self_object.csrf_token = self_object.imd5.hash(self_object.imd5.hash('iweb@' + hostname) + '@' + csrfTokenContent);
             }
 
             // Init body, component and form
-            this_object.initBody();
-            this_object.initComponent();
-            this_object.initForm();
+            self_object.initBody();
+            self_object.initComponent();
+            self_object.initForm();
 
             // Get iweb-viewer width
-            this_object.view_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
+            self_object.view_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
 
             // Call function
             setTimeout(function() {
                 console.log('DOM done');
 
-                document.body.style.setProperty('--iscrollbar-width', (window.innerWidth - this_object.view_width) + 'px');
+                document.body.style.setProperty('--iscrollbar-width', (window.innerWidth - self_object.view_width) + 'px');
 
-                this_object.responsive();
-                safeCallFunction('iweb_common_layout', this_object.view_width);
-                safeCallFunction('iweb_layout', this_object.view_width);
-                safeCallFunction('iweb_chind_layout', this_object.view_width);
-                safeCallFunction('iweb_extra_layout', this_object.view_width);
+                self_object.responsive();
+                safeCallFunction('iweb_common_layout', self_object.view_width);
+                safeCallFunction('iweb_layout', self_object.view_width);
+                safeCallFunction('iweb_chind_layout', self_object.view_width);
+                safeCallFunction('iweb_extra_layout', self_object.view_width);
 
                 safeCallFunction('iweb_common_func');
                 safeCallFunction('iweb_func');
@@ -129,10 +137,10 @@ class iwebApp {
             setTimeout(function() {
                 console.log('window done');
 
-                safeCallFunction('iweb_common_layout_done', this_object.view_width);
-                safeCallFunction('iweb_layout_done', this_object.view_width);
-                safeCallFunction('iweb_child_layout_done', this_object.view_width);
-                safeCallFunction('iweb_extra_layout_done', this_object.view_width);
+                safeCallFunction('iweb_common_layout_done', self_object.view_width);
+                safeCallFunction('iweb_layout_done', self_object.view_width);
+                safeCallFunction('iweb_child_layout_done', self_object.view_width);
+                safeCallFunction('iweb_extra_layout_done', self_object.view_width);
 
                 safeCallFunction('iweb_common_func_done');
                 safeCallFunction('iweb_func_done');
@@ -142,25 +150,25 @@ class iwebApp {
         };
 
         window.addEventListener('resize', function() {
-            clearTimeout(this_object.timer);
-            this_object.timer = setTimeout(() => {
+            clearTimeout(self_object.timer);
+            self_object.timer = setTimeout(() => {
                 console.log('window resize');
 
-                if (this_object.view_width !== parseInt(document.querySelector('div.iweb-viewer').offsetWidth)) {
-                    this_object.view_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
+                if (self_object.view_width !== parseInt(document.querySelector('div.iweb-viewer').offsetWidth)) {
+                    self_object.view_width = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
 
-                    this_object.responsive();
-                    safeCallFunction('iweb_common_layout', this_object.view_width);
-                    safeCallFunction('iweb_layout', this_object.view_width);
-                    safeCallFunction('iweb_child_layout', this_object.view_width);
-                    safeCallFunction('iweb_extra_layout', this_object.view_width);
+                    self_object.responsive();
+                    safeCallFunction('iweb_common_layout', self_object.view_width);
+                    safeCallFunction('iweb_layout', self_object.view_width);
+                    safeCallFunction('iweb_child_layout', self_object.view_width);
+                    safeCallFunction('iweb_extra_layout', self_object.view_width);
                 }
             }, 200);
         });
 
         window.addEventListener('scroll', function() {
-            clearTimeout(this_object.scroll_timer);
-            this_object.scroll_timer = setTimeout(() => {
+            clearTimeout(self_object.scroll_timer);
+            self_object.scroll_timer = setTimeout(() => {
                 console.log('window scroll');
 
                 safeCallFunction('iweb_common_scroll', window.scrollY);
@@ -172,7 +180,7 @@ class iwebApp {
     }
 
     initBody() {
-        const this_object = this;
+        const self_object = this;
 
         // Add class to body based on device type
         document.body.classList.add('iweb');
@@ -197,7 +205,7 @@ class iwebApp {
             // Handle anchor click
             if (target.closest('a')) {
                 const href = target.closest('a').getAttribute('href');
-                if (!this_object.isValue(href) || this_object.isMatch(href, '#')) {
+                if (!self_object.isValue(href) || self_object.isMatch(href, '#')) {
                     e.preventDefault();
                     if (target.closest('div.iweb-tips-message')) {
                         target.closest('div.iweb-tips-message').classList.remove('error');
@@ -220,12 +228,12 @@ class iwebApp {
                         }
                     } else if (target.closest('a.font-switch')) {
                         const newFontSize = target.getAttribute('data-size');
-                        if (this_object.isValue(newFontSize)) {
-                            this_object.setCookie('iweb_font_size', newFontSize);
+                        if (self_object.isValue(newFontSize)) {
+                            self_object.setCookie('iweb_font_size', newFontSize);
                             document.documentElement.classList.remove(...fontSizeClasses);
                             document.documentElement.classList.add(newFontSize + '-font');
                             fontButtons.forEach(function(e) {
-                                e.classList.toggle('current', this_object.isMatch(e.getAttribute('data-size'), newFontSize));
+                                e.classList.toggle('current', self_object.isMatch(e.getAttribute('data-size'), newFontSize));
                             });
                         }
                     } else if (target.closest('a.control-stretch') && target.closest('div.widget.expand')) {
@@ -242,7 +250,7 @@ class iwebApp {
                 const InputPwd = target.closest('div.iweb-input').querySelector('input');
                 const ShowIconPwd = target.closest('div.iweb-input').querySelector('i.show');
                 const HideIconPwd = target.closest('div.iweb-input').querySelector('i.hide');
-                if (this_object.isMatch(InputPwd.type, 'password')) {
+                if (self_object.isMatch(InputPwd.type, 'password')) {
                     InputPwd.type = 'text';
                     ShowIconPwd.style.display = 'block';
                     HideIconPwd.style.display = 'none';
@@ -267,7 +275,7 @@ class iwebApp {
                 });
             } else {
                 const virtualOptions = target.closest('div.iweb-select').querySelector('div.virtual > div.options > ul');
-                if (this_object.isValue(virtualOptions)) {
+                if (self_object.isValue(virtualOptions)) {
                     if (target.closest('a.result')) {
                         if (target.closest('div.iweb-select').classList.contains('show')) {
                             target.closest('div.iweb-select').classList.remove('show');
@@ -278,7 +286,7 @@ class iwebApp {
                     document.querySelectorAll('div.iweb-select').forEach(function(otherSelector) {
                         const otherOptions = otherSelector.querySelector('div.virtual > div.options > ul');
                         if (otherOptions) {
-                            if (!this_object.isMatch(otherOptions.getAttribute('data-index'), virtualOptions.getAttribute('data-index'))) {
+                            if (!self_object.isMatch(otherOptions.getAttribute('data-index'), virtualOptions.getAttribute('data-index'))) {
                                 otherSelector.classList.remove('show');
                             }
                         }
@@ -350,7 +358,7 @@ class iwebApp {
             }
 
             if (target.closest('div.iweb-input-color')) {
-                if (this_object.isMatch(target.type, 'color')) {
+                if (self_object.isMatch(target.type, 'color')) {
                     const inputColorCode = target.closest('div.iweb-input-color').querySelector('input[type="text"]');
                     if (/^#[0-9A-F]{6}$/i.test(target.value)) {
                         inputColorCode.value = target.value;
@@ -365,8 +373,8 @@ class iwebApp {
                     }
                 }
             } else if (target.closest('div.iweb-input-autocomplete') && target.closest('input.fill-text')) {
-                clearTimeout(this_object.timer);
-                this_object.timer = setTimeout(() => {
+                clearTimeout(self_object.timer);
+                self_object.timer = setTimeout(() => {
                     // Remove error, tips & options list
                     target.closest('div.iweb-input-autocomplete').classList.remove('error');
                     target.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
@@ -376,7 +384,7 @@ class iwebApp {
                     let extraValues = {};
                     for (let i = 1; i <= 5; i++) {
                         let param = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id').getAttribute('data-param' + i);
-                        if (this_object.isValue(param)) {
+                        if (self_object.isValue(param)) {
                             let [key, value] = param.split(':');
                             extraValues[key] = value;
                         }
@@ -395,9 +403,9 @@ class iwebApp {
                     };
 
                     // Search result handling
-                    if (this_object.isValue(keywords)) {
-                        this_object.ajaxPost(postData, function(responseData) {
-                            if (this_object.isValue(responseData)) {
+                    if (self_object.isValue(keywords)) {
+                        self_object.ajaxPost(postData, function(responseData) {
+                            if (self_object.isValue(responseData)) {
                                 responseData = Object.values(responseData);
 
                                 // Create options list
@@ -407,9 +415,9 @@ class iwebApp {
                                     const li = document.createElement('li');
                                     const a = document.createElement('a');
                                     a.setAttribute('data-id', value.id);
-                                    a.setAttribute('data-value', (this_object.isValue(value.value)?value.value:value.name));
+                                    a.setAttribute('data-value', (self_object.isValue(value.value)?value.value:value.name));
                                     a.textContent = value.name;
-                                    a.addEventListener('click', this_object.deBounce(function(e1) {
+                                    a.addEventListener('click', self_object.deBounce(function(e1) {
                                         const target = e1.target;
                                         target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset')?.remove();
 
@@ -457,7 +465,7 @@ class iwebApp {
                                 fillOptions.classList.add('fill-options');
                                 const li = document.createElement('li');
                                 li.classList.add('empty');
-                                li.textContent = this_object.language[this_object.current_language]['no_record_found'];
+                                li.textContent = self_object.language[self_object.current_language]['no_record_found'];
                                 fillOptions.appendChild(li);
 
                                 // Append elements
@@ -468,7 +476,7 @@ class iwebApp {
                 }, 1000);
             } else if (target.closest('div.iweb-select') && target.closest('li.filter')) {
                 const fkw = target.value;
-                if (this_object.isValue(fkw)) {
+                if (self_object.isValue(fkw)) {
                     // Find all node elements
                     target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li.node > a').forEach(function(anchor) {
                         const textContent = anchor.textContent || anchor.innerText;
@@ -522,10 +530,10 @@ class iwebApp {
                 if (target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li > a').length > 0) {
                     target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li > a').forEach(function(anchor) {
                         const optionValue = anchor.getAttribute('data-value');
-                        if (this_object.isValue(optionValue)) {
-                            if (!this_object.isMatch(selectedOptions.indexOf(optionValue), -1)) {
+                        if (self_object.isValue(optionValue)) {
+                            if (!self_object.isMatch(selectedOptions.indexOf(optionValue), -1)) {
                                 anchor.parentElement.classList.add('node-selected');
-                                if (this_object.isValue(selectedOptionLabel)) {
+                                if (self_object.isValue(selectedOptionLabel)) {
                                     selectedOptionLabel += ', ';
                                 }
                                 selectedOptionLabel += anchor.textContent;
@@ -536,8 +544,8 @@ class iwebApp {
                     });
 
                     // Set the default option label if none selected
-                    if (!this_object.isValue(selectedOptionLabel)) {
-                        selectedOptionLabel = ((this_object.isValue(target.getAttribute('data-default'))) ? target.getAttribute('data-default') : this_object.language[this_object.current_language]['please_select']);
+                    if (!self_object.isValue(selectedOptionLabel)) {
+                        selectedOptionLabel = ((self_object.isValue(target.getAttribute('data-default'))) ? target.getAttribute('data-default') : self_object.language[self_object.current_language]['please_select']);
                     }
 
                     // Update the virtual result label
@@ -561,7 +569,7 @@ class iwebApp {
                 const selectedValue = target.value;
                 const relatedObject = document.querySelectorAll('input[type="radio"][name="' + (target.name) + '"]');
                 relatedObject.forEach(function(related_radio) {
-                    if (this_object.isMatch(related_radio.value, selectedValue)) {
+                    if (self_object.isMatch(related_radio.value, selectedValue)) {
                         related_radio.checked = true;
                         related_radio.closest('div.iweb-radio').classList.add('checked');
                     } else {
@@ -580,24 +588,24 @@ class iwebApp {
 
         // Init default font size
         const fontSizeClasses = ['small-font', 'middle-font', 'large-font'];
-        const defaultFontSize = (this_object.getCookie('iweb_font_size'));
+        const defaultFontSize = (self_object.getCookie('iweb_font_size'));
         const fontButtons = document.querySelectorAll('a.font-switch');
-        if (this_object.isValue(defaultFontSize)) {
+        if (self_object.isValue(defaultFontSize)) {
             document.documentElement.classList.remove(...fontSizeClasses);
             document.documentElement.classList.add(defaultFontSize + '-font');
             fontButtons.forEach(function(btn) {
-                btn.classList.toggle('current', this_object.isMatch(btn.getAttribute('data-size'), defaultFontSize));
+                btn.classList.toggle('current', self_object.isMatch(btn.getAttribute('data-size'), defaultFontSize));
             });
         }
     }
 
     initComponent() {
-        const this_object = this;
-        this_object.inputBox();
-        this_object.selectBox();
-        this_object.checkBox();
-        this_object.radioBox();
-        this_object.iframe();
+        const self_object = this;
+        self_object.inputBox();
+        self_object.selectBox();
+        self_object.checkBox();
+        self_object.radioBox();
+        self_object.iframe();
 
         // insert div before & after into editor div
         const editors = document.querySelectorAll('div.iweb-editor');
@@ -613,10 +621,10 @@ class iwebApp {
     }
 
     inputBox(inputObject, callBack) {
-        const this_object = this;
+        const self_object = this;
 
         // Default to selecting all relevant elements if none provided
-        if (!this_object.isValue(inputObject)) {
+        if (!self_object.isValue(inputObject)) {
             const default_input = [
                 'input[type="text"]',
                 'input[type="password"]',
@@ -637,16 +645,16 @@ class iwebApp {
                 if (!input.closest('div.iweb-input')) {
                     // Create div and move the input into it
                     const inputType = input.type;
-                    const isAutocomplete = (this_object.isMatch(input.getAttribute('data-autocomplete'), 1) || this_object.isMatch(input.getAttribute('data-autocomplete'), true));
+                    const isAutocomplete = (self_object.isMatch(input.getAttribute('data-autocomplete'), 1) || self_object.isMatch(input.getAttribute('data-autocomplete'), true));
                     const wrapperDiv = document.createElement('div');
                     wrapperDiv.classList.add('iweb-input');
-                    wrapperDiv.classList.add((isAutocomplete ? 'iweb-input-autocomplete' : 'iweb-input-' + (this_object.isValue(input.type) ? input.type : 'text')));
+                    wrapperDiv.classList.add((isAutocomplete ? 'iweb-input-autocomplete' : 'iweb-input-' + (self_object.isValue(input.type) ? input.type : 'text')));
                     input.parentNode.insertBefore(wrapperDiv, input);
                     wrapperDiv.appendChild(input);
 
                     // Add additional elements to the input
                     if (!isAutocomplete) {
-                        if (this_object.isMatch(inputType, 'password')) {
+                        if (self_object.isMatch(inputType, 'password')) {
                             // Create password switch type button
                             const BtnSwitchType = document.createElement('button');
                             BtnSwitchType.type = 'button';
@@ -663,7 +671,7 @@ class iwebApp {
                             BtnSwitchType.appendChild(eyeSlashIcon);
                             BtnSwitchType.appendChild(eyeIcon);
                             wrapperDiv.appendChild(BtnSwitchType);
-                        } else if (this_object.isMatch(inputType, 'color')) {
+                        } else if (self_object.isMatch(inputType, 'color')) {
                             // Set color input
                             input.style.position = 'relative';
                             input.style.zIndex = 1;
@@ -685,28 +693,29 @@ class iwebApp {
                         }
                     } else {
                         // Create search input
-                        const mustRequired = (this_object.isMatch(input.getAttribute('data-required'), 1)) ? true : false;
-                        const canNew = (this_object.isMatch(input.getAttribute('data-cannew'), 1)) ? true : false;
+                        const validationArray = (input.getAttribute('data-validation').toString().split('|'));
+                        const canNew = (self_object.isMatch(input.getAttribute('data-cannew'), 1)) ? true : false;
 
                         const fillText = document.createElement('input');
                         fillText.type = 'text';
-                        if (mustRequired && canNew) {
+                        if (canNew) {
                             fillText.name = input.name.toString().replace(/(\w+)(\[\])?$/, '$1_txt$2');
+                            if ((validationArray.includes('required'))) {
+                                fillText.setAttribute('data-validation', 'required');
+                            }
                         }
                         fillText.placeholder = (input.getAttribute('data-placeholder') || '');
                         fillText.classList.add('fill-text');
                         fillText.style.display = 'block';
                         fillText.style.width = '100%';
                         fillText.autocomplete = 'off';
-                        if (mustRequired && canNew) {
-                            fillText.setAttribute('data-validation', 'required');
-                        }
+                        
                         wrapperDiv.appendChild(fillText);
 
                         // Create reset button
                         const defaultText = input.getAttribute('data-default');
                         input.removeAttribute('data-default');
-                        if (this_object.isValue(defaultText)) {
+                        if (self_object.isValue(defaultText)) {
                             fillText.setAttribute('data-value', input.value);
                             fillText.setAttribute('data-default', defaultText);
                             fillText.setAttribute('value', defaultText);
@@ -728,37 +737,30 @@ class iwebApp {
                         // Hide input
                         input.type = 'hidden';
                         input.classList.add('fill-id');
-                        input.removeAttribute('data-required');
+                        input.removeAttribute('data-validation');
                         input.removeAttribute('data-cannew');
                         input.removeAttribute('data-autocomplete');
-                        if (mustRequired && canNew) {
-                            input.removeAttribute('data-required');
-                        } else {
-                            if (mustRequired) {
-                                input.setAttribute('data-validation', 'required');
-                            }
-                        }
                     }
 
                     // Set input styles
-                    input.style.display = (this_object.isMatch(inputType, 'color') ? 'inline-block' : 'block');
-                    input.style.width = (this_object.isMatch(inputType, 'color') ? '36px' : '100%');
+                    input.style.display = (self_object.isMatch(inputType, 'color') ? 'inline-block' : 'block');
+                    input.style.width = (self_object.isMatch(inputType, 'color') ? '36px' : '100%');
                     input.autocomplete = 'off';
                 }
             });
         }
 
         // Init date picker
-        if (!this_object.isValue(this_object.idatepicker)) {
-            this_object.idatepicker = new iDatePicker(this_object.current_language);
+        if (!self_object.isValue(self_object.idatepicker)) {
+            self_object.idatepicker = new iDatePicker(self_object.current_language);
         }
-        this_object.idatepicker.render('input[type="date"]');
+        self_object.idatepicker.render('input[type="date"]');
 
         // Init time picker
-        if (!this_object.isValue(this_object.itimepicker)) {
-            this_object.itimepicker = new iTimePicker();
+        if (!self_object.isValue(self_object.itimepicker)) {
+            self_object.itimepicker = new iTimePicker();
         }
-        this_object.itimepicker.render('input[type="time"]');
+        self_object.itimepicker.render('input[type="time"]');
 
         // Callback if need
         if ((typeof callBack) === 'function') {
@@ -767,10 +769,10 @@ class iwebApp {
     }
 
     selectBox(select_object, callBack) {
-        const this_object = this;
+        const self_object = this;
 
         // Default to selecting all relevant elements if none provided
-        if (!this_object.isValue(select_object)) {
+        if (!self_object.isValue(select_object)) {
             select_object = document.querySelectorAll('select');
         }
 
@@ -778,10 +780,10 @@ class iwebApp {
             select_object.forEach(function(select, select_index) {
                 if (!select.closest('div.iweb-select')) {
                     // Get config
-                    const isMultiple = ((this_object.isMatch(select.multiple, 1) || this_object.isMatch(select.multiple, true)) ? true : false);
-                    const isVirtual = ((this_object.isMatch(select.getAttribute('data-virtual'), 1) || this_object.isMatch(select.getAttribute('data-virtual'), true)) ? true : false);
-                    const isFilter = ((this_object.isMatch(select.getAttribute('data-filter'), 1) || this_object.isMatch(select.getAttribute('data-filter'), true)) ? true : false);
-                    const isPositionTop = ((this_object.isMatch(select.getAttribute('data-top'), 1) || this_object.isMatch(select.getAttribute('data-top'), true)) ? true : false);
+                    const isMultiple = ((self_object.isMatch(select.multiple, 1) || self_object.isMatch(select.multiple, true)) ? true : false);
+                    const isVirtual = ((self_object.isMatch(select.getAttribute('data-virtual'), 1) || self_object.isMatch(select.getAttribute('data-virtual'), true)) ? true : false);
+                    const isFilter = ((self_object.isMatch(select.getAttribute('data-filter'), 1) || self_object.isMatch(select.getAttribute('data-filter'), true)) ? true : false);
+                    const isPositionTop = ((self_object.isMatch(select.getAttribute('data-top'), 1) || self_object.isMatch(select.getAttribute('data-top'), true)) ? true : false);
 
                     if (isVirtual) {
                         // Create div & move the select into div
@@ -848,7 +850,7 @@ class iwebApp {
 
                                     const childUl = document.createElement('ul');
                                     Array.from(optionGroup.children).forEach(function(option) {
-                                        if (this_object.isValue(option.value)) {
+                                        if (self_object.isValue(option.value)) {
                                             const childLi = document.createElement('li');
                                             childLi.classList.add('node');
                                             if (option.selected) {
@@ -892,8 +894,8 @@ class iwebApp {
                         }
 
                         // Set the default select text if nothing is selected
-                        if (!this_object.isValue(virtualSelect)) {
-                            virtualSelect = (this_object.isValue(select.getAttribute('data-default')) ? select.getAttribute('data-default') : this_object.language[this_object.current_language]['please_select']);
+                        if (!self_object.isValue(virtualSelect)) {
+                            virtualSelect = (self_object.isValue(select.getAttribute('data-default')) ? select.getAttribute('data-default') : self_object.language[self_object.current_language]['please_select']);
                         }
                         resultLink.textContent = virtualSelect;
 
@@ -929,10 +931,10 @@ class iwebApp {
     }
 
     checkBox(checkbox_object, callBack) {
-        const this_object = this;
+        const self_object = this;
 
         // Default to selecting all relevant elements if none provided
-        if (!this_object.isValue(checkbox_object)) {
+        if (!self_object.isValue(checkbox_object)) {
             checkbox_object = document.querySelectorAll('input[type="checkbox"]');
         }
 
@@ -951,7 +953,7 @@ class iwebApp {
                     // Move the checkbox into div and then append label next to it
                     checkbox.parentNode.insertBefore(wrapperDiv, checkbox);
                     wrapperDiv.appendChild(checkbox);
-                    if (findCheckboxLabel && this_object.isMatch(findCheckboxLabel.tagName, 'label')) {
+                    if (findCheckboxLabel && self_object.isMatch(findCheckboxLabel.tagName, 'label')) {
                         findCheckboxLabel.parentNode.insertBefore(wrapperDiv, findCheckboxLabel);
                         wrapperDiv.appendChild(findCheckboxLabel);
                     }
@@ -966,10 +968,10 @@ class iwebApp {
     }
 
     radioBox(radio_object, callBack) {
-        const this_object = this;
+        const self_object = this;
 
         // Default to selecting all relevant elements if none provided
-        if (!this_object.isValue(radio_object)) {
+        if (!self_object.isValue(radio_object)) {
             radio_object = document.querySelectorAll('input[type="radio"]');
         }
 
@@ -988,7 +990,7 @@ class iwebApp {
                     // Move the radio into div and then append label next to it
                     radio.parentNode.insertBefore(wrapperDiv, radio);
                     wrapperDiv.appendChild(radio);
-                    if (findRadioLabel && this_object.isMatch(findRadioLabel.tagName, 'label')) {
+                    if (findRadioLabel && self_object.isMatch(findRadioLabel.tagName, 'label')) {
                         findRadioLabel.parentNode.insertBefore(wrapperDiv, findRadioLabel);
                         wrapperDiv.appendChild(findRadioLabel);
                     }
@@ -1003,9 +1005,9 @@ class iwebApp {
     }
 
     iframe(element = 'div.iweb-editor', callBack) {
-        const this_object = this;
+        const self_object = this;
 
-        if (this_object.isValue(element)) {
+        if (self_object.isValue(element)) {
             // Get all specified tags within the given element
             ['iframe', 'video', 'object', 'embed'].forEach(function(value) {
                 const elements = document.querySelectorAll(element + ' ' + value);
@@ -1032,7 +1034,7 @@ class iwebApp {
     }
 
     responsive() {
-        const this_object = this;
+        const self_object = this;
         const responsiveElements = document.querySelectorAll('div.iweb-responsive');
         if (responsiveElements.length > 0) {
             responsiveElements.forEach(function(e) {
@@ -1041,7 +1043,7 @@ class iwebApp {
                 let defineRatioWidth = e.getAttribute('data-width');
                 let defineRatioHeight = e.getAttribute('data-height');
 
-                if (this_object.isValue(defineRatioWidth) && this_object.isValue(defineRatioHeight)) {
+                if (self_object.isValue(defineRatioWidth) && self_object.isValue(defineRatioHeight)) {
                     if (defineRatioHeight > 0 && defineRatioWidth > 0) {
                         newHeight = parseInt((currentWidth * defineRatioHeight) / defineRatioWidth);
                     }
@@ -1069,7 +1071,7 @@ class iwebApp {
 
     // ajax post
     ajaxPost(post_data, callBack, final_callBack, progress_callBack) {
-        const this_object = this;
+        const self_object = this;
 
         // Merge post data
         post_data = Object.assign({
@@ -1079,14 +1081,14 @@ class iwebApp {
             values: {}
         }, post_data);
         if (!post_data.showBusy) {
-            this_object.is_busy = false;
+            self_object.is_busy = false;
         }
 
-        if (!this_object.is_busy && this_object.isValue(post_data.url)) {
-            const local_time = this_object.toDateTime();
+        if (!self_object.is_busy && self_object.isValue(post_data.url)) {
+            const local_time = self_object.toDateTime();
             let formData = new FormData();
 
-            formData.append('itoken', window.btoa(this_object.imd5.hash(this_object.csrf_token + '#dt' + local_time) + '%' + local_time));
+            formData.append('itoken', window.btoa(self_object.imd5.hash(self_object.csrf_token + '#dt' + local_time) + '%' + local_time));
             if (post_data.values) {
                 for (let key in (post_data.values)) {
                     if ((post_data.values).hasOwnProperty(key)) {
@@ -1105,9 +1107,9 @@ class iwebApp {
 
             // Helper function to safely call if the function is defined
             const safeFinalFunction = () => {
-                this_object.is_busy = false;
-                if (!this_object.isMatch(post_data.showBusy, 2)) {
-                    this_object.showBusy(false);
+                self_object.is_busy = false;
+                if (!self_object.isMatch(post_data.showBusy, 2)) {
+                    self_object.showBusy(false);
                 }
 
                 // Final callBack if needed
@@ -1118,8 +1120,8 @@ class iwebApp {
 
             // Try to send data with progress tracking using XMLHttpRequest
             try {
-                this_object.is_busy = true;
-                this_object.showBusy(true, ((post_data.showBusy) ? 20 : 0));
+                self_object.is_busy = true;
+                self_object.showBusy(true, ((post_data.showBusy) ? 50 : 0));
 
                 // Use XMLHttpRequest for progress tracking
                 const xhr = new XMLHttpRequest();
@@ -1198,25 +1200,28 @@ class iwebApp {
     }
 
     initForm(form_object) {
-        const this_object = this;
+        const self_object = this;
 
         // Default to selecting all relevant elements if none provided
-        if (!this_object.isValue(form_object)) {
+        if (!self_object.isValue(form_object)) {
             form_object = document.querySelectorAll('form[data-ajax="1"]');
         }
 
         if (form_object.length > 0) {
             form_object.forEach(function(form) {
-                const showTips = ((!this_object.isMatch(form.getAttribute('data-showtips'), false)) && (!this_object.isMatch(form.getAttribute('data-showtips'), 0)));
-                const busy_mode = (this_object.isValue(form.getAttribute('data-busy'))) ? form.getAttribute('data-busy') : true;
+                const showTips = ((!self_object.isMatch(form.getAttribute('data-showtips'), false)) && (!self_object.isMatch(form.getAttribute('data-showtips'), 0)));
+                const busyMode = (self_object.isValue(form.getAttribute('data-busy'))) ? form.getAttribute('data-busy') : true;
+                const alertResult = (self_object.isValue(form.getAttribute('data-alert'))) ? true : false;
+
                 form.removeAttribute('data-ajax');
                 form.removeAttribute('data-showtips');
                 form.removeAttribute('data-busy');
+                form.removeAttribute('data-alert');
                 form.method = 'post';
                 form.autocomplete = 'off';
 
                 // Bind event for form submit
-                form.addEventListener('submit', this_object.deBounce(function() {
+                form.addEventListener('submit', self_object.deBounce(function() {
                     // Remove error & tips
                     const errorElements = form.querySelectorAll('.error');
                     errorElements.forEach(function(e) {
@@ -1231,116 +1236,116 @@ class iwebApp {
                     });
 
                     // Do checking before submit
-                    let can_submit = true;
+                    let canSubmit = true;
                     const requiredInputs = form.querySelectorAll('input[data-validation]:not(:disabled), select[data-validation]:not(:disabled), textarea[data-validation]:not(:disabled)');
                     if (requiredInputs.length > 0) {
                         requiredInputs.forEach(function(input) {
                             const validationArray = (input.getAttribute('data-validation').toString().split('|'));
-                            if (this_object.isMatch(input.type, 'checkbox')) {
+                            if (self_object.isMatch(input.type, 'checkbox')) {
                                 if (validationArray.includes('required') && input.closest('div.iweb-checkbox-set') && !input.closest('div.iweb-checkbox-set').querySelector('input[type="checkbox"]:checked')) {
                                     if (showTips && !input.closest('div.iweb-checkbox-set').querySelector('small.tips')) {
                                         const errorTips = document.createElement('small');
                                         errorTips.classList.add('tips');
-                                        errorTips.textContent = this_object.language[this_object.current_language]['required_error'];
+                                        errorTips.textContent = self_object.language[self_object.current_language]['required_error'];
                                         input.closest('div.iweb-checkbox-set').appendChild(errorTips);
                                     }
                                     input.closest('div.iweb-checkbox').classList.add('error');
-                                    can_submit = false;
+                                    canSubmit = false;
                                 }
-                            } else if (this_object.isMatch(input.type, 'radio')) {
+                            } else if (self_object.isMatch(input.type, 'radio')) {
                                 if (validationArray.includes('required') && input.closest('div.iweb-radio-set') && !input.closest('div.iweb-radio-set').querySelector('input[type="radio"]:checked')) {
                                     if (showTips && !input.closest('div.iweb-radio-set').querySelector('small.tips')) {
                                         const errorTips = document.createElement('small');
                                         errorTips.classList.add('tips');
-                                        errorTips.textContent = this_object.language[this_object.current_language]['required_error'];
+                                        errorTips.textContent = self_object.language[self_object.current_language]['required_error'];
                                         input.closest('div.iweb-radio-set').appendChild(errorTips);
                                     }
                                     input.closest('div.iweb-radio').classList.add('error');
-                                    can_submit = false;
+                                    canSubmit = false;
                                 }
-                            } else if (this_object.isMatch(input.type, 'select-one') || this_object.isMatch(input.type, 'select-multiple')) {
-                                if (validationArray.includes('required') && !this_object.isValue(input.value)) {
+                            } else if (self_object.isMatch(input.type, 'select-one') || self_object.isMatch(input.type, 'select-multiple')) {
+                                if (validationArray.includes('required') && !self_object.isValue(input.value)) {
                                     if (showTips && !input.closest('div.iweb-select').querySelector('small.tips')) {
                                         const errorTips = document.createElement('small');
                                         errorTips.classList.add('tips');
-                                        errorTips.textContent = this_object.language[this_object.current_language]['required_error'];
+                                        errorTips.textContent = self_object.language[self_object.current_language]['required_error'];
                                         input.closest('div.iweb-select').appendChild(errorTips);
                                     }
                                     input.closest('div.iweb-select').classList.add('error');
-                                    can_submit = false;
+                                    canSubmit = false;
                                 }
                             } else {
-                                if (validationArray.includes('required') && !this_object.isValue(input.value)) {
+                                if (validationArray.includes('required') && !self_object.isValue(input.value)) {
                                     if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                         const errorTips = document.createElement('small');
                                         errorTips.classList.add('tips');
-                                        errorTips.textContent = this_object.language[this_object.current_language]['required_error'];
+                                        errorTips.textContent = self_object.language[self_object.current_language]['required_error'];
                                         input.closest('div.iweb-input').appendChild(errorTips);
                                     }
                                     input.closest('div.iweb-input').classList.add('error');
-                                    can_submit = false;
-                                } else if (this_object.isValue(input.value)) {
+                                    canSubmit = false;
+                                } else if (self_object.isValue(input.value)) {
                                     let next_regex = true;
-                                    if ((validationArray.includes('number')) && !this_object.isNumber(input.value)) {
+                                    if ((validationArray.includes('number')) && !self_object.isNumber(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
                                             errorTips.classList.add('tips');
-                                            errorTips.textContent = this_object.language[this_object.current_language]['number_error'];
+                                            errorTips.textContent = self_object.language[self_object.current_language]['number_error'];
                                             input.closest('div.iweb-input').appendChild(errorTips);
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
-                                        can_submit = false;
+                                        canSubmit = false;
                                         next_regex = false;
-                                    } else if ((validationArray.includes('email')) && !this_object.isEmail(input.value)) {
+                                    } else if ((validationArray.includes('email')) && !self_object.isEmail(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
                                             errorTips.classList.add('tips');
-                                            errorTips.textContent = this_object.language[this_object.current_language]['email_error'];
+                                            errorTips.textContent = self_object.language[self_object.current_language]['email_error'];
                                             input.closest('div.iweb-input').appendChild(errorTips);
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
-                                        can_submit = false;
+                                        canSubmit = false;
                                         next_regex = false;
-                                    } else if ((validationArray.includes('password')) && !this_object.isPassword(input.value)) {
+                                    } else if ((validationArray.includes('password')) && !self_object.isPassword(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
                                             errorTips.classList.add('tips');
-                                            errorTips.textContent = this_object.language[this_object.current_language]['password_error'];
+                                            errorTips.textContent = self_object.language[self_object.current_language]['password_error'];
                                             input.closest('div.iweb-input').appendChild(errorTips);
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
-                                        can_submit = false;
+                                        canSubmit = false;
                                         next_regex = false;
-                                    } else if ((validationArray.includes('date')) && !this_object.isDate(input.value)) {
+                                    } else if ((validationArray.includes('date')) && !self_object.isDate(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
                                             errorTips.classList.add('tips');
-                                            errorTips.textContent = this_object.language[this_object.current_language]['date_error'];
+                                            errorTips.textContent = self_object.language[self_object.current_language]['date_error'];
                                             input.closest('div.iweb-input').appendChild(errorTips);
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
-                                        can_submit = false;
+                                        canSubmit = false;
                                         next_regex = false;
-                                    } else if ((validationArray.includes('time')) && !this_object.isTime(input.value)) {
+                                    } else if ((validationArray.includes('time')) && !self_object.isTime(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
                                             errorTips.classList.add('tips');
-                                            errorTips.textContent = this_object.language[this_object.current_language]['time_error'];
+                                            errorTips.textContent = self_object.language[self_object.current_language]['time_error'];
                                             input.closest('div.iweb-input').appendChild(errorTips);
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
-                                        can_submit = false;
+                                        canSubmit = false;
                                         next_regex = false;
                                     } else if ((validationArray.includes('ge0'))) {
-                                        if (!this_object.isNumber(input.value)) {
+                                        if (!self_object.isNumber(input.value)) {
                                             if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                                 const errorTips = document.createElement('small');
                                                 errorTips.classList.add('tips');
-                                                errorTips.textContent = this_object.language[this_object.current_language]['number_error'];
+                                                errorTips.textContent = self_object.language[self_object.current_language]['number_error'];
                                                 input.closest('div.iweb-input').appendChild(errorTips);
                                             }
                                             input.closest('div.iweb-input').classList.add('error');
-                                            can_submit = false;
+                                            canSubmit = false;
                                             next_regex = false;
                                         } else {
                                             const regex = /^(?:0|[1-9]\d*)(?:\.\d+)?$/;
@@ -1348,34 +1353,34 @@ class iwebApp {
                                                 if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                                     const errorTips = document.createElement('small');
                                                     errorTips.classList.add('tips');
-                                                    errorTips.textContent = this_object.language[this_object.current_language]['ge0_error'];
+                                                    errorTips.textContent = self_object.language[self_object.current_language]['ge0_error'];
                                                     input.closest('div.iweb-input').appendChild(errorTips);
                                                 }
                                                 input.closest('div.iweb-input').classList.add('error');
-                                                can_submit = false;
+                                                canSubmit = false;
                                                 next_regex = false;
                                             }
                                         }
                                     } else if ((validationArray.includes('gt0'))) {
-                                        if (!this_object.isNumber(input.value)) {
+                                        if (!self_object.isNumber(input.value)) {
                                             if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                                 const errorTips = document.createElement('small');
                                                 errorTips.classList.add('tips');
-                                                errorTips.textContent = this_object.language[this_object.current_language]['number_error'];
+                                                errorTips.textContent = self_object.language[self_object.current_language]['number_error'];
                                                 input.closest('div.iweb-input').appendChild(errorTips);
                                             }
                                             input.closest('div.iweb-input').classList.add('error');
-                                            can_submit = false;
+                                            canSubmit = false;
                                             next_regex = false;
                                         } else if (parseFloat(input.value) <= 0) {
                                             if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                                 const errorTips = document.createElement('small');
                                                 errorTips.classList.add('tips');
-                                                errorTips.textContent = this_object.language[this_object.current_language]['gt0_error'];
+                                                errorTips.textContent = self_object.language[self_object.current_language]['gt0_error'];
                                                 input.closest('div.iweb-input').appendChild(errorTips);
                                             }
                                             input.closest('div.iweb-input').classList.add('error');
-                                            can_submit = false;
+                                            canSubmit = false;
                                             next_regex = false;
                                         }
                                     }
@@ -1384,14 +1389,14 @@ class iwebApp {
                                         const regex = new RegExp(input.getAttribute('data-regex'));
                                         const regex_error = input.getAttribute('data-error');
                                         if (!regex.test(input.value.toString().toLowerCase())) {
-                                            if (showTips && !input.closest('div.iweb-input').querySelector('small.tips') && this_object.isValue(regex_error)) {
+                                            if (showTips && !input.closest('div.iweb-input').querySelector('small.tips') && self_object.isValue(regex_error)) {
                                                 const errorTips = document.createElement('small');
                                                 errorTips.classList.add('tips');
                                                 errorTips.textContent = regex_error.toString();
                                                 input.closest('div.iweb-input').appendChild(errorTips);
                                             }
                                             input.closest('div.iweb-input').classList.add('error');
-                                            can_submit = false;
+                                            canSubmit = false;
                                         }
                                     }
                                 }
@@ -1402,14 +1407,14 @@ class iwebApp {
                     // Extra checking if need
                     const validation_func = form.getAttribute('data-vfunc');
                     if ((typeof window[validation_func]) === 'function') {
-                        const extra_can_submit = window[validation_func](can_submit);
-                        can_submit = (can_submit && extra_can_submit);
+                        const extra_canSubmit = window[validation_func](canSubmit);
+                        canSubmit = (canSubmit && extra_canSubmit);
                     }
-
-                    if (can_submit) {
+                    
+                    if (canSubmit) {
                         let post_data = {
                             dataType: 'json',
-                            showBusy: busy_mode,
+                            showBusy: busyMode,
                             url: form.action,
                             values: {}
                         };
@@ -1425,7 +1430,7 @@ class iwebApp {
                                 if (!post_data.values[baseName]) {
                                     post_data.values[baseName] = {};
                                 }
-                                if (!this_object.isValue(childIndex)) {
+                                if (!self_object.isValue(childIndex)) {
                                     childIndex = Object.keys(post_data.values[baseName]).length + 1;
                                 }
                                 post_data.values[baseName][childIndex] = value;
@@ -1434,38 +1439,37 @@ class iwebApp {
                             }
                         });
 
-                        this_object.ajaxPost(post_data, function(responseData) {
+                        self_object.ajaxPost(post_data, function(responseData) {
                             // Callback if need
                             const complete_func = form.getAttribute('data-cfunc');
                             const extra_func = form.getAttribute('data-efunc');
                             if ((typeof window[complete_func]) === 'function') {
                                 window[complete_func](responseData);
                             } else {
-                                const showAlert = (this_object.isMatch(responseData.alert, true) || this_object.isMatch(responseData.alert, 1));
-                                if (this_object.isValue(responseData.status) && this_object.isMatch(responseData.status, 200)) {
-                                    if (this_object.isValue(responseData.url)) {
-                                        if (showAlert) {
-                                            this_object.tipsMsg(responseData.message, true, function() {
-                                                if (!this_object.isMatch(responseData.url, '#')) {
+                                if (self_object.isValue(responseData.status) && self_object.isMatch(responseData.status, 200)) {
+                                    if (self_object.isValue(responseData.url)) {
+                                        if (alertResult) {
+                                            self_object.tipsMsg(responseData.message, true, function() {
+                                                if (!self_object.isMatch(responseData.url, '#')) {
                                                     window.location.href = responseData.url;
                                                 } else {
                                                     window.location.reload();
                                                 }
-                                            });
+                                            }, alertResult);
                                         } else {
-                                            if (!this_object.isMatch(responseData.url, '#')) {
+                                            if (!self_object.isMatch(responseData.url, '#')) {
                                                 window.location.href = responseData.url;
                                             } else {
                                                 window.location.reload();
                                             }
                                         }
                                     } else {
-                                        this_object.tipsMsg(responseData.message, true, function() {
+                                        self_object.tipsMsg(responseData.message, true, function() {
                                             window.location.reload();
-                                        });
+                                        }, alertResult);
                                     }
                                 } else {
-                                    this_object.tipsMsg(responseData.message, false);
+                                    self_object.tipsMsg(responseData.message, false, null, alertResult);
                                 }
 
                                 if ((typeof window[extra_func]) === 'function') {
@@ -1474,21 +1478,22 @@ class iwebApp {
                             }
                         });
                     } else {
-                        if (!((typeof window[validation_func]) === 'function')) {
-                            this_object.scrollTo('.error');
+                        self_object.tipsMsg(self_object.language[self_object.current_language]['required_all_error'], false, null, alertResult);
+                        if (!((typeof window[validation_func]) === 'function') && self_object.isMatch(alertResult, true)) {
+                            self_object.scrollTo('.error');
                         }
                     }
                 }));
 
                 // Bind event for form reset
-                form.addEventListener('reset', this_object.deBounce(function() {
+                form.addEventListener('reset', self_object.deBounce(function() {
                     const resetElements = form.querySelectorAll('input, select, textarea');
                     if (resetElements.length > 0) {
                         resetElements.forEach(function(element) {
-                            if (this_object.isMatch(element.type, 'checkbox') ||
-                                this_object.isMatch(element.type, 'radio') ||
-                                this_object.isMatch(element.type, 'select-one') ||
-                                this_object.isMatch(element.type, 'select-multiple')) {
+                            if (self_object.isMatch(element.type, 'checkbox') ||
+                                self_object.isMatch(element.type, 'radio') ||
+                                self_object.isMatch(element.type, 'select-one') ||
+                                self_object.isMatch(element.type, 'select-multiple')) {
                                 element.dispatchEvent(new Event('change', {
                                     bubbles: true
                                 }));
@@ -1502,7 +1507,7 @@ class iwebApp {
                                     const fillText = element.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
                                     element.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset')?.remove();
 
-                                    if (this_object.isValue(fillText.getAttribute('data-value')) && this_object.isValue(fillText.getAttribute('data-default'))) {
+                                    if (self_object.isValue(fillText.getAttribute('data-value')) && self_object.isValue(fillText.getAttribute('data-default'))) {
                                         fillId.value = fillText.getAttribute('data-value');
                                         fillText.value = fillText.getAttribute('data-default');
                                         fillText.readOnly = false;
@@ -1535,13 +1540,13 @@ class iwebApp {
     }
 
     uploader(options, callBack) {
-        const this_object = this;
+        const self_object = this;
 
         // Create input file
         const fileInput = document.createElement('input');
         fileInput.type = 'file';
         fileInput.multiple = true;
-        fileInput.addEventListener('change', this_object.deBounce(function(e) {
+        fileInput.addEventListener('change', self_object.deBounce(function(e) {
             const fileInput = this;
             const target = e.target;
 
@@ -1551,32 +1556,32 @@ class iwebApp {
             if (selectedFiles.length > maxFiles) {
                 selectedFiles = Array.from(selectedFiles).slice(0, maxFiles);
             }
-            this_object.uploader_files['selected_files'] = selectedFiles;
-            this_object.uploader_files_skip['selected_files'] = [-1];
-            this_object.uploader_options['selected_files'] = {
+            self_object.uploader_files['selected_files'] = selectedFiles;
+            self_object.uploader_files_skip['selected_files'] = [-1];
+            self_object.uploader_options['selected_files'] = {
                 dataType: 'json',
                 url: '',
                 values: {},
                 allowed_types: '',
                 max_filesize: 64,
-                type_error_message: this_object.language[this_object.current_language]['type_error'],
-                max_error_message: this_object.language[this_object.current_language]['max_error'],
+                type_error_message: self_object.language[self_object.current_language]['type_error'],
+                max_error_message: self_object.language[self_object.current_language]['max_error'],
                 btnStartAll: '<i class="fa fa-cloud-upload"></i>',
                 btnClose: '<i class="fa fa-close"></i>',
                 btnStart: '<i class="fa fa-cloud-upload"></i>',
                 btnRemove: '<i class="fa fa-trash"></i>',
                 auto_close: false
             };
-            if (this_object.isValue(options)) {
-                Object.assign(this_object.uploader_options['selected_files'], options);
+            if (self_object.isValue(options)) {
+                Object.assign(self_object.uploader_options['selected_files'], options);
             }
-            if (this_object.isValue(this_object.uploader_options['selected_files'].allowed_types)) {
-                this_object.uploader_options['selected_files'].allowed_types = this_object.uploader_options['selected_files'].allowed_types.split('|');
+            if (self_object.isValue(self_object.uploader_options['selected_files'].allowed_types)) {
+                self_object.uploader_options['selected_files'].allowed_types = self_object.uploader_options['selected_files'].allowed_types.split('|');
             }
-            this_object.uploader_options['selected_files'].max_error_message = this_object.uploader_options['selected_files'].max_error_message.replace('{num}', this_object.uploader_options['selected_files'].max_filesize);
+            self_object.uploader_options['selected_files'].max_error_message = self_object.uploader_options['selected_files'].max_error_message.replace('{num}', self_object.uploader_options['selected_files'].max_filesize);
 
             // Create upload panel
-            if (this_object.isValue(this_object.uploader_options['selected_files'].url) && this_object.uploader_files['selected_files'].length > 0) {
+            if (self_object.isValue(self_object.uploader_options['selected_files'].url) && self_object.uploader_files['selected_files'].length > 0) {
                 // Create div for button
                 const uploaderDiv = document.createElement('div');
                 uploaderDiv.classList.add('action');
@@ -1584,12 +1589,12 @@ class iwebApp {
                 const startAllButton = document.createElement('button');
                 startAllButton.type = 'button';
                 startAllButton.classList.add('start-all');
-                startAllButton.innerHTML = this_object.uploader_options['selected_files'].btnStartAll;
+                startAllButton.innerHTML = self_object.uploader_options['selected_files'].btnStartAll;
 
                 const closeAllButton = document.createElement('button');
                 closeAllButton.type = 'button';
                 closeAllButton.classList.add('close');
-                closeAllButton.innerHTML = this_object.uploader_options['selected_files'].btnClose;
+                closeAllButton.innerHTML = self_object.uploader_options['selected_files'].btnClose;
 
                 uploaderDiv.appendChild(startAllButton);
                 uploaderDiv.appendChild(closeAllButton);
@@ -1604,40 +1609,40 @@ class iwebApp {
                 dialogContent.appendChild(listContainer);
 
                 // Preview list
-                this_object.dialog(dialogContent.innerHTML, function() {
-                    this_object.uploaderPreview(this_object.uploader_files['selected_files']);
+                self_object.dialog(dialogContent.innerHTML, function() {
+                    self_object.uploaderPreview(self_object.uploader_files['selected_files']);
 
                     // Event handlers
                     const startAllButton = document.querySelector('div.iweb-info-dialog.uploader > div > div.content > div > div.action > button.start-all');
                     const closeAllButton = document.querySelector('div.iweb-info-dialog.uploader > div > div.content > div > div.action > button.close');
                     const listContainer = document.querySelector('div.iweb-info-dialog.uploader > div > div.content > div > div.list');
 
-                    startAllButton.addEventListener('click', this_object.deBounce(function() {
+                    startAllButton.addEventListener('click', self_object.deBounce(function() {
                         const items = listContainer.querySelectorAll('div.item');
                         let loop_upload_index = [];
                         items.forEach(function(item) {
                             loop_upload_index.push(item.getAttribute('data-index').toString());
                         });
-                        this_object.uploaderStart(-1, loop_upload_index, loop_upload_index[loop_upload_index.length - 1]);
+                        self_object.uploaderStart(-1, loop_upload_index, loop_upload_index[loop_upload_index.length - 1]);
                     }));
 
-                    closeAllButton.addEventListener('click', this_object.deBounce(function() {
+                    closeAllButton.addEventListener('click', self_object.deBounce(function() {
                         document.querySelector('div.iweb-info-dialog.uploader > div > div.content > a.btn-close').dispatchEvent(new Event('click', {
                             bubbles: true
                         }));
                     }));
 
                     listContainer.querySelectorAll('div.item > button.start').forEach(function(button) {
-                        button.addEventListener('click', this_object.deBounce(function(e1) {
+                        button.addEventListener('click', self_object.deBounce(function(e1) {
                             const target = e1.target;
-                            this_object.uploaderStart(target.closest('div.item').getAttribute('data-index'));
+                            self_object.uploaderStart(target.closest('div.item').getAttribute('data-index'));
                         }));
                     });
 
                     listContainer.querySelectorAll('div.item > button.remove').forEach(function(button) {
-                        button.addEventListener('click', this_object.deBounce(function(e2) {
+                        button.addEventListener('click', self_object.deBounce(function(e2) {
                             const target = e2.target;
-                            this_object.uploader_files_skip['selected_files'].push(target.closest('div.item').getAttribute('data-index').toString());
+                            self_object.uploader_files_skip['selected_files'].push(target.closest('div.item').getAttribute('data-index').toString());
                             target.closest('div.item').remove();
                             if (listContainer.querySelectorAll('div.item').length === 0) {
                                 document.querySelector('div.iweb-info-dialog.uploader > div > div.content > a.btn-close').dispatchEvent(new Event('click', {
@@ -1660,13 +1665,13 @@ class iwebApp {
     }
 
     uploaderArea(file_input_id, options, callBack) {
-        const this_object = this;
+        const self_object = this;
 
         // Create input file
         const fileInput = document.getElementById(file_input_id);
         fileInput.removeAttribute('name');
         fileInput.multiple = true;
-        fileInput.addEventListener('change', this_object.deBounce(function(e) {
+        fileInput.addEventListener('change', self_object.deBounce(function(e) {
             const fileInput = this;
             const target = e.target;
 
@@ -1676,34 +1681,34 @@ class iwebApp {
             if (selectedFiles.length > maxFiles) {
                 selectedFiles = Array.from(selectedFiles).slice(0, maxFiles);
             }
-            this_object.uploader_files['inline_selected_files_' + this_object.imd5.hash(file_input_id)] = selectedFiles;
-            this_object.uploader_files_skip['inline_selected_files_' + this_object.imd5.hash(file_input_id)] = [-1];
-            this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)] = {
+            self_object.uploader_files['inline_selected_files_' + self_object.imd5.hash(file_input_id)] = selectedFiles;
+            self_object.uploader_files_skip['inline_selected_files_' + self_object.imd5.hash(file_input_id)] = [-1];
+            self_object.uploader_options['inline_selected_files_' + self_object.imd5.hash(file_input_id)] = {
                 dataType: 'json',
                 url: '',
                 values: {},
                 allowed_types: '',
                 max_filesize: 64,
-                type_error_message: this_object.language[this_object.current_language]['type_error'],
-                max_error_message: this_object.language[this_object.current_language]['max_error'],
+                type_error_message: self_object.language[self_object.current_language]['type_error'],
+                max_error_message: self_object.language[self_object.current_language]['max_error'],
                 btnStartAll: '<i class="fa fa-cloud-upload"></i>',
                 btnClose: '<i class="fa fa-close"></i>',
                 btnStart: '<i class="fa fa-cloud-upload"></i>',
                 btnRemove: '<i class="fa fa-trash"></i>',
                 auto_close: false
             };
-            if (this_object.isValue(options)) {
-                this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)] = Object.assign(
-                    this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)],
+            if (self_object.isValue(options)) {
+                self_object.uploader_options['inline_selected_files_' + self_object.imd5.hash(file_input_id)] = Object.assign(
+                    self_object.uploader_options['inline_selected_files_' + self_object.imd5.hash(file_input_id)],
                     options
                 );
             }
-            if (this_object.isValue(this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)].allowed_types)) {
-                this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)].allowed_types = this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)].allowed_types.split('|');
+            if (self_object.isValue(self_object.uploader_options['inline_selected_files_' + self_object.imd5.hash(file_input_id)].allowed_types)) {
+                self_object.uploader_options['inline_selected_files_' + self_object.imd5.hash(file_input_id)].allowed_types = self_object.uploader_options['inline_selected_files_' + self_object.imd5.hash(file_input_id)].allowed_types.split('|');
             }
-            this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)].max_error_message = this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)].max_error_message.replace('{num}', this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)].max_filesize);
+            self_object.uploader_options['inline_selected_files_' + self_object.imd5.hash(file_input_id)].max_error_message = self_object.uploader_options['inline_selected_files_' + self_object.imd5.hash(file_input_id)].max_error_message.replace('{num}', self_object.uploader_options['inline_selected_files_' + self_object.imd5.hash(file_input_id)].max_filesize);
 
-            if (this_object.isValue(this_object.uploader_options['inline_selected_files_' + this_object.imd5.hash(file_input_id)].url) && fileInput.files.length > 0) {
+            if (self_object.isValue(self_object.uploader_options['inline_selected_files_' + self_object.imd5.hash(file_input_id)].url) && fileInput.files.length > 0) {
                 const uploaderAreDiv = target.closest('div.iweb-files-dropzone').querySelector('div.iweb-files-uploader');
 
                 // Create div for button
@@ -1731,19 +1736,19 @@ class iwebApp {
                 uploaderAreDiv.appendChild(listContainer);
 
                 // Preview list
-                this_object.uploaderPreview(this_object.uploader_files['inline_selected_files_' + this_object.imd5.hash(file_input_id)], 0, file_input_id);
+                self_object.uploaderPreview(self_object.uploader_files['inline_selected_files_' + self_object.imd5.hash(file_input_id)], 0, file_input_id);
 
                 // Event handlers
-                startAllButton.addEventListener('click', this_object.deBounce(function() {
+                startAllButton.addEventListener('click', self_object.deBounce(function() {
                     const items = listContainer.querySelectorAll('div.item');
                     let loop_upload_index = [];
                     items.forEach(function(item) {
                         loop_upload_index.push(item.getAttribute('data-index').toString());
                     });
-                    this_object.uploaderStart(-1, loop_upload_index, loop_upload_index[loop_upload_index.length - 1], file_input_id);
+                    self_object.uploaderStart(-1, loop_upload_index, loop_upload_index[loop_upload_index.length - 1], file_input_id);
                 }));
 
-                closeAllButton.addEventListener('click', this_object.deBounce(function() {
+                closeAllButton.addEventListener('click', self_object.deBounce(function() {
                     uploaderAreDiv.innerHTML = '';
                     fileInput.value = '';
                     // Callback if need
@@ -1753,16 +1758,16 @@ class iwebApp {
                 }));
 
                 listContainer.querySelectorAll('div.item > button.start').forEach(function(button) {
-                    button.addEventListener('click', this_object.deBounce(function(e1) {
+                    button.addEventListener('click', self_object.deBounce(function(e1) {
                         const target = e1.target;
-                        this_object.uploaderStart(target.closest('div.item').getAttribute('data-index'), null, null, file_input_id);
+                        self_object.uploaderStart(target.closest('div.item').getAttribute('data-index'), null, null, file_input_id);
                     }));
                 });
 
                 listContainer.querySelectorAll('div.item > button.remove').forEach(function(button) {
-                    button.addEventListener('click', this_object.deBounce(function(e2) {
+                    button.addEventListener('click', self_object.deBounce(function(e2) {
                         const target = e2.target;
-                        this_object.uploader_files_skip['inline_selected_files_' + this_object.imd5.hash(file_input_id)].push(target.closest('div.item').getAttribute('data-index').toString());
+                        self_object.uploader_files_skip['inline_selected_files_' + self_object.imd5.hash(file_input_id)].push(target.closest('div.item').getAttribute('data-index').toString());
                         target.closest('div.item').remove();
                         if (listContainer.querySelectorAll('div.item').length === 0) {
                             uploaderAreDiv.innerHTML = '';
@@ -1784,7 +1789,7 @@ class iwebApp {
     }
 
     uploaderPreview(selectingFiles, key = 0, file_input_id) {
-        const this_object = this;
+        const self_object = this;
         const regex = /^(.*)(.jpg|.jpeg|.gif|.png|.bmp)$/;
 
         if (key >= selectingFiles.length) return; // Exit if there are no more files
@@ -1844,14 +1849,14 @@ class iwebApp {
 
         const sizeDiv = document.createElement('div');
         sizeDiv.classList.add('size');
-        sizeDiv.textContent = this_object.formatBytes(file.size, 0);
+        sizeDiv.textContent = self_object.formatBytes(file.size, 0);
         infoDiv.appendChild(sizeDiv);
 
-        const hashKey = this_object.isValue(file_input_id) ?
-            'inline_selected_files_' + this_object.imd5.hash(file_input_id) :
+        const hashKey = self_object.isValue(file_input_id) ?
+            'inline_selected_files_' + self_object.imd5.hash(file_input_id) :
             'selected_files';
 
-        const options = this_object.uploader_options[hashKey];
+        const options = self_object.uploader_options[hashKey];
         const allowedTypes = options.allowed_types || [];
         const maxFileSize = options.max_filesize * 1024 * 1024;
 
@@ -1890,32 +1895,32 @@ class iwebApp {
         removeButton.innerHTML = '<i class="fa fa-trash"></i>';
         itemDiv.appendChild(removeButton);
 
-        const dropzone = this_object.isValue(file_input_id) ?
+        const dropzone = self_object.isValue(file_input_id) ?
             '#' + file_input_id + '-iweb-files-dropzone > div.iweb-files-uploader > div.list' :
             'div.iweb-info-dialog.uploader > div > div.content > div > div.list';
 
         document.querySelector(dropzone).appendChild(itemDiv);
 
         // Continue to preview the next file
-        this_object.uploaderPreview(selectingFiles, key + 1, file_input_id);
+        self_object.uploaderPreview(selectingFiles, key + 1, file_input_id);
     }
 
     uploaderStart(index, loop_upload_index, last_upload_index, file_input_id) {
-        const this_object = this;
+        const self_object = this;
 
         let mainIndex = 'selected_files';
-        if (this_object.isValue(file_input_id)) {
-            mainIndex = 'inline_selected_files_' + this_object.imd5.hash(file_input_id);
+        if (self_object.isValue(file_input_id)) {
+            mainIndex = 'inline_selected_files_' + self_object.imd5.hash(file_input_id);
         }
 
         // Helper function to safely call if the function is defined
         const safeEndFunction = () => {
-            const uploaderDialog = (this_object.isValue(file_input_id)) ? document.querySelector('#' + file_input_id + '-iweb-files-dropzone') : document.querySelector('div.iweb-info-dialog.uploader');
+            const uploaderDialog = (self_object.isValue(file_input_id)) ? document.querySelector('#' + file_input_id + '-iweb-files-dropzone') : document.querySelector('div.iweb-info-dialog.uploader');
             if (uploaderDialog) {
                 const startCount = uploaderDialog.querySelectorAll('div.list > div.item > button.start').length;
                 if (parseInt(startCount) === 0) {
                     uploaderDialog.querySelector('div.action > button.start-all')?.remove();
-                    if (this_object.uploader_options[mainIndex].auto_close) {
+                    if (self_object.uploader_options[mainIndex].auto_close) {
                         uploaderDialog.querySelector('div.action > button.close').dispatchEvent(new Event('click', {
                             bubbles: true
                         }));
@@ -1925,12 +1930,12 @@ class iwebApp {
             }
         };
 
-        const uploaderDialog = (this_object.isValue(file_input_id)) ? document.querySelector('#' + file_input_id + '-iweb-files-dropzone') : document.querySelector('div.iweb-info-dialog.uploader');
+        const uploaderDialog = (self_object.isValue(file_input_id)) ? document.querySelector('#' + file_input_id + '-iweb-files-dropzone') : document.querySelector('div.iweb-info-dialog.uploader');
         uploaderDialog.classList.add('busy');
 
         // Init
         let isBatch = true;
-        if (!this_object.isValue(loop_upload_index)) {
+        if (!self_object.isValue(loop_upload_index)) {
             loop_upload_index = [index];
             last_upload_index = index;
             isBatch = false;
@@ -1942,20 +1947,20 @@ class iwebApp {
         if (parseInt(index) <= parseInt(last_upload_index)) {
             if (!loop_upload_index.includes(index.toString())) {
                 if (isBatch) {
-                    this_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
+                    self_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
                 } else {
                     safeEndFunction();
                 }
             } else {
-                if (this_object.isValue(this_object.uploader_files[mainIndex]) && !this_object.uploader_files_skip[mainIndex].includes(index.toString())) {
-                    this_object.uploader_files_skip[mainIndex].push(index.toString());
+                if (self_object.isValue(self_object.uploader_files[mainIndex]) && !self_object.uploader_files_skip[mainIndex].includes(index.toString())) {
+                    self_object.uploader_files_skip[mainIndex].push(index.toString());
 
-                    const selectingFiles = this_object.uploader_files[mainIndex];
+                    const selectingFiles = self_object.uploader_files[mainIndex];
                     const extension = selectingFiles[index].name.split('.').pop().toLowerCase();
                     let checking = true;
-                    if (this_object.isValue(this_object.uploader_options[mainIndex].allowed_types) && !this_object.uploader_options[mainIndex].allowed_types.includes(extension.toString())) {
+                    if (self_object.isValue(self_object.uploader_options[mainIndex].allowed_types) && !self_object.uploader_options[mainIndex].allowed_types.includes(extension.toString())) {
                         checking = false;
-                    } else if (selectingFiles[index].size > this_object.uploader_options[mainIndex].max_filesize * 1024 * 1024) {
+                    } else if (selectingFiles[index].size > self_object.uploader_options[mainIndex].max_filesize * 1024 * 1024) {
                         checking = false;
                     }
 
@@ -1963,14 +1968,14 @@ class iwebApp {
                         let post_data = {
                             dataType: 'json',
                             showBusy: false,
-                            url: this_object.uploader_options[mainIndex].url,
+                            url: self_object.uploader_options[mainIndex].url,
                             values: {}
                         };
 
                         const formData = new FormData();
                         formData.append('page_action', 'file_upload');
-                        if (this_object.isValue(this_object.uploader_options[mainIndex].values)) {
-                            const extra_values = this_object.uploader_options[mainIndex].values;
+                        if (self_object.isValue(self_object.uploader_options[mainIndex].values)) {
+                            const extra_values = self_object.uploader_options[mainIndex].values;
                             for (let key in extra_values) {
                                 if (extra_values.hasOwnProperty(key)) {
                                     formData.append(key, extra_values[key]);
@@ -1982,7 +1987,7 @@ class iwebApp {
                             post_data.values[key] = value;
                         });
 
-                        this_object.ajaxPost(post_data, function(responseData) {
+                        self_object.ajaxPost(post_data, function(responseData) {
                             const itemDiv = uploaderDialog.querySelector('div.list > div.item[data-index="' + index + '"]');
                             itemDiv.querySelector('div.info > div.progress-bar')?.remove();
 
@@ -1995,7 +2000,7 @@ class iwebApp {
 
                             // Next
                             if (isBatch) {
-                                this_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
+                                self_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
                             } else {
                                 safeEndFunction();
                             }
@@ -2016,14 +2021,14 @@ class iwebApp {
 
                         // Next
                         if (isBatch) {
-                            this_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
+                            self_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
                         } else {
                             safeEndFunction();
                         }
                     }
                 } else {
                     if (isBatch) {
-                        this_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
+                        self_object.uploaderStart(index, loop_upload_index, last_upload_index, file_input_id);
                     } else {
                         safeEndFunction();
                     }
@@ -2041,12 +2046,12 @@ class iwebApp {
             return;
         }
 
-        const this_object = this;
-        if (this_object.isValue(message)) {
+        const self_object = this;
+        if (self_object.isValue(message)) {
             // Create div
             const alertDialog = document.createElement('div');
             alertDialog.classList.add('iweb-alert-dialog');
-            if (this_object.isValue(customizeClassName)) {
+            if (self_object.isValue(customizeClassName)) {
                 alertDialog.classList.add(customizeClassName);
             }
 
@@ -2065,8 +2070,8 @@ class iwebApp {
             closeButton.type = 'button';
             closeButton.classList.add('btn');
             closeButton.classList.add('btn-close');
-            closeButton.textContent = this_object.language[this_object.current_language]['btn_confirm'];
-            closeButton.addEventListener('click', this_object.deBounce(function(e) {
+            closeButton.textContent = self_object.language[self_object.current_language]['btn_confirm'];
+            closeButton.addEventListener('click', self_object.deBounce(function(e) {
                 const target = e.target;
                 contentDiv.style.transform = 'translateY(-320%)';
                 contentDiv.style.transform = '0';
@@ -2096,7 +2101,7 @@ class iwebApp {
 
             // Show dialog
             setTimeout(function() {
-                this_object.showBusy(false);
+                self_object.showBusy(false);
                 contentDiv.style.transform = 'translateY(0)';
                 contentDiv.style.opacity = '1';
             }, 100);
@@ -2109,12 +2114,12 @@ class iwebApp {
             return;
         }
 
-        const this_object = this;
-        if (this_object.isValue(message)) {
+        const self_object = this;
+        if (self_object.isValue(message)) {
             // Create div
             const alertDialog = document.createElement('div');
             alertDialog.classList.add('iweb-alert-dialog');
-            if (this_object.isValue(customizeClassName)) {
+            if (self_object.isValue(customizeClassName)) {
                 alertDialog.classList.add(customizeClassName);
             }
 
@@ -2133,8 +2138,8 @@ class iwebApp {
             yesButton.type = 'button';
             yesButton.classList.add('btn');
             yesButton.classList.add('btn-yes');
-            yesButton.textContent = this_object.language[this_object.current_language]['btn_yes'];
-            yesButton.addEventListener('click', this_object.deBounce(function(e) {
+            yesButton.textContent = self_object.language[self_object.current_language]['btn_yes'];
+            yesButton.addEventListener('click', self_object.deBounce(function(e) {
                 const target = e.target;
                 contentDiv.style.transform = 'translateY(-320%)';
                 contentDiv.style.transform = '0';
@@ -2157,8 +2162,8 @@ class iwebApp {
             noButton.type = 'button';
             noButton.classList.add('btn');
             noButton.classList.add('btn-no');
-            noButton.textContent = this_object.language[this_object.current_language]['btn_no'];
-            noButton.addEventListener('click', this_object.deBounce(function(e) {
+            noButton.textContent = self_object.language[self_object.current_language]['btn_no'];
+            noButton.addEventListener('click', self_object.deBounce(function(e) {
                 const target = e.target;
                 contentDiv.style.transform = 'translateY(-320%)';
                 contentDiv.style.transform = '0';
@@ -2188,7 +2193,7 @@ class iwebApp {
             document.body.classList.add('iweb-disable-scroll');
 
             setTimeout(function() {
-                this_object.showBusy(false);
+                self_object.showBusy(false);
                 contentDiv.style.transform = 'translateY(0)';
                 contentDiv.style.opacity = '1';
             }, 100);
@@ -2201,12 +2206,12 @@ class iwebApp {
             return;
         }
 
-        const this_object = this;
-        if (this_object.isValue(htmlContent)) {
+        const self_object = this;
+        if (self_object.isValue(htmlContent)) {
             // Create div
             const infoDialog = document.createElement('div');
             infoDialog.classList.add('iweb-info-dialog');
-            if (this_object.isValue(customizeClassName)) {
+            if (self_object.isValue(customizeClassName)) {
                 infoDialog.classList.add(customizeClassName);
             }
 
@@ -2228,7 +2233,7 @@ class iwebApp {
             const closeButton = document.createElement('a');
             closeButton.classList.add('btn');
             closeButton.classList.add('btn-close');
-            closeButton.addEventListener('click', this_object.deBounce(function(e) {
+            closeButton.addEventListener('click', self_object.deBounce(function(e) {
                 const target = e.target;
                 contentDiv.style.transform = 'translateY(-320%)';
                 contentDiv.style.transform = '0';
@@ -2258,11 +2263,11 @@ class iwebApp {
 
             // Show dialog
             setTimeout(function() {
-                this_object.showBusy(false);
+                self_object.showBusy(false);
 
                 // init component & form
-                this_object.initComponent();
-                this_object.initForm();
+                self_object.initComponent();
+                self_object.initForm();
 
                 // Callback if need
                 if ((typeof initFunc) === 'function') {
@@ -2276,8 +2281,8 @@ class iwebApp {
     }
     
     modalDialog(htmlContent, initFunc, options) {
-        const this_object = this;
-        if(this_object.isValue(htmlContent)) {
+        const self_object = this;
+        if(self_object.isValue(htmlContent)) {
             options = Object.assign({
                 title : '',
                 ClassName: '',
@@ -2285,19 +2290,19 @@ class iwebApp {
                 height: 0,
                 init: initFunc
             }, options);
-            if(!this_object.isValue(options.ClassName)) {
+            if(!self_object.isValue(options.ClassName)) {
                 options.ClassName = 'default';
             }
             new iModalDialog(htmlContent, options);
         }
     }
 
-    tipsMsg(message, isSuccess = false, callBack) {
-        const this_object = this;
-        if (this_object.isValue(message)) {
+    tipsMsg(message, isSuccess = false, callBack, force_alert = false) {
+        const self_object = this;
+        if (self_object.isValue(message)) {
             const tipsMessageArea = document.querySelector('div.iweb-tips-message');
-            if (tipsMessageArea) {
-                const defaultOffset = (tipsMessageArea.getAttribute('data-offset') || 0);
+            if (tipsMessageArea && !(self_object.isMatch(force_alert, true) || self_object.isMatch(force_alert, 1))) {
+                const defaultOffset = Math.max(0, (tipsMessageArea.getAttribute('data-offset') || 0));
                 tipsMessageArea.classList.remove('error');
                 tipsMessageArea.classList.remove('success');
                 tipsMessageArea.classList.add(((isSuccess) ? 'success' : 'error'));
@@ -2311,13 +2316,13 @@ class iwebApp {
                 divElement.appendChild(closeButton);
                 divElement.appendChild(messageSpan);
                 tipsMessageArea.appendChild(divElement);
-                this_object.scrollTo('div.iweb-tips-message', parseInt(defaultOffset));
+                self_object.scrollTo('div.iweb-tips-message', defaultOffset);
                 // Callback if need
                 if ((typeof callBack) === 'function') {
                     callBack();
                 }
             } else {
-                this_object.alert(message, callBack);
+                self_object.alert(message, callBack);
             }
         } else {
             // Callback if need
@@ -2329,16 +2334,16 @@ class iwebApp {
 
     // bind event
     bindEvent(eventType, selector, callBack) {
-        const this_object = this;
+        const self_object = this;
 
         // If the eventType is not yet handled, set it up
-        if (!this_object.eventMap[eventType]) {
-            this_object.eventMap[eventType] = [];
+        if (!self_object.eventMap[eventType]) {
+            self_object.eventMap[eventType] = [];
 
             // Add a single event listener for the document on this event type
             document.addEventListener(eventType, function(e) {
                 // Loop through all the registered selectors for this event type
-                this_object.eventMap[eventType].forEach(function(item) {
+                self_object.eventMap[eventType].forEach(function(item) {
                     const target = e.target.closest(item.selector);
                     if (target) {
                         // Call the corresponding callback with the target and event
@@ -2349,7 +2354,7 @@ class iwebApp {
         }
 
         // Add the selector and its callback to the event map
-        this_object.eventMap[eventType].push({
+        self_object.eventMap[eventType].push({
             selector,
             callBack
         });
@@ -2393,9 +2398,9 @@ class iwebApp {
     }
 
     isMatch(value1, value2, sensitive = false) {
-        const this_object = this;
+        const self_object = this;
 
-        if (this_object.isValue(value1) && this_object.isValue(value2)) {
+        if (self_object.isValue(value1) && self_object.isValue(value2)) {
             const trimmedValue1 = (value1.toString().trim());
             const trimmedValue2 = (value2.toString().trim());
             return (sensitive) ? (trimmedValue1 === trimmedValue2) : (trimmedValue1.toLowerCase() === trimmedValue2.toLowerCase());
@@ -2405,10 +2410,10 @@ class iwebApp {
     }
 
     isNumber(value, digital_mode = false) {
-        const this_object = this;
+        const self_object = this;
         const reg = ((digital_mode) ? /^[0-9]+$/ : /(^((-)?[1-9]{1}\d{0,2}|0\.|0$))(((\d)+)?)(((\.)(\d+))?)$/);
 
-        if (this_object.isValue(value)) {
+        if (self_object.isValue(value)) {
             return reg.test(value);
         }
 
@@ -2416,10 +2421,10 @@ class iwebApp {
     }
 
     isEmail(value) {
-        const this_object = this;
+        const self_object = this;
         const reg = /^([A-Za-z0-9_\-\.])+@([A-Za-z0-9_\-\.])+\.[A-Za-z]{2,}$/;
 
-        if (this_object.isValue(value)) {
+        if (self_object.isValue(value)) {
             return reg.test(value);
         }
 
@@ -2427,10 +2432,10 @@ class iwebApp {
     }
 
     isPassword(value) {
-        const this_object = this;
+        const self_object = this;
         const reg = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$/;
 
-        if (this_object.isValue(value)) {
+        if (self_object.isValue(value)) {
             return reg.test(value);
         }
 
@@ -2438,11 +2443,11 @@ class iwebApp {
     }
 
     isDate(value, format = 'Y-m-d') {
-        const this_object = this;
+        const self_object = this;
         const reg = /^(\d{4})(\-)(\d{2})(\-)(\d{2})$/;
 
-        if (this_object.isValue(value)) {
-            if (!this_object.isMatch(format, 'Y-m-d')) {
+        if (self_object.isValue(value)) {
+            if (!self_object.isMatch(format, 'Y-m-d')) {
                 value = value.split('/').reverse().join('-');
             }
             if (reg.test(value)) {
@@ -2476,10 +2481,10 @@ class iwebApp {
     }
 
     isTime(value) {
-        const this_object = this;
+        const self_object = this;
         const reg = /^(\d{2}):(\d{2})$/;
 
-        if (this_object.isValue(value)) {
+        if (self_object.isValue(value)) {
             const match = reg.exec(value);
             if (match) {
                 const hours = parseInt(match[1], 10);
@@ -2492,11 +2497,11 @@ class iwebApp {
 
     // convert
     toNumber(value, currency_mode, decimal = 2, auto_beauty = true) {
-        const this_object = this;
+        const self_object = this;
 
         value = value.toString().replace(/[^\d|\-|\.]/g, '');
-        if (this_object.isNumber(value)) {
-            if (this_object.isNumber(decimal) && parseInt(decimal) > 0) {
+        if (self_object.isNumber(value)) {
+            if (self_object.isNumber(decimal) && parseInt(decimal) > 0) {
                 let power10 = Math.pow(10, decimal);
                 value = value * power10;
                 value = (Math.round(value) / power10).toString();
@@ -2513,7 +2518,7 @@ class iwebApp {
                 value = value.toString().replace(/(\.\d+?)0+$/g, '$1');
                 value = value.toString().replace(/(\.0)$/g, '');
             }
-            if (this_object.isMatch(currency_mode, true)) {
+            if (self_object.isMatch(currency_mode, true)) {
                 const [integerPart, decimalPart] = value.toString().split('.');
                 const formattedInteger = integerPart.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
                 return decimalPart ? (formattedInteger + '.' + decimalPart) : formattedInteger;
@@ -2525,9 +2530,9 @@ class iwebApp {
     }
 
     toDateTime(value, format = 'Y-m-d H:i:s') {
-        const this_object = this;
+        const self_object = this;
 
-        let now = ((this_object.isValue(value)) ? new Date(value) : new Date());
+        let now = ((self_object.isValue(value)) ? new Date(value) : new Date());
         let year = now.getFullYear();
         let month = now.getMonth() + 1;
         let day = now.getDate();
@@ -2600,10 +2605,10 @@ class iwebApp {
 
     // cookie
     setCookie(cname, cvalue, exdays = 14) {
-        const this_object = this;
+        const self_object = this;
 
         if (navigator.cookieEnabled) {
-            if (this_object.isValue(cname)) {
+            if (self_object.isValue(cname)) {
                 const d = new Date();
                 d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
                 const expires = 'expires=' + d.toUTCString();
@@ -2617,10 +2622,10 @@ class iwebApp {
     }
 
     getCookie(cname) {
-        const this_object = this;
+        const self_object = this;
 
         if (navigator.cookieEnabled) {
-            if (this_object.isValue(cname)) {
+            if (self_object.isValue(cname)) {
                 const name = cname + '=';
                 const ca = document.cookie.split(';');
                 for (let i = 0; i < ca.length; i++) {
@@ -2637,8 +2642,8 @@ class iwebApp {
     }
 
     deleteCookie(cname) {
-        const this_object = this;
-        this_object.setCookie(cname, '', -1);
+        const self_object = this;
+        self_object.setCookie(cname, '', -1);
     }
 
     // others
@@ -2665,13 +2670,13 @@ class iwebApp {
     }
 
     showBusy(status, value) {
-        const this_object = this;
+        const self_object = this;
 
-        if (this_object.isMatch(status, 1) || this_object.isMatch(status, true)) {
+        if (self_object.isMatch(status, 1) || self_object.isMatch(status, true)) {
             if (document.querySelectorAll('div.iweb-processing').length === 0) {
                 // Init opacity based on value
                 let opacity = 1;
-                if (this_object.isNumber(value, true)) {
+                if (self_object.isNumber(value, true)) {
                     opacity = (Math.round(parseInt(value) / 100 * 100) / 100);
                 }
 
@@ -2732,7 +2737,7 @@ class iwebApp {
             }
         } else {
             let microsecond = 0;
-            if (this_object.isNumber(value, true)) {
+            if (self_object.isNumber(value, true)) {
                 microsecond = parseInt(value);
             }
             setTimeout(function() {
@@ -2745,12 +2750,12 @@ class iwebApp {
     }
 
     scrollTo(element, offset, callBack) {
-        const this_object = this;
+        const self_object = this;
         const targetElement = document.querySelector(element);
 
         let element_scroll_top_value = 0;
         if (targetElement) {
-            offset = (this_object.isValue(offset)) ? parseInt(offset) : 80;
+            offset = (self_object.isValue(offset)) ? parseInt(offset) : 80;
             element_scroll_top_value = Math.max(0, parseInt(targetElement.getBoundingClientRect().top) + window.pageYOffset - offset);
         }
 
@@ -2786,22 +2791,22 @@ class iwebApp {
     };
 
     getURL(extra) {
-        const this_object = this;
-        return (window.location.href.split('?')[0]).toString() + ((this_object.isValue(extra)) ? ('/' + extra) : '');
+        const self_object = this;
+        return (window.location.href.split('?')[0]).toString() + ((self_object.isValue(extra)) ? ('/' + extra) : '');
     }
 
     getURLParameter(name) {
-        const this_object = this;
+        const self_object = this;
 
         let parameter_value = '';
-        if (this_object.isValue(name)) {
+        if (self_object.isValue(name)) {
             let urlParameters = window.location.search.substring(1).split('&');
             for (let i = 0; i < parseInt(urlParameters.length); i++) {
                 let currentParameter = urlParameters[i].split('=');
                 let currentParameter_index = currentParameter[0];
                 let currentParameter_value = currentParameter[1];
-                if (this_object.isValue(currentParameter_index) && this_object.isValue(currentParameter_value)) {
-                    if (this_object.isMatch(currentParameter_index, name)) {
+                if (self_object.isValue(currentParameter_index) && self_object.isValue(currentParameter_value)) {
+                    if (self_object.isMatch(currentParameter_index, name)) {
                         parameter_value = currentParameter_value;
                         break;
                     }
@@ -2812,12 +2817,12 @@ class iwebApp {
     }
 
     randomNum(min, max) {
-        const this_object = this;
+        const self_object = this;
 
-        if (!this_object.isValue(min) || parseInt(min) < 0) {
+        if (!self_object.isValue(min) || parseInt(min) < 0) {
             min = 0;
         }
-        if (!this_object.isValue(max) || parseInt(max) < 1) {
+        if (!self_object.isValue(max) || parseInt(max) < 1) {
             max = 1;
         }
         min = parseInt(min);
@@ -2830,10 +2835,10 @@ class iwebApp {
     }
 
     randomString(length) {
-        const this_object = this;
+        const self_object = this;
 
         const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
-        if (!this_object.isNumber(length)) {
+        if (!self_object.isNumber(length)) {
             length = 12;
         }
 
