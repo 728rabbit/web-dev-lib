@@ -693,7 +693,7 @@ class iwebApp {
                         }
                     } else {
                         // Create search input
-                        const validationArray = (input.getAttribute('data-validation').toString().split('|'));
+                        const validationArray = (self_object.isValue(input.getAttribute('data-validation'))?(input.getAttribute('data-validation').toString().split('|')):[]);
                         const canNew = (self_object.isMatch(input.getAttribute('data-cannew'), 1)) ? true : false;
 
                         const fillText = document.createElement('input');
