@@ -2110,6 +2110,12 @@ class iwebApp {
                 contentDiv.style.opacity = '1';
             }, 100);
         }
+        else {
+            // Callback if need
+            if ((typeof callBack) === 'function') {
+                callBack();
+            }
+        }
     }
 
     confirm(message, callBack, customizeClassName) {
@@ -2201,6 +2207,12 @@ class iwebApp {
                 contentDiv.style.transform = 'translateY(0)';
                 contentDiv.style.opacity = '1';
             }, 100);
+        }
+        else {
+            // Callback if need
+            if ((typeof callBack) === 'function') {
+                callBack();
+            }
         }
     }
 
