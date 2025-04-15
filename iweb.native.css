@@ -382,6 +382,7 @@ div.iweb-tips-message > div > a.close {
     top: 0px;
     right: 0px;
     width: 30px;
+    font-size: 1.25rem;
     line-height: 36px;
     text-align: center;
 }

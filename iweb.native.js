@@ -1285,7 +1285,7 @@ class iwebApp {
                                     input.closest('div.iweb-input').classList.add('error');
                                     canSubmit = false;
                                 } else if (self_object.isValue(input.value)) {
-                                    let next_regex = true;
+                                    let nextRegex = true;
                                     if ((validationArray.includes('number')) && !self_object.isNumber(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
@@ -1295,7 +1295,7 @@ class iwebApp {
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
                                         canSubmit = false;
-                                        next_regex = false;
+                                        nextRegex = false;
                                     } else if ((validationArray.includes('email')) && !self_object.isEmail(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
@@ -1305,7 +1305,7 @@ class iwebApp {
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
                                         canSubmit = false;
-                                        next_regex = false;
+                                        nextRegex = false;
                                     } else if ((validationArray.includes('password')) && !self_object.isPassword(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
@@ -1315,7 +1315,7 @@ class iwebApp {
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
                                         canSubmit = false;
-                                        next_regex = false;
+                                        nextRegex = false;
                                     } else if ((validationArray.includes('date')) && !self_object.isDate(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
@@ -1325,7 +1325,7 @@ class iwebApp {
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
                                         canSubmit = false;
-                                        next_regex = false;
+                                        nextRegex = false;
                                     } else if ((validationArray.includes('time')) && !self_object.isTime(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
@@ -1335,7 +1335,7 @@ class iwebApp {
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
                                         canSubmit = false;
-                                        next_regex = false;
+                                        nextRegex = false;
                                     } else if ((validationArray.includes('ge0'))) {
                                         if (!self_object.isNumber(input.value)) {
                                             if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
@@ -1346,7 +1346,7 @@ class iwebApp {
                                             }
                                             input.closest('div.iweb-input').classList.add('error');
                                             canSubmit = false;
-                                            next_regex = false;
+                                            nextRegex = false;
                                         } else {
                                             const regex = /^(?:0|[1-9]\d*)(?:\.\d+)?$/;
                                             if (!regex.test(input.value)) {
@@ -1358,7 +1358,7 @@ class iwebApp {
                                                 }
                                                 input.closest('div.iweb-input').classList.add('error');
                                                 canSubmit = false;
-                                                next_regex = false;
+                                                nextRegex = false;
                                             }
                                         }
                                     } else if ((validationArray.includes('gt0'))) {
@@ -1371,7 +1371,7 @@ class iwebApp {
                                             }
                                             input.closest('div.iweb-input').classList.add('error');
                                             canSubmit = false;
-                                            next_regex = false;
+                                            nextRegex = false;
                                         } else if (parseFloat(input.value) <= 0) {
                                             if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                                 const errorTips = document.createElement('small');
@@ -1381,11 +1381,11 @@ class iwebApp {
                                             }
                                             input.closest('div.iweb-input').classList.add('error');
                                             canSubmit = false;
-                                            next_regex = false;
+                                            nextRegex = false;
                                         }
                                     }
 
-                                    if (next_regex && validationArray.includes('regex')) {
+                                    if (nextRegex && validationArray.includes('regex')) {
                                         const regex = new RegExp(input.getAttribute('data-regex'));
                                         const regex_error = input.getAttribute('data-error');
                                         if (!regex.test(input.value.toString().toLowerCase())) {
@@ -1448,28 +1448,28 @@ class iwebApp {
                             } else {
                                 if (self_object.isValue(responseData.status) && self_object.isMatch(responseData.status, 200)) {
                                     if (self_object.isValue(responseData.url)) {
-                                        if (alertResult) {
-                                            self_object.tipsMsg(responseData.message, true, function() {
+                                        if (self_object.isMatch(alertResult, true) || self_object.isMatch(alertResult, 1)) {
+                                            self_object.alert(responseData.message, function() {
                                                 if (!self_object.isMatch(responseData.url, '#')) {
                                                     window.location.href = responseData.url;
                                                 } else {
                                                     window.location.reload();
                                                 }
-                                            }, alertResult);
-                                        } else {
+                                            });
+                                        }
+                                        else {
                                             if (!self_object.isMatch(responseData.url, '#')) {
                                                 window.location.href = responseData.url;
                                             } else {
                                                 window.location.reload();
                                             }
                                         }
-                                    } else {
-                                        self_object.tipsMsg(responseData.message, true, function() {
-                                            window.location.reload();
-                                        }, alertResult);
+                                    }
+                                    else {     
+                                        self_object.tipsMsg(responseData.message, true);
                                     }
                                 } else {
-                                    self_object.tipsMsg(responseData.message, false, null, alertResult);
+                                    self_object.tipsMsg(responseData.message, false);
                                 }
 
                                 if ((typeof window[extra_func]) === 'function') {
@@ -1478,14 +1478,14 @@ class iwebApp {
                             }
                         });
                     } else {
-                        self_object.tipsMsg(self_object.language[self_object.current_language]['required_all_error'], false, function() {
-                            if (!((typeof window[validation_func]) === 'function')) {
+                        if (!((typeof window[validation_func]) === 'function')) {
+                            self_object.tipsMsg(self_object.language[self_object.current_language]['required_all_error'], false, function() {
                                 const tipsMessageArea = document.querySelector('div.iweb-tips-message');
                                 if (!tipsMessageArea) {
                                     self_object.scrollTo('.error');
                                 }
-                            }
-                        }, alertResult);
+                            });
+                        }
                     }
                 }));
 
@@ -2301,11 +2301,12 @@ class iwebApp {
         }
     }
 
-    tipsMsg(message, isSuccess = false, callBack, force_alert = false) {
+    tipsMsg(message, isSuccess = false, callBack) {
         const self_object = this;
+        
         if (self_object.isValue(message)) {
             const tipsMessageArea = document.querySelector('div.iweb-tips-message');
-            if (tipsMessageArea && !(self_object.isMatch(force_alert, true) || self_object.isMatch(force_alert, 1))) {
+            if (tipsMessageArea) {
                 const defaultOffset = Math.max(0, (tipsMessageArea.getAttribute('data-offset') || 0));
                 tipsMessageArea.classList.remove('error');
                 tipsMessageArea.classList.remove('success');
@@ -2325,7 +2326,8 @@ class iwebApp {
                 if ((typeof callBack) === 'function') {
                     callBack();
                 }
-            } else {
+            }
+            else {
                 self_object.alert(message, callBack);
             }
         } else {
