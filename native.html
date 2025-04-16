@@ -65,10 +65,11 @@
             
             <div>&nbsp;</div>
             
+            <!--
             <div class="iweb-tips-message success"><div><a class="close">×</a><span>項目資料成功更新。</span></div></div>
             
             <div class="iweb-tips-message error"><div><a class="close">×</a><span>項目資料更新失敗。</span></div></div>
-            
+            -->
             
             <div style="text-align:right;">
                 <div class="font">
@@ -81,8 +82,7 @@
             <div>&nbsp;</div>
             
             <form action="upload.php" data-ajax="1">
-                <div class="page-message iweb-tips-message"></div>
-                
+           
                 <div class="widget">
                     <div class="iweb-row">
                         <label>專業</label>
@@ -158,7 +158,7 @@
 
                     <div class="iweb-row">
                         <label>結束日期</label>
-                        <input type="date" name="end_date" data-validation="required|date" value="">
+                        <input type="date" name="end_date" data-validation="required|date" value="" data-min="2025-03-02">
                     </div>
 
                     <div class="iweb-row">
@@ -184,7 +184,8 @@
                     <div class="iweb-row">
                         <label>推薦人</label>
                         <input type="text" class="fill-id" name="member_id" value="1" 
-                            data-required="0"
+                            data-validation="required"
+                            data-cannew="1"
                             data-autocomplete="1"
                             data-default="陳大文"
                             data-url="http://localhost:8000/myprojects/mylib/fetch.php"
@@ -221,7 +222,7 @@
                     <div class="iweb-row">
                         <button type="reset" class="btn">重設</button>
                         <button type="submit" class="btn">提交</button>
-                        <button type="button" id="btn-post">Post</button>
+                        <button type="button" class="btn" id="btn-post">Post</button>
                     </div>
 
                     <div class="iweb-row">
@@ -279,6 +280,27 @@
             <p>&nbsp;</p>
             <p>&nbsp;</p>
             
+            <video preload="auto" class="iweb-video" data-source="SampleVideo_1280x720_2mb.mp4">
+                <!-- 初始影片連結將被 Blob 動態替換 -->
+                <source id="videoSource" type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+            
+            
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            
+            <video preload="auto" class="iweb-video">
+                <!-- 初始影片連結將被 Blob 動態替換 -->
+                <source id="videoSource" src="file_example_MP4_640_3MG.mp4" type="video/mp4">
+                Your browser does not support HTML5 video.
+            </video>
+            
+            
+            <p>&nbsp;</p>
+            <p>&nbsp;</p>
+            
+            
             <div class="iweb-editor">
                 <iframe width="1268" height="713" src="https://www.youtube.com/embed/lHhRhPV--G0" title="Flutter in 100 seconds" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             </div>
@@ -334,6 +356,7 @@
         <script>
             function iweb_common_func() { 
                 console.log('init common func');
+      
             }
 
             function iweb_func() { 
@@ -419,7 +442,7 @@
             });
             
             document.getElementById('btn-modal-dialog').addEventListener('click', function() {
-                iweb.modalDialog('<h1>"\'Hello World</h1>', function() { alert('aaa') }, {'title': '系統提示', 'ClassName': '', 'width': 800, 'height': 600 });
+                iweb.modalDialog('<h1>"\'Hello World</h1>', null, {'title': '系統提示', 'ClassName': '', 'width': 800, 'height': 600 });
             });
 
             // POST request button

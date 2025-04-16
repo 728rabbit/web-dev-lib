@@ -208,6 +208,76 @@ textarea.error {
     border-color: var(--icolor-lightred)!important;
 }
 
+input[type="range"] {
+    -webkit-appearance: none;
+    background: transparent;
+    width: 100%;
+    height: 6px;
+    margin: 10px 0;
+}
+
+input[type="range"]:focus {
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+    background: #fff;
+    width: 100%;
+    height: 6px;
+    border: 0px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+input[type="range"]::-moz-range-track {
+    background: #fff;
+    width: 100%;
+    height: 6px;
+    border: 0px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+input[type="range"]::-ms-track {
+    background: #fff;
+    width: 100%;
+    height: 6px;
+    border: 0px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    background: var(--icolor-blue);
+    height: 12px;
+    width: 12px;
+    margin-top: -3px;
+    border: 0px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+    background: var(--icolor-blue);
+    height: 12px;
+    width: 12px;
+    margin-top: -3px;
+    border: 0px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+input[type="range"]::-ms-thumb {
+    background: var(--icolor-blue);
+    height: 12px;
+    width: 12px;
+    margin-top: -3px;
+    border: 0px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
 select {
     background-color: var(--icolor-white);
     font-size: 1rem;
@@ -1755,6 +1825,130 @@ div.iweb-grid div.col-onefifth {
 #tinymce div.iweb-grid div.col-quarter,
 #tinymce div.iweb-grid div.col-onefifth {
     border: 2px dotted var(--icolor-gray);
+}
+
+div.iweb-video {
+    position: relative;
+    background: var(--icolor-black);
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+}
+
+div.iweb-video.fullscreen {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    width: 100%!important;
+    height: 100%!important;
+    z-index: 1000;
+}
+
+div.iweb-video > video {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+div.iweb-video > div {
+    position: absolute;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    padding: 10px 20px;
+}
+
+div.iweb-video:hover > div {
+    display: block;
+}
+
+div.iweb-video > div > div {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+div.iweb-video > div > div:nth-child(2) {
+    width: calc(100% - 80px);
+    padding-left: 12px;
+}
+
+div.iweb-video > div > div:nth-child(4) {
+    padding-left: 12px;
+}
+
+div.iweb-video > div > div:nth-child(5) {
+    display: block;
+    margin-top: 4px;
+}
+
+div.iweb-video button.v-play-btn {
+    background: none;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    padding: 0px;
+}
+
+div.iweb-video button.v-play-btn > svg {
+    width: 100%;
+    height: 100%;
+    vertical-align: top;
+}
+
+div.iweb-video button.v-sound-btn {
+    background: none;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    padding: 0px;
+}
+
+div.iweb-video button.v-sound-btn > svg {
+    width: 100%;
+    height: 100%;
+    vertical-align: top;
+}
+
+div.iweb-video button.v-fullscreen-btn {
+    background: none;
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    padding: 0px;
+}
+
+div.iweb-video button.v-fullscreen-btn > svg {
+    width: 100%;
+    height: 100%;
+    vertical-align: top;
+}
+
+div.iweb-video span.v-duration {
+    display: block;
+    font-size: 0.875rem;
+    color: #fff;;
+}
+
+div.iweb-video div.volume {
+    position: absolute;
+    display: none;
+    background: rgba(0, 0, 0, 0.5);
+    width: 100px;
+    left: -38px;
+    bottom: 66px;
+    padding: 5px 10px;
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    -webkit-transform: rotate(-90deg);
+            transform: rotate(-90deg);
+}
+
+div.iweb-video div.volume.show {
+    display: block;
 }
 
 /* other components*/
