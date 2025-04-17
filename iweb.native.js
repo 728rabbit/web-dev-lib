@@ -127,7 +127,7 @@ class iwebApp {
                 safeCallFunc('iweb_common_func');
                 safeCallFunc('iweb_func');
                 safeCallFunc('iweb_child_func');
-                safeCallFunc('iweb_extraFunc');
+                safeCallFunc('iweb_extra_func');
             }, 100);
         });
 
@@ -143,7 +143,7 @@ class iwebApp {
                 safeCallFunc('iweb_common_func_done');
                 safeCallFunc('iweb_func_done');
                 safeCallFunc('iweb_child_func');
-                safeCallFunc('iweb_extraFunc_done');
+                safeCallFunc('iweb_extra_func_done');
             }, 100);
         };
 
@@ -2556,8 +2556,16 @@ class iwebApp {
         const thisInstance = this;
         
         if (thisInstance.isValue(message)) {
-            const tipsMessageArea = document.querySelector('div.iweb-tips-message');
-            if (tipsMessageArea) {
+            let tipsMessageArea = null;
+            const popupDialog = document.querySelector('div.iweb-info-dialog') || document.querySelector('div.imodal-dialog.current');
+            if(thisInstance.isValue(popupDialog)) {
+                tipsMessageArea = popupDialog.querySelector('div.iweb-tips-message');
+            }
+            else {
+                tipsMessageArea = document.querySelector('div.iweb-tips-message');
+            }
+            
+            if (thisInstance.isValue(tipsMessageArea)) {
                 const defaultOffset = Math.max(0, (tipsMessageArea.getAttribute('data-offset') || 0));
                 tipsMessageArea.classList.remove('error');
                 tipsMessageArea.classList.remove('success');
@@ -3879,7 +3887,7 @@ class iModalDialog {
             title: '',
             width: 0,
             height: 0,
-            className: 'default',
+            className: null,
             init: null
         }, options);
         
@@ -3892,7 +3900,9 @@ class iModalDialog {
     createModal(content) {
         this.modal = document.createElement('div');
         this.modal.classList.add('imodal-dialog');
-        this.modal.classList.add(this.options.className);
+        if(this.options.className !== null) {
+            this.modal.classList.add(this.options.className);
+        }
         if(this.options.width > 0 && this.options.height > 0) {
             this.modal.style.width = this.options.width + 'px';
             this.modal.style.height = this.options.height + 'px';
@@ -3956,11 +3966,13 @@ class iModalDialog {
     bringToFront() {
         let maxZ = 200;
         document.querySelectorAll('div.imodal-dialog').forEach((modal) => {
+            modal.classList.remove('current');
             const zIndex = parseInt(window.getComputedStyle(modal).zIndex, 10);
             if (!isNaN(zIndex)) {
                 maxZ = Math.max(maxZ, zIndex);
             }
         });
+        this.modal.classList.add('current');
         this.modal.style.zIndex = maxZ + 1;
     }
     
