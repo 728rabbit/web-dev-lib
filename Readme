@@ -33,7 +33,6 @@ More Information: https://github.com/728rabbit/iweb-native-library
 2. Autocomplete - iweb.inputBox();
 
 <input type="text" class="fill-id" name="member_id" value="1" 
-    data-required="1"
     data-cannew="1"
     data-autocomplete="1"
     data-default="chan tai man"
@@ -107,12 +106,23 @@ json_encode([
 
 --------------------------------------------------------------------------------
 
-7. Ajax Post
+7. Post & get
 
-iweb.ajaxPost({
+iweb.doPost({
     dataType: 'json',
     url: your_url_here,
-    values: {
+    payload: {
+        name_1: 1,
+        name_2: 2
+    }
+}, function(responseData) {
+    console.log(responseData);
+});
+
+iweb.doFetch({
+    dataType: 'json',
+    url: your_url_here,
+    payload: {
         name_1: 1,
         name_2: 2
     }
@@ -137,14 +147,13 @@ iweb.ajaxPost({
 
 iweb.bindEvent('click', '#btn-select-files', function(target, e) {
     iweb.uploader({
-        dataType: 'json',
         url: your_url_here,
-        values: {
+        payload: {
             name: 'abc'
         },
-        allowed_types: 'jpg|png|pdf',
-        max_filesize: 8
-        auto_close: true
+        allowedTypes: 'jpg|png|pdf',
+        maxFileSize: 8
+        autoClose: true
     }, function() {
         cosole.log('end');
     });
@@ -155,14 +164,13 @@ Or
 <div><input type="file" id="myfiles1"></div>
 
 iweb.uploaderArea('myfiles1', {
-    dataType: 'json',
     url: your_url_here,
-    values: {
+    payload: {
         name: 'abc'
     },
-    allowed_types: 'jpg|png',
-    max_filesize: 8
-    auto_close: true
+    allowedTypes: 'jpg|png',
+    maxFileSize: 8
+    autoClose: true
 }, function() {
     cosole.log('end');
 });
@@ -245,9 +253,11 @@ scrollTo(element, adjustment_value, callBack)
 
 formatBytes(bytes, decimals)
 
+formatTime(seconds)
+
 getURL(extra)
 
-getURLParameter(name)
+getURLParam(name)
 
 randomNum(min, max)
 

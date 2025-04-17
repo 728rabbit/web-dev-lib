@@ -158,27 +158,27 @@
 
                     <div class="iweb-row">
                         <label>結束日期</label>
-                        <input type="date" name="end_date" data-validation="required|date" value="" data-min="2025-03-02">
+                        <input type="date" name="end_date" data-validation="required|date" value="2024-10-10" data-min="2025-03-02">
                     </div>
 
                     <div class="iweb-row">
                         <label>開始時間</label>
-                        <input type="time" name="start_time" data-validation="required|time" value="" data-start="800" data-end="2200" data-interval="10">
+                        <input type="time" name="start_time" data-validation="required|time" value="08:00" data-start="800" data-end="2200" data-interval="10">
                     </div>
 
                     <div class="iweb-row">
                         <label>結束時間</label>
-                        <input type="time" name="end_time" data-validation="required|time" value="">
+                        <input type="time" name="end_time" data-validation="required|time" value="08:00">
                     </div>
 
                     <div class="iweb-row">
                         <label>貨幣</label>
-                        <input type="text" name="currency" data-validation="required|ge0" value="">
+                        <input type="text" name="currency" data-validation="required|ge0" value="1">
                     </div>
 
                     <div class="iweb-row">
                         <label>代表顔色</label>
-                        <input type="color" name="mycolor" data-validation="required" value="">
+                        <input type="color" name="mycolor" data-validation="required" value="#000000">
                     </div>
 
                     <div class="iweb-row">
@@ -201,7 +201,7 @@
 
                     <div class="iweb-row">
                         <label>備注</label>
-                        <textarea name="content" data-validation="required"></textarea>
+                        <textarea name="content" data-validation="required">ABc</textarea>
                     </div>
 
 
@@ -223,6 +223,7 @@
                         <button type="reset" class="btn">重設</button>
                         <button type="submit" class="btn">提交</button>
                         <button type="button" class="btn" id="btn-post">Post</button>
+                        <button type="button" class="btn" id="btn-get">Get</button>
                     </div>
 
                     <div class="iweb-row">
@@ -364,22 +365,22 @@
                 iweb.pagination('div.mypage');
 
                 iweb.uploaderArea('myfiles1', {
-                    url: 'http://localhost/mylib/upload.php',
-                    dataType: 'text',
-                    values: {
+                    url: 'http://localhost:8000/myprojects/mylib/upload.php',
+                    payload: {
                         name: 'abc'
                     },
-                    allowed_types: 'jpg|png'
+                    dataType: 'text',
+                    allowedTypes: 'jpg|png'
                 }, function() {
                     alert('end upload 1');
                 });
 
                 iweb.uploaderArea('myfiles2', {
-                    url: 'http://localhost/mylib/upload.php',
-                    dataType: 'text',
-                    values: {
+                    url: 'http://localhost:8000/myprojects/mylib/upload.php',
+                    payload: {
                         name: 'abc'
-                    }
+                    },
+                    dataType: 'text'
                 }, function() {
                     alert('end upload 2');
                 });
@@ -387,12 +388,12 @@
                 // Handle file selection button
                 iweb.bindEvent('click', '#btn-select-files', function(target, e) {
                     iweb.uploader({
-                        url: 'http://localhost/mylib/upload.php',
-                        dataType: 'text',
-                        values: {
+                        url: 'http://localhost:8000/myprojects/mylib/upload.php',
+                        payload: {
                             name: 'abc'
                         },
-                        allowed_types: ''
+                        dataType: 'text',
+                        allowedTypes: ''
                     });
                     
                 });
@@ -447,13 +448,13 @@
 
             // POST request button
             document.getElementById('btn-post').addEventListener('click', function() {
-                iweb.ajaxPost({
-                    dataType: 'text',
-                    url: 'http://localhost/mylib/test.php',
-                    values: {
+                iweb.doPost({
+                    url: 'http://localhost:8000/myprojects/mylib/fetch.php',
+                    payload: {
                         name_1: 1,
                         name_2: 2
-                    }
+                    },
+                    dataType: 'text'
                 }, function(responseData) {
                     console.log(responseData);
                     alert('post done');
@@ -461,7 +462,19 @@
             });
             
             
-            
+            document.getElementById('btn-get').addEventListener('click', function() {
+                iweb.doFetch({
+                    url: 'http://localhost:8000/myprojects/mylib/fetch.php',
+                    payload: {
+                        name_1: 1,
+                        name_2: 2
+                    },
+                    dataType: 'text'
+                }, function(responseData) {
+                    console.log(responseData);
+                    alert('get done');
+                });
+            });
         </script>
     </body>
 </html>
