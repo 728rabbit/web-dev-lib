@@ -1631,13 +1631,13 @@ class iwebApp {
                     }
 
                     // Extra checking if need
+                    let extraCanSubmit = true;
                     const validationFunc = form.getAttribute('data-vfunc');
-                    if ((typeof window[validationFunc]) === 'function') {
-                        const extraCanSubmit = window[validationFunc](canSubmit);
-                        canSubmit = (canSubmit && extraCanSubmit);
+                    if (canSubmit && (typeof window[validationFunc]) === 'function') {
+                        extraCanSubmit = window[validationFunc](canSubmit);
                     }
-                    
-                    if (canSubmit) {
+
+                    if (canSubmit && extraCanSubmit) {
                         let requestData = {
                             method: 'POST',
                             url: form.action,
@@ -1705,15 +1705,13 @@ class iwebApp {
                                 }
                             }
                         });
-                    } else {
-                        if (!((typeof window[validationFunc]) === 'function')) {
-                            thisInstance.tipsMsg(thisInstance.language[thisInstance.currentLangCode]['required_all_error'], false, function() {
-                                const tipsMessageArea = document.querySelector('div.iweb-tips-message');
-                                if (!tipsMessageArea) {
-                                    thisInstance.scrollTo('.error');
-                                }
-                            });
-                        }
+                    } else if (!canSubmit && extraCanSubmit) {
+                        thisInstance.tipsMsg(thisInstance.language[thisInstance.currentLangCode]['required_all_error'], false, function() {
+                            const tipsMessageArea = document.querySelector('div.iweb-tips-message');
+                            if (!tipsMessageArea) {
+                                thisInstance.scrollTo('.error');
+                            }
+                        });
                     }
                     
                     return false;
