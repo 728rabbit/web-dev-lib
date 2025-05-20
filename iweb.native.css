@@ -1755,7 +1755,7 @@ div.iweb-pagination input[type="text"] {
 
 div.iweb-row {
     position: relative;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 }
 
 div.iweb-row.last {
@@ -1791,33 +1791,33 @@ div.iweb-grid {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    gap: 16px;
+    gap: 20px;
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
 }
 
 div.iweb-grid div.col-half {
     -webkit-box-flex: 0;
-        -ms-flex: 0 1 calc(50% - 8px);
-            flex: 0 1 calc(50% - 8px);
+        -ms-flex: 0 1 calc(50% - 10px);
+            flex: 0 1 calc(50% - 10px);
 }
 
 div.iweb-grid div.col-onethird {
     -webkit-box-flex: 0;
-        -ms-flex: 0 1 calc(33.33% - 10.66px);
-            flex: 0 1 calc(33.33% - 10.66px);
+        -ms-flex: 0 1 calc(33.33% - 13.33px);
+            flex: 0 1 calc(33.33% - 13.33px);
 }
 
 div.iweb-grid div.col-quarter {
     -webkit-box-flex: 0;
-        -ms-flex: 0 1 calc(25% - 12px);
-            flex: 0 1 calc(25% - 12px);
+        -ms-flex: 0 1 calc(25% - 15px);
+            flex: 0 1 calc(25% - 15px);
 }
 
 div.iweb-grid div.col-onefifth {
     -webkit-box-flex: 0;
-        -ms-flex: 0 1 calc(20% - 12.8px);
-            flex: 0 1 calc(20% - 12.8px);
+        -ms-flex: 0 1 calc(20% - 16.66px);
+            flex: 0 1 calc(20% - 16.66px);
 }
 
 #tinymce div.iweb-grid div.col-half,
@@ -2036,30 +2036,30 @@ div.widget.expand.show > div.hidden {
 @media only screen and (max-width: 900px) {
     div.iweb-viewer div.iweb-grid div.col-onefifth {
         -webkit-box-flex: 0;
-        -ms-flex: 0 1 calc(33.33% - 10.66px);
-            flex: 0 1 calc(33.33% - 10.66px);
+        -ms-flex: 0 1 calc(33.33% - 13.33px);
+            flex: 0 1 calc(33.33% - 13.33px);
     }
 }
 
 @media only screen and (max-width: 800px) {
     div.iweb-viewer div.iweb-grid div.col-quarter {
         -webkit-box-flex: 0;
-        -ms-flex: 0 1 calc(50% - 8px);
-            flex: 0 1 calc(50% - 8px);
+        -ms-flex: 0 1 calc(50% - 10px);
+            flex: 0 1 calc(50% - 10px);
     }
 }  
   
 @media only screen and (max-width: 700px) {   
     div.iweb-viewer div.iweb-grid div.col-onethird {
         -webkit-box-flex: 0;
-        -ms-flex: 0 1 calc(50% - 8px);
-            flex: 0 1 calc(50% - 8px);
+        -ms-flex: 0 1 calc(50% - 10px);
+            flex: 0 1 calc(50% - 10px);
     }
     
     div.iweb-viewer div.iweb-grid div.col-onefifth {
         -webkit-box-flex: 0;
-        -ms-flex: 0 1 calc(50% - 8px);
-            flex: 0 1 calc(50% - 8px);
+        -ms-flex: 0 1 calc(50% - 10px);
+            flex: 0 1 calc(50% - 10px);
     }
 }
 
