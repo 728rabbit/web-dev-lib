@@ -1,5 +1,6 @@
 class iCalendar {
     constructor(config = {}) {
+        this.selfObj = null;
         this.elementID = config.elementID || 'icalendar';
         this.lang = config.lang || 'en';
         this.displayMode = config.displayMode || 'day';
@@ -13,18 +14,21 @@ class iCalendar {
 
         this.resources = null;
         this.events = null;
-        
-        this.resources_url = config.resources || false;
-        this.no_resources = false;
-        this.events_url = config.events || false;
+  
+        this.resourcesURL = config.resources || false;
+        this.noResources = false;
+        this.eventsURL = config.events || false;
         this.eventTemplate = config.eventTemplate || false;
         this.eventClick = config.eventClick || false;
 
-        this.extraParas = config.extraParas || false;
+        this.extraParas = config.extraParas || false;  
     }
 
     init(resources = null, events = null) {
         this.selfObj = document.getElementById(this.elementID);
+        if(!this.selfObj) {
+            return;
+        }
         this.selfObj.style.position = 'relative';
         this.selfObj.style.background = '#fff';
         this.selfObj.style.fontFamily = 'Arial, sans-serif';
@@ -32,30 +36,33 @@ class iCalendar {
         this.selfObj.style.border = '1px solid #e6e6e6';
         this.selfObj.style.boxSizing = 'border-box';
         this.selfObj.style.overflow = 'hidden';
-        ['.fixedCorner', '.fixedHeader', '.fixedLeft', '.timeSlots'].forEach(selector => {
+        ['div.fixedCorner', 'div.fixedHeader', 'div.fixedLeft', 'div.timeSlots'].forEach(selector => {
             this.selfObj.querySelectorAll(selector).forEach(el => el.remove());
         });
         
+        this.showLoadingMask();
         this.resources = resources || this.resources;
         this.events = events || this.events;
         this.setupElements();
         
-        if (resources === null && this.resources_url) {
-            this.fetchData(this.resources_url, (data) => {
+        if(resources === null && this.resourcesURL) {
+            this.fetchData(this.resourcesURL, (data) => {
                 this.resources = data;
-                if (this.events_url) {
-                    this.fetchData(this.events_url, (data) => {
+                if(this.eventsURL) {
+                    this.fetchData(this.eventsURL, (data) => {
                         this.events = data;
                         this.refresh();
                     });
                 }
             });
-        } else if (events === null && this.events_url) {
-            this.fetchData(this.events_url, (data) => {
+        } else if(events === null && this.eventsURL) {
+            this.fetchData(this.eventsURL, (data) => {
                 this.events = data;
                 this.refresh();
             });
         }
+        
+        return this;
     }
 
     refresh(resources, events) {
@@ -65,18 +72,18 @@ class iCalendar {
         this.events = events || this.events;
 
         this.showLoadingMask();
-        if (this.resources === null && this.resources_url) {
-            this.fetchData(this.resources_url, (data) => {
+        if(this.resources === null && this.resourcesURL) {
+            this.fetchData(this.resourcesURL, (data) => {
                 this.resources = data;
-                if (this.events_url) {
-                    this.fetchData(this.events_url, (data) => {
+                if(this.eventsURL) {
+                    this.fetchData(this.eventsURL, (data) => {
                         this.events = data;
                         this.setupElements(true);
                     });
                 }
             });
-        } else if (this.events_url) {
-            this.fetchData(this.events_url, (data) => {
+        } else if(this.eventsURL) {
+            this.fetchData(this.eventsURL, (data) => {
                 this.events = data;
                 this.setupElements(true);
             });
@@ -85,8 +92,8 @@ class iCalendar {
         }
     }
 
-    setupElements(renew) {
-        if (!renew) {
+    setupElements(renew = false) {
+        if(!renew) {
             this.renderControls();
             this.renderBody();
             this.syncScroll();
@@ -95,7 +102,6 @@ class iCalendar {
         this.setLeft();
         this.setSlots();
         this.drawEvents(this.events);
-
         setTimeout(this.hideLoadingMask, 500);
     }
 
@@ -213,7 +219,7 @@ class iCalendar {
                 width: '140px',
                 height: '28px',
                 padding: '2px 8px',
-                boxSizing: 'border-box',
+                boxSizing: 'border-box'
             });
             input.type = 'date';
             input.placeholder = 'YYYY-MM-DD';
@@ -239,13 +245,13 @@ class iCalendar {
 
     changeDate(offset) {
         let dateObj = new Date(this.displayDate);
-        if (this.displayMode === 'week') {
+        if(this.displayMode === 'week') {
             dateObj.setDate(dateObj.getDate() + offset * 7);
         }
-        else if (this.displayMode === 'day') {
+        else if(this.displayMode === 'day') {
             dateObj.setDate(dateObj.getDate() + offset);
         } else {
-            dateObj = this.getPrevNextMonth(this.displayDate, offset)
+            dateObj = this.getPrevNextMonth(this.displayDate, offset);
         }
         this.displayDate = dateObj.toLocaleString('en-US', {
             timeZone: 'Asia/Hong_Kong'
@@ -259,7 +265,7 @@ class iCalendar {
     }
 
     getDisplayDate() {
-        if (this.displayMode === 'week') {
+        if(this.displayMode === 'week') {
             const tempDate = new Date(this.displayDate);
             tempDate.setDate(tempDate.getDate() + 6);
             return this.lang === 'zh' ?
@@ -324,19 +330,19 @@ class iCalendar {
 
     createElement(tag, styles = {}, className) {
         const el = document.createElement(tag);
-        if (className) el.className = className;
+        if(className) el.className = className;
         Object.assign(el.style, styles);
         return el;
     }
 
     setHeader() {
-        this.no_resources = false;
-        if (!this.resources || (this.resources && this.resources.length === 0)) {
+        this.noResources = false;
+        if(!this.resources || (this.resources && this.resources.length === 0)) {
             this.resources = [{
                 id: 0,
                 name: ''
             }];
-            this.no_resources = true;
+            this.noResources = true;
         }
 
         this.fixedCorner.style.display = ((this.displayMode === 'week' || this.displayMode === 'day')) ? 'block' : 'none';
@@ -344,7 +350,7 @@ class iCalendar {
         this.fixedHeader.style.overflow = ((this.displayMode === 'week' || this.displayMode === 'day')) ? 'hidden scroll' : 'hidden';
 
         this.fixedHeader.innerHTML = '';
-        if (this.displayMode === 'week' || this.displayMode === 'day') {
+        if(this.displayMode === 'week' || this.displayMode === 'day') {
             const headerTable = this.createElement('table', {
                 width: '100%',
                 borderCollapse: 'collapse'
@@ -352,7 +358,7 @@ class iCalendar {
             const headerRow = this.createElement('tr');
             if(this.resources) {
                 this.resources.forEach((resource, index) => {
-                    if (this.displayMode === 'week') {
+                    if(this.displayMode === 'week') {
                         const startOfWeek = new Date(this.displayDate);
                         for (let w = 0; w < 7; w++) {
                             const day = new Date(startOfWeek);
@@ -366,13 +372,12 @@ class iCalendar {
                                 padding: '4px',
                                 textAlign: 'center',
                                 border: '1px solid #e6e6e6',
-                                boxSizing: 'border-box',
-                                textAlign: 'center'
+                                boxSizing: 'border-box'
                             });
                             dayCell.innerHTML = (resource.id) ? `${resource.name}<br/><small>` + this.getYmd(day, 'week') + `</small>` : `${this.getYmd(day, 'week')}`;
                             headerRow.appendChild(dayCell);
                         }
-                    } else if (this.displayMode === 'day') {
+                    } else if(this.displayMode === 'day') {
                         const dayCell = this.createElement('th', {
                             position: 'relative',
                             background: '#f6f6f6',
@@ -382,8 +387,7 @@ class iCalendar {
                             padding: '4px',
                             textAlign: 'center',
                             border: '1px solid #e6e6e6',
-                            boxSizing: 'border-box',
-                            textAlign: 'center'
+                            boxSizing: 'border-box'
                         });
                         dayCell.innerHTML = (resource.id) ? `${resource.name}` : (this.lang === 'zh' ? '今天' : 'Today');
                         headerRow.appendChild(dayCell);
@@ -393,7 +397,7 @@ class iCalendar {
 
             headerTable.appendChild(headerRow);
             this.fixedHeader.appendChild(headerTable);
-        } else if (this.displayMode === 'month') {
+        } else if(this.displayMode === 'month') {
             const headerTable = this.createElement('table', {
                 width: '100%',
                 borderCollapse: 'collapse'
@@ -443,7 +447,7 @@ class iCalendar {
                 padding: '4px',
                 border: '1px solid #e6e6e6',
                 boxSizing: 'border-box',
-                textAlign: 'center',
+                textAlign: 'center'
             });
 
             const timeString = currentTime.toString().padStart(4, '0');
@@ -464,8 +468,8 @@ class iCalendar {
         this.timeSlots.style.overflow = ((this.displayMode === 'week' || this.displayMode === 'day')) ? 'auto scroll' : 'hidden';
         this.timeSlots.innerHTML = '';
 
-        if (this.displayMode === 'week' || this.displayMode === 'day') {
-            if (this.resources) {
+        if(this.displayMode === 'week' || this.displayMode === 'day') {
+            if(this.resources) {
                 const timeSlotsTable = this.createElement('table', {
                     width: '100%',
                     borderCollapse: 'collapse'
@@ -475,7 +479,7 @@ class iCalendar {
                     const row = this.createElement('tr');
                     this.resources.forEach((resource, index) => {
                         const startOfWeek = new Date(this.displayDate);
-                        if (this.displayMode === 'week') {
+                        if(this.displayMode === 'week') {
                             for (let w = 0; w < 7; w++) {
                                 const day = new Date(startOfWeek);
                                 day.setDate(startOfWeek.getDate() + w);
@@ -487,7 +491,7 @@ class iCalendar {
                                     height: '30px',
                                     padding: '4px',
                                     border: '1px solid #e6e6e6',
-                                    boxSizing: 'border-box',
+                                    boxSizing: 'border-box'
                                 });
                                 cell.setAttribute('data-timeslot', `${resource.id}_` + this.getYmd(day) + `_${currentTime}`);
                                 row.appendChild(cell);
@@ -557,13 +561,13 @@ class iCalendar {
                 cell.innerHTML = this.createSvgSquare(day);
                 row.appendChild(cell);
 
-                if ((day + startDay) % 7 === 0) {
+                if((day + startDay) % 7 === 0) {
                     timeSlotsTable.appendChild(row);
                     row = this.createElement('tr');
                 }
             }
 
-            if (row.querySelectorAll('td').length > 0 && row.querySelectorAll('td').length < 7) {
+            if(row.querySelectorAll('td').length > 0 && row.querySelectorAll('td').length < 7) {
                 for (let i = row.querySelectorAll('td').length; i < 7; i++) {
                     const cell = this.createElement('td', {
                         position: 'relative',
@@ -590,7 +594,7 @@ class iCalendar {
     syncScroll() {
         this.timeSlots.onscroll = () => {
             this.fixedHeader.querySelector('table').style.transform = `translateX(${-this.timeSlots.scrollLeft}px)`;
-            this.fixedLeft.querySelector('table').style.transform = `translateY(${-this.timeSlots.scrollTop}px)`
+            this.fixedLeft.querySelector('table').style.transform = `translateY(${-this.timeSlots.scrollTop}px)`;
         };
     }
 
@@ -605,18 +609,18 @@ class iCalendar {
             return `${hours}:${minutes}`;
         };
 
-        if (events) {
+        if(events) {
             events.sort((a, b) => {
-                if (a.targetDate === b.targetDate) {
+                if(a.targetDate === b.targetDate) {
                     return a.startHm - b.startHm;
                 }
                 return new Date(a.targetDate) - new Date(b.targetDate);
             });
 
             events.forEach(event => {
-                if (this.displayMode === 'week' || this.displayMode === 'day') {
-                    const findMatchSlot = this.timeSlots.querySelector(`[data-timeslot="${(!this.no_resources ? event.resourceId : 0)}_${event.targetDate}_${Math.max(this.startHm, event.startHm)}"]`);
-                    if (findMatchSlot) {
+                if(this.displayMode === 'week' || this.displayMode === 'day') {
+                    const findMatchSlot = this.timeSlots.querySelector(`[data-timeslot="${(!this.noResources ? event.resourceId : 0)}_${event.targetDate}_${Math.max(this.startHm, event.startHm)}"]`);
+                    if(findMatchSlot) {
                         const blockCount = findMatchSlot.querySelectorAll('div.ievent').length;
                         const startMinutes = Math.floor(Math.max(this.startHm, event.startHm) / 100) * 60 + (Math.max(this.startHm, event.startHm) % 100);
                         const endMinutes = Math.floor(Math.min(this.endHm, event.endHm) / 100) * 60 + (Math.min(this.endHm, event.endHm) % 100);
@@ -646,13 +650,14 @@ class iCalendar {
                         block.setAttribute('data-startHm', event.startHm || '');
                         block.setAttribute('data-endHm', event.endHm || '');
 
-                        block.onclick = () => {
+                        block.onclick = (e) => {
+                            e.stopPropagation();
                             const currentzIndex = block.style.zIndex;
                             this.timeSlots.querySelectorAll('div.ievent').forEach(event => event.style.zIndex = 1);
-                            if (currentzIndex === '1') {
+                            if(currentzIndex === '1') {
                                 block.style.zIndex = 2;
                             }
-                            if (typeof this.eventClick === 'function') {
+                            if(typeof this.eventClick === 'function') {
                                 this.eventClick(event);
                             }
                         };
@@ -661,7 +666,7 @@ class iCalendar {
                     }
                 } else {
                     const findMatchSlot = this.timeSlots.querySelector(`[data-timeslot="${event.targetDate}"]`);
-                    if (findMatchSlot) {
+                    if(findMatchSlot) {
                         const blockCount = findMatchSlot.querySelectorAll('div.ievent').length;
                         const block = this.createElement('div', {
                             position: 'relative',
@@ -685,13 +690,14 @@ class iCalendar {
                         block.setAttribute('data-startHm', event.startHm || '');
                         block.setAttribute('data-endHm', event.endHm || '');
 
-                        block.onclick = () => {
+                        block.onclick = (e) => {
+                            e.stopPropagation();
                             const currentzIndex = block.style.zIndex;
                             this.timeSlots.querySelectorAll('div.ievent').forEach(event => event.style.zIndex = 1);
-                            if (currentzIndex === '1') {
+                            if(currentzIndex === '1') {
                                 block.style.zIndex = 2;
                             }
-                            if (typeof this.eventClick === 'function') {
+                            if(typeof this.eventClick === 'function') {
                                 this.eventClick(event);
                             }
                         };
@@ -742,10 +748,10 @@ class iCalendar {
         const day = parts.find(part => part.type === 'day').value;
         const weekday = parts.find(part => part.type === 'weekday').value.replace('星期', '').replace('週', '');
 
-        if (format === 'month') {
+        if(format === 'month') {
             return (this.lang === 'zh') ? `${month}月/${year}` : `${month}/${year}`;
         } else {
-            if (format === 'week') {
+            if(format === 'week') {
                 return `${year}-${month}-${day} (${weekday})`;
             } else {
                 return `${year}-${month}-${day}`;
@@ -755,7 +761,7 @@ class iCalendar {
 
     getNextTimeSlot(hm, interval) {
         let nextHm = hm + interval;
-        if (nextHm % 100 >= 60) {
+        if(nextHm % 100 >= 60) {
             nextHm = (Math.floor(nextHm / 100) + 1) * 100 + (nextHm % 100 - 60);
         }
         return nextHm;
@@ -765,14 +771,14 @@ class iCalendar {
         try {
             let fullUrl = url;
 
-            if (!this.extraParas) {
+            if(!this.extraParas) {
                 this.extraParas = {};
             }
-            if (this.displayMode === 'month') {
+            if(this.displayMode === 'month') {
                 const minMaxDate = this.getMonthStartEnd(this.displayDate);
                 this.extraParas['startDate'] = minMaxDate.start;
                 this.extraParas['endDate'] = minMaxDate.end;
-            } else if (this.displayMode === 'week') {
+            } else if(this.displayMode === 'week') {
                 const tempDate = new Date(this.displayDate);
                 tempDate.setDate(tempDate.getDate() + 6);
                 this.extraParas['startDate'] = this.getYmd(this.displayDate);
@@ -782,7 +788,7 @@ class iCalendar {
                 this.extraParas['endDate'] = this.getYmd(this.displayDate);
             }
 
-            if (this.extraParas) {
+            if(this.extraParas) {
                 const queryParams = new URLSearchParams(this.extraParas).toString();
                 const separator = url.includes('?') ? '&' : '?';
                 fullUrl = `${url}${separator}${queryParams}`;
@@ -790,7 +796,7 @@ class iCalendar {
             
             const response = await fetch(fullUrl);
             const data = await response.json();
-            if (typeof callback === 'function') {
+            if(typeof callback === 'function') {
                 callback(data);
             }
         } catch (error) {
@@ -801,7 +807,7 @@ class iCalendar {
 
     addSpinnerAnimationStyle() {
         let style = document.getElementById('icalendar-spin-animation');
-        if (!style) {
+        if(!style) {
             style = this.createElement('style');
             style.id = 'icalendar-spin-animation';
             style.innerHTML = `@keyframes icalendar-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); }}`;
@@ -813,7 +819,7 @@ class iCalendar {
         this.addSpinnerAnimationStyle();
 
         const loadingMask = document.getElementById('icalendar-loading-mask');
-        if (!loadingMask) {
+        if(!loadingMask) {
             const loadingMask = this.createElement('div', {
                 position: 'absolute',
                 top: '0',
@@ -845,7 +851,7 @@ class iCalendar {
 
     hideLoadingMask() {
         const loadingMask = document.getElementById('icalendar-loading-mask');
-        if (loadingMask) {
+        if(loadingMask) {
             loadingMask.remove();
         }
     }
