@@ -91,7 +91,8 @@ class iwebApp {
         // Call optional layout and extra functions if they are defined
         document.addEventListener('DOMContentLoaded', function() {
             // Set current language
-            const htmlLang = document.documentElement.lang?.toLowerCase().replace('-', '_');
+            const defaultLang = document.documentElement.lang;
+            const htmlLang = (defaultLang ? defaultLang.toLowerCase().replace('-', '_') : 'en');
             if (thisInstance.isValue(htmlLang) && thisInstance.isValue(thisInstance.language[htmlLang])) {
                 thisInstance.currentLangCode = htmlLang;
             }
@@ -100,7 +101,8 @@ class iwebApp {
             thisInstance.md5 = (new iMD5());
 
             // Set CSRF token
-            const csrfTokenContent = document.querySelector('meta[name="csrf-token"]')?.content;
+            const metaToken = document.querySelector('meta[name="csrf-token"]');
+            const csrfTokenContent = metaToken ? metaToken.content : '';
             if (thisInstance.isValue(csrfTokenContent)) {
                 const hostname = (location.hostname || '/');
                 thisInstance.csrfToken = thisInstance.md5.hash(thisInstance.md5.hash('iweb@' + hostname) + '@' + csrfTokenContent);
@@ -380,7 +382,10 @@ class iwebApp {
             const target = e.target;
             if (target.closest('div.iweb-input')) {
                 target.closest('div.iweb-input').classList.remove('error');
-                target.closest('div.iweb-input').querySelector('small.tips')?.remove();
+                const oriSmallTips = target.closest('div.iweb-input').querySelector('small.tips');
+                if (oriSmallTips) {
+                    oriSmallTips.remove();
+                }
             }
 
             // Color code
@@ -408,8 +413,14 @@ class iwebApp {
                 thisInstance.timer = setTimeout(() => {
                     // Remove error, tips & options list
                     target.closest('div.iweb-input-autocomplete').classList.remove('error');
-                    target.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
-                    target.closest('div.iweb-input-autocomplete').querySelector('ul.fill-options')?.remove();
+                    const oriSmallTips = target.closest('div.iweb-input-autocomplete').querySelector('small.tips');
+                    if (oriSmallTips) {
+                        oriSmallTips.remove();
+                    }
+                    const oriFillOptions = target.closest('div.iweb-input-autocomplete').querySelector('ul.fill-options');
+                    if(oriFillOptions) {
+                        oriFillOptions.remove();
+                    }
 
                     // Gather extra parameters
                     let extraPayload = {};
@@ -449,7 +460,10 @@ class iwebApp {
                                     a.textContent = value.name;
                                     a.addEventListener('click', thisInstance.deBounce(function(e1) {
                                         const target = e1.target;
-                                        target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset')?.remove();
+                                        const orifillReset = target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset');
+                                        if(orifillReset) {
+                                            orifillReset.remove();
+                                        }
 
                                         // Set id input & search input
                                         const fillID = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
@@ -473,8 +487,14 @@ class iwebApp {
 
                                         // Remove error, tips & options list
                                         fillID.closest('div.iweb-input-autocomplete').classList.remove('error');
-                                        fillID.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
-                                        fillID.closest('div.iweb-input-autocomplete').querySelector('ul.fill-options')?.remove();
+                                        const oriSmallTips = fillID.closest('div.iweb-input-autocomplete').querySelector('small.tips');
+                                        if(oriSmallTips) {
+                                            oriSmallTips.remove();
+                                        }
+                                        const oriFillOptions = fillID.closest('div.iweb-input-autocomplete').querySelector('ul.fill-options');
+                                        if(oriFillOptions) {
+                                            oriFillOptions.remove();
+                                        }
 
                                         // Callback
                                         const selectCallBack = fillID.getAttribute('data-sfunc');
@@ -548,7 +568,10 @@ class iwebApp {
 
                 // Remove error & tips
                 target.closest('div.iweb-select').classList.remove('error');
-                target.closest('div.iweb-select').querySelector('small.tips')?.remove();
+                const oriSmallTips = target.closest('div.iweb-select').querySelector('small.tips');
+                if(oriSmallTips) {
+                    oriSmallTips.remove();
+                } 
 
                 // Traverse through the options
                 Array.from(target.querySelectorAll('option')).forEach(function(option) {
@@ -596,7 +619,10 @@ class iwebApp {
             
             // File
             else if (target.closest('div.iweb-input-file') && !target.closest('div.iweb-files-dropzone')) {
-                target.closest('div.iweb-input-file').querySelector('div.preview')?.remove();
+                const filePreviewArea = target.closest('div.iweb-input-file').querySelector('div.preview');
+                if(filePreviewArea) {
+                    filePreviewArea.remove();
+                }
                 if(target.files.length > 0) {
                     let selectedFiles = Array.from(target.files);
                     const previewArea = document.createElement('div');
@@ -647,7 +673,10 @@ class iwebApp {
 
                 // Remove tips
                 if (target.closest('div.iweb-checkbox-set')) {
-                    target.closest('div.iweb-checkbox-set').querySelector('small.tips')?.remove();
+                    const oriSmallTips = target.closest('div.iweb-checkbox-set').querySelector('small.tips');
+                    if(oriSmallTips) {
+                        oriSmallTips.remove();
+                    }
                 }
             } 
             
@@ -669,7 +698,10 @@ class iwebApp {
 
                 // Remove tips
                 if (target.closest('div.iweb-radio-set')) {
-                    target.closest('div.iweb-radio-set').querySelector('small.tips')?.remove();
+                    const oriSmallTips = target.closest('div.iweb-radio-set').querySelector('small.tips');
+                    if(oriSmallTips) {
+                        oriSmallTips.remove();
+                    }
                 }
             }
         });
@@ -1909,11 +1941,17 @@ class iwebApp {
                                 if (element.closest('div.iweb-input-autocomplete')) {
                                     // Remove error & tips
                                     element.closest('div.iweb-input-autocomplete').classList.remove('error');
-                                    element.closest('div.iweb-input-autocomplete').querySelector('small.tips')?.remove();
+                                    const oriSmallTips = element.closest('div.iweb-input-autocomplete').querySelector('small.tips');
+                                    if(oriSmallTips) {
+                                        oriSmallTips.remove();
+                                    }
 
                                     const fillID = element.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
                                     const fillText = element.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
-                                    element.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset')?.remove();
+                                    const oriFillReset = element.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset');
+                                    if(oriFillReset) {
+                                        oriFillReset.remove();
+                                    }
 
                                     if (thisInstance.isValue(fillText.getAttribute('data-value')) && thisInstance.isValue(fillText.getAttribute('data-default'))) {
                                         fillID.value = fillText.getAttribute('data-value');
@@ -2339,7 +2377,11 @@ class iwebApp {
             if (uploaderDialog) {
                 const startCount = uploaderDialog.querySelectorAll('div.list > div.item > button.start').length;
                 if (parseInt(startCount) === 0) {
-                    uploaderDialog.querySelector('div.action > button.start-all')?.remove();
+                    const oriBtnStartAll = uploaderDialog.querySelector('div.action > button.start-all');
+                    if(oriBtnStartAll) {
+                        oriBtnStartAll.remove();
+                    }
+                    
                     if (thisInstance.uploaderOptions[mainIndex].autoClose) {
                         uploaderDialog.querySelector('div.action > button.close').dispatchEvent(new Event('click', {
                             bubbles: true
@@ -2415,7 +2457,10 @@ class iwebApp {
 
                         thisInstance.doRequest(requestData, function(responseData) {
                             const itemDiv = uploaderDialog.querySelector('div.list > div.item[data-index="' + index + '"]');
-                            itemDiv.querySelector('div.info > div.progress-bar')?.remove();
+                            const oriProgressBar = itemDiv.querySelector('div.info > div.progress-bar');
+                            if(oriProgressBar) {
+                                oriProgressBar.remove();
+                            }
 
                             const message = (responseData.message || responseData);
                             const infoDiv = itemDiv.querySelector('div.info');
@@ -2433,8 +2478,14 @@ class iwebApp {
                             }
                         }, null, function(percentage) {
                             const itemDiv = uploaderDialog.querySelector('div.list > div.item[data-index="' + index + '"]');
-                            itemDiv.querySelector('button.start')?.remove();
-                            itemDiv.querySelector('button.remove')?.remove();
+                            const oriBtnStart = itemDiv.querySelector('button.start');
+                            if(oriBtnStart) {
+                                oriBtnStart.remove();
+                            }
+                            const oriBtnRemove = itemDiv.querySelector('button.remove');
+                            if(oriBtnRemove) {
+                                oriBtnRemove.remove();
+                            }
 
                             const progressBarPercent = itemDiv.querySelector('div.info > div.progress-bar > div.percent');
                             if (progressBarPercent) {
@@ -2444,8 +2495,14 @@ class iwebApp {
                     } 
                     else {
                         const itemDiv = uploaderDialog.querySelector('div.list > div.item[data-index="' + index + '"]');
-                        itemDiv.querySelector('button.start')?.remove();
-                        itemDiv.querySelector('button.remove')?.remove();
+                        const oriBtnStart = itemDiv.querySelector('button.start');
+                        if(oriBtnStart) {
+                            oriBtnStart.remove();
+                        }
+                        const oriBtnRemove = itemDiv.querySelector('button.remove');
+                        if(oriBtnRemove) {
+                            oriBtnRemove.remove();
+                        }
 
                         // Next
                         if (isBatch) {
@@ -3565,8 +3622,11 @@ class iDatePicker {
         this.currentDate = this.parseDate(inputValue); // Parse the input date
         this.selectedDate = new Date(this.currentDate);
         
-        this.minDate = (inputElement.getAttribute('data-min')?.trim() || null);
-        this.maxDate = (inputElement.getAttribute('data-max')?.trim() || null);
+        const minAttr = inputElement.getAttribute('data-min');
+        this.minDate = minAttr ? minAttr.trim() : null;
+
+        const maxAttr = inputElement.getAttribute('data-max');
+        this.maxDate = maxAttr ? maxAttr.trim() : null;
 
         this.activeInputElement = inputElement; // Set the active input element
         this.showCalendar(inputElement); // Display the calendar

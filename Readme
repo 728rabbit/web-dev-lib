@@ -1,9 +1,7 @@
-More Information: https://github.com/728rabbit/iweb-native-library
-
 <link href="dist/icon/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-<link href="dist/iweb.native.css" rel="stylesheet" type="text/css"/>
-<script src="dist/iweb.native.js" type="text/javascript"></script>
-<script>const iweb = (new iwebApp()); iweb.init();</script>
+<link href="dist/iweb.native.min.css" rel="stylesheet" type="text/css"/>
+<script src="dist/iweb.native.min.js" type="text/javascript"></script>
+<script>const iweb = (new iwebApp()).init();</script>
 
 --------------------------------------------------------------------------------
 
