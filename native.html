@@ -71,6 +71,8 @@
             <div class="iweb-tips-message error"><div><a class="close">×</a><span>項目資料更新失敗。</span></div></div>
             -->
             
+            <div class="iweb-tips-message"></div>
+            
             <div style="text-align:right;">
                 <div class="font">
                    <a class="font-switch small" href="#" data-size="small">A-</a><!--
@@ -197,6 +199,8 @@
                     <div class="iweb-row">
                         <label>附件</label>
                         <input type="file" name="myfile">
+                        <div>&nbsp;</div>
+                        <input type="file" name="mymultifile[]" multiple>
                     </div>
 
                     <div class="iweb-row">
@@ -353,7 +357,7 @@
         </div>
         
         
-        <script>const iweb = (new iwebApp()); iweb.init();</script>
+        <script>const iweb = (new iwebApp()).init();</script>
         <script>
             function iweb_common_func() { 
                 console.log('init common func');
