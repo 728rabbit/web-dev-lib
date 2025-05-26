@@ -515,6 +515,44 @@ div.iweb-input > div {
     position: relative;
 }
 
+div.iweb-input-file div.preview {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    gap: 4px;
+    margin-top: 8px;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+}
+
+div.iweb-input-file div.preview > div {
+    position: relative;
+    display: inline-block;
+    padding: 4px 28px 4px 12px;
+    border: 2px solid var(--icolor-gray);
+    border-radius: 2px;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+div.iweb-input-file div.preview > div > span {
+    display: block;
+    line-height: 24px;
+    vertical-align: middle;
+}
+
+div.iweb-input-file div.preview > div > a {
+    position: absolute;
+    display: inline-block;
+    top: 7px;
+    right: 8px;
+    vertical-align: middle;
+}
+
+div.iweb-input-file div.preview > div > a > i {
+    color: var(--icolor-red);
+}
+
 div.iweb-input-autocomplete small.tips,
 div.iweb-input small.tips {
     position: relative;
@@ -1015,6 +1053,9 @@ div.iweb-input-autocomplete a.fill-reset {
     vertical-align: top;
 }
 
+div.iweb-input-autocomplete a.fill-reset > i {
+    color: var(--icolor-red);
+}
 
 div.imodal-dialog {
     position: fixed;
@@ -2086,5 +2127,9 @@ div.widget.expand.show > div.hidden {
         -webkit-box-flex: 0;
             -ms-flex: 0 1 100%;
                 flex: 0 1 100%;
+    }
+    
+    div.iweb-input-file div.preview > div {
+        width: 100%;
     }
 }

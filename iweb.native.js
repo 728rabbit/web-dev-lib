@@ -3,70 +3,71 @@ class iwebApp {
         this.currentLangCode = 'en';
         this.language = {
             en: {
-                btn_confirm: 'OK',
-                btn_yes: 'Yes',
-                btn_no: 'No',
-                please_select: 'Please Select',
-                no_record_found: 'No record found',
-                type_error: 'File type is not allowed.',
-                max_error: 'Maximum allowed file size {num}M.',
-                required_all_error: 'Please fill out all required fields correctly.',
-                required_error: 'Please fill out this field correctly.',
-                password_error: 'Password must contain at least 6 characters, including upper/lowercase and numbers (e.g. Abc123).',
-                email_error: 'Invalid email address format.',
-                number_error: 'Invalid number format.',
-                date_error: 'Invalid date format.',
-                time_error: 'Invalid time format.',
-                ge0_error: 'Value must be greater than or equal to 0.',
-                gt0_error: 'Value must be greater than 0.'
+                pleaseSelect: 'Please Select',
+                noRecordFound: 'No record found',
+                btnConfirm: 'OK',
+                btnYes: 'Yes',
+                btnNo: 'No',
+                errorFileType: 'File type is not allowed.',
+                errorMaxFileSize: 'Maximum allowed file size is {num}M.',
+                errorRequiredAll: 'Please fill out all required fields correctly.',
+                errorRequired: 'Please fill out this field correctly.',
+                errorPasswordFormat: 'Password must contain at least 6 characters, including upper/lowercase and numbers (e.g. Abc123).',
+                errorEmailFormat: 'Invalid email address format.',
+                errorNumberFormat: 'Invalid number format.',
+                errorDateFormat: 'Invalid date format.',
+                errorTimeFormat: 'Invalid time format.',
+                errorGE0: 'Value must be greater than or equal to 0.',
+                errorGT0: 'Value must be greater than 0.'
             },
             zh_hant: {
-                btn_confirm: '確定',
-                btn_yes: '是',
-                btn_no: '否',
-                please_select: '請選擇',
-                no_record_found: '找不到相關記錄',
-                type_error: '不允許的檔案類型。',
-                max_error: '檔案大小不能超過{num}M。',
-                required_all_error: '請正確填寫所有必須欄位。',
-                required_error: '請正確填寫此欄位。',
-                password_error: '密碼必須至少包含6個字符，包括大寫/小寫和數字(例如Abc123)。',
-                email_error: '無效的郵件地址格式。',
-                number_error: '無效的數字格式。',
-                date_error: '無效的日期格式。',
-                time_error: '無效的時間格式。',
-                ge0_error: '數值必須大於或等於 0。',
-                gt0_error: '數值必須大於 0。'
+                pleaseSelect: '請選擇',
+                noRecordFound: '找不到相關記錄',
+                btnConfirm: '確定',
+                btnYes: '是',
+                btnNo: '否',
+                errorFileType: '不允許的檔案類型。',
+                errorMaxFileSize: '檔案大小不能超過{num}M。',
+                errorRequiredAll: '請正確填寫所有必須欄位。',
+                errorRequired: '請正確填寫此欄位。',
+                errorPasswordFormat: '密碼必須至少包含6個字符，包括大寫/小寫和數字(例如Abc123)。',
+                errorEmailFormat: '無效的郵件地址格式。',
+                errorNumberFormat: '無效的數字格式。',
+                errorDateFormat: '無效的日期格式。',
+                errorTimeFormat: '無效的時間格式。',
+                errorGE0: '數值必須大於或等於 0。',
+                errorGT0: '數值必須大於 0。'
             },
             zh_hans: {
-                btn_confirm: '确定',
-                btn_yes: '是',
-                btn_no: '否',
-                please_select: '请选择',
-                no_record_found: '找不到相关记录',
-                type_error: '不允许的档案类型。',
-                max_error: '档案大小不能超过{num}M。',
-                required_all_error: '请正确填写所有必须栏位。',
-                required_error: '请正确填写此栏位。',
-                password_error: '密码必须至少包含6个字符，包括大写/小写和数字(例如Abc123)。',
-                email_error: '无效的邮件地址格式。',
-                number_error: '无效的数字格式。',
-                date_error: '无效的日期格式。',
-                time_error: '无效的时间格式。',
-                ge0_error: '数值必须大於或等於 0。',
-                gt0_error: '数值必须大於 0。'
+                pleaseSelect: '请选择',
+                noRecordFound: '找不到相关记录',
+                btnConfirm: '确定',
+                btnYes: '是',
+                btnNo: '否',
+                errorFileType: '不允许的档案类型。',
+                errorMaxFileSize: '档案大小不能超过{num}M。',
+                errorRequiredAll: '请正确填写所有必须栏位。',
+                errorRequired: '请正确填写此栏位。',
+                errorPasswordFormat: '密码必须至少包含6个字符，包括大写/小写和数字(例如Abc123)。',
+                errorEmailFormat: '无效的邮件地址格式。',
+                errorNumberFormat: '无效的数字格式。',
+                errorDateFormat: '无效的日期格式。',
+                errorTimeFormat: '无效的时间格式。',
+                errorGE0: '数值必须大於或等於 0。',
+                errorGT0: '数值必须大於 0。'
             }
         };
 
-        this.md5 = null;
-        this.csrfToken = null;
+        this.md5;
+        this.originToken;
+        this.csrfToken;
         
-        this.timer = null;
-        this.scrollTimer = null;
+        this.timer;
+        this.scrollTimer;
         this.isBusy = false;
 
-        this.datePicker = null;
-        this.timePicker = null;
+        this.datePicker;
+        this.timePicker;
 
         this.uploaderOptions = {};
         this.uploaderFiles = {};
@@ -131,6 +132,7 @@ class iwebApp {
             }, 100);
         });
 
+        // Page load completed
         window.onload = function() {
             setTimeout(function() {
                 console.log('window done');
@@ -147,6 +149,7 @@ class iwebApp {
             }, 100);
         };
 
+        // Page resize
         window.addEventListener('resize', function() {
             clearTimeout(thisInstance.timer);
             thisInstance.timer = setTimeout(() => {
@@ -164,6 +167,7 @@ class iwebApp {
             }, 200);
         });
 
+        // Page scroll
         window.addEventListener('scroll', function() {
             clearTimeout(thisInstance.scrollTimer);
             thisInstance.scrollTimer = setTimeout(() => {
@@ -175,12 +179,14 @@ class iwebApp {
                 safeCallFunc('iweb_extra_scroll', window.scrollY);
             }, 100);
         });
+        
+        return thisInstance;
     }
 
     initBody() {
         const thisInstance = this;
 
-        // Add class to body based on device type
+        // Add core class to body
         document.body.classList.add('iweb');
 
         // Wrap elements except for <script>, <noscript>, and <style>
@@ -205,12 +211,16 @@ class iwebApp {
                 const href = target.closest('a').getAttribute('href');
                 if (!thisInstance.isValue(href) || thisInstance.isMatch(href, '#')) {
                     e.preventDefault();
+                    
+                    // Hide tips message
                     if (target.closest('div.iweb-tips-message')) {
                         target.closest('div.iweb-tips-message').classList.remove('error');
                         target.closest('div.iweb-tips-message').classList.remove('success');
                         target.closest('div.iweb-tips-message').innerHTML = '';
-                    } else if (target.closest('a.fill-reset')) {
-                        // Reset id input & search input
+                    } 
+                    
+                    // Reset autocomplete's input
+                    else if (target.closest('a.fill-reset')) {
                         const fillID = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-id');
                         const fillText = target.closest('div.iweb-input-autocomplete').querySelector('input.fill-text');
                         const fillReset = target.closest('div.iweb-input-autocomplete').querySelector('a.fill-reset');
@@ -224,7 +234,10 @@ class iwebApp {
                         if ((typeof window[removeCallBack]) === 'function') {
                             window[removeCallBack](fillID);
                         }
-                    } else if (target.closest('a.font-switch')) {
+                    } 
+                    
+                    // Change page font size
+                    else if (target.closest('a.font-switch')) {
                         const newFontSize = target.getAttribute('data-size');
                         if (thisInstance.isValue(newFontSize)) {
                             thisInstance.setCookie('iweb_font_size', newFontSize);
@@ -234,16 +247,21 @@ class iwebApp {
                                 e.classList.toggle('current', thisInstance.isMatch(e.getAttribute('data-size'), newFontSize));
                             });
                         }
-                    } else if (target.closest('a.control-stretch') && target.closest('div.widget.expand')) {
+                    }
+                    
+                    // Show or hide expand area
+                    else if (target.closest('a.control-stretch') && target.closest('div.widget.expand')) {
                         if (target.closest('div.widget.expand').classList.contains('show')) {
                             target.closest('div.widget.expand').classList.remove('show');
-                        } else {
+                        } 
+                        else {
                             target.closest('div.widget.expand').classList.add('show');
                         }
                     }
                 }
             }
 
+            // Switch password input display mode
             if (target.closest('button.switch-pwd-type')) {
                 const InputPwd = target.closest('div.iweb-input').querySelector('input');
                 const ShowIconPwd = target.closest('div.iweb-input').querySelector('i.show');
@@ -252,7 +270,8 @@ class iwebApp {
                     InputPwd.type = 'text';
                     ShowIconPwd.style.display = 'block';
                     HideIconPwd.style.display = 'none';
-                } else {
+                } 
+                else {
                     InputPwd.type = 'password';
                     ShowIconPwd.style.display = 'none';
                     HideIconPwd.style.display = 'block';
@@ -266,21 +285,24 @@ class iwebApp {
                 });
             }
 
-            // Hide select options
+            // Show or hide select options
             if (!target.closest('div.iweb-select')) {
                 document.querySelectorAll('div.iweb-select').forEach(function(e1) {
                     e1.classList.remove('show');
                 });
-            } else {
+            } 
+            else {
                 const virtualOptions = target.closest('div.iweb-select').querySelector('div.virtual > div.options > ul');
                 if (thisInstance.isValue(virtualOptions)) {
                     if (target.closest('a.result')) {
                         if (target.closest('div.iweb-select').classList.contains('show')) {
                             target.closest('div.iweb-select').classList.remove('show');
-                        } else {
+                        } 
+                        else {
                             target.closest('div.iweb-select').classList.add('show');
                         }
                     }
+                    
                     document.querySelectorAll('div.iweb-select').forEach(function(otherSelector) {
                         const otherOptions = otherSelector.querySelector('div.virtual > div.options > ul');
                         if (otherOptions) {
@@ -293,10 +315,10 @@ class iwebApp {
                     if (target.closest('a') && target.closest('li.node')) {
                         const isMultiple = target.closest('div.iweb-select').classList.contains('iweb-select-multiple');
                         const selectElement = target.closest('div.iweb-select').querySelector('div.real > select');
-
                         let selectedOptions = [];
+                        
+                        // Handle multiple selection
                         if (isMultiple) {
-                            // Handle multiple selection
                             selectElement.querySelectorAll('option').forEach(function(optionGroup) {
                                 if (optionGroup.children.length > 0) {
                                     Array.from(optionGroup.children).forEach(function(option) {
@@ -304,7 +326,8 @@ class iwebApp {
                                             selectedOptions.push(option.value.toString());
                                         }
                                     });
-                                } else if (optionGroup.selected) {
+                                }
+                                else if (optionGroup.selected) {
                                     selectedOptions.push(optionGroup.value.toString());
                                 }
                             });
@@ -312,7 +335,8 @@ class iwebApp {
                             const selectedValue = target.getAttribute('data-value').toString();
                             if (!selectedOptions.includes(selectedValue)) {
                                 selectedOptions.push(selectedValue);
-                            } else {
+                            } 
+                            else {
                                 selectedOptions = selectedOptions.filter(function(value) {
                                     return value !== selectedValue;
                                 });
@@ -322,7 +346,8 @@ class iwebApp {
                             selectElement.querySelectorAll('option').forEach(function(option) {
                                 if (selectedOptions.includes(option.value.toString())) {
                                     option.selected = true;
-                                } else {
+                                } 
+                                else {
                                     option.selected = false;
                                 }
                             });
@@ -330,8 +355,10 @@ class iwebApp {
                                 bubbles: true
                             }));
 
-                        } else {
-                            // Handle single selection
+                        }
+                        
+                        // Handle single selection
+                        else {
                             target.closest('div.iweb-select').classList.remove('show');
                             selectElement.value = target.getAttribute('data-value');
                             selectElement.dispatchEvent(new Event('change', {
@@ -339,7 +366,8 @@ class iwebApp {
                             }));
                         }
                     }
-                } else {
+                } 
+                else {
                     document.querySelectorAll('div.iweb-select').forEach(function(otherSelect) {
                         otherSelect.classList.remove('show');
                     });
@@ -355,13 +383,15 @@ class iwebApp {
                 target.closest('div.iweb-input').querySelector('small.tips')?.remove();
             }
 
+            // Color code
             if (target.closest('div.iweb-input-color')) {
                 if (thisInstance.isMatch(target.type, 'color')) {
                     const inputColorCode = target.closest('div.iweb-input-color').querySelector('input[type="text"]');
                     if (/^#[0-9A-F]{6}$/i.test(target.value)) {
                         inputColorCode.value = target.value;
                     }
-                } else {
+                } 
+                else {
                     const input = target.closest('div.iweb-input-color').querySelector('input[type="color"]');
                     if (!target.value.startsWith('#')) {
                         target.value = '#' + target.value;
@@ -370,7 +400,10 @@ class iwebApp {
                         input.value = target.value;
                     }
                 }
-            } else if (target.closest('div.iweb-input-autocomplete') && target.closest('input.fill-text')) {
+            }
+            
+            // Autocomplete
+            else if (target.closest('div.iweb-input-autocomplete') && target.closest('input.fill-text')) {
                 clearTimeout(thisInstance.timer);
                 thisInstance.timer = setTimeout(() => {
                     // Remove error, tips & options list
@@ -457,12 +490,13 @@ class iwebApp {
 
                                 // Append elements
                                 target.closest('div.iweb-input-autocomplete').appendChild(fillOptions);
-                            } else {
+                            } 
+                            else {
                                 const fillOptions = document.createElement('ul');
                                 fillOptions.classList.add('fill-options');
                                 const li = document.createElement('li');
                                 li.classList.add('empty');
-                                li.textContent = thisInstance.language[thisInstance.currentLangCode]['no_record_found'];
+                                li.textContent = thisInstance.language[thisInstance.currentLangCode]['noRecordFound'];
                                 fillOptions.appendChild(li);
 
                                 // Append elements
@@ -471,10 +505,14 @@ class iwebApp {
                         });
                     }
                 }, 1000);
-            } else if (target.closest('div.iweb-select') && target.closest('li.filter')) {
+            } 
+            
+            // Select search options
+            else if (target.closest('div.iweb-select') && target.closest('li.filter')) {
                 const fkw = target.value;
+                
+                // Find all node elements
                 if (thisInstance.isValue(fkw)) {
-                    // Find all node elements
                     target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li.node > a').forEach(function(anchor) {
                         const textContent = anchor.textContent || anchor.innerText;
                         if (textContent.toLowerCase().indexOf(fkw.toLowerCase()) > -1) {
@@ -483,12 +521,15 @@ class iwebApp {
                             if (parentNode) {
                                 parentNode.classList.remove('hide');
                             }
-                        } else {
+                        }
+                        else {
                             anchor.parentElement.classList.add('hide');
                         }
                     });
-                } else {
-                    // If filter is empty, remove 'hide' class from all node elements
+                } 
+                
+                // If filter is empty, remove 'hide' class from all node elements
+                else {
                     target.closest('div.iweb-select').querySelectorAll('div.virtual > div.options ul > li.node').forEach(function(nodeElement) {
                         nodeElement.classList.remove('hide');
                     });
@@ -499,7 +540,8 @@ class iwebApp {
         // Handle change
         document.addEventListener('change', function(e) {
             const target = e.target;
-
+                
+            // Select
             if (target.closest('div.iweb-select')) {
                 let selectedOptions = [];
                 let selectedOptionLabel = '';
@@ -516,7 +558,8 @@ class iwebApp {
                                 selectedOptions.push(childOption.value.toString());
                             }
                         });
-                    } else {
+                    }
+                    else {
                         if (option.selected) {
                             selectedOptions.push(option.value.toString());
                         }
@@ -534,7 +577,8 @@ class iwebApp {
                                     selectedOptionLabel += ', ';
                                 }
                                 selectedOptionLabel += anchor.textContent;
-                            } else {
+                            }
+                            else {
                                 anchor.parentElement.classList.remove('node-selected');
                             }
                         }
@@ -542,13 +586,56 @@ class iwebApp {
 
                     // Set the default option label if none selected
                     if (!thisInstance.isValue(selectedOptionLabel)) {
-                        selectedOptionLabel = ((thisInstance.isValue(target.getAttribute('data-default'))) ? target.getAttribute('data-default') : thisInstance.language[thisInstance.currentLangCode]['please_select']);
+                        selectedOptionLabel = ((thisInstance.isValue(target.getAttribute('data-default'))) ? target.getAttribute('data-default') : thisInstance.language[thisInstance.currentLangCode]['pleaseSelect']);
                     }
 
                     // Update the virtual result label
                     target.closest('div.iweb-select').querySelector('div.virtual > a.result').innerHTML = selectedOptionLabel;
                 }
-            } else if (target.closest('div.iweb-checkbox')) {
+            } 
+            
+            // File
+            else if (target.closest('div.iweb-input-file') && !target.closest('div.iweb-files-dropzone')) {
+                target.closest('div.iweb-input-file').querySelector('div.preview')?.remove();
+                if(target.files.length > 0) {
+                    let selectedFiles = Array.from(target.files);
+                    const previewArea = document.createElement('div');
+                    previewArea.classList.add('preview');
+                    selectedFiles.forEach(function(file, i) {
+                        const blockdiv = document.createElement('div');
+                        const span = document.createElement('span');
+                        span.innerHTML = file.name;
+        
+                        const deleteBtn = document.createElement('a');
+                        deleteBtn.setAttribute('data-index', i);
+                        deleteBtn.innerHTML = '<i class="fa fa-times"></i>';
+                        
+                        deleteBtn.addEventListener('click', function(e){
+                            const btnTarget = e.target;
+                            const inputTarget = btnTarget.closest('div.iweb-input-file').querySelector('input[type="file"]');
+
+                            selectedFiles.splice(target.getAttribute('data-index'), 1);
+                            btnTarget.closest('div').remove();
+                            
+                            const newInput = inputTarget.cloneNode(false);
+                            const dt = new DataTransfer();
+                            selectedFiles.forEach(file => dt.items.add(file));
+                            newInput.files = dt.files;
+
+                            inputTarget.parentNode.replaceChild(newInput, inputTarget);
+                        });
+                        
+                        blockdiv.appendChild(span);
+                        blockdiv.appendChild(deleteBtn);
+                        previewArea.appendChild(blockdiv);
+                    });
+                    
+                    target.closest('div.iweb-input-file').appendChild(previewArea);
+                }
+            }
+            
+            // Checkbox
+            else if (target.closest('div.iweb-checkbox')) {
                 const relatedObject = document.querySelectorAll('input[type="checkbox"][name="' + (target.name) + '"]');
                 relatedObject.forEach(function(relatedCheckbox) {
                     relatedCheckbox.closest('div.iweb-checkbox').classList.remove('checked');
@@ -562,14 +649,18 @@ class iwebApp {
                 if (target.closest('div.iweb-checkbox-set')) {
                     target.closest('div.iweb-checkbox-set').querySelector('small.tips')?.remove();
                 }
-            } else if (target.closest('div.iweb-radio')) {
+            } 
+            
+            // Radio
+            else if (target.closest('div.iweb-radio')) {
                 const selectedValue = target.value;
                 const relatedObject = document.querySelectorAll('input[type="radio"][name="' + (target.name) + '"]');
                 relatedObject.forEach(function(relatedRadio) {
                     if (thisInstance.isMatch(relatedRadio.value, selectedValue)) {
                         relatedRadio.checked = true;
                         relatedRadio.closest('div.iweb-radio').classList.add('checked');
-                    } else {
+                    }
+                    else {
                         relatedRadio.checked = false;
                         relatedRadio.closest('div.iweb-radio').classList.remove('checked');
                     }
@@ -619,7 +710,7 @@ class iwebApp {
             editor.insertAdjacentElement('beforeend', clearAfter);
         });
         
-        // init form
+        // Init form
         thisInstance.initForm();
     }
 
@@ -674,7 +765,8 @@ class iwebApp {
                             BtnSwitchType.appendChild(eyeSlashIcon);
                             BtnSwitchType.appendChild(eyeIcon);
                             wrapperDiv.appendChild(BtnSwitchType);
-                        } else if (thisInstance.isMatch(inputType, 'color')) {
+                        }
+                        else if (thisInstance.isMatch(inputType, 'color')) {
                             // Set color input
                             input.style.position = 'relative';
                             input.style.zIndex = 1;
@@ -694,7 +786,8 @@ class iwebApp {
                             // Append elements
                             wrapperDiv.appendChild(inputColorCode);
                         }
-                    } else {
+                    }
+                    else {
                         // Create search input
                         const validationArray = (thisInstance.isValue(input.getAttribute('data-validation'))?(input.getAttribute('data-validation').toString().split('|')):[]);
                         const canNew = (thisInstance.isMatch(input.getAttribute('data-cannew'), 1)) ? true : false;
@@ -707,7 +800,7 @@ class iwebApp {
                                 fillText.setAttribute('data-validation', 'required');
                             }
                         }
-                        fillText.placeholder = (input.getAttribute('data-placeholder') || '');
+                        fillText.placeHolder = (input.getAttribute('data-placeHolder') || '');
                         fillText.classList.add('fill-text');
                         fillText.style.display = 'block';
                         fillText.style.width = '100%';
@@ -730,7 +823,6 @@ class iwebApp {
                             // Create Reset icon
                             const fillResetIcon = document.createElement('i');
                             fillResetIcon.classList.add('fa', 'fa-times');
-                            fillResetIcon.style.color = '#d73d32';
 
                             // Append elements
                             fillReset.appendChild(fillResetIcon);
@@ -829,11 +921,11 @@ class iwebApp {
                             const filterLi = document.createElement('li');
                             filterLi.classList.add('filter');
 
-                            const placeholderText = (select.getAttribute('data-placeholder') || '');
+                            const placeHolderText = (select.getAttribute('data-placeHolder') || '');
                             const filterInput = document.createElement('input');
                             filterInput.id = 'fkw_' + selectIndex;
                             filterInput.type = 'text';
-                            filterInput.placeholder = placeholderText.trim();
+                            filterInput.placeHolder = placeHolderText.trim();
 
                             // Append elements
                             filterLi.appendChild(filterInput);
@@ -876,7 +968,8 @@ class iwebApp {
                                     // Append elements
                                     parentLi.appendChild(childUl);
                                     optionsList.appendChild(parentLi);
-                                } else {
+                                }
+                                else {
                                     const singleLi = document.createElement('li');
                                     singleLi.classList.add('node');
                                     const singleLink = document.createElement('a');
@@ -898,7 +991,7 @@ class iwebApp {
 
                         // Set the default select text if nothing is selected
                         if (!thisInstance.isValue(virtualSelect)) {
-                            virtualSelect = (thisInstance.isValue(select.getAttribute('data-default')) ? select.getAttribute('data-default') : thisInstance.language[thisInstance.currentLangCode]['please_select']);
+                            virtualSelect = (thisInstance.isValue(select.getAttribute('data-default')) ? select.getAttribute('data-default') : thisInstance.language[thisInstance.currentLangCode]['pleaseSelect']);
                         }
                         resultLink.textContent = virtualSelect;
 
@@ -906,7 +999,8 @@ class iwebApp {
                         optionsDiv.appendChild(optionsList);
                         virtualDiv.appendChild(optionsDiv);
                         wrapperDiv.appendChild(virtualDiv);
-                    } else {
+                    }
+                    else {
                         // Create div & move the select into the div
                         const wrapperDiv = document.createElement('div');
                         wrapperDiv.classList.add('iweb-select');
@@ -969,6 +1063,38 @@ class iwebApp {
             callBack();
         }
     }
+    
+    setCheckBox(checkboxObject, isChecked = false, callBack) {
+        const thisInstance = this;
+        
+        if (thisInstance.isValue(checkboxObject)) {
+            if (checkboxObject instanceof Element) {
+                checkboxObject.checked = isChecked;
+                if(checkboxObject.checked) {
+                    checkboxObject.parentElement.classList.add('checked');
+                }
+                else {
+                    checkboxObject.parentElement.classList.remove('checked');
+                }
+            }
+            else if (checkboxObject instanceof NodeList) {
+                checkboxObject.forEach(checkbox => {
+                    checkbox.checked = isChecked;
+                    if(checkbox.checked) {
+                        checkbox.parentElement.classList.add('checked');
+                    }
+                    else {
+                        checkbox.parentElement.classList.remove('checked');
+                    }
+                });
+            }
+        }
+        
+        // Callback
+        if ((typeof callBack) === 'function') {
+            callBack();
+        }
+    }
 
     radioBox(radioObject, callBack) {
         const thisInstance = this;
@@ -1001,6 +1127,38 @@ class iwebApp {
             });
         }
 
+        // Callback
+        if ((typeof callBack) === 'function') {
+            callBack();
+        }
+    }
+    
+    setRadioBox(radioObject, isChecked = false, callBack) {
+        const thisInstance = this;
+        
+        if (thisInstance.isValue(radioObject)) {
+            if (radioObject instanceof Element) {
+                radioObject.checked = isChecked;
+                if(radioObject.checked) {
+                    radioObject.parentElement.classList.add('checked');
+                }
+                else {
+                    radioObject.parentElement.classList.remove('checked');
+                }
+            }
+            else if (radioObject instanceof NodeList) {
+                radioObject.forEach(radio => {
+                    radio.checked = isChecked;
+                    if(radio.checked) {
+                        radio.parentElement.classList.add('checked');
+                    }
+                    else {
+                        radio.parentElement.classList.remove('checked');
+                    }
+                });
+            }
+        }
+        
         // Callback
         if ((typeof callBack) === 'function') {
             callBack();
@@ -1105,7 +1263,8 @@ class iwebApp {
                 if (video.paused) {
                     video.play();
                     target.closest('div.iweb-video').querySelector('button.v-play-btn').innerHTML = '<svg viewBox="0 0 26 24" fill="#ffffff" stroke="#ffffff"><path fill-rule="evenodd" clip-rule="evenodd" d="M5.163 3.819C5 4.139 5 4.559 5 5.4v13.2c0 .84 0 1.26.163 1.581a1.5 1.5 0 0 0 .656.655c.32.164.74.164 1.581.164h.2c.84 0 1.26 0 1.581-.163a1.5 1.5 0 0 0 .656-.656c.163-.32.163-.74.163-1.581V5.4c0-.84 0-1.26-.163-1.581a1.5 1.5 0 0 0-.656-.656C8.861 3 8.441 3 7.6 3h-.2c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.656.656zm9 0C14 4.139 14 4.559 14 5.4v13.2c0 .84 0 1.26.164 1.581a1.5 1.5 0 0 0 .655.655c.32.164.74.164 1.581.164h.2c.84 0 1.26 0 1.581-.163a1.5 1.5 0 0 0 .655-.656c.164-.32.164-.74.164-1.581V5.4c0-.84 0-1.26-.163-1.581a1.5 1.5 0 0 0-.656-.656C17.861 3 17.441 3 16.6 3h-.2c-.84 0-1.26 0-1.581.163a1.5 1.5 0 0 0-.655.656z" fill="#ffffff"></path></svg>';
-                } else {
+                }
+                else {
                     video.pause();
                     target.closest('div.iweb-video').querySelector('button.v-play-btn').innerHTML = '<svg viewBox="0 0 20 20" fill="#ffffff" stroke="#ffffff"><path d="M2.067,0.043C2.21-0.028,2.372-0.008,2.493,0.085l13.312,8.503c0.094,0.078,0.154,0.191,0.154,0.313 c0,0.12-0.061,0.237-0.154,0.314L2.492,17.717c-0.07,0.057-0.162,0.087-0.25,0.087l-0.176-0.04 c-0.136-0.065-0.222-0.207-0.222-0.361V0.402C1.844,0.25,1.93,0.107,2.067,0.043z"></path></svg>';
                 }
@@ -1221,7 +1380,8 @@ class iwebApp {
 
                 if (newHeight > 0) {
                     e.style.height = newHeight + 'px';
-                } else {
+                }
+                else {
                     e.style.height = 'auto';
                 }
             });
@@ -1234,12 +1394,12 @@ class iwebApp {
                 mode: (e.getAttribute('data-mode') || 1),
                 size: (e.getAttribute('data-size') || 5),
                 total: (e.getAttribute('data-totalpage') || 1),
-                placeholder: (e.getAttribute('data-placeholder') || '')
+                placeHolder: (e.getAttribute('data-placeHolder') || '')
             });
         });
     }
 
-    // post & get
+    // Request, default once by once
     doPost(requestData, callBack, finalCallBack, progressCallBack) {
         const thisInstance = this;
         thisInstance.doRequest(requestData, callBack, finalCallBack, progressCallBack);
@@ -1250,11 +1410,7 @@ class iwebApp {
         
         requestData = Object.assign({
             method: 'GET',
-            url: '',
-            payload: {},
-            includedToken: false,
-            dataType: 'json',
-            showBusy: true
+            includedToken: false
         }, requestData);
         
         thisInstance.doRequest(requestData, callBack, finalCallBack, progressCallBack);
@@ -1270,25 +1426,27 @@ class iwebApp {
             payload: {},
             includedToken: true,
             dataType: 'json',
-            showBusy: true
+            showBusy: true,
+            multiThread: false
         }, requestData);
-        if (!requestData.showBusy) {
+        
+        if (requestData.multiThread) {
             thisInstance.isBusy = false;
         }
 
         let formData = null;
         if (!thisInstance.isBusy && thisInstance.isValue(requestData.url)) {
-            const localTime = thisInstance.toDateTime();
+            const localTime = thisInstance.formatDateTime();
             
             if (requestData.method.toUpperCase() === 'GET') {
                 const params = new URLSearchParams();
                 
-                // append token
+                // Append token
                 if(thisInstance.isValue(thisInstance.csrfToken) && thisInstance.isMatch(requestData.includedToken, true)) {
                     params.append('itoken', window.btoa(thisInstance.md5.hash(thisInstance.csrfToken + '#dt' + localTime) + '%' + localTime));
                 }
                 
-                // append payload
+                // Append payload
                 if (requestData.payload) {
                     for (let key in requestData.payload) {
                         if (requestData.payload.hasOwnProperty(key)) {
@@ -1297,7 +1455,8 @@ class iwebApp {
                                 for (let subKey in value) {
                                     params.append((key + '[' + subKey + ']'), value[subKey]);
                                 }
-                            } else {
+                            } 
+                            else {
                                 params.append(key, value);
                             }
                         }
@@ -1308,12 +1467,12 @@ class iwebApp {
             else {
                 formData = new FormData();
                 
-                // append token
+                // Append token
                 if(thisInstance.isValue(thisInstance.csrfToken) && thisInstance.isMatch(requestData.includedToken, true)) {
                     formData.append('itoken', window.btoa(thisInstance.md5.hash(thisInstance.csrfToken + '#dt' + localTime) + '%' + localTime));
                 }
                 
-                // append payload
+                // Append payload
                 if (requestData.payload) {
                     for (let key in (requestData.payload)) {
                         if ((requestData.payload).hasOwnProperty(key)) {
@@ -1323,7 +1482,8 @@ class iwebApp {
                                 for (let subKey in value) {
                                     formData.append((key + '[' + subKey + ']'), value[subKey]);
                                 }
-                            } else {
+                            } 
+                            else {
                                 formData.append(key, value);
                             }
                         }
@@ -1385,7 +1545,8 @@ class iwebApp {
                         if ((typeof callBack) === 'function') {
                             callBack(responseData);
                         }
-                    } else {
+                    }
+                    else {
                         throw new Error(xhr.statusText);
                     }
                 };
@@ -1414,9 +1575,11 @@ class iwebApp {
                 let alertMessage = error.message;
                 if (error.message.includes('NetworkError')) {
                     alertMessage = 'Unstable network, please check your network connection.';
-                } else if (error.message.includes('404')) {
+                } 
+                else if (error.message.includes('404')) {
                     alertMessage = 'The requested page not found.';
-                } else if (error.message.includes('500')) {
+                } 
+                else if (error.message.includes('500')) {
                     alertMessage = 'Internal Server Error.';
                 }
                 alert(alertMessage);
@@ -1472,114 +1635,124 @@ class iwebApp {
                                     if (showTips && !input.closest('div.iweb-checkbox-set').querySelector('small.tips')) {
                                         const errorTips = document.createElement('small');
                                         errorTips.classList.add('tips');
-                                        errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['required_error'];
+                                        errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['errorRequired'];
                                         input.closest('div.iweb-checkbox-set').appendChild(errorTips);
                                     }
                                     input.closest('div.iweb-checkbox').classList.add('error');
                                     canSubmit = false;
                                 }
-                            } else if (thisInstance.isMatch(input.type, 'radio')) {
+                            } 
+                            else if (thisInstance.isMatch(input.type, 'radio')) {
                                 if (validationArray.includes('required') && input.closest('div.iweb-radio-set') && !input.closest('div.iweb-radio-set').querySelector('input[type="radio"]:checked')) {
                                     if (showTips && !input.closest('div.iweb-radio-set').querySelector('small.tips')) {
                                         const errorTips = document.createElement('small');
                                         errorTips.classList.add('tips');
-                                        errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['required_error'];
+                                        errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['errorRequired'];
                                         input.closest('div.iweb-radio-set').appendChild(errorTips);
                                     }
                                     input.closest('div.iweb-radio').classList.add('error');
                                     canSubmit = false;
                                 }
-                            } else if (thisInstance.isMatch(input.type, 'select-one') || thisInstance.isMatch(input.type, 'select-multiple')) {
+                            } 
+                            else if (thisInstance.isMatch(input.type, 'select-one') || thisInstance.isMatch(input.type, 'select-multiple')) {
                                 if (validationArray.includes('required') && !thisInstance.isValue(input.value)) {
                                     if (showTips && !input.closest('div.iweb-select').querySelector('small.tips')) {
                                         const errorTips = document.createElement('small');
                                         errorTips.classList.add('tips');
-                                        errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['required_error'];
+                                        errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['errorRequired'];
                                         input.closest('div.iweb-select').appendChild(errorTips);
                                     }
                                     input.closest('div.iweb-select').classList.add('error');
                                     canSubmit = false;
                                 }
-                            } else {
+                            } 
+                            else {
                                 if (validationArray.includes('required') && !thisInstance.isValue(input.value)) {
                                     if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                         const errorTips = document.createElement('small');
                                         errorTips.classList.add('tips');
-                                        errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['required_error'];
+                                        errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['errorRequired'];
                                         input.closest('div.iweb-input').appendChild(errorTips);
                                     }
                                     input.closest('div.iweb-input').classList.add('error');
                                     canSubmit = false;
-                                } else if (thisInstance.isValue(input.value)) {
+                                } 
+                                else if (thisInstance.isValue(input.value)) {
                                     let nextRegex = true;
                                     if ((validationArray.includes('number')) && !thisInstance.isNumber(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
                                             errorTips.classList.add('tips');
-                                            errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['number_error'];
+                                            errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['errorNumberFormat'];
                                             input.closest('div.iweb-input').appendChild(errorTips);
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
                                         canSubmit = false;
                                         nextRegex = false;
-                                    } else if ((validationArray.includes('email')) && !thisInstance.isEmail(input.value)) {
+                                    } 
+                                    else if ((validationArray.includes('email')) && !thisInstance.isEmail(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
                                             errorTips.classList.add('tips');
-                                            errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['email_error'];
+                                            errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['errorEmailFormat'];
                                             input.closest('div.iweb-input').appendChild(errorTips);
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
                                         canSubmit = false;
                                         nextRegex = false;
-                                    } else if ((validationArray.includes('password')) && !thisInstance.isPassword(input.value)) {
+                                    } 
+                                    else if ((validationArray.includes('password')) && !thisInstance.isPassword(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
                                             errorTips.classList.add('tips');
-                                            errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['password_error'];
+                                            errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['errorPasswordFormat'];
                                             input.closest('div.iweb-input').appendChild(errorTips);
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
                                         canSubmit = false;
                                         nextRegex = false;
-                                    } else if ((validationArray.includes('date')) && !thisInstance.isDate(input.value)) {
+                                    } 
+                                    else if ((validationArray.includes('date')) && !thisInstance.isDate(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
                                             errorTips.classList.add('tips');
-                                            errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['date_error'];
+                                            errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['errorDateFormat'];
                                             input.closest('div.iweb-input').appendChild(errorTips);
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
                                         canSubmit = false;
                                         nextRegex = false;
-                                    } else if ((validationArray.includes('time')) && !thisInstance.isTime(input.value)) {
+                                    } 
+                                    else if ((validationArray.includes('time')) && !thisInstance.isTime(input.value)) {
                                         if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                             const errorTips = document.createElement('small');
                                             errorTips.classList.add('tips');
-                                            errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['time_error'];
+                                            errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['errorTimeFormat'];
                                             input.closest('div.iweb-input').appendChild(errorTips);
                                         }
                                         input.closest('div.iweb-input').classList.add('error');
                                         canSubmit = false;
                                         nextRegex = false;
-                                    } else if ((validationArray.includes('ge0'))) {
+                                    } 
+                                    else if ((validationArray.includes('ge0'))) {
                                         if (!thisInstance.isNumber(input.value)) {
                                             if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                                 const errorTips = document.createElement('small');
                                                 errorTips.classList.add('tips');
-                                                errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['number_error'];
+                                                errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['errorNumberFormat'];
                                                 input.closest('div.iweb-input').appendChild(errorTips);
                                             }
                                             input.closest('div.iweb-input').classList.add('error');
                                             canSubmit = false;
                                             nextRegex = false;
-                                        } else {
+                                        } 
+                                        else {
                                             const regex = /^(?:0|[1-9]\d*)(?:\.\d+)?$/;
                                             if (!regex.test(input.value)) {
                                                 if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                                     const errorTips = document.createElement('small');
                                                     errorTips.classList.add('tips');
-                                                    errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['ge0_error'];
+                                                    errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['errorGE0'];
                                                     input.closest('div.iweb-input').appendChild(errorTips);
                                                 }
                                                 input.closest('div.iweb-input').classList.add('error');
@@ -1587,22 +1760,24 @@ class iwebApp {
                                                 nextRegex = false;
                                             }
                                         }
-                                    } else if ((validationArray.includes('gt0'))) {
+                                    } 
+                                    else if ((validationArray.includes('gt0'))) {
                                         if (!thisInstance.isNumber(input.value)) {
                                             if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                                 const errorTips = document.createElement('small');
                                                 errorTips.classList.add('tips');
-                                                errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['number_error'];
+                                                errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['errorNumberFormat'];
                                                 input.closest('div.iweb-input').appendChild(errorTips);
                                             }
                                             input.closest('div.iweb-input').classList.add('error');
                                             canSubmit = false;
                                             nextRegex = false;
-                                        } else if (parseFloat(input.value) <= 0) {
+                                        } 
+                                        else if (parseFloat(input.value) <= 0) {
                                             if (showTips && !input.closest('div.iweb-input').querySelector('small.tips')) {
                                                 const errorTips = document.createElement('small');
                                                 errorTips.classList.add('tips');
-                                                errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['gt0_error'];
+                                                errorTips.textContent = thisInstance.language[thisInstance.currentLangCode]['errorGT0'];
                                                 input.closest('div.iweb-input').appendChild(errorTips);
                                             }
                                             input.closest('div.iweb-input').classList.add('error');
@@ -1662,7 +1837,8 @@ class iwebApp {
                                     childIndex = Object.keys(requestData.payload[baseName]).length + 1;
                                 }
                                 requestData.payload[baseName][childIndex] = value;
-                            } else {
+                            } 
+                            else {
                                 requestData.payload[key] = value;
                             }
                         });
@@ -1673,45 +1849,44 @@ class iwebApp {
                             const extraFunc = form.getAttribute('data-efunc');
                             if ((typeof window[completeFunc]) === 'function') {
                                 window[completeFunc](responseData);
-                            } else {
-                                if (thisInstance.isValue(responseData.status) && thisInstance.isMatch(responseData.status, 200)) {
-                                    if (thisInstance.isValue(responseData.url)) {
-                                        if (thisInstance.isMatch(alertResult, true) || thisInstance.isMatch(alertResult, 1)) {
-                                            thisInstance.alert(responseData.message, function() {
-                                                if (!thisInstance.isMatch(responseData.url, '#')) {
-                                                    window.location.href = responseData.url;
-                                                } else {
-                                                    window.location.reload();
-                                                }
-                                            });
-                                        }
-                                        else {
+                            } 
+                            else {
+                                if (thisInstance.isValue(responseData.url)) {
+                                    if (thisInstance.isMatch(alertResult, true) || thisInstance.isMatch(alertResult, 1)) {
+                                        thisInstance.alert(responseData.message, function() {
                                             if (!thisInstance.isMatch(responseData.url, '#')) {
                                                 window.location.href = responseData.url;
-                                            } else {
+                                            } 
+                                            else {
                                                 window.location.reload();
                                             }
+                                        });
+                                    }
+                                    else {
+                                        if (!thisInstance.isMatch(responseData.url, '#')) {
+                                            window.location.href = responseData.url;
+                                        } 
+                                        else {
+                                            window.location.reload();
                                         }
                                     }
-                                    else {     
-                                        thisInstance.tipsMsg(responseData.message, true);
-                                    }
-                                } else {
-                                    thisInstance.tipsMsg(responseData.message, false);
                                 }
-
+                                else {
+                                    thisInstance.tipsMsg(responseData.message, (thisInstance.isValue(responseData.status) && thisInstance.isMatch(responseData.status, 200)));
+                                }
+                                
                                 if ((typeof window[extraFunc]) === 'function') {
                                     window[extraFunc](responseData);
                                 }
                             }
                         });
-                    } else if (!canSubmit && extraCanSubmit) {
-                        thisInstance.tipsMsg(thisInstance.language[thisInstance.currentLangCode]['required_all_error'], false, function() {
-                            const tipsMessageArea = document.querySelector('div.iweb-tips-message');
-                            if (!tipsMessageArea) {
-                                thisInstance.scrollTo('.error');
-                            }
-                        });
+                    } 
+                    else if (!canSubmit && extraCanSubmit) {
+                        const tipsMessageArea = document.querySelector('div.iweb-tips-message');
+                        if (tipsMessageArea) {
+                            thisInstance.tipsMsg(thisInstance.language[thisInstance.currentLangCode]['errorRequiredAll'], false);
+                        }
+                        thisInstance.scrollTo('.error');
                     }
                     
                     return false;
@@ -1729,7 +1904,8 @@ class iwebApp {
                                 element.dispatchEvent(new Event('change', {
                                     bubbles: true
                                 }));
-                            } else {
+                            } 
+                            else {
                                 if (element.closest('div.iweb-input-autocomplete')) {
                                     // Remove error & tips
                                     element.closest('div.iweb-input-autocomplete').classList.remove('error');
@@ -1758,7 +1934,8 @@ class iwebApp {
                                         fillReset.appendChild(fillResetIcon);
                                         element.closest('div.iweb-input-autocomplete').appendChild(fillReset);
                                     }
-                                } else {
+                                } 
+                                else {
                                     element.dispatchEvent(new Event('input', {
                                         bubbles: true
                                     }));
@@ -1800,8 +1977,8 @@ class iwebApp {
                 
                 allowedTypes: '',
                 maxFileSize: 64,
-                typeErrorMessage: thisInstance.language[thisInstance.currentLangCode]['type_error'],
-                maxErrorMessage: thisInstance.language[thisInstance.currentLangCode]['max_error'],
+                typeErrorMessage: thisInstance.language[thisInstance.currentLangCode]['errorFileType'],
+                maxErrorMessage: thisInstance.language[thisInstance.currentLangCode]['errorMaxFileSize'],
                 btnStartAll: '<i class="fa fa-cloud-upload"></i>',
                 btnClose: '<i class="fa fa-close"></i>',
                 btnStart: '<i class="fa fa-cloud-upload"></i>',
@@ -1929,8 +2106,8 @@ class iwebApp {
                 
                 allowedTypes: '',
                 maxFileSize: 64,
-                typeErrorMessage: thisInstance.language[thisInstance.currentLangCode]['type_error'],
-                maxErrorMessage: thisInstance.language[thisInstance.currentLangCode]['max_error'],
+                typeErrorMessage: thisInstance.language[thisInstance.currentLangCode]['errorFileType'],
+                maxErrorMessage: thisInstance.language[thisInstance.currentLangCode]['errorMaxFileSize'],
                 btnStartAll: '<i class="fa fa-cloud-upload"></i>',
                 btnClose: '<i class="fa fa-close"></i>',
                 btnStart: '<i class="fa fa-cloud-upload"></i>',
@@ -2053,7 +2230,8 @@ class iwebApp {
                 photoDiv.appendChild(imgElement);
             };
             reader.readAsDataURL(file);
-        } else {
+        } 
+        else {
             const fileIcons = {
                 pdf: '<i class="fa fa-file-pdf-o" style="color:#ef4130;"></i>',
                 doc: '<i class="fa fa-file-word-o" style="color:#5091cd;"></i>',
@@ -2106,13 +2284,15 @@ class iwebApp {
             tipsDiv.innerHTML = '<small>' + options.typeErrorMessage + '</small>';
             infoDiv.appendChild(tipsDiv);
             checking = false;
-        } else if (file.size > maxFileSize) {
+        } 
+        else if (file.size > maxFileSize) {
             const tipsDiv = document.createElement('div');
             tipsDiv.classList.add('tips');
             tipsDiv.innerHTML = '<small>' + options.maxErrorMessage + '</small>';
             infoDiv.appendChild(tipsDiv);
             checking = false;
-        } else {
+        } 
+        else {
             const progressBar = document.createElement('div');
             progressBar.classList.add('progress-bar');
             progressBar.innerHTML = '<div class="percent"></div>';
@@ -2179,7 +2359,8 @@ class iwebApp {
             loopUploadIndex = [index];
             lastUploadIndex = index;
             isBatch = false;
-        } else {
+        } 
+        else {
             index = index + 1;
         }
 
@@ -2188,10 +2369,12 @@ class iwebApp {
             if (!loopUploadIndex.includes(index.toString())) {
                 if (isBatch) {
                     thisInstance.uploaderStart(index, loopUploadIndex, lastUploadIndex, fileInputID);
-                } else {
+                } 
+                else {
                     safeEndFunction();
                 }
-            } else {
+            } 
+            else {
                 if (thisInstance.isValue(thisInstance.uploaderFiles[mainIndex]) && !thisInstance.uploaderFilesIgnore[mainIndex].includes(index.toString())) {
                     thisInstance.uploaderFilesIgnore[mainIndex].push(index.toString());
 
@@ -2200,7 +2383,8 @@ class iwebApp {
                     let checking = true;
                     if (thisInstance.isValue(thisInstance.uploaderOptions[mainIndex].allowedTypes) && !thisInstance.uploaderOptions[mainIndex].allowedTypes.includes(extension.toString())) {
                         checking = false;
-                    } else if (selectingFiles[index].size > thisInstance.uploaderOptions[mainIndex].maxFileSize * 1024 * 1024) {
+                    } 
+                    else if (selectingFiles[index].size > thisInstance.uploaderOptions[mainIndex].maxFileSize * 1024 * 1024) {
                         checking = false;
                     }
 
@@ -2243,7 +2427,8 @@ class iwebApp {
                             // Next
                             if (isBatch) {
                                 thisInstance.uploaderStart(index, loopUploadIndex, lastUploadIndex, fileInputID);
-                            } else {
+                            } 
+                            else {
                                 safeEndFunction();
                             }
                         }, null, function(percentage) {
@@ -2256,7 +2441,8 @@ class iwebApp {
                                 progressBarPercent.style.width = percentage + '%';
                             }
                         });
-                    } else {
+                    } 
+                    else {
                         const itemDiv = uploaderDialog.querySelector('div.list > div.item[data-index="' + index + '"]');
                         itemDiv.querySelector('button.start')?.remove();
                         itemDiv.querySelector('button.remove')?.remove();
@@ -2264,19 +2450,23 @@ class iwebApp {
                         // Next
                         if (isBatch) {
                             thisInstance.uploaderStart(index, loopUploadIndex, lastUploadIndex, fileInputID);
-                        } else {
+                        } 
+                        else {
                             safeEndFunction();
                         }
                     }
-                } else {
+                } 
+                else {
                     if (isBatch) {
                         thisInstance.uploaderStart(index, loopUploadIndex, lastUploadIndex, fileInputID);
-                    } else {
+                    } 
+                    else {
                         safeEndFunction();
                     }
                 }
             }
-        } else {
+        } 
+        else {
             safeEndFunction();
         }
     }
@@ -2312,7 +2502,7 @@ class iwebApp {
             closeButton.type = 'button';
             closeButton.classList.add('btn');
             closeButton.classList.add('btn-close');
-            closeButton.textContent = thisInstance.language[thisInstance.currentLangCode]['btn_confirm'];
+            closeButton.textContent = thisInstance.language[thisInstance.currentLangCode]['btnConfirm'];
             closeButton.addEventListener('click', thisInstance.deBounce(function(e) {
                 const target = e.target;
                 contentDiv.style.transform = 'translateY(-320%)';
@@ -2386,7 +2576,7 @@ class iwebApp {
             yesButton.type = 'button';
             yesButton.classList.add('btn');
             yesButton.classList.add('btn-yes');
-            yesButton.textContent = thisInstance.language[thisInstance.currentLangCode]['btn_yes'];
+            yesButton.textContent = thisInstance.language[thisInstance.currentLangCode]['btnYes'];
             yesButton.addEventListener('click', thisInstance.deBounce(function(e) {
                 const target = e.target;
                 contentDiv.style.transform = 'translateY(-320%)';
@@ -2410,7 +2600,7 @@ class iwebApp {
             noButton.type = 'button';
             noButton.classList.add('btn');
             noButton.classList.add('btn-no');
-            noButton.textContent = thisInstance.language[thisInstance.currentLangCode]['btn_no'];
+            noButton.textContent = thisInstance.language[thisInstance.currentLangCode]['btnNo'];
             noButton.addEventListener('click', thisInstance.deBounce(function(e) {
                 const target = e.target;
                 contentDiv.style.transform = 'translateY(-320%)';
@@ -2479,7 +2669,8 @@ class iwebApp {
             const detailsDiv = document.createElement('div');
             if ((typeof htmlContent) === 'string') {
                 detailsDiv.insertAdjacentHTML('beforeend', htmlContent);
-            } else {
+            } 
+            else {
                 detailsDiv.appendChild(htmlContent);
             }
 
@@ -2587,7 +2778,8 @@ class iwebApp {
             else {
                 thisInstance.alert(message, callBack);
             }
-        } else {
+        } 
+        else {
             // Callback
             if ((typeof callBack) === 'function') {
                 callBack();
@@ -2651,9 +2843,11 @@ class iwebApp {
     isValue(value) {
         if ((typeof value) === 'undefined' || value === null) {
             return false;
-        } else if (value instanceof HTMLElement) {
+        } 
+        else if (value instanceof HTMLElement) {
             return value.outerHTML.trim() !== '';
-        } else if ((typeof value) === 'object') {
+        } 
+        else if ((typeof value) === 'object') {
             return Array.isArray(value) ? value.length > 0 : Object.keys(value).length > 0;
         }
 
@@ -2721,14 +2915,18 @@ class iwebApp {
                 const year = parseInt(parts[0]);
                 if (isNaN(day) || isNaN(month) || isNaN(year)) {
                     ymdChecking = false;
-                } else {
+                } 
+                else {
                     if (year <= 0 || month <= 0 || month > 12 || day <= 0) {
                         ymdChecking = false;
-                    } else if ([1, 3, 5, 7, 8, 10, 12].includes(month) && day > 31) {
+                    } 
+                    else if ([1, 3, 5, 7, 8, 10, 12].includes(month) && day > 31) {
                         ymdChecking = false;
-                    } else if ([4, 6, 9, 11].includes(month) && day > 30) {
+                    } 
+                    else if ([4, 6, 9, 11].includes(month) && day > 30) {
                         ymdChecking = false;
-                    } else if (month == 2) {
+                    } 
+                    else if (month == 2) {
                         const isLeapYear = ((year % 4 === 0 && year % 100 !== 0) || (year % 400 === 0));
                         if ((isLeapYear && day > 29) || (!isLeapYear && day > 28)) {
                             ymdChecking = false;
@@ -2759,7 +2957,23 @@ class iwebApp {
     }
 
     // convert
-    toNumber(value, currencyMode, decimal = 2, autoBeautify = true) {
+    formatBytes(bytes, decimals) {
+        // Return '0 Bytes' if bytes is falsy (0, null, undefined, etc.)
+        if (!bytes) return '0 Bytes';
+
+        const k = 1024; // Base of the byte conversion
+        const dm = (decimals < 0) ? 0 : decimals; // Determine decimal places
+        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']; // Size units
+
+        // Calculate the index for the size
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+
+        // Format the bytes and append the appropriate size unit
+        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+    };
+    
+    
+    formatNumber(value, currencyMode, decimal = 2, autoBeautify = true) {
         const thisInstance = this;
 
         value = value.toString().replace(/[^\d|\-|\.]/g, '');
@@ -2785,14 +2999,15 @@ class iwebApp {
                 const [integerPart, decimalPart] = value.toString().split('.');
                 const formattedInteger = integerPart.replace(/(\d)(?=(\d{3})+$)/g, '$1,');
                 return decimalPart ? (formattedInteger + '.' + decimalPart) : formattedInteger;
-            } else {
+            } 
+            else {
                 return value;
             }
         }
         return 0;
     }
 
-    toDateTime(value, format = 'Y-m-d H:i:s') {
+    formatDateTime(value, format = 'Y-m-d H:i:s') {
         const thisInstance = this;
 
         let now = ((thisInstance.isValue(value)) ? new Date(value) : new Date());
@@ -2865,6 +3080,14 @@ class iwebApp {
         }
         return dateTime;
     }
+    
+    formatTime(seconds = 0) {
+        const hrs = Math.floor(seconds / 3600);
+        const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
+        const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
+        return (hrs > 0) ? (hrs.toString().padStart(2, '0') + ':' + mins + ':' + secs) : (mins + ':' + secs);
+    }
+
 
     // cookie
     setCookie(cname, cvalue, exdays = 14) {
@@ -2879,7 +3102,8 @@ class iwebApp {
                 const projectFolder = ((pathParts.length > 1 && pathParts[1] !== '') ? '/' + pathParts[1] + '/' : '/');
                 document.cookie = cname + '=' + cvalue + ';' + expires + ';path=' + projectFolder;
             }
-        } else {
+        } 
+        else {
             alert('Cookies Blocked or not supported by your browser.');
         }
     }
@@ -2898,7 +3122,8 @@ class iwebApp {
                     }
                 }
             }
-        } else {
+        } 
+        else {
             alert('Cookies Blocked or not supported by your browser.');
         }
         return '';
@@ -2948,7 +3173,8 @@ class iwebApp {
                 processingDiv.classList.add('iweb-processing');
                 if (parseFloat(opacity) === 0) {
                     processingDiv.style.opacity = 0;
-                } else {
+                } 
+                else {
                     processingDiv.style.background = 'rgba(255, 255, 255, ' + opacity + ')';
                 }
 
@@ -2998,7 +3224,8 @@ class iwebApp {
                 // Insert the processingDiv into the document body
                 document.body.insertBefore(processingDiv, document.body.firstChild);
             }
-        } else {
+        } 
+        else {
             let microsecond = 0;
             if (thisInstance.isNumber(value, true)) {
                 microsecond = parseInt(value);
@@ -3019,7 +3246,7 @@ class iwebApp {
         let elementScrollTopValue = 0;
         if (targetElement) {
             offset = (thisInstance.isValue(offset)) ? parseInt(offset) : 80;
-            elementScrollTopValue = Math.max(0, parseInt(targetElement.getBoundingClientRect().top) + window.pageYOffset - offset);
+            elementScrollTopValue = Math.max(0, parseInt(targetElement.getBoundingClientRect().top) + window.pageYOffset - offset);   
         }
 
         // Smooth scrolling
@@ -3037,29 +3264,7 @@ class iwebApp {
             }
         }, 100);
     }
-
-    formatBytes(bytes, decimals) {
-        // Return '0 Bytes' if bytes is falsy (0, null, undefined, etc.)
-        if (!bytes) return '0 Bytes';
-
-        const k = 1024; // Base of the byte conversion
-        const dm = (decimals < 0) ? 0 : decimals; // Determine decimal places
-        const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB']; // Size units
-
-        // Calculate the index for the size
-        const i = Math.floor(Math.log(bytes) / Math.log(k));
-
-        // Format the bytes and append the appropriate size unit
-        return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
-    };
     
-    formatTime(seconds = 0) {
-        const hrs = Math.floor(seconds / 3600);
-        const mins = Math.floor((seconds % 3600) / 60).toString().padStart(2, '0');
-        const secs = Math.floor(seconds % 60).toString().padStart(2, '0');
-        return (hrs > 0) ? (hrs.toString().padStart(2, '0') + ':' + mins + ':' + secs) : (mins + ':' + secs);
-    }
-
     getURL(extra) {
         const thisInstance = this;
         return (window.location.href.split('?')[0]).toString() + ((thisInstance.isValue(extra)) ? ('/' + extra) : '');
@@ -3305,7 +3510,8 @@ class iDatePicker {
                 e.target.id !== 'idatepicker-prev-month' &&
                 e.target.id !== 'idatepicker-next-month') {
                 this.hideCalendar();
-            } else if (e.target.closest('input.idatepicker')) {
+            } 
+            else if (e.target.closest('input.idatepicker')) {
                 this.onFocusInput(e.target);
             }
         });
@@ -3507,11 +3713,13 @@ class iDatePicker {
                     // Display days from the previous month
                     const dateObj = this.formatDate(new Date(year, month - 1, startDay++));
                     td = this.createDateCell(startDay - 1, dateObj, true);
-                } else if (day > daysInMonth) {
+                } 
+                else if (day > daysInMonth) {
                     // Display days from the next month
                     const dateObj = this.formatDate(new Date(year, month + 1, nextMonthDay));
                     td = this.createDateCell(nextMonthDay++, dateObj, true);
-                } else {
+                } 
+                else {
                     // Display days from the current month
                     const dateObj = this.formatDate(new Date(year, month, day));
                     td = this.createDateCell(day++, dateObj, false);
@@ -3589,7 +3797,8 @@ class iDatePicker {
         if ((this.dateFormat.toString().toUpperCase()) === 'DD/MM/YYYY') {
             // Match DD/MM/YYYY format, e.g., 25/12/2024
             regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
-        } else {
+        } 
+        else {
             // Default to YYYY-MM-DD format, e.g., 2024-12-25
             regex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/;
         }
@@ -3628,7 +3837,8 @@ class iTimePicker {
             if (!e.target.closest('input.itimepicker') &&
                 !e.target.closest('div.time-picker-list')) {
                 this.hidePicker();
-            } else if (e.target.closest('input.itimepicker')) {
+            } 
+            else if (e.target.closest('input.itimepicker')) {
                 this.showTimePicker(e.target);
                 this.formatInputTime(e.target);
             }
@@ -3759,7 +3969,7 @@ class iPagination {
             mode: 1,
             size: 5,
             total: 1,
-            placeholder: ''
+            placeHolder: ''
         }, options);
 
         this.currentPage = 1;
@@ -3810,7 +4020,8 @@ class iPagination {
             if (endPageNum - startPageNum + 1 < pageSize) {
                 if (this.currentPage < firstPage + diffPageNum) {
                     endPageNum = Math.min(lastPage, startPageNum + pageSize - 1);
-                } else {
+                } 
+                else {
                     startPageNum = Math.max(firstPage, endPageNum - pageSize + 1);
                 }
             }
@@ -3865,7 +4076,7 @@ class iPagination {
                 let inputLi = this.createPaginationElement('li');
                 let jumpInput = this.createPaginationElement('input', 'jumpto_page');
                 jumpInput.type = 'text';
-                jumpInput.placeholder = this.options.placeholder;
+                jumpInput.placeHolder = this.options.placeHolder;
                 jumpInput.setAttribute('data-max', totalPage);
                 this.jumpToPage(jumpInput);
                 inputLi.appendChild(jumpInput);
@@ -4041,7 +4252,8 @@ class iModalDialog {
                 this.modal.style.height = this.normalState.height;
                 this.modal.style.left = this.normalState.left;
                 this.modal.style.top = this.normalState.top;
-            } else {
+            } 
+            else {
                 this.normalState = {
                     width: this.modal.style.width,
                     height: this.modal.style.height,
