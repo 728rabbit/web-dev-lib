@@ -3314,7 +3314,7 @@ class iwebApp {
 
         const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXTZabcdefghiklmnopqrstuvwxyz";
         if (!thisInstance.isNumber(length)) {
-            length = 12;
+            length = 8;
         }
 
         let result = '';
@@ -3323,6 +3323,30 @@ class iwebApp {
             result += chars.substring(rnum, rnum + 1);
         }
         return result;
+    }
+    
+    randomPassword(length) {
+        const thisInstance = this;
+
+        const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+        const numbers = '0123456789';
+        
+        if (!thisInstance.isNumber(length)) {
+            length = 8;
+        }
+
+        let password = '';
+        password += uppercase[Math.floor(Math.random() * uppercase.length)];
+        password += lowercase[Math.floor(Math.random() * lowercase.length)];
+        password += numbers[Math.floor(Math.random() * numbers.length)];
+
+        const allChars = uppercase + lowercase + numbers;
+        for (let i = 3; i < length; i++) {
+            password += allChars[Math.floor(Math.random() * allChars.length)];
+        }
+
+        return password.split('').sort(() => Math.random() - 0.5).join('');
     }
 }
 
