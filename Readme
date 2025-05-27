@@ -225,9 +225,13 @@ isTime(value)
 
 14. Convert
 
-toNumber(value, currency_mode, decimal)
+formatNumber(value, currency_mode, decimal)
 
-toDateTime(value, format = 'Y-m-d H:i:s')
+formatDateTime(value, format = 'Y-m-d H:i:s')
+
+formatBytes(bytes, decimals)
+
+formatTime(seconds)
 
 --------------------------------------------------------------------------------
 
@@ -249,10 +253,6 @@ showBusy(status, value)
 
 scrollTo(element, adjustment_value, callBack)
 
-formatBytes(bytes, decimals)
-
-formatTime(seconds)
-
 getURL(extra)
 
 getURLParam(name)
@@ -265,64 +265,64 @@ randomString(length)
 
 16. Callback - DOMContentLoaded
 
-function iweb_common_layout(function(win_width) { });
+function iwebCommonLayout(function(win_width) { });
 
-function iweb_layout(function(win_width) { });
+function iwebLayout(function(win_width) { });
 
-function iweb_child_layout(function(win_width) { });
+function iwebChildLayout(function(win_width) { });
 
-function iweb_extra_layout(function(win_width) { });
+function iwebExtraLayout(function(win_width) { });
 
 
-function iweb_common_func(function() { });
+function iwebCommonFunc(function() { });
 
-function iweb_func(function() { });
+function iwebFunc(function() { });
 
-function iweb_child_func(function() { });
+function iwebChildFunc(function() { });
 
-function iweb_extra_func(function() { });
+function iwebExtraFunc(function() { });
 
 --------------------------------------------------------------------------------
 
 17. Callback - windowLoaded
 
-function iweb_common_layout_done(function(win_width) { });
+function iwebCommonLayoutDone(function(win_width) { });
 
-function iweb_layout_done(function(win_width) { });
+function iwebLayoutDone(function(win_width) { });
 
-function iweb_child_done(function(win_width) { });
+function iwebChildDone(function(win_width) { });
 
-function iweb_extra_layout_done(function(win_width) { });
+function iwebExtraLayoutDone(function(win_width) { });
 
 
-function iweb_common_func_done(function() { });
+function iwebCommonFuncDone(function() { });
 
-function iweb_func_done(function() { });
+function iwebFuncDone(function() { });
 
-function iweb_child_func_done(function() { });
+function iwebChildFuncDone(function() { });
 
-function iweb_extra_func_done(function() { });
+function iwebExtraFuncDone(function() { });
 
 --------------------------------------------------------------------------------
 
 18. Callback - windowResize
 
-function iweb_common_layout(function(win_width) { });
+function iwebCommonLayout(function(win_width) { });
 
-function iweb_layout(function(win_width) { });
+function iwebLayout(function(win_width) { });
 
-function iweb_child_layout(function(win_width) { });
+function iwebChildLayout(function(win_width) { });
 
-function iweb_extra_layout(function(win_width) { });
+function iwebExtraLayout(function(win_width) { });
 
 --------------------------------------------------------------------------------
 
 19. Callback - windowScroll
 
-function iweb_common_scroll(function(scroll_top) { });
+function iwebCommonScroll(function(scroll_top) { });
 
-function iweb_scroll(function(scroll_top) { });
+function iwebScroll(function(scroll_top) { });
 
-function iweb_child_scroll(function(scroll_top) { });
+function iwebChildScroll(function(scroll_top) { });
 
-function iweb_extra_scroll(function(scroll_top) { });
+function iwebExtraScroll(function(scroll_top) { });

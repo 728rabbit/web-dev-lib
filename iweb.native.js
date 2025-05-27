@@ -59,7 +59,6 @@ class iwebApp {
         };
 
         this.md5;
-        this.originToken;
         this.csrfToken;
         
         this.timer;
@@ -82,9 +81,9 @@ class iwebApp {
         const thisInstance = this;
         
         // Helper function to safely call if the function is defined
-        const safeCallFunc = (func, value) => {
+        const safeCallFunc = (func, args) => {
             if ((typeof window[func]) === 'function') {
-                window[func](value);
+                window[func](args);
             }
         };
         
@@ -108,46 +107,45 @@ class iwebApp {
                 thisInstance.csrfToken = thisInstance.md5.hash(thisInstance.md5.hash('iweb@' + hostname) + '@' + csrfTokenContent);
             }
 
-            // Init body, component and form
+            // Init body & component
             thisInstance.initBody();
             thisInstance.initComponent();
             
-            // Get iweb-viewer width
+            // Set iweb-viewer width
             thisInstance.viewerWidth = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
 
             // Call function
             setTimeout(function() {
-                console.log('DOM done');
-
+                //console.log('DOM done');
                 document.body.style.setProperty('--iscrollbar-width', (window.innerWidth - thisInstance.viewerWidth) + 'px');
 
                 thisInstance.responsive();
-                safeCallFunc('iweb_common_layout', thisInstance.viewerWidth);
-                safeCallFunc('iweb_layout', thisInstance.viewerWidth);
-                safeCallFunc('iweb_chind_layout', thisInstance.viewerWidth);
-                safeCallFunc('iweb_extra_layout', thisInstance.viewerWidth);
+                
+                safeCallFunc('iwebCommonLayout', thisInstance.viewerWidth);
+                safeCallFunc('iwebLayout', thisInstance.viewerWidth);
+                safeCallFunc('iwebChildLayout', thisInstance.viewerWidth);
+                safeCallFunc('iwebExtraLayout', thisInstance.viewerWidth);
 
-                safeCallFunc('iweb_common_func');
-                safeCallFunc('iweb_func');
-                safeCallFunc('iweb_child_func');
-                safeCallFunc('iweb_extra_func');
+                safeCallFunc('iwebCommonFunc');
+                safeCallFunc('iwebFunc');
+                safeCallFunc('iwebChildFunc');
+                safeCallFunc('iwebExtraFunc');
             }, 100);
         });
 
         // Page load completed
         window.onload = function() {
             setTimeout(function() {
-                console.log('window done');
+                //console.log('window done');
+                safeCallFunc('iwebCommonLayoutEnd', thisInstance.viewerWidth);
+                safeCallFunc('iwebLayoutEnd', thisInstance.viewerWidth);
+                safeCallFunc('iwebChildLayoutEnd', thisInstance.viewerWidth);
+                safeCallFunc('iwebExtraLayoutEnd', thisInstance.viewerWidth);
 
-                safeCallFunc('iweb_common_layout_done', thisInstance.viewerWidth);
-                safeCallFunc('iweb_layout_done', thisInstance.viewerWidth);
-                safeCallFunc('iweb_child_layout_done', thisInstance.viewerWidth);
-                safeCallFunc('iweb_extra_layout_done', thisInstance.viewerWidth);
-
-                safeCallFunc('iweb_common_func_done');
-                safeCallFunc('iweb_func_done');
-                safeCallFunc('iweb_child_func');
-                safeCallFunc('iweb_extra_func_done');
+                safeCallFunc('iwebCommonFuncEnd');
+                safeCallFunc('iwebFuncEnd');
+                safeCallFunc('iwebChildEnd');
+                safeCallFunc('iwebExtraEnd');
             }, 100);
         };
 
@@ -155,30 +153,28 @@ class iwebApp {
         window.addEventListener('resize', function() {
             clearTimeout(thisInstance.timer);
             thisInstance.timer = setTimeout(() => {
-                console.log('window resize');
-
+                //console.log('window resize');
                 if (thisInstance.viewerWidth !== parseInt(document.querySelector('div.iweb-viewer').offsetWidth)) {
                     thisInstance.viewerWidth = parseInt(document.querySelector('div.iweb-viewer').offsetWidth);
 
                     thisInstance.responsive();
-                    safeCallFunc('iweb_common_layout', thisInstance.viewerWidth);
-                    safeCallFunc('iweb_layout', thisInstance.viewerWidth);
-                    safeCallFunc('iweb_child_layout', thisInstance.viewerWidth);
-                    safeCallFunc('iweb_extra_layout', thisInstance.viewerWidth);
+                    safeCallFunc('iwebCommonLayout', thisInstance.viewerWidth);
+                    safeCallFunc('iwebLayout', thisInstance.viewerWidth);
+                    safeCallFunc('iwebChildLayout', thisInstance.viewerWidth);
+                    safeCallFunc('iwebExtraLayout', thisInstance.viewerWidth);
                 }
-            }, 200);
+            }, 100);
         });
 
         // Page scroll
         window.addEventListener('scroll', function() {
             clearTimeout(thisInstance.scrollTimer);
             thisInstance.scrollTimer = setTimeout(() => {
-                console.log('window scroll');
-
-                safeCallFunc('iweb_common_scroll', window.scrollY);
-                safeCallFunc('iweb_scroll', window.scrollY);
-                safeCallFunc('iweb_child_scroll', window.scrollY);
-                safeCallFunc('iweb_extra_scroll', window.scrollY);
+                //console.log('window scroll');
+                safeCallFunc('iwebCommonScroll', window.scrollY);
+                safeCallFunc('iwebScroll', window.scrollY);
+                safeCallFunc('iwebChildScroll', window.scrollY);
+                safeCallFunc('iwebExtraScroll', window.scrollY);
             }, 100);
         });
         
@@ -3145,7 +3141,6 @@ class iwebApp {
         return (hrs > 0) ? (hrs.toString().padStart(2, '0') + ':' + mins + ':' + secs) : (mins + ':' + secs);
     }
 
-
     // cookie
     setCookie(cname, cvalue, exdays = 14) {
         const thisInstance = this;
@@ -4089,7 +4084,7 @@ class iPagination {
     }
 
     renderPagination(element) {
-        if (!element.querySelector('.iweb-pagination')) {
+        if (!element.querySelector('div.iweb-pagination')) {
             let pageSize = element.getAttribute('data-size') || this.options.size;
             let totalPage = element.getAttribute('data-totalpage') || this.options.total;
 
