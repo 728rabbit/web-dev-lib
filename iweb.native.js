@@ -1878,30 +1878,32 @@ class iwebApp {
                             if ((typeof window[completeFunc]) === 'function') {
                                 window[completeFunc](responseData);
                             } 
-                            else {
-                                if (thisInstance.isValue(responseData.url)) {
-                                    if (thisInstance.isMatch(alertResult, true) || thisInstance.isMatch(alertResult, 1)) {
-                                        thisInstance.alert(responseData.message, function() {
+                            else {   
+                                if(thisInstance.isMatch(responseData.status, 200)) {
+                                    if (thisInstance.isValue(responseData.url)) {
+                                        if (thisInstance.isMatch(alertResult, true) || thisInstance.isMatch(alertResult, 1)) {
+                                            thisInstance.alert(responseData.message, function() {
+                                                if (!thisInstance.isMatch(responseData.url, '#')) {
+                                                    window.location.href = responseData.url;
+                                                } 
+                                                else {
+                                                    window.location.reload();
+                                                }
+                                            });
+                                        }
+                                        else {
                                             if (!thisInstance.isMatch(responseData.url, '#')) {
                                                 window.location.href = responseData.url;
                                             } 
                                             else {
                                                 window.location.reload();
                                             }
-                                        });
-                                    }
-                                    else {
-                                        if (!thisInstance.isMatch(responseData.url, '#')) {
-                                            window.location.href = responseData.url;
-                                        } 
-                                        else {
-                                            window.location.reload();
                                         }
+                                        return;
                                     }
                                 }
-                                else {
-                                    thisInstance.tipsMsg(responseData.message, (thisInstance.isValue(responseData.status) && thisInstance.isMatch(responseData.status, 200)));
-                                }
+                                
+                                thisInstance.tipsMsg(responseData.message, (thisInstance.isValue(responseData.status) && thisInstance.isMatch(responseData.status, 200)));
                                 
                                 if ((typeof window[extraFunc]) === 'function') {
                                     window[extraFunc](responseData);
