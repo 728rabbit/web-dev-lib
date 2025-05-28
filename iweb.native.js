@@ -1646,7 +1646,12 @@ class iwebApp {
                             e.classList.remove('error');
                         }
                     });
-
+                    
+                    const tipsMessageArea = document.querySelector('div.iweb-tips-message');
+                    if (tipsMessageArea) {
+                        tipsMessageArea.innerHTML = '';
+                    }
+                    
                     const tipsElements = form.querySelectorAll('small.tips');
                     tipsElements.forEach(function(tips) {
                         tips.remove();
