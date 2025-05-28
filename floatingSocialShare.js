@@ -1,6 +1,5 @@
 class floatingSocialShare {
     constructor() {
-        this.isVisible = false;
         this.init();
         this.showSocialButtons();
     }
@@ -8,7 +7,6 @@ class floatingSocialShare {
     init() {
         // Create main floating button and social buttons container
         const floatingButtonDiv = document.createElement('div');
-        this.mainButton = document.createElement('button');
         this.socialButtonsDiv = document.createElement('div');
 
         // Apply styles to the main button container (positioned at the bottom-right)
@@ -16,35 +14,20 @@ class floatingSocialShare {
             position: 'fixed',
             top: '50%',
             left: '0px',
-            zIndex: '8'
+            zIndex: '100'
         });
-
-        // Apply styles to the main button (toggle visibility of social media buttons)
-        this.applyStyles(this.mainButton, {
-            display: 'none',
-            width: '36px',
-            height: '36px',
-            backgroundColor: '#f44336',
-            borderRadius: '50%',
-            border: 'none',
-            color: 'white',
-            cursor: 'pointer',
-            fontSize: '20px',
-            textAlign: 'center'
-        });
-        this.mainButton.innerHTML = '<i class="fa fa-share-alt"></i>';
-        this.mainButton.addEventListener('click', () => this.toggleSocialButtons());
 
         // Apply styles to the social buttons container (hidden initially)
         this.applyStyles(this.socialButtonsDiv, {
             display: 'none',
             flexDirection: 'column',
-            gap: '2px',
-            marginBottom: '10px',
+            gap: '2px'
         });
 
         // Create social media buttons (using Font Awesome icons)
-        const socialMedia = [{
+        const socialMedia = 
+        [
+            {
                 name: 'Facebook',
                 color: '#3b5998',
                 icon: 'fa fa-facebook-f',
@@ -72,8 +55,7 @@ class floatingSocialShare {
                 name: 'CopyLink',
                 color: '#7d7d7d',
                 icon: 'fa fa-link',
-                url: this.getCopyUrl(),
-                
+                url: this.getCopyUrl()
             }
         ];
 
@@ -129,19 +111,7 @@ class floatingSocialShare {
 
         // Append elements to the floating button container
         floatingButtonDiv.appendChild(this.socialButtonsDiv);
-        floatingButtonDiv.appendChild(this.mainButton);
         document.body.appendChild(floatingButtonDiv);
-    }
-
-    toggleSocialButtons() {
-        this.isVisible = !this.isVisible;
-        if (this.isVisible) {
-            this.showSocialButtons();
-            this.mainButton.innerHTML = '<i class="fa fa-times"></i>';
-        } else {
-            this.hideSocialButtons();
-            this.mainButton.innerHTML = '<i class="fa fa-share-alt"></i>';
-        }
     }
 
     showSocialButtons() {
@@ -150,20 +120,6 @@ class floatingSocialShare {
             setTimeout(() => {
                 button.style.opacity = '1';
                 button.style.transform = 'translateY(0)';
-            }, index * 100); // Slight delay between each button
-        });
-    }
-
-    hideSocialButtons() {
-        this.socialButtons.forEach((button, index) => {
-            setTimeout(() => {
-                button.style.opacity = '0';
-                button.style.transform = 'translateY(20px)';
-                if (index === this.socialButtons.length - 1) {
-                    setTimeout(() => {
-                        this.socialButtonsDiv.style.display = 'none';
-                    }, 300); // Delay to fully hide the container after the last button animation
-                }
             }, index * 100); // Slight delay between each button
         });
     }
