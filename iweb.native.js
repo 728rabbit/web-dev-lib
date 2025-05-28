@@ -1640,18 +1640,20 @@ class iwebApp {
                 // Bind event for form submit
                 form.addEventListener('submit', thisInstance.deBounce(function() {
                     // Remove error & tips
+                    const tipsMessageArea = document.querySelector('div.iweb-tips-message');
+                    if (tipsMessageArea) {
+                        tipsMessageArea.classList.remove('error');
+                        tipsMessageArea.classList.remove('success');
+                        tipsMessageArea.innerHTML = '';
+                    }
+
                     const errorElements = form.querySelectorAll('.error');
                     errorElements.forEach(function(e) {
                         if (!e.closest('div.iweb-tips-message')) {
                             e.classList.remove('error');
                         }
                     });
-                    
-                    const tipsMessageArea = document.querySelector('div.iweb-tips-message');
-                    if (tipsMessageArea) {
-                        tipsMessageArea.innerHTML = '';
-                    }
-                    
+
                     const tipsElements = form.querySelectorAll('small.tips');
                     tipsElements.forEach(function(tips) {
                         tips.remove();
