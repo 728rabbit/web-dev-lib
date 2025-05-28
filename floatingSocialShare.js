@@ -5,26 +5,6 @@ class floatingSocialShare {
     }
 
     init() {
-        // Create main floating button and social buttons container
-        const floatingButtonDiv = document.createElement('div');
-        this.socialButtonsDiv = document.createElement('div');
-
-        // Apply styles to the main button container (positioned at the bottom-right)
-        this.applyStyles(floatingButtonDiv, {
-            position: 'fixed',
-            top: '50%',
-            left: '0px',
-            zIndex: '100'
-        });
-
-        // Apply styles to the social buttons container (hidden initially)
-        this.applyStyles(this.socialButtonsDiv, {
-            display: 'none',
-            flexDirection: 'column',
-            gap: '2px'
-        });
-
-        // Create social media buttons (using Font Awesome icons)
         const socialMedia = 
         [
             {
@@ -58,7 +38,28 @@ class floatingSocialShare {
                 url: this.getCopyUrl()
             }
         ];
+        
+        // Create main floating button and social buttons container
+        const floatingButtonDiv = document.createElement('div');
+        this.socialButtonsDiv = document.createElement('div');
 
+        // Apply styles to the main button container (positioned at the bottom-right)
+        this.applyStyles(floatingButtonDiv, {
+            position: 'fixed',
+            top: '50%',
+            left: '0px',
+            marginTop: (parseInt((socialMedia.length * 36)/2 * -1) + 'px'),
+            zIndex: '100'
+        });
+
+        // Apply styles to the social buttons container (hidden initially)
+        this.applyStyles(this.socialButtonsDiv, {
+            display: 'none',
+            flexDirection: 'column',
+            gap: '2px'
+        });
+
+        // Create social media buttons (using Font Awesome icons)
         this.socialButtons = socialMedia.map((platform) => {
             const button = document.createElement('a');
             button.href = platform.url;
