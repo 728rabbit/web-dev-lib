@@ -8,13 +8,13 @@ class floatingSocialShare {
         const socialMedia = 
         [
             {
-                name: 'Facebook',
+                name: 'Share to facebook',
                 color: '#3b5998',
                 icon: 'fa fa-facebook-f',
                 url: this.getFacebookUrl()
             },
             {
-                name: 'WhatsApp',
+                name: 'Share via whatsapp',
                 color: '#25d366',
                 icon: 'fa fa-whatsapp',
                 url: this.getWhatsAppUrl()
@@ -26,13 +26,13 @@ class floatingSocialShare {
                 url: this.getTwitterUrl()
             },*/
             {
-                name: 'Email',
+                name: 'Share via email',
                 color: '#168de2',
                 icon: 'fa fa-envelope',
                 url: this.getEmailUrl()
             },
             {
-                name: 'CopyLink',
+                name: 'Copy',
                 color: '#7d7d7d',
                 icon: 'fa fa-link',
                 url: this.getCopyUrl()
@@ -64,6 +64,7 @@ class floatingSocialShare {
             const button = document.createElement('a');
             button.href = platform.url;
             button.target = '_blank';
+            button.title = platform.name;
             this.applyStyles(button, {
                 width: '36px',
                 height: '36px',
@@ -85,7 +86,7 @@ class floatingSocialShare {
             icon.className = platform.icon; // Add the icon class
             button.appendChild(icon);
             
-            if(platform.name === 'CopyLink') {
+            if(platform.name === 'Copy') {
                 button.addEventListener('click', (e) => {
                     e.preventDefault();
                     const href = e.currentTarget.getAttribute('href');
