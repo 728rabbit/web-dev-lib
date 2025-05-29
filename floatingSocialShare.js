@@ -143,6 +143,7 @@ class floatingSocialShare {
             opacity: '0',
             pointerEvents: 'none',
             transition: 'opacity 0.4s ease',
+            whiteSpace: 'nowrap',
             zIndex: '999'
         });
 
