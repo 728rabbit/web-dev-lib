@@ -1,6 +1,6 @@
 :root {
     --background-color: #fff8f2;
-    --icolor-main: #8e4585;
+    --icolor-primary: #8e4585;
     --icolor-darkgreen: #2489a2;
     --icolor-green: #9dd864;
     --icolor-darkred: #d73d32;
@@ -120,7 +120,7 @@ a.font-switch.large {
 }
 
 a.font-switch.current {
-    background: var(--icolor-main);
+    background: var(--icolor-primary);
 }
 
 img,
@@ -423,7 +423,7 @@ div.iweb-processing > div.loading > svg {
 }
 
 div.iweb-processing > div.loading > svg > circle {
-    stroke: var(--icolor-main);
+    stroke: var(--icolor-primary);
 }
 
 div.iweb-tips-message {
@@ -800,12 +800,12 @@ div.iweb-select-multiple > div.virtual > div.options ul > li.node-parent > a:bef
 }
 
 div.iweb-select > div.virtual > div.options ul > li > a:hover {
-    background: var(--icolor-main)!important;
+    background: var(--icolor-primary)!important;
     color: var(--icolor-white)!important;
 }
 
 div.iweb-select > div.virtual > div.options ul > li.node-selected > a {
-    background-color: var(--icolor-main);
+    background-color: var(--icolor-primary);
     color: var(--icolor-white);
 }
 
@@ -818,7 +818,7 @@ div.iweb-select-multiple > div.virtual > div.options ul > li.node-selected > a:a
     font-family: Arial, Helvetica, sans-serif;
     position: absolute;
     content: "✔";
-    color: var(--icolor-main);
+    color: var(--icolor-primary);
     font-size: 16px;
     font-weight: bold;
     height: 18px;
@@ -879,7 +879,7 @@ div.iweb-checkbox.checked:after {
     position: absolute;
     display: block;
     content: "✔";
-    color: var(--icolor-main);
+    color: var(--icolor-primary);
     font-family: Arial, Helvetica, sans-serif;
     font-size: 18px;
     font-weight: bold;
@@ -951,7 +951,7 @@ div.iweb-radio.error:before {
 
 div.iweb-radio.checked:after {
     position: absolute;
-    background: var(--icolor-main);
+    background: var(--icolor-primary);
     display: block;
     content: "";
     width: 12px;
@@ -1039,7 +1039,7 @@ div.iweb-input-autocomplete ul > li > a {
 }
 
 div.iweb-input-autocomplete ul > li > a:hover {
-    color: var(--icolor-main);
+    color: var(--icolor-primary);
 }
 
 div.iweb-input-autocomplete a.fill-reset {
@@ -1074,7 +1074,7 @@ div.imodal-dialog > div.top {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    background: var(--icolor-main);
+    background: var(--icolor-primary);
     color: white;
     height: 42px;
     padding: 10px;
@@ -1106,8 +1106,8 @@ div.imodal-dialog > div.content {
 
 div.imodal-dialog > div.resize-handle {
     position: absolute;
-    background: -webkit-linear-gradient(315deg, transparent 55%, var(--icolor-main) 55%, #0078D7 60%, transparent 60%),-webkit-linear-gradient(315deg, transparent 70%, var(--icolor-main) 70%, #0078D7 75%, transparent 75%);
-    background: linear-gradient(135deg, transparent 55%, var(--icolor-main) 55%, #0078D7 60%, transparent 60%),linear-gradient(135deg, transparent 70%, var(--icolor-main) 70%, #0078D7 75%, transparent 75%);
+    background: -webkit-linear-gradient(315deg, transparent 55%, var(--icolor-primary) 55%, #0078D7 60%, transparent 60%),-webkit-linear-gradient(315deg, transparent 70%, var(--icolor-primary) 70%, #0078D7 75%, transparent 75%);
+    background: linear-gradient(135deg, transparent 55%, var(--icolor-primary) 55%, #0078D7 60%, transparent 60%),linear-gradient(135deg, transparent 70%, var(--icolor-primary) 70%, #0078D7 75%, transparent 75%);
     width: 12px;
     height: 12px;
     bottom: 0px;
@@ -1167,7 +1167,7 @@ div.iweb-alert-dialog > div > div.content:before {
     top: 0px;
     left: 0px;
     right: 0px;
-    border-top: 4px solid var(--icolor-main);
+    border-top: 4px solid var(--icolor-primary);
 }
 
 div.iweb-alert-dialog > div > div.content > div {
@@ -1495,7 +1495,7 @@ div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > 
 
 div.iweb-info-dialog.uploader > div > div.content > div > div.list > div.item > div.info > div.progress-bar > div.percent {
     position: absolute;
-    background: var(--icolor-main);
+    background: var(--icolor-primary);
     top: 0px;
     left: 0px;
     width: 0px;
@@ -1686,7 +1686,7 @@ div.iweb-files-uploader > div.list > div.item > div.info > div.progress-bar {
 
 div.iweb-files-uploader > div.list > div.item > div.info > div.progress-bar > div.percent {
     position: absolute;
-    background: var(--icolor-main);
+    background: var(--icolor-primary);
     top: 0px;
     left: 0px;
     width: 0px;
@@ -1723,7 +1723,7 @@ div.iweb-pagination > ul > li > a {
 }
 
 div.iweb-pagination > ul > li > a.current {
-    background: var(--icolor-main);
+    background: var(--icolor-primary);
     color: var(--icolor-white);
 }
 
@@ -2022,7 +2022,7 @@ div.widget div.w-title {
     display: block;
     font-size: 1.25rem;
     font-weight: bold;
-    color: var(--icolor-main);
+    color: var(--icolor-primary);
     padding-bottom: 8px;
     margin-bottom: 12px;
     border-bottom: 2px dotted var(--icolor-gray);
