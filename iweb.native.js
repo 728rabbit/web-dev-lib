@@ -118,7 +118,7 @@ class iwebApp {
             setTimeout(function() {
                 //console.log('DOM done');
                 document.body.style.setProperty('--iscrollbar-width', (window.innerWidth - thisInstance.viewerWidth) + 'px');
-
+                
                 thisInstance.responsive();
                 
                 safeCallFunc('iwebCommonLayout', thisInstance.viewerWidth);
@@ -130,7 +130,7 @@ class iwebApp {
                 safeCallFunc('iwebFunc');
                 safeCallFunc('iwebChildFunc');
                 safeCallFunc('iwebExtraFunc');
-            }, 100);
+            }, 250);
         });
 
         // Page load completed
@@ -723,8 +723,11 @@ class iwebApp {
         thisInstance.selectBox();
         thisInstance.checkBox();
         thisInstance.radioBox();
-        thisInstance.iframe();
-        thisInstance.video();
+        setTimeout(function() {
+            thisInstance.iframe();
+            thisInstance.video();
+            thisInstance.responsive();
+        }, 500);
 
         // insert div before & after into editor div
         const editors = document.querySelectorAll('div.iweb-editor');
@@ -1198,8 +1201,9 @@ class iwebApp {
 
         if (thisInstance.isValue(element)) {
             // Get all specified tags within the given element
+            let elements = null;
             ['iframe', 'video', 'object', 'embed'].forEach(function(value) {
-                const elements = document.querySelectorAll(element + ' ' + value);
+                elements = document.querySelectorAll(element + ' ' + value);
                 elements.forEach(function(e) {
                     // Check if the parent does not have the class 'iweb-responsive'
                     if (!e.closest('div.iweb-responsive')) {
@@ -1215,7 +1219,7 @@ class iwebApp {
                     }
                 });
             });
-
+            
             if ((typeof callBack) === 'function') {
                 callBack();
             }
