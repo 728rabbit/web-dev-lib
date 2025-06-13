@@ -49,7 +49,7 @@ class floatingSocialShare {
             top: '50%',
             left: '0px',
             marginTop: (parseInt((socialMedia.length * 36)/2 * -1) + 'px'),
-            zIndex: '100'
+            zIndex: '10'
         });
 
         // Apply styles to the social buttons container (hidden initially)
@@ -66,8 +66,8 @@ class floatingSocialShare {
             button.target = '_blank';
             button.title = platform.name;
             this.applyStyles(button, {
-                width: '36px',
-                height: '36px',
+                width: '32px',
+                height: '32px',
                 backgroundColor: platform.color,
                 borderRadius: '0',
                 display: 'flex',
@@ -75,7 +75,7 @@ class floatingSocialShare {
                 justifyContent: 'center',
                 color: 'white',
                 textDecoration: 'none',
-                fontSize: '20px',
+                fontSize: '18px',
                 opacity: '0', // Initially hidden
                 transform: 'translateY(20px)',
                 transition: `opacity 0.3s ease, transform 0.3s ease`,
