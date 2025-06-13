@@ -2088,9 +2088,7 @@ div.widget.expand.show > div.hidden {
         -ms-flex: 0 1 calc(50% - 10px);
             flex: 0 1 calc(50% - 10px);
     }
-}  
-  
-@media only screen and (max-width: 700px) {   
+    
     div.iweb-viewer div.iweb-grid div.col-onethird {
         -webkit-box-flex: 0;
         -ms-flex: 0 1 calc(50% - 10px);
