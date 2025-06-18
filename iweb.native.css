@@ -1832,9 +1832,13 @@ div.iweb-grid {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    gap: 20px;
+    gap: 30px;
     -ms-flex-wrap: wrap;
         flex-wrap: wrap;
+}
+
+div.iweb-grid.min {
+    gap: 20px;
 }
 
 div.iweb-grid.center {
@@ -1845,23 +1849,47 @@ div.iweb-grid.center {
 
 div.iweb-grid div.col-half {
     -webkit-box-flex: 0;
+        -ms-flex: 0 1 calc(50% - 15px);
+            flex: 0 1 calc(50% - 15px);
+}
+
+div.iweb-grid div.col-onethird {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 1 calc(33.33% - 20px);
+            flex: 0 1 calc(33.33% - 20px);
+}
+
+div.iweb-grid div.col-quarter {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 1 calc(25% - 22.5px);
+            flex: 0 1 calc(25% - 22.5px);
+}
+
+div.iweb-grid div.col-onefifth {
+    -webkit-box-flex: 0;
+        -ms-flex: 0 1 calc(20% - 24px);
+            flex: 0 1 calc(20% - 24px);
+}
+
+div.iweb-grid.min div.col-half {
+    -webkit-box-flex: 0;
         -ms-flex: 0 1 calc(50% - 10px);
             flex: 0 1 calc(50% - 10px);
 }
 
-div.iweb-grid div.col-onethird {
+div.iweb-grid.min div.col-onethird {
     -webkit-box-flex: 0;
         -ms-flex: 0 1 calc(33.33% - 13.33px);
             flex: 0 1 calc(33.33% - 13.33px);
 }
 
-div.iweb-grid div.col-quarter {
+div.iweb-grid.min div.col-quarter {
     -webkit-box-flex: 0;
         -ms-flex: 0 1 calc(25% - 15px);
             flex: 0 1 calc(25% - 15px);
 }
 
-div.iweb-grid div.col-onefifth {
+div.iweb-grid.min div.col-onefifth {
     -webkit-box-flex: 0;
         -ms-flex: 0 1 calc(20% - 16.66px);
             flex: 0 1 calc(20% - 16.66px);
@@ -2083,29 +2111,54 @@ div.widget.expand.show > div.hidden {
 @media only screen and (max-width: 900px) {
     div.iweb-viewer div.iweb-grid div.col-onefifth {
         -webkit-box-flex: 0;
+        -ms-flex: 0 1 calc(33.33% - 15px);
+            flex: 0 1 calc(33.33% - 15px);
+    }
+    
+    div.iweb-viewer div.iweb-grid.min div.col-onefifth {
+        -webkit-box-flex: 0;
         -ms-flex: 0 1 calc(33.33% - 13.33px);
             flex: 0 1 calc(33.33% - 13.33px);
     }
 }
 
 @media only screen and (max-width: 800px) {
-    div.iweb-viewer div.iweb-grid div.col-quarter {
-        -webkit-box-flex: 0;
-        -ms-flex: 0 1 calc(50% - 10px);
-            flex: 0 1 calc(50% - 10px);
-    }
-    
     div.iweb-viewer div.iweb-grid div.col-onethird {
         -webkit-box-flex: 0;
-        -ms-flex: 0 1 calc(50% - 10px);
-            flex: 0 1 calc(50% - 10px);
+        -ms-flex: 0 1 calc(50% - 15px);
+            flex: 0 1 calc(50% - 15px);
+    }
+    
+    div.iweb-viewer div.iweb-grid div.col-quarter {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 1 calc(50% - 15px);
+            flex: 0 1 calc(50% - 15px);
     }
     
     div.iweb-viewer div.iweb-grid div.col-onefifth {
         -webkit-box-flex: 0;
+        -ms-flex: 0 1 calc(50% - 15px);
+            flex: 0 1 calc(50% - 15px);
+    }
+    
+    div.iweb-viewer div.iweb-grid.min div.col-onethird {
+        -webkit-box-flex: 0;
         -ms-flex: 0 1 calc(50% - 10px);
             flex: 0 1 calc(50% - 10px);
     }
+    
+    div.iweb-viewer div.iweb-grid.min div.col-quarter {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 1 calc(50% - 10px);
+            flex: 0 1 calc(50% - 10px);
+    }
+ 
+    div.iweb-viewer div.iweb-grid.min div.col-onefifth {
+        -webkit-box-flex: 0;
+        -ms-flex: 0 1 calc(50% - 10px);
+            flex: 0 1 calc(50% - 10px);
+    }
+    
 }
 
 @media only screen and (max-width: 600px) {
@@ -2133,6 +2186,30 @@ div.widget.expand.show > div.hidden {
                 flex: 0 1 100%;
     }
     
+    div.iweb-viewer div.iweb-grid.min div.col-half {
+        -webkit-box-flex: 0;
+            -ms-flex: 0 1 100%;
+                flex: 0 1 100%;
+    }
+
+    div.iweb-viewer div.iweb-grid.min div.col-onethird {
+        -webkit-box-flex: 0;
+            -ms-flex: 0 1 100%;
+                flex: 0 1 100%;
+    }
+
+    div.iweb-viewer div.iweb-grid.min div.col-quarter {
+        -webkit-box-flex: 0;
+            -ms-flex: 0 1 100%;
+                flex: 0 1 100%;
+    }
+    
+    div.iweb-viewer div.iweb-grid.min div.col-onefifth {
+        -webkit-box-flex: 0;
+            -ms-flex: 0 1 100%;
+                flex: 0 1 100%;
+    }
+
     div.iweb-input-file div.preview > div {
         width: 100%;
     }
