@@ -1062,7 +1062,7 @@ div.imodal-dialog {
     background: white;
     width: 400px;
     height: 300px;
-    border: 2px solid var(--icolor-gray);
+    border: 1px solid var(--icolor-gray);
     border-radius: 8px;
     box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.2);
     overflow: hidden;
@@ -1155,7 +1155,7 @@ div.iweb-alert-dialog > div > div.content {
     max-width: 360px;
     text-align: unset;
     border-radius: 4px;
-    border: 2px solid var(--icolor-gray);
+    border: 1px solid var(--icolor-gray);
     box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.2);
     vertical-align: middle;
     overflow: hidden;
@@ -1185,7 +1185,7 @@ div.iweb-alert-dialog > div > div.content > button.btn-close {
     font-weight: bold;
     width: 100%;
     color: var(--icolor-black);
-    border-top: 2px solid var(--icolor-gray);
+    border-top: 1px solid var(--icolor-gray);
     border-radius: 0px;
 }
 
@@ -1196,8 +1196,8 @@ div.iweb-alert-dialog > div > div.content > button.btn-yes {
     font-weight: bold;
     width: 50%;
     color: var(--icolor-black);
-    border-top: 2px solid var(--icolor-gray);
-    border-right: 2px solid var(--icolor-gray);
+    border-top: 1px solid var(--icolor-gray);
+    border-right: 1px solid var(--icolor-gray);
     border-radius: 0px;
 }
 
@@ -1208,7 +1208,7 @@ div.iweb-alert-dialog > div > div.content > button.btn-no {
     font-weight: bold;
     width: 50%;
     color: var(--icolor-black);
-    border-top: 2px solid var(--icolor-gray);
+    border-top: 1px solid var(--icolor-gray);
     border-radius: 0px;
 }
 
@@ -1282,7 +1282,7 @@ div.iweb-info-dialog > div > div.content > a.btn-close {
     line-height: 30px;
     text-align: center;
     color: var(--icolor-black);
-    border: 2px solid var(--icolor-gray);
+    border: 1px solid var(--icolor-gray);
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
     z-index: 1;
 }
@@ -1316,7 +1316,7 @@ div.iweb-info-dialog > div > div.content > div {
     background-color: var(--icolor-white);
     border-radius: 4px;
     padding: 20px;
-    border: 2px solid var(--icolor-gray);
+    border: 1px solid var(--icolor-gray);
     box-shadow: 6px 6px 4px rgba(0, 0, 0, 0.2);
     overflow: hidden;
 }
