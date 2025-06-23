@@ -130,7 +130,7 @@ class iwebApp {
                 safeCallFunc('iwebFunc');
                 safeCallFunc('iwebChildFunc');
                 safeCallFunc('iwebExtraFunc');
-            }, 250);
+            }, 100);
         });
 
         // Page load completed
