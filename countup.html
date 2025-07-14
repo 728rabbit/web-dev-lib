@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Scroll Triggered Count Up</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .spacer {
+      height: 100vh;
+    }
+
+    .section {
+      background: white;
+      border-radius: 10px;
+      padding: 40px;
+      max-width: 800px;
+      margin: auto;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .section h2 {
+      font-size: 28px;
+      margin-bottom: 40px;
+      color: #003366;
+    }
+
+    .figures {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+    }
+
+    .figure {
+      margin: 20px;
+    }
+
+    .counter {
+      font-size: 48px;
+      font-weight: bold;
+      color: #003366;
+    }
+
+    .label {
+      font-size: 14px;
+      color: #555;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="section" id="venture-section">
+    <div class="figures">
+      <div class="figure">
+        <div class="counter" data-target="102">0</div>
+        <div class="label">Startup Established</div>
+      </div>
+      <div class="figure">
+        <div class="counter" data-target="38">0</div>
+        <div class="label">Companies in Operation</div>
+      </div>
+      <div class="figure">
+        <div class="counter" data-target="1253">0</div>
+        <div class="label">Technology Patented</div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function formatNumber(num) {
+      return num.toLocaleString();
+    }
+
+    function animateCounter(counter) {
+      const target = +counter.dataset.target;
+      let current = 0;
+      const increment = Math.ceil(target / 100);
+
+      const update = () => {
+        current += increment;
+        if (current < target) {
+          counter.textContent = formatNumber(current) + "+";
+          requestAnimationFrame(update);
+        } else {
+          counter.textContent = formatNumber(target) + "+";
+        }
+      };
+
+      update();
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const section = document.querySelector("#venture-section");
+      const counters = section.querySelectorAll(".counter");
+      let hasAnimated = false;
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting && !hasAnimated) {
+            counters.forEach(counter => animateCounter(counter));
+            hasAnimated = true;
+            observer.unobserve(section); // 不再重複觸發
+          }
+        });
+      }, {
+        threshold: 0.5 // 滾動進一半觸發
+      });
+
+      observer.observe(section);
+    });
+  </script>
+
+</body>
+</html>
