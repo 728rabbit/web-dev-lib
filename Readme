@@ -286,22 +286,22 @@ function iwebExtraFunc(function() { });
 
 17. Callback - windowLoaded
 
-function iwebCommonLayoutDone(function(win_width) { });
+function iwebCommonLayoutEnd(function(win_width) { });
 
-function iwebLayoutDone(function(win_width) { });
+function iwebLayoutEnd(function(win_width) { });
 
-function iwebChildDone(function(win_width) { });
+function iwebChildEnd(function(win_width) { });
 
-function iwebExtraLayoutDone(function(win_width) { });
+function iwebExtraLayoutEnd(function(win_width) { });
 
 
-function iwebCommonFuncDone(function() { });
+function iwebCommonFuncEnd(function() { });
 
-function iwebFuncDone(function() { });
+function iwebFuncEnd(function() { });
 
-function iwebChildFuncDone(function() { });
+function iwebChildFuncEnd(function() { });
 
-function iwebExtraFuncDone(function() { });
+function iwebExtraFuncEnd(function() { });
 
 --------------------------------------------------------------------------------
 
