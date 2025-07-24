@@ -2006,8 +2006,8 @@ class iwebApp {
             const fileInput = this;
             const target = e.target;
 
-            // Max 7 files
-            const maxFiles = 7;
+            // Max 8 files
+            const maxFiles = Math.max(1, (thisInstance.isValue(options) && thisInstance.isValue(options.maxFiles))?parseInt(options.maxFiles):8);
             let selectedFiles = fileInput.files;
             if (selectedFiles.length > maxFiles) {
                 selectedFiles = Array.from(selectedFiles).slice(0, maxFiles);
@@ -2135,8 +2135,8 @@ class iwebApp {
             const fileInput = this;
             const target = e.target;
 
-            // Max 7 files
-            const maxFiles = 7;
+            // Max 8 files
+            const maxFiles = Math.max(1, (thisInstance.isValue(options) && thisInstance.isValue(options.maxFiles))?parseInt(options.maxFiles):8);
             let selectedFiles = fileInput.files;
             if (selectedFiles.length > maxFiles) {
                 selectedFiles = Array.from(selectedFiles).slice(0, maxFiles);
