@@ -394,7 +394,7 @@ button.btn > span {
 }
 
 button.btn > i + span {
-    margin-left: 2px;
+    margin-left: 4px;
 }
 
 button.btn:hover,
