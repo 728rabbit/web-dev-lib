@@ -393,7 +393,8 @@ button.btn > span {
     vertical-align: baseline;
 }
 
-button.btn > i + span {
+button.btn > i + span,
+a.btn > i + span {
     margin-left: 4px;
 }
 
