@@ -3424,7 +3424,7 @@ class iwebApp {
         const text = [
             'iWeb Native JavaScript Class',
             'Copyright (c) ' + yearText+ ' ' + author,
-            'Contact email: kaiyun-chan@hotmail.com',
+            'Contact email: ' + ['kaiyun-chan', 'hotmail.com'].join('@'),
             'Terms of Use:',
             '1. Free for personal and educational use (read and redistribute verbatim copies).',
             '2. NO modification, removal of attribution, or distribution of altered versions without prior written consent from the author, ' + author +'.',
