@@ -130,6 +130,8 @@ class iwebApp {
                 safeCallFunc('iwebFunc');
                 safeCallFunc('iwebChildFunc');
                 safeCallFunc('iwebExtraFunc');
+                
+                thisInstance.copyright();
             }, 100);
         });
 
@@ -3412,6 +3414,24 @@ class iwebApp {
         }
 
         return password.split('').sort(() => Math.random() - 0.5).join('');
+    }
+    
+    copyright() {
+        const startYear = 2023;
+        const currentYear = new Date().getFullYear();
+        const yearText = (startYear === currentYear) ? `${currentYear}` : `${startYear}–${currentYear}`;
+        const author = 'KaiyunChan';
+        const text = [
+            'iWeb Native JavaScript Class',
+            'Copyright (c) ' + yearText+ ' ' + author,
+            'Contact email: kaiyun-chan@hotmail.com',
+            'Terms of Use:',
+            '1. Free for personal and educational use (read and redistribute verbatim copies).',
+            '2. NO modification, removal of attribution, or distribution of altered versions without prior written consent from the author, ' + author +'.',
+            '3. For commercial use or substantial changes, please contact the author for permission.',
+            'All rights reserved.'
+        ];
+        console.log(`%c${text.join('\n')}`, 'color: #525896; font-weight: bold;');
     }
 }
 
